@@ -1,0 +1,46 @@
+[
+  {
+    "game": "cn04",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "discovery_actions": 400,
+    "level_scores": {},
+    "environment_score": 0.0,
+    "from_memory": false
+  },
+  {
+    "game": "sc25",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "discovery_actions": 400,
+    "level_scores": {},
+    "environment_score": 0.0,
+    "from_memory": false
+  },
+  {
+    "game": "re86",
+    "levels": 0,
+    "of": 8,
+    "actions": [],
+    "baseline": [],
+    "discovery_actions": 400,
+    "level_scores": {},
+    "environment_score": 0.0,
+    "from_memory": false
+  },
+  {
+    "game": "ka59",
+    "levels": 0,
+    "of": 7,
+    "actions": [],
+    "baseline": [],
+    "discovery_actions": 400,
+    "level_scores": {},
+    "environment_score": 0.0,
+    "from_memory": false
+  }
+]

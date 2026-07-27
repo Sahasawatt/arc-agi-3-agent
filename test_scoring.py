@@ -59,3 +59,28 @@ def test_graph_explorer_environment_score_on_ls20():
 def test_no_levels_is_not_a_division_by_zero():
     assert environment_score({}, 0) == 0.0
     assert environment_score({1: 100.0}, 0) == 0.0
+
+
+# --- completion cap ----------------------------------------------------------------
+# A level may score up to 1.15x the human baseline; the GAME may not. It is capped at the
+# weight of the levels actually finished. Without this, one level of seven at the level
+# cap reported 4.107% where the true ceiling is 1/28 = 3.571%.
+
+def test_the_docs_worked_example_of_the_completion_cap():
+    """https://docs.arcprize.org/methodology.md : (1+2+3+4)/(1+2+3+4+5) = 10/15 = 66.7%."""
+    perfect = {i: 115.0 for i in (1, 2, 3, 4)}
+    assert environment_score(perfect, 5) == pytest.approx(100.0 * 10 / 15, abs=1e-9)
+
+
+def test_one_level_of_seven_cannot_exceed_its_own_weight():
+    assert environment_score({1: 115.0}, 7) == pytest.approx(100.0 / 28, abs=1e-9)
+
+
+def test_the_cap_does_not_inflate_a_slow_run():
+    """A level cleared at half the human's efficiency stays at its own score, not the cap."""
+    assert environment_score({1: 25.0}, 7) == pytest.approx(25.0 / 28, abs=1e-9)
+
+
+def test_clearing_every_level_at_the_cap_reaches_100():
+    perfect = {i: 115.0 for i in range(1, 8)}
+    assert environment_score(perfect, 7) == pytest.approx(100.0, abs=1e-9)

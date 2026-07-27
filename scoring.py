@@ -21,8 +21,20 @@ def environment_score(level_scores: dict[int, float], total_levels: int) -> floa
     `level_scores` maps 1-based level number → that level's score; levels absent from it
     were not completed and contribute 0 to the numerator but still to the denominator,
     which is what makes deep levels dominate.
+
+    Then the completion cap. A level may score up to 1.15x the human baseline, but the
+    GAME cannot: it is capped at the weight of the levels actually finished —
+    "The maximum game score is also determined by this weighted average structure — it is
+    capped based on how many levels the AI actually completed", worked through in the docs
+    as (1+2+3+4)/(1+2+3+4+5) = 10/15 = 66.7%. Without this, clearing one level of seven at
+    the 1.15x cap reported 4.107% where the real ceiling is 1/28 = 3.571%.
+    https://docs.arcprize.org/methodology.md
     """
     if total_levels <= 0:
         return 0.0
     weights = sum(range(1, total_levels + 1))
-    return sum(level_scores.get(i, 0.0) * i for i in range(1, total_levels + 1)) / weights
+    raw = sum(level_scores.get(i, 0.0) * i for i in range(1, total_levels + 1)) / weights
+
+    done = [i for i in range(1, total_levels + 1) if level_scores.get(i, 0.0) > 0]
+    cap = 100.0 * sum(done) / weights
+    return min(raw, cap)

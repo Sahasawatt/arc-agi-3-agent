@@ -1,0 +1,79 @@
+"""Tests for finding the game's progress meter.
+
+The distinction under test is clock versus consequence. `ls20`'s budget bar falls by two
+on every single press; hill-climbing on that rewards pressing buttons. `cn04`'s marker
+advances one cell on some presses and not others, and that is the thing worth climbing.
+"""
+
+import numpy as np
+import pytest
+
+from signals import classify, counts, directions, meters, score, series
+
+
+def frame(**colour_counts):
+    """A 64x64 frame containing the requested number of cells of each colour."""
+    grid = np.zeros((64, 64), dtype=int)
+    flat = grid.reshape(-1)
+    at = 0
+    for colour, n in colour_counts.items():
+        flat[at:at + n] = int(colour.lstrip("c"))
+        at += n
+    return [grid]
+
+
+def test_counts_reads_the_whole_frame_not_just_the_bottom_strip():
+    got = counts(frame(c5=10, c7=20))
+    assert got[5] == 10 and got[7] == 20
+    assert got[0] == 64 * 64 - 30
+
+
+@pytest.mark.parametrize("seq, kind", [
+    # every sequence below is measured off a real game, not invented
+    ([84, 82, 80, 78, 76, 74, 72, 70], "clock"),                    # ls20 budget, 1.000
+    ([135, 135, 136, 136, 137, 137, 138, 138], "clock"),            # cn04 row-0 marker, 0.976
+    ([36, 36, 36, 40, 40, 44, 48, 48], "clock"),                    # sc25 right column, 0.956
+    ([0, 1, 1, 2, 3, 3, 4, 4], "clock"),                            # re86 tally, 0.980
+    ([5, 5, 5, 5, 5], "noise"),             # nothing happens
+    ([5, 6, 5, 6, 5], "noise"),             # oscillates, so it is not a meter
+    ([5, 5, 5, 5, 6], "noise"),             # one move is not evidence
+])
+def test_classify_separates_the_clock_from_real_progress(seq, kind):
+    assert classify(seq) == kind
+
+
+def test_a_counter_that_waits_for_events_is_progress():
+    """Flat, flat, flat, then a jump, then flat again — that shape cannot be a clock, and
+    direction is irrelevant: counting down to zero is still making progress."""
+    assert classify([9, 9, 9, 9, 8, 8, 8, 8, 8, 7]) == "progress"
+
+
+def test_no_real_counter_in_these_games_survives_as_progress():
+    """The measurement that killed the idea: every counter found across the nine games is
+    a straight line in the number of actions, from 0.955 to 1.000. They differ in speed,
+    not in kind, and there is no gradient to climb."""
+    real = [[84, 82, 80, 78, 76, 74, 72, 70], [892, 894, 896, 898, 900, 902, 904, 906],
+            [135, 135, 136, 136, 137, 137, 138, 138], [32, 32, 31, 31, 30, 30, 29, 29],
+            [36, 36, 36, 40, 40, 44, 48, 48], [128, 128, 128, 124, 124, 120, 116, 116],
+            [0, 1, 1, 2, 3, 3, 4, 4], [64, 63, 63, 62, 61, 61, 60, 60],
+            [1, 2, 2, 3, 4, 4, 5, 5]]
+    assert {classify(seq) for seq in real} == {"clock"}
+
+
+def test_meters_labels_each_colour_and_drops_the_noise():
+    jumpy = [10, 10, 10, 10, 11, 11, 11, 11, 11, 12]
+    frames = [frame(c1=84 - 2 * i, c2=jumpy[i], c3=7) for i in range(10)]
+    got = meters(frames)
+    assert got[1] == "clock"
+    assert got[2] == "progress"
+    assert 3 not in got
+
+
+def test_score_is_signed_so_more_is_always_better():
+    d = directions([frame(c9=10), frame(c9=8), frame(c9=6)], [9])
+    assert d[9] == -1
+    assert score(frame(c9=6), [9], d) > score(frame(c9=10), [9], d)
+
+
+def test_score_of_no_meters_is_flat():
+    assert score(frame(c9=10), [], {}) == 0

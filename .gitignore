@@ -5,3 +5,6 @@ frames/
 runs/
 *.bak.*
 environment_files/
+
+# run logs — the artifacts they summarise are committed, the raw stdout is not
+results/*.log

@@ -1,15 +1,13 @@
 [
   {
     "game": "ar25",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      5,
-      40
-    ],
+    "player": 5,
+    "body": 2,
     "box": [
       9,
-      9
+      6
     ],
     "step": 3,
     "dirs": {
@@ -22,29 +20,34 @@
         3
       ],
       "3": [
-        -3,
-        0
-      ],
-      "4": [
         3,
         0
       ],
-      "7": [
+      "4": [
         -3,
+        0
+      ],
+      "7": [
+        3,
         0
       ]
     },
-    "walls": [],
-    "floor": []
+    "walls": [
+      10
+    ],
+    "floor": [
+      0,
+      9
+    ],
+    "walked": 116,
+    "blocked": 20
   },
   {
     "game": "cn04",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      0,
-      135
-    ],
+    "player": 0,
+    "body": 3,
     "box": [
       15,
       15
@@ -74,17 +77,18 @@
     },
     "walls": [],
     "floor": [
-      8
-    ]
+      10,
+      14
+    ],
+    "walked": 128,
+    "blocked": 70
   },
   {
     "game": "dc22",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      14,
-      4
-    ],
+    "player": 14,
+    "body": 1,
     "box": [
       2,
       2
@@ -114,16 +118,16 @@
     ],
     "floor": [
       2
-    ]
+    ],
+    "walked": 266,
+    "blocked": 131
   },
   {
     "game": "ka59",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      0,
-      1
-    ],
+    "player": 0,
+    "body": 1,
     "box": [
       1,
       1
@@ -148,20 +152,21 @@
       ]
     },
     "walls": [
-      2
+      2,
+      15
     ],
     "floor": [
       1
-    ]
+    ],
+    "walked": 317,
+    "blocked": 75
   },
   {
     "game": "ls20",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      12,
-      10
-    ],
+    "player": 12,
+    "body": 3,
     "box": [
       5,
       5
@@ -189,17 +194,20 @@
       4
     ],
     "floor": [
-      3
-    ]
+      0,
+      1,
+      3,
+      5
+    ],
+    "walked": 274,
+    "blocked": 74
   },
   {
     "game": "m0r0",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      10,
-      25
-    ],
+    "player": 10,
+    "body": 1,
     "box": [
       5,
       5
@@ -215,34 +223,35 @@
         5
       ],
       "3": [
-        5,
+        -5,
         0
       ],
       "4": [
-        -5,
+        5,
         0
       ]
     },
     "walls": [
+      11,
       12
     ],
     "floor": [
       5
-    ]
+    ],
+    "walked": 230,
+    "blocked": 64
   },
   {
     "game": "re86",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      0,
-      1
-    ],
+    "player": 9,
+    "body": 5,
     "box": [
       1,
-      1
+      13
     ],
-    "step": 3,
+    "step": 1,
     "dirs": {
       "1": [
         0,
@@ -261,44 +270,45 @@
         0
       ],
       "5": [
-        -18,
-        -12
+        11,
+        5
       ]
     },
     "walls": [],
     "floor": [
-      9,
+      4,
+      5,
       11
-    ]
+    ],
+    "walked": 56,
+    "blocked": 5
   },
   {
     "game": "sc25",
-    "actions": 48,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      10,
-      8
-    ],
+    "player": 9,
+    "body": 1,
     "box": [
-      2,
-      4
+      4,
+      2
     ],
     "step": 2,
     "dirs": {
       "1": [
-        0,
-        2
-      ],
-      "2": [
-        0,
-        -2
-      ],
-      "3": [
         -2,
         0
       ],
+      "2": [
+        0,
+        2
+      ],
+      "3": [
+        -4,
+        0
+      ],
       "4": [
-        2,
+        6,
         0
       ]
     },
@@ -306,19 +316,19 @@
     "floor": [
       2,
       5,
-      9
-    ]
+      10
+    ],
+    "walked": 166,
+    "blocked": 119
   },
   {
     "game": "sp80",
-    "actions": 26,
+    "actions": 400,
     "result": "ok",
-    "player": [
-      9,
-      80
-    ],
+    "player": 8,
+    "body": 1,
     "box": [
-      20,
+      12,
       4
     ],
     "step": 4,
@@ -338,11 +348,18 @@
       "4": [
         4,
         0
+      ],
+      "5": [
+        -16,
+        8
       ]
     },
     "walls": [],
     "floor": [
+      9,
       12
-    ]
+    ],
+    "walked": 81,
+    "blocked": 16
   }
 ]
