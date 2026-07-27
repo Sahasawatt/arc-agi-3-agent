@@ -35,6 +35,7 @@ minimal action sequences — what a planner produces and a language model does n
 | File | What |
 |---|---|
 | `perception.py` | frame → connected-component objects, movement events between frames, HUD counters, scale-normalised glyph bitmaps |
+| `discover.py` | works out a game's movement mechanics by acting — piece, footprint, step, direction per action, wall colours |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
 | `agent.py` | play loop with a swappable policy (`random`, two LLM policies) |
 | `scoring.py` | the competition's scoring formula, reimplemented for offline analysis |
@@ -72,11 +73,38 @@ Every verdict is a **lower bound**: the probe presses each action twice from a s
 reset, so a piece that starts against a wall reads as immovable. `ft09` is a proven false
 negative — arXiv 2512.24156 Table 1 has a keyboard agent clearing three of its levels.
 
+## Discovering the mechanics without a human
+
+`solver.py` only works because a human read ls20's screen: the piece is colour 12, a move
+is 5 cells, colour 4 is the wall. `discover.py` derives all three by acting, and nothing in
+it is per-game. Full table in [`results/discovery.md`](results/discovery.md).
+
+| | 9 MAZE_LIKE games |
+|---|---|
+| piece, footprint, step size, direction per action | **9 / 9** |
+| wall colours found | **4 / 9** (`dc22`, `ka59`, `ls20`, `m0r0`) |
+| checked against a known-good model | 1 — `ls20` |
+
+On `ls20` the discovered model is identical to the hand-read one — footprint 5×5, step 5,
+wall colour 4 — and BFS to the goal box returns the same 6 moves `solver.py` finds, from
+48 actions of exploration.
+
+A wall is only observable from a move that *failed*, so the whole difficulty is meeting one
+cheaply. Two ways of exploring that look reasonable and are not: cycling the actions in
+order makes the piece oscillate in place (47 of 48 moves succeeded and it met one wall),
+and breaking ties by action number makes it walk in a straight line (`sp80` used one of its
+five actions across 48 presses). Both are pinned by tests. The five games that still find
+no wall are a perception problem — `ar25` reports a 9×9 footprint for a 40-cell piece — not
+an exploration one.
+
+**Knowing where you can walk is not knowing where to walk to.** Target selection is still
+hardcoded in `solver.py`, and that is the harder half.
+
 ## Next
 
-1. Make rule discovery autonomous. Today a human reads the mechanics off the frames; the
-   9 MAZE_LIKE games are where an automated version would pay off first.
-2. Re-probe the false negatives from more than one starting state.
+1. Goal discovery — the remaining hand-read part.
+2. Fix the footprints that over-segment, which is what blocks walls on 5 of the 9.
+3. Re-probe the false negatives from more than one starting state.
 3. A harness under `OperationMode.COMPETITION` (one `make()` per environment, no resets)
    for a real baseline across all games.
 
