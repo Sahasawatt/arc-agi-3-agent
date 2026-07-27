@@ -1,0 +1,792 @@
+[
+  {
+    "game": "ar25-0c556536",
+    "objects_at_reset": 11,
+    "bulk_fill_colours": [
+      9
+    ],
+    "moved": true,
+    "step_size": 3,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 14,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      32,
+      50,
+      75,
+      37,
+      89,
+      159,
+      233,
+      73
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 3, 4 directions, terrain separable"
+  },
+  {
+    "game": "bp35-0a0ad940",
+    "objects_at_reset": 183,
+    "bulk_fill_colours": [
+      5,
+      10
+    ],
+    "moved": true,
+    "step_size": 8,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 2,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 8,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 9,
+    "baseline_actions": [
+      21,
+      48,
+      44,
+      38,
+      33,
+      87,
+      86,
+      131,
+      163
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 8)"
+  },
+  {
+    "game": "cd82-fb555c5d",
+    "objects_at_reset": 12,
+    "bulk_fill_colours": [
+      5
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      55,
+      8,
+      41,
+      21,
+      23,
+      23
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "cn04-2fe56bfb",
+    "objects_at_reset": 8,
+    "bulk_fill_colours": [
+      10
+    ],
+    "moved": true,
+    "step_size": 3,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 5,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      29,
+      54,
+      85,
+      300,
+      208,
+      113
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 3, 5 directions, terrain separable"
+  },
+  {
+    "game": "dc22-fdcac232",
+    "objects_at_reset": 31,
+    "bulk_fill_colours": [
+      3,
+      4,
+      5
+    ],
+    "moved": true,
+    "step_size": 2,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      59,
+      102,
+      67,
+      98,
+      324,
+      578
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 2, 4 directions, terrain separable"
+  },
+  {
+    "game": "ft09-0d8bbf25",
+    "objects_at_reset": 26,
+    "bulk_fill_colours": [
+      4,
+      5,
+      8,
+      9
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": false,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [],
+    "levels": 6,
+    "baseline_actions": [
+      43,
+      12,
+      23,
+      28,
+      65,
+      37
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "g50t-5849a774",
+    "objects_at_reset": 7,
+    "bulk_fill_colours": [
+      0,
+      5
+    ],
+    "moved": true,
+    "step_size": 6,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 3,
+    "complex_actions": [],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard"
+    ],
+    "levels": 7,
+    "baseline_actions": [
+      78,
+      175,
+      179,
+      230,
+      96,
+      54,
+      67
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 6)"
+  },
+  {
+    "game": "ka59-38d34dbb",
+    "objects_at_reset": 7,
+    "bulk_fill_colours": [
+      1,
+      2
+    ],
+    "moved": true,
+    "step_size": 3,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 6,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 7,
+    "baseline_actions": [
+      28,
+      109,
+      51,
+      51,
+      33,
+      132,
+      326
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 3, 6 directions, terrain separable"
+  },
+  {
+    "game": "lf52-271a04aa",
+    "objects_at_reset": 8,
+    "bulk_fill_colours": [
+      0,
+      1,
+      10
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "click"
+    ],
+    "levels": 10,
+    "baseline_actions": [
+      32,
+      81,
+      60,
+      71,
+      205,
+      148,
+      244,
+      109,
+      164,
+      225
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "lp85-305b61c3",
+    "objects_at_reset": 35,
+    "bulk_fill_colours": [
+      3,
+      4
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [
+      "click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      17,
+      38,
+      31,
+      16,
+      41,
+      60,
+      26,
+      159
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "ls20-9607627b",
+    "objects_at_reset": 11,
+    "bulk_fill_colours": [
+      3,
+      4
+    ],
+    "moved": true,
+    "step_size": 5,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [],
+    "actions_spent": 8,
+    "tags": [
+      "keyboard"
+    ],
+    "levels": 7,
+    "baseline_actions": [
+      22,
+      123,
+      73,
+      84,
+      96,
+      192,
+      186
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 5, 4 directions, terrain separable"
+  },
+  {
+    "game": "m0r0-492f87ba",
+    "objects_at_reset": 3,
+    "bulk_fill_colours": [
+      5,
+      11,
+      12
+    ],
+    "moved": true,
+    "step_size": 5,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      30,
+      111,
+      203,
+      26,
+      500,
+      237
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 5, 4 directions, terrain separable"
+  },
+  {
+    "game": "r11l-495a7899",
+    "objects_at_reset": 24,
+    "bulk_fill_colours": [
+      2,
+      5
+    ],
+    "moved": true,
+    "step_size": 12,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 2,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [
+      "click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      22,
+      33,
+      51,
+      26,
+      52,
+      49
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 12)"
+  },
+  {
+    "game": "re86-8af5384d",
+    "objects_at_reset": 22,
+    "bulk_fill_colours": [
+      5
+    ],
+    "moved": true,
+    "step_size": 3,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 6,
+    "complex_actions": [],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      26,
+      42,
+      86,
+      108,
+      189,
+      139,
+      424,
+      241
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 3, 6 directions, terrain separable"
+  },
+  {
+    "game": "s5i5-18d95033",
+    "objects_at_reset": 26,
+    "bulk_fill_colours": [
+      5
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [
+      "click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      20,
+      89,
+      106,
+      54,
+      162,
+      38,
+      86,
+      83
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "sb26-7fbdac44",
+    "objects_at_reset": 24,
+    "bulk_fill_colours": [
+      4
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 6,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      18,
+      28,
+      18,
+      19,
+      31,
+      23,
+      58,
+      18
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "sc25-635fd71a",
+    "objects_at_reset": 23,
+    "bulk_fill_colours": [
+      5
+    ],
+    "moved": true,
+    "step_size": 2,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 6,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      36,
+      6,
+      32,
+      83,
+      143,
+      50
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 2, 6 directions, terrain separable"
+  },
+  {
+    "game": "sk48-d8078629",
+    "objects_at_reset": 38,
+    "bulk_fill_colours": [
+      4,
+      5
+    ],
+    "moved": true,
+    "step_size": 6,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 8,
+    "baseline_actions": [
+      61,
+      177,
+      101,
+      103,
+      230,
+      181,
+      125,
+      92
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 6)"
+  },
+  {
+    "game": "sp80-589a99af",
+    "objects_at_reset": 7,
+    "bulk_fill_colours": [
+      12
+    ],
+    "moved": true,
+    "step_size": 4,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 12,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      39,
+      58,
+      25,
+      148,
+      96,
+      152
+    ],
+    "verdict": "MAZE_LIKE",
+    "reason": "grid-stepped by 4, 4 directions, terrain separable"
+  },
+  {
+    "game": "su15-1944f8ab",
+    "objects_at_reset": 25,
+    "bulk_fill_colours": [
+      4,
+      5
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 4,
+    "tags": [
+      "click"
+    ],
+    "levels": 9,
+    "baseline_actions": [
+      22,
+      42,
+      26,
+      115,
+      36,
+      31,
+      8,
+      40,
+      41
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "tn36-ef4dde99",
+    "objects_at_reset": 11,
+    "bulk_fill_colours": [
+      4,
+      5
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [
+      "click"
+    ],
+    "levels": 7,
+    "baseline_actions": [
+      32,
+      72,
+      26,
+      40,
+      30,
+      55,
+      62
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "tr87-cd924810",
+    "objects_at_reset": 56,
+    "bulk_fill_colours": [
+      2,
+      3,
+      10
+    ],
+    "moved": true,
+    "step_size": 7,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 4,
+    "complex_actions": [],
+    "actions_spent": 8,
+    "tags": [
+      "keyboard"
+    ],
+    "levels": 6,
+    "baseline_actions": [
+      54,
+      58,
+      40,
+      45,
+      71,
+      146
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 7)"
+  },
+  {
+    "game": "tu93-0768757b",
+    "objects_at_reset": 64,
+    "bulk_fill_colours": [
+      5
+    ],
+    "moved": true,
+    "step_size": 6,
+    "constant_step": true,
+    "terrain_separable": true,
+    "distinct_directions": 1,
+    "complex_actions": [],
+    "actions_spent": 8,
+    "tags": [
+      "keyboard_click"
+    ],
+    "levels": 9,
+    "baseline_actions": [
+      19,
+      16,
+      34,
+      42,
+      123,
+      80,
+      14,
+      23,
+      111
+    ],
+    "verdict": "PARTIAL",
+    "reason": "only 1 distinct movement direction(s)"
+  },
+  {
+    "game": "vc33-5430563c",
+    "objects_at_reset": 9,
+    "bulk_fill_colours": [
+      0,
+      3
+    ],
+    "moved": false,
+    "step_size": null,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 0,
+    "complex_actions": [
+      6
+    ],
+    "actions_spent": 2,
+    "tags": [
+      "click"
+    ],
+    "levels": 7,
+    "baseline_actions": [
+      7,
+      18,
+      44,
+      61,
+      131,
+      34,
+      152
+    ],
+    "verdict": "NEEDS_POINTER",
+    "reason": "no keyboard action moved anything; game exposes click actions"
+  },
+  {
+    "game": "wa30-ee6fef47",
+    "objects_at_reset": 10,
+    "bulk_fill_colours": [
+      1
+    ],
+    "moved": true,
+    "step_size": 4,
+    "constant_step": false,
+    "terrain_separable": true,
+    "distinct_directions": 6,
+    "complex_actions": [],
+    "actions_spent": 10,
+    "tags": [
+      "keyboard"
+    ],
+    "levels": 9,
+    "baseline_actions": [
+      71,
+      119,
+      183,
+      98,
+      368,
+      68,
+      79,
+      442,
+      415
+    ],
+    "verdict": "NOT_GRID_STEPPED",
+    "reason": "movements are not multiples of one step (mode 4)"
+  }
+]

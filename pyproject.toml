@@ -7,3 +7,8 @@ requires-python = ">=3.12"
 dependencies = [
     "arc-agi>=0.9.9",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

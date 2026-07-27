@@ -37,6 +37,8 @@ minimal action sequences — what a planner produces and a language model does n
 | `perception.py` | frame → connected-component objects, movement events between frames, HUD counters, scale-normalised glyph bitmaps |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
 | `agent.py` | play loop with a swappable policy (`random`, two LLM policies) |
+| `scoring.py` | the competition's scoring formula, reimplemented for offline analysis |
+| `probe_games.py` | measures, per game, whether the walkable-map assumptions hold at all |
 | `walk.py` | replay a prefix then probe — per-step position, budget, glyph match |
 | `probe.py` | repeat one action from a reset, to see what it does |
 | `capture.py` | run an action list; dump PNGs and print what moved |
@@ -53,13 +55,39 @@ uv run python walk.py ls20 <prefix-actions> -- <probe-actions>
 An anonymous API key is fetched automatically; no account needed for development. The
 engine can also run fully offline, which is how the competition notebook will use it.
 
+## How far the approach generalises
+
+`probe_games.py` measures, per game, whether the assumptions behind the solver hold: does
+anything move under an action, by a constant step, over separable terrain, in several
+directions. Full table in [`results/generalisation-probe.md`](results/generalisation-probe.md).
+
+| verdict | games | |
+|---|---|---|
+| **MAZE_LIKE** — walkable-map + BFS applies | **9 / 25** | trustworthy; every one is `keyboard`-tagged and `ls20` reproduces its known behaviour |
+| NEEDS_POINTER | 9 | 6 confirmed by their `click` tag; `ft09`, `cd82`, `sb26` are likely false negatives |
+| NOT_GRID_STEPPED | 6 | suspect — the three worst have 183 / 64 / 56 segmented objects, so the object matcher is probably linking the wrong pair |
+| PARTIAL | 1 | |
+
+Every verdict is a **lower bound**: the probe presses each action twice from a single
+reset, so a piece that starts against a wall reads as immovable. `ft09` is a proven false
+negative — arXiv 2512.24156 Table 1 has a keyboard agent clearing three of its levels.
+
 ## Next
 
-1. Run perception + solver against all 25 public games — find out how much generalises.
-   This is the go/no-go for the whole approach.
-2. A harness under `OperationMode.COMPETITION` (one `make()` per environment, no resets)
-   for a real baseline number.
-3. Turn manual rule-discovery into a budgeted exploration policy — every probe costs score.
+1. Make rule discovery autonomous. Today a human reads the mechanics off the frames; the
+   9 MAZE_LIKE games are where an automated version would pay off first.
+2. Re-probe the false negatives from more than one starting state.
+3. A harness under `OperationMode.COMPETITION` (one `make()` per environment, no resets)
+   for a real baseline across all games.
+
+## Testing
+
+```bash
+uv run python -m pytest -q
+```
+
+⚠️ If `rtk` is on the path it rewrites pytest's output — a run with failures was reported
+as `Pytest: No tests collected` with **exit code 0**. Redirect to a file and read that.
 
 ## License
 
