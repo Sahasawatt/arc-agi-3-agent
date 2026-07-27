@@ -62,6 +62,24 @@ pickups collected, the switches thrown. Games that need progress to accumulate c
 solved by a searcher that undoes it between every guess. Forward-only play keeps it, and
 that alone is worth three extra games.
 
+### Reaching for level 2, and not getting there
+
+Three changes aimed at the second level, all measured, none of which moved it. They are
+kept because each is right on its own terms and the reasoning is worth having written down:
+the model is now **carried across a level boundary** rather than rediscovered (the mechanics
+do not change within a game, and rediscovery spends actions where the weights are highest);
+a **refill is detected** by the clock jumping the wrong way, since a clock only falls and a
+rise is an event caused by whatever vanished on that step; and a refill is distinguished
+from **losing a life**, which also restores the clock — only a step the piece actually
+walked can be a pickup. Without that last filter the detector marked `ls20`'s own level
+marker as a refill.
+
+`ls20` level 2 wants a glyph matched against the status panel, and nothing generic here
+reaches that. Carrying the model briefly cost `m0r0` its level, through a regression
+introduced while making it: locating the piece by appearance works across boards and is
+worse on the board that built the model, so track ids come first and appearance is the
+fallback.
+
 The mean is lower than the 0.456% reported elsewhere in this README for three separate
 reasons, all of which make it more honest: the completion cap is now applied, the average is
 over all 17 playable environments rather than 9, and legal play spends more actions (39

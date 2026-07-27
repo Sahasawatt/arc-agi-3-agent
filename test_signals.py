@@ -8,7 +8,7 @@ advances one cell on some presses and not others, and that is the thing worth cl
 import numpy as np
 import pytest
 
-from signals import classify, counts, directions, meters, score, series
+from signals import classify, counts, directions, meters, refills, score, series
 
 
 def frame(**colour_counts):
@@ -77,3 +77,31 @@ def test_score_is_signed_so_more_is_always_better():
 
 def test_score_of_no_meters_is_flat():
     assert score(frame(c9=10), [], {}) == 0
+
+
+# --- refills -----------------------------------------------------------------------
+# A clock only falls. A rise is an event, and whatever vanished on that step caused it.
+
+def test_a_clock_jumping_up_marks_what_vanished_as_a_refill():
+    steps = [{"hud": {"11": [80, 78]}, "gone": [[5, 10, 10]]},
+             {"hud": {"11": [78, 84]}, "gone": [[11, 20, 20]]}]
+    assert refills(steps, {11}) == {(11, 20, 20)}
+
+
+def test_a_rise_in_something_that_is_not_the_clock_is_ignored():
+    steps = [{"hud": {"9": [1, 2]}, "gone": [[5, 10, 10]]}]
+    assert refills(steps, {11}) == set()
+
+
+def test_no_refill_when_the_clock_only_falls():
+    steps = [{"hud": {"11": [84, 82]}, "gone": [[5, 1, 1]]},
+             {"hud": {"11": [82, 80]}, "gone": []}]
+    assert refills(steps, {11}) == set()
+
+
+def test_a_death_that_refills_the_clock_is_not_a_pickup():
+    """Losing a life restores the budget and teleports the piece; whatever vanished near
+    that moment did not cause it. On ls20 this marked the level's own marker as a refill."""
+    steps = [{"hud": {"11": [12, 84]}, "gone": [[0, 21, 31]], "walked": False},
+             {"hud": {"11": [40, 84]}, "gone": [[11, 5, 5]], "walked": True}]
+    assert refills(steps, {11}) == {(11, 5, 5)}

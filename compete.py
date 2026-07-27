@@ -23,9 +23,11 @@ from arcengine import GameState
 
 from discover import (Model, body_box, choose_next, classify_colours, infer_body, infer_dirs,
                       infer_player, infer_step, locate, see, terrain_samples, _shifts)
-from perception import HUD_ROW
+from perception import HUD_ROW, hud
 from plan import route_to, targets
 from scoring import environment_score, level_score
+from signals import refills
+from trace import per_action_keys
 from trace import step as trace_step
 
 OUT = Path("results")
@@ -33,6 +35,7 @@ PLAYABLE = ["ar25", "cn04", "dc22", "ka59", "ls20", "m0r0", "re86", "sc25", "sp8
             "bp35", "g50t", "sk48", "tr87", "tu93", "wa30", "cd82", "sb26"]
 WARMUP = 24        # actions before the model is worth trusting
 BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h do
+REFILL_AT = 0.45   # fraction of the highest clock reading below which a refill comes first
 
 
 def build_model(records, colours, rows=HUD_ROW):
@@ -68,7 +71,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     values = sorted(by_value)
 
     prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
-    records, visits, log = [], {}, []
+    records, visits, log, seen_max = [], {}, [], 0
     model, plan, last = None, [], None
     done, spent_at_level, per_level = obs.levels_completed, 0, []
 
@@ -80,7 +83,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if plan:
             value = plan.pop(0)
         else:
-            at = body_box(prev, model.body) if (model and i >= WARMUP) else None
+            # Track ids first — they are exact on the board that made them. They die at a
+            # level boundary, so a model carried across one falls back to recognising the
+            # piece by appearance. Using `locate` unconditionally cost m0r0 its level.
+            at = None
+            if model and i >= WARMUP:
+                at = body_box(prev, model.body) or locate(obs.frame, model)
             value = choose_next(grid, at, model.dirs if model else {},
                                 (model.passable | model.blocking) if model else set(),
                                 values, last, visits, state)
@@ -95,8 +103,15 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if obs.levels_completed > done:
             per_level.append(spent_at_level)
             done, spent_at_level, plan = obs.levels_completed, 0, []
-            records, visits, model, last = [], {}, None, None      # new board, new evidence
+            # The board is new, so the evidence and the track ids are worthless — but the
+            # MECHANICS are not. Within one game the piece and its controls carry across
+            # levels, and paying discovery again on every level is paying it where the
+            # weights are highest. Keep the model only while it still recognises its own
+            # piece; when `locate` fails, the game has changed the piece and it goes.
+            records, visits, last = [], {}, None
             prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
+            if model and locate(obs.frame, model) is None:
+                model = None
             continue
 
         # A game over ends the run; the reset the engine gives back is a LEVEL reset, which
@@ -122,7 +137,23 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if i >= WARMUP and not plan:
             model = build_model(records, colours, rows) or model
             if model and locate(obs.frame, model):
-                for o in targets(obs.frame, model)[:6]:
+                cands = targets(obs.frame, model)[:6]
+
+                # A clock only falls, so a rise is an event and whatever vanished caused
+                # it. That is a refill, and it is the mechanic a level longer than one
+                # life's budget cannot be walked without. When the clock is low, go and
+                # get one before doing anything else.
+                clock = per_action_keys(log)
+                low = False
+                if clock:
+                    here = sum(hud(obs.frame).get(k, 0) for k in clock)
+                    seen_max = max(seen_max, here)
+                    low = seen_max > 0 and here < REFILL_AT * seen_max
+                if low:
+                    want = {g[0] for g in refills(log, clock)}
+                    cands = [o for o in cands if o["colour"] in want] + cands
+
+                for o in cands:
                     r = route_to(obs.frame, model, o)
                     if r:
                         plan = r

@@ -63,7 +63,24 @@ def step(before, after, action, model):
         "hud": {str(k): [hb.get(k, 0), ha.get(k, 0)]
                 for k in set(hb) | set(ha) if hb.get(k, 0) != ha.get(k, 0)},
         "levels": after.levels_completed,
+        # Did the piece go where the action points? A life lost teleports it back to the
+        # start AND refills the budget, which is indistinguishable from picking a refill up
+        # unless you ask this.
+        "walked": bool(_moved(b.keys() - a.keys(), a.keys() - b.keys(), model, action)[0])
+        or _stepped(before, after, model, action),
     }
+
+
+def _stepped(before, after, model, action):
+    """Whether the piece itself displaced by exactly this action's direction."""
+    d = model.dirs.get(action) if getattr(model, "dirs", None) else None
+    if d is None:
+        return False
+    from discover import locate
+    p0, p1 = locate(before.frame, model), locate(after.frame, model)
+    if p0 is None or p1 is None:
+        return False
+    return (p1[0] - p0[0], p1[1] - p0[1]) == d
 
 
 def summarise(steps, budget_keys=(), limit=14):

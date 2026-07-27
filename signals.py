@@ -96,3 +96,31 @@ def directions(frames, progress_colours):
         moves = [b - a for a, b in zip(s[c], s[c][1:]) if b != a]
         out[c] = 1 if moves and moves[0] > 0 else -1
     return out
+
+
+def refills(steps, clock_colours):
+    """Object kinds whose disappearance coincided with a clock jumping the wrong way.
+
+    A clock only falls, so a rise is an event, and the thing that vanished on that step is
+    what caused it. This is the mechanic `ls20` level 2 needs and level 1 does not: the
+    level's route is longer than one life's budget, so it cannot be walked without picking
+    a refill up on the way. Returns {(colour, x, y)} of the objects seen to do it.
+    """
+    out = set()
+    for s in steps:
+        rose = any(int(k) in clock_colours and now > was
+                   for k, (was, now) in s.get("hud", {}).items())
+        # Losing a life also refills the clock, and teleports the piece to the start. Only
+        # a step the piece actually WALKED can be a pickup; without this the detector marks
+        # whatever happened to vanish around a death, which on ls20 is the level's marker.
+        if rose and s.get("walked", True):
+            out.update(tuple(g) for g in s.get("gone", []))
+    return out
+
+
+def clock_level(frame, clock_colours, direction):
+    """How much of the falling clock is left, as one number. None if there is no clock."""
+    if not clock_colours:
+        return None
+    c = counts(frame)
+    return sum(direction.get(k, -1) * -1 * c.get(k, 0) for k in clock_colours)
