@@ -20,7 +20,11 @@ different speeds, which is what made the slower ones look like progress at first
 one of them waits for anything to happen. There is no gradient to climb here.
 """
 
+from collections import Counter
+
 import numpy as np
+
+from perception import hud
 
 # Every counter these nine games expose measures between 0.955 and 1.000 — they are all
 # clocks at different speeds, and none waits for an event. The threshold sits just under
@@ -124,3 +128,47 @@ def clock_level(frame, clock_colours, direction):
         return None
     c = counts(frame)
     return sum(direction.get(k, -1) * -1 * c.get(k, 0) for k in clock_colours)
+
+
+def drain(steps, share=0.9):
+    """{status colour: cells lost per action} for the counters that are running out.
+
+    `trace.per_action_keys` finds the colours that MOVE on nearly every action, and on
+    `ls20` that is two of them: the yellow bar shrinking and the grey it leaves behind
+    growing in its place. Their sum is a constant 84, so an agent that adds them up reads
+    a full tank on the step before it starves — which is why the refill trigger built on
+    that sum could never fire. The clock is the falling half.
+    """
+    deltas = {}
+    for s in steps:
+        for k, (was, now) in s.get("hud", {}).items():
+            deltas.setdefault(int(k), []).append(now - was)
+    out = {}
+    for k, ds in deltas.items():
+        if len(ds) < share * len(steps):
+            continue
+        falls = Counter(-d for d in ds if d < 0)
+        # A refill and a lost life both push it back up; neither is what it does per action.
+        if falls and sum(falls.values()) > sum(1 for d in ds if d > 0):
+            out[k] = falls.most_common(1)[0][0]
+    return out
+
+
+def actions_left(frame, steps, window=20):
+    """How many more actions this life has, or None when the game shows no clock.
+
+    Reading it is the difference between planning a route and discovering its length by
+    dying at the end of one: on `ls20` level 2 a life is 21 actions and the first thing
+    worth reaching is 17 away.
+
+    Measured over recent history only, because the rate belongs to the LEVEL and not to
+    the game: the same 84-cell bar on `ls20` spends 2 cells an action on level 1 and 4 on
+    level 2, and a rate averaged over the whole run reads a level-2 life as twice as long
+    as it is — which is exactly the sort of full tank that gets read on the step before
+    starving.
+    """
+    per = drain(steps[-window:])
+    if not per:
+        return None
+    now = hud(frame)
+    return min(now.get(k, 0) // n for k, n in per.items())

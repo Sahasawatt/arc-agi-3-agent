@@ -86,8 +86,31 @@ def footprints_touching(grid, model, o):
     return inside or touching
 
 
-def bfs(grid, model, start, goals):
-    """Shortest action list from `start` to any position in `goals`, or None."""
+def step_to(model, pos, act, redirects=None):
+    """Where an action leaves the piece: the square it aims at, unless that square sends it on.
+
+    The redirect keys on the **destination**, not the source or the action — measured on
+    `ls20` level 4, where pressing right from (14, 35) and pressing up from (19, 40) both aim
+    at (19, 35) and both land at (19, 45). Keyed on source-and-action the table is one row per
+    way of arriving and the router almost never has the row it needs; keyed on the
+    destination it is one row per redirecting cell and every route through it gets that row.
+    """
+    dx, dy = model.dirs[act]
+    aim = (pos[0] + dx, pos[1] + dy)
+    off = (redirects or {}).get(aim)
+    return aim if off is None else (aim[0] + off[0], aim[1] + off[1])
+
+
+def bfs(grid, model, start, goals, redirects=None, came_from=None):
+    """Shortest action list from `start` to any position in `goals`, or None.
+
+    The first action may not land back on `came_from`, the square the piece occupied one
+    move ago. This refuses to undo the last move and nothing else — no route is removed,
+    because any square reachable through the previous one is reachable without it. It is
+    what stops `ls20` level 5 bouncing between two squares for twenty actions until it
+    starves: a floor cell carries the piece back, the plain route walks into it again
+    because it does not believe in the carry, and neither square is ever left.
+    """
     if not goals:
         return None
     if start in goals:
@@ -96,8 +119,10 @@ def bfs(grid, model, start, goals):
     q = deque([start])
     while q:
         cur = q.popleft()
-        for act, (dx, dy) in model.dirs.items():
-            nxt = (cur[0] + dx, cur[1] + dy)
+        for act in model.dirs:
+            nxt = step_to(model, cur, act, redirects)
+            if cur == start and nxt == came_from:
+                continue
             if nxt in seen or not walkable(grid, model, nxt[0], nxt[1]):
                 continue
             seen[nxt] = (act, cur)
@@ -116,7 +141,7 @@ def signature(o):
     return (o["colour"], o["x"][1] - o["x"][0] + 1, o["y"][1] - o["y"][0] + 1)
 
 
-def bfs_all(grid, model, start):
+def bfs_all(grid, model, start, redirects=None):
     """Shortest action list to every reachable position -> {(x, y): [actions]}.
 
     Objects are a guess at where the goal is; positions are the whole space. Boards here
@@ -127,19 +152,30 @@ def bfs_all(grid, model, start):
     q = deque([start])
     while q:
         cur = q.popleft()
-        for act, (dx, dy) in model.dirs.items():
-            nxt = (cur[0] + dx, cur[1] + dy)
-            if nxt in seen or not walkable(grid, model, nxt[0], nxt[1]):
+        for act in model.dirs:
+            nxt = step_to(model, cur, act, redirects)
+            if nxt is None or nxt in seen or not walkable(grid, model, nxt[0], nxt[1]):
                 continue
             seen[nxt] = seen[cur] + [act]
             q.append(nxt)
     return seen
 
 
-def route_to(frame, model, o):
-    """Action list that walks the piece onto object `o`, or None."""
+def route_to(frame, model, o, redirects=None, came_from=None):
+    """Action list that walks the piece onto object `o`, or None.
+
+    A map of redirecting cells can only be as complete as the walking that built it, and an
+    incomplete one **removes** routes: on `ls20` level 4, six cells learned by accident cut
+    the reachable board from 67 squares to 57 and put both glyph-changers outside it — while
+    the agent had demonstrably stood on both. So the map is used when it finds a way and
+    ignored when it does not: walking the route the plain model believes in is what maps the
+    cells along it, and those are exactly the cells this route needs.
+    """
     grid = np.array(frame)[-1][:model.rows or HUD_ROW]
     at = locate(frame, model)
     if at is None:
         return None
-    return bfs(grid, model, (at[0], at[1]), footprints_touching(grid, model, o))
+    goals = footprints_touching(grid, model, o)
+    here = (at[0], at[1])
+    return (bfs(grid, model, here, goals, redirects, came_from)
+            or bfs(grid, model, here, goals, came_from=came_from))

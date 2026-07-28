@@ -5,6 +5,8 @@ rare colours are: the piece you move, the goal marker, pickups, HUD. Terrain is
 whatever fills most of the screen, and is described by area rather than listed.
 """
 
+from math import gcd
+
 import numpy as np
 
 HUD_ROW = 60  # rows below this are the budget bar / lives, not the play area
@@ -72,11 +74,36 @@ def icon(frame, x0, x1, y0, y1, ink=9):
         return "(empty)"
     ys, xs = np.nonzero(m)
     m = m[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
-    # The two plates draw the same glyph at different scales (the indicator is 2x). Collapse
-    # runs of identical adjacent rows/columns so the shapes become comparable.
-    m = m[[i for i in range(m.shape[0]) if i == 0 or (m[i] != m[i - 1]).any()]]
-    m = m[:, [j for j in range(m.shape[1]) if j == 0 or (m[:, j] != m[:, j - 1]).any()]]
+    # The two plates draw the same glyph at different scales (the indicator is 2x), so it
+    # has to be divided back down. Collapsing runs of identical adjacent rows and columns
+    # does that and is scale-invariant, but it is not injective: a glyph that genuinely
+    # repeats a row — `#.#/#.#/###` — collapses onto a different two-row glyph, and the
+    # door then reads as open when it is shut. Dividing by the scale the glyph is actually
+    # drawn at keeps both properties.
+    g = _scale(m)
+    m = m[::g, ::g]
     return "/".join("".join("#" if v else "." for v in row) for row in m)
+
+
+def _scale(m):
+    """The integer scale a bitmap is drawn at: the gcd of every run length in it.
+
+    A glyph drawn at 2x has every run of set and unset cells twice as long, in both
+    directions, so the gcd is 2 and dividing by it recovers the glyph. Anything irregular
+    gives 1 and the bitmap is left alone.
+    """
+    g = 0
+    for line in list(m) + list(m.T):
+        n = 1
+        for i in range(1, len(line)):
+            if line[i] == line[i - 1]:
+                n += 1
+            else:
+                g, n = gcd(g, n), 1
+        g = gcd(g, n)
+        if g == 1:
+            return 1
+    return max(g, 1)
 
 
 def describe(objs, terrain):

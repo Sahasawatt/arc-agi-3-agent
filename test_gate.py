@@ -1,0 +1,471 @@
+"""Tests for reading a target's glyph against what the board is displaying.
+
+The board under test is `ls20` level 2 in miniature: a goal box with a shape inside it, a
+plate in the corner showing a different shape, and the rule that the box will not let the
+piece in until the two agree. Every shape here is one measured off the real frame.
+"""
+
+import numpy as np
+
+from discover import Model
+from gate import Gate, cycle, plates
+
+INDICATOR = "###/..#/#.#"   # what ls20 level 2 shows at the start
+WANTED = "###/#../#.#"      # what its goal box asks for — the same glyph, a quarter turn on
+
+
+def blank():
+    return np.zeros((64, 64), dtype=int)
+
+
+def plate(grid, x0, y0, w, h, colour, ink, cells):
+    """A framed region of `colour` with `ink` cells drawn strictly inside it."""
+    grid[y0:y0 + h, x0:x0 + w] = colour
+    for dx, dy in cells:
+        grid[y0 + dy, x0 + dx] = ink
+
+
+def goal_box(grid, x0=13, y0=39, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3))):
+    plate(grid, x0, y0, 7, 7, 5, 9, shape)
+
+
+def panel(grid, shape=((1, 1), (2, 1), (3, 1), (3, 2), (1, 3), (3, 3))):
+    plate(grid, 1, 53, 10, 10, 5, 9, shape)
+
+
+def frame(grid):
+    return [grid]
+
+
+def model(**kw):
+    base = dict(player=1, body={1}, colour=12, box=(5, 5),
+                dirs={1: (0, -5), 2: (0, 5), 3: (-5, 0), 4: (5, 0)}, step=5,
+                passable={3}, blocking={4}, rows=60, parts=((12, 5, 5),))
+    base.update(kw)
+    return Model(**base)
+
+
+def obj(x0, x1, y0, y1, colour=5):
+    return {"colour": colour, "x": [x0, x1], "y": [y0, y1], "cells": 1}
+
+
+# --- reading a shape off the board -------------------------------------------------
+
+def test_a_framed_region_with_a_shape_inside_is_a_plate():
+    g = blank()
+    goal_box(g)
+    got = plates(frame(g))
+    assert got[(13, 19, 39, 45)] == (9, WANTED)
+
+
+def test_the_bulk_of_the_board_is_not_a_plate():
+    """Without the border test every large component is a plate, because the bounding box
+    of anything ragged contains most of the board — the floor would be a plate displaying
+    the walls."""
+    g = blank()
+    g[10:50, 10:50] = 3
+    g[20, 20] = 4          # a hole in it, so the region's bbox is not all one colour
+    g[10, 10] = 4
+    assert plates(frame(g)) == {}
+
+
+def test_a_plate_is_read_across_the_line_where_the_hud_begins():
+    """`ls20` draws its indicator over rows 53 to 62 and the play area stops at row 60. A
+    reader that stops there cuts the glyph in half — trap 3 of NOTES-ls20.md, in a new
+    disguise."""
+    g = blank()
+    panel(g)
+    assert plates(frame(g))[(1, 10, 53, 62)] == (9, INDICATOR)
+
+
+def test_a_shape_drawn_at_twice_the_size_compares_equal():
+    """The indicator is drawn at 2x the goal marker's scale, which is why comparing cell
+    counts conflates different glyphs and comparing raw bitmaps never matches."""
+    small, big = blank(), blank()
+    plate(small, 20, 20, 5, 5, 5, 9, [(1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)])
+    plate(big, 20, 20, 9, 9, 5, 9,
+          [(x, y) for x0, y0 in [(1, 1), (3, 1), (5, 1), (1, 3), (1, 5), (5, 5)]
+           for x in (x0, x0 + 1) for y in (y0, y0 + 1)])
+    assert plates(frame(small))[(20, 24, 20, 24)][1] == plates(frame(big))[(20, 28, 20, 28)][1]
+
+
+# --- locked, matched, and the square that changes it --------------------------------
+
+def test_nothing_is_locked_before_a_display_has_been_seen_to_change():
+    """A plate that has never moved is not evidence of a gate; guessing one would refuse
+    to walk to the only target on a board that has no gate at all."""
+    g = blank()
+    goal_box(g)
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    assert not gate.locked(obj(13, 19, 39, 45))
+    assert not gate.matched(obj(13, 19, 39, 45))
+
+
+def test_a_target_wearing_a_shape_the_display_does_not_show_is_locked():
+    g = blank()
+    goal_box(g)
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    goal_box(g2)
+    panel(g2, shape=((1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 1)))  # a quarter turn on
+    gate.observe(frame(g2), (49, 45), True)
+    assert gate.displays == {(1, 10, 53, 62)}
+    assert gate.changer == (49, 45)
+    assert gate.locked(obj(13, 19, 39, 45))
+
+
+def test_a_target_wearing_what_the_display_shows_is_a_door():
+    g = blank()
+    goal_box(g)
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    goal_box(g2)
+    panel(g2, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))  # now the box's own
+    gate.observe(frame(g2), (49, 45), True)
+    assert gate.matched(obj(13, 19, 39, 45))
+    assert not gate.locked(obj(13, 19, 39, 45))
+
+
+def test_a_display_that_changes_while_the_piece_was_teleported_names_no_changer():
+    """Running out of budget also rewrites the display and puts the piece back at the
+    start. Reading that as a discovery names the starting square as the thing that turns
+    the glyph, and the agent then stands there pressing off and on for the rest of the
+    level."""
+    g = blank()
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    panel(g2, shape=((1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 1)))
+    gate.observe(frame(g2), (29, 40), False)
+    assert gate.displays and gate.changer is None
+
+
+def test_a_door_that_refuses_settles_the_state_it_refused_under():
+    """Collapsing runs of identical rows and columns is what makes a glyph comparable across
+    the two scales it is drawn at, and it throws detail away — so equal is a hypothesis and
+    the engine is the oracle. Measured on `ls20` level 3: the box refuses the piece under the
+    state its own marker matches exactly."""
+    g = blank()
+    goal_box(g)
+    panel(g, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))   # same as the box
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    goal_box(g2)
+    panel(g2, shape=((1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 1)))  # a turn, so it moved
+    gate.observe(frame(g2), (49, 45), True)
+    gate.observe(frame(g), (49, 45), True)                             # and back to matching
+    door = obj(13, 19, 39, 45)
+    assert gate.matched(door)
+    gate.reject(door)
+    assert not gate.matched(door)
+
+
+def test_once_the_bitmap_is_disproved_every_untried_state_is_worth_a_try():
+    """The comparison was wrong for this door, so the shape it wears means nothing; what is
+    left is the states, and there are only ever a handful."""
+    g = blank()
+    goal_box(g)
+    panel(g, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    goal_box(g2)
+    panel(g2, shape=((1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 1)))
+    gate.observe(frame(g2), (49, 45), True)
+    gate.observe(frame(g), (49, 45), True)
+    door = obj(13, 19, 39, 45)
+    gate.reject(door)                       # refused under the state the bitmaps agreed on
+    gate.observe(frame(g2), (49, 45), True)  # turn it: a state nothing has ruled out
+    assert gate.matched(door)
+
+
+def test_the_ink_is_part_of_what_a_plate_says():
+    """`ls20` level 3 has two things that move the indicator: a cross that turns the shape
+    and a multi-coloured square that recolours the ink, 12 then 9 then 14. Its goal box is
+    drawn in 9, so a gate comparing shapes alone walks to a door wearing the right shape in
+    the wrong colour, and is refused."""
+    g, g2 = blank(), blank()
+    goal_box(g)
+    panel(g, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))       # right shape...
+    plate(g2, 13, 39, 7, 7, 5, 9, ((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))
+    plate(g2, 1, 53, 10, 10, 5, 12, ((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    gate.observe(frame(g2), (29, 45), True)                                # ...wrong ink
+    door = obj(13, 19, 39, 45)
+    assert not gate.matched(door)
+    assert gate.locked(door)
+    assert gate.changers == {(29, 45): {0}}      # it moved the ink, not the shape
+
+
+def test_the_changer_chosen_is_the_one_that_moves_the_half_that_is_wrong():
+    gate = Gate()
+    gate.icons = {(13, 19, 39, 45): (9, WANTED), (1, 10, 53, 62): (9, INDICATOR)}
+    gate.displays = {(1, 10, 53, 62)}
+    gate.changers = {(29, 45): {0}, (49, 10): {1}}   # ink square, shape cross
+    gate.changer = (29, 45)
+    # ink already agrees, the shape does not: the cross is the square to go and stand on
+    assert gate.changer_for(obj(13, 19, 39, 45)) == (49, 10)
+
+
+def test_no_known_changer_for_the_wrong_half_means_no_answer():
+    """Re-entering the square that moves the other half is the cheapest way never to finish;
+    saying nothing lets ordinary exploration go and find the one that helps."""
+    gate = Gate()
+    gate.icons = {(13, 19, 39, 45): (9, WANTED), (1, 10, 53, 62): (9, INDICATOR)}
+    gate.displays = {(1, 10, 53, 62)}
+    gate.changers = {(29, 45): {0}}
+    gate.changer = (29, 45)
+    assert gate.changer_for(obj(13, 19, 39, 45)) is None
+
+
+def test_a_changer_that_stops_paying_out_is_forgotten():
+    gate = Gate()
+    gate.changer = (49, 45)
+    gate.cycled()
+    gate.cycled()
+    assert gate.changer == (49, 45)
+    gate.cycled()
+    assert gate.changer is None
+
+
+def test_a_marked_place_is_known_even_before_a_display_has_moved():
+    """Rarity ranks by colour, and a goal box painted in the colour that also draws the
+    border and the status strip sorts tenth — past the cut, so the gate never sees it. A
+    plate is a place the board has drawn a shape on, and there are one or two per board."""
+    g = blank()
+    goal_box(g)
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    assert gate.marked(obj(13, 19, 39, 45))
+    assert not gate.marked(obj(50, 52, 46, 48, colour=0))
+
+
+def test_a_display_is_not_a_marked_place():
+    """It reports state; walking to it is walking to a readout."""
+    g = blank()
+    panel(g)
+    gate = Gate()
+    gate.observe(frame(g), (29, 40), True)
+    g2 = blank()
+    panel(g2, shape=((1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 1)))
+    gate.observe(frame(g2), (49, 45), True)
+    assert not gate.marked(obj(1, 10, 53, 62))
+
+
+def test_a_target_on_the_changer_is_known_to_turn_the_display():
+    gate = Gate()
+    gate.changer = (49, 45)
+    assert gate.changing(obj(51, 52, 46, 47, colour=0), (5, 5))
+    assert not gate.changing(obj(13, 19, 39, 45), (5, 5))
+
+
+# --- re-entering the square ---------------------------------------------------------
+
+def test_cycling_steps_off_the_square_and_back_on():
+    """Standing on the changer does nothing — it is entering that counts — so one more
+    turn of the display costs two actions, not one."""
+    g = blank()
+    g[:60, :] = 3
+    out, back = cycle(g, model(), (25, 25))
+    assert model().dirs[out] == tuple(-d for d in model().dirs[back])
+
+
+def test_cycling_walled_in_gives_no_actions_rather_than_a_wrong_one():
+    g = blank()
+    g[:60, :] = 4
+    g[25:30, 25:30] = 3
+    assert cycle(g, model(), (25, 25)) == []
+
+
+# --- planning the order ---------------------------------------------------------------
+# `compete.stage` is the piece the rungs cannot be: which changer to turn first, and which
+# refill to spend before which leg. `ls20` level 3 is decided by that order.
+
+def board():
+    """An open floor with walls round the edge, on the 5-cell grid the piece steps on."""
+    g = np.full((64, 64), 4)
+    g[1:59, 1:59] = 3
+    return g
+
+
+def test_a_plan_refuels_when_the_changer_is_out_of_reach():
+    from compete import stage
+    g = board()
+    m = model(box=(5, 5), passable={3, 5, 9, 11}, blocking={4})
+    gate = Gate()
+    gate.icons = {(30, 36, 5, 11): (9, WANTED)}     # the door wears a shape
+    gate.displays = set()
+    gate.changers = {(5, 30): {1}}
+    gate.icons[(1, 10, 53, 62)] = (9, INDICATOR)    # ...the display shows another
+    gate.displays = {(1, 10, 53, 62)}
+    door = obj(30, 36, 5, 11)
+    fuel = [{"colour": 11, "x": [10, 12], "y": [10, 12], "cells": 8}]
+    assert gate.locked(door)
+    # Six actions of clock: the changer is five steps away and the door is far past it, so
+    # the only order that finishes tops up at the refill on the way.
+    got = stage(g, m, gate, (5, 5), 6, 21, door, fuel)
+    assert got, "a plan exists through the refill"
+    # ...and with a clock that cannot even reach the refill, there is no plan at all.
+    assert stage(g, m, gate, (5, 5), 1, 21, door, fuel) is None
+
+
+def test_no_plan_when_no_changer_is_known_for_the_wrong_half():
+    from compete import stage
+    g = board()
+    m = model(box=(5, 5), passable={3, 5, 9, 11}, blocking={4})
+    gate = Gate()
+    gate.icons = {(30, 36, 5, 11): (9, WANTED), (1, 10, 53, 62): (12, WANTED)}
+    gate.displays = {(1, 10, 53, 62)}
+    gate.changers = {(5, 30): {1}}                  # moves the shape; the ink is what is wrong
+    assert stage(g, m, gate, (5, 5), 21, 21, obj(30, 36, 5, 11), []) is None
+
+
+# --- counting the turns ----------------------------------------------------------------
+# A changer walks its half round a cycle. Knowing the cycle is the difference between "go
+# and press it" and knowing the press costs two actions or six.
+
+def cycling_gate():
+    """A gate that has watched one square turn the shape A -> B -> C -> A."""
+    g = Gate()
+    g.icons = {(13, 19, 39, 45): (9, "C"), (1, 10, 53, 62): (9, "A")}
+    g.displays = {(1, 10, 53, 62)}
+    g.changers = {(49, 45): {1}}
+    g.cycles = {((49, 45), 1): {"A": "B", "B": "C", "C": "A"}}
+    return g
+
+
+def test_the_presses_are_counted_along_the_cycle_that_was_observed():
+    g = cycling_gate()
+    door = obj(13, 19, 39, 45)
+    assert g.presses_for(door, 1, (49, 45)) == 2      # A -> B -> C
+    g.icons[(1, 10, 53, 62)] = (9, "B")
+    assert g.presses_for(door, 1, (49, 45)) == 1      # B -> C
+    g.icons[(1, 10, 53, 62)] = (9, "C")
+    assert g.presses_for(door, 1, (49, 45)) == 0      # already showing it
+
+
+def test_a_value_the_changer_has_never_produced_answers_nothing():
+    """Better no answer than a confident one: the planner falls back to the old assumption
+    of a single turn, which is exactly what it did everywhere before this existed."""
+    g = cycling_gate()
+    g.icons[(1, 10, 53, 62)] = (9, "Z")               # a state off the observed cycle
+    assert g.presses_for(obj(13, 19, 39, 45), 1, (49, 45)) is None
+
+
+def test_a_cycle_that_closes_without_passing_the_wanted_value_answers_nothing():
+    """A square that demonstrably cannot produce what the door wants must say so, not
+    return a number one larger than the loop it just walked."""
+    g = cycling_gate()
+    g.cycles = {((49, 45), 1): {"A": "B", "B": "A"}}   # a two-state loop that misses C
+    assert g.presses_for(obj(13, 19, 39, 45), 1, (49, 45)) is None
+
+
+# --- two changers writing the same half ---------------------------------------------------
+# `ls20` level 5 has two squares that write the shape: six states round one, four round the
+# other, and the glyph its goal box asks for is in NEITHER. It exists only in the states the
+# two reach by being interleaved, and a plan that walks one changer's own cycle can only
+# press the same square forever.
+
+def two_changer_gate():
+    """Two squares. Alone each returns to where it started; together they reach `D`."""
+    g = Gate()
+    g.icons = {(13, 19, 39, 45): (9, "D"), (1, 10, 53, 62): (9, "A")}
+    g.displays = {(1, 10, 53, 62)}
+    g.changers = {(49, 45): {1}, (9, 45): {1}}
+    # Alone, the first square only ever swaps A and B — D is not on its cycle at all. The
+    # second swaps A with C and B with D. Only A -> B (first) -> D (second) gets there.
+    g.cycles = {((49, 45), 1): {"A": "B", "B": "A"},
+                ((9, 45), 1): {"A": "C", "C": "A", "B": "D", "D": "B"}}
+    return g
+
+
+def test_a_value_off_both_cycles_is_still_planned_for():
+    """A -> C on the second square, C -> D on the first. Neither square gets there alone."""
+    g = two_changer_gate()
+    door = obj(13, 19, 39, 45)
+    assert g.presses_for(door, 1, (49, 45)) is None      # the single-changer reading
+    assert g.presses_for(door, 1, (9, 45)) is None
+    assert g.leg_for(door, 1) == ((49, 45), 1)           # go here first, once
+
+
+def test_the_first_leg_counts_the_entries_that_stay_on_one_square():
+    """Only the first leg is committed, so consecutive entries of the same square are one
+    trip with a press count — the rest is re-planned from what actually happened."""
+    g = two_changer_gate()
+    g.cycles[((49, 45), 1)] = {"A": "E", "E": "B", "B": "A"}
+    assert g.leg_for(obj(13, 19, 39, 45), 1) == ((49, 45), 2)  # A -> E -> B, then swap
+
+
+def test_a_half_already_showing_what_is_wanted_needs_no_leg():
+    g = two_changer_gate()
+    g.icons[(1, 10, 53, 62)] = (9, "D")
+    assert g.leg_for(obj(13, 19, 39, 45), 1) is None
+
+
+def test_turns_for_names_the_square_the_combined_search_wants_first():
+    """`turns_for` drives the order search, so it has to agree with `leg_for` — naming the
+    square that merely moves the half sends the planner round an orbit past the state."""
+    g = two_changer_gate()
+    assert g.turns_for(obj(13, 19, 39, 45)) == {1: (49, 45)}
+
+
+# --- a plate that stops being reported ----------------------------------------------------
+# The piece is 5x5 and `ls20` level 5's goal box is 7x7, so walking in hides what the box is
+# asking for: `plates` reports it right up until the moment it matters and then stops. Read
+# fresh at that moment, the agent concludes the panel it spent ninety actions setting is
+# wrong and walks away one press from the door — measured three times over, by hand.
+#
+# The opposite case looks identical from here and wants the opposite answer: a refill that
+# has been picked up is gone for good, and remembering it leaves the planner routing to fuel
+# that is not there. Keeping every vanished plate, or every one never seen to change, costs
+# `ls20` levels 3 and 4. What separates them is whether the piece is standing on it.
+
+def two_plates():
+    g = blank()
+    goal_box(g)                    # a 7x7 box at x13-19, y39-45
+    panel(g)                       # the indicator at x1-10, y53-62
+    return g
+
+
+def test_a_plate_the_piece_is_standing_on_keeps_its_last_reading():
+    g = Gate()
+    g.observe(frame(two_plates()), (14, 40, 5, 5), True)
+    was = dict(g.icons)
+    gone = blank()
+    panel(gone)                    # the goal box is no longer drawn: the piece is on it
+    g.observe(frame(gone), (14, 40, 5, 5), True)
+    assert g.icons.get((13, 19, 39, 45)) == was[(13, 19, 39, 45)]
+
+
+def test_a_plate_that_vanishes_out_of_reach_is_forgotten():
+    """A refill that has been taken. Remembering it is routing to fuel that is not there."""
+    g = Gate()
+    g.observe(frame(two_plates()), (40, 10, 5, 5), True)
+    gone = blank()
+    panel(gone)
+    g.observe(frame(gone), (40, 10, 5, 5), True)
+    assert (13, 19, 39, 45) not in g.icons
+
+
+def test_a_plate_still_on_the_board_is_read_fresh_not_remembered():
+    """Remembering must not outrank looking: while the plate is visible its current value
+    is the answer, even with the piece standing on the same square."""
+    g = Gate()
+    g.observe(frame(two_plates()), (14, 40, 5, 5), True)
+    before = g.icons[(13, 19, 39, 45)]
+    moved = blank()
+    goal_box(moved, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (2, 3)))
+    panel(moved)
+    g.observe(frame(moved), (14, 40, 5, 5), True)
+    assert g.icons[(13, 19, 39, 45)] != before, "the new drawing wins while it is drawn"
+    assert len([k for k in g.icons if k[0] == 13]) == 1, "no phantom copy alongside it"

@@ -8,7 +8,8 @@ advances one cell on some presses and not others, and that is the thing worth cl
 import numpy as np
 import pytest
 
-from signals import classify, counts, directions, meters, refills, score, series
+from signals import (actions_left, classify, counts, directions, drain, meters, refills,
+                     score, series)
 
 
 def frame(**colour_counts):
@@ -97,6 +98,59 @@ def test_no_refill_when_the_clock_only_falls():
     steps = [{"hud": {"11": [84, 82]}, "gone": [[5, 1, 1]]},
              {"hud": {"11": [82, 80]}, "gone": []}]
     assert refills(steps, {11}) == set()
+
+
+# --- how much of the clock is left --------------------------------------------------
+# The numbers below are ls20 level 2 as measured: an 84-cell yellow bar spending 4 cells
+# an action, with the grey it leaves behind growing by the same 4.
+
+def bar(was, now, spent_was, spent_now):
+    return {"hud": {"11": [was, now], "3": [spent_was, spent_now]}}
+
+
+def test_the_clock_is_the_falling_half_of_the_pair():
+    """`ls20` runs two counters that move on every action and sum to a constant 84. An
+    agent that adds them up reads a full tank on the step before it starves."""
+    steps = [bar(84 - 4 * i, 80 - 4 * i, 4 * i, 4 * i + 4) for i in range(5)]
+    assert drain(steps) == {11: 4}
+
+
+def test_a_refill_does_not_change_the_rate():
+    """The bar jumps back to full when a refill is picked up and when a life is lost.
+    Neither is what it spends per action."""
+    steps = [bar(84, 80, 0, 4), bar(80, 76, 4, 8), bar(76, 84, 8, 0), bar(84, 80, 0, 4)]
+    assert drain(steps)[11] == 4
+
+
+def test_a_counter_that_only_moves_sometimes_is_not_the_clock():
+    steps = [{"hud": {"11": [84, 80]}}, {"hud": {}}, {"hud": {}}, {"hud": {}}]
+    assert drain(steps) == {}
+
+
+def test_actions_left_is_the_bar_over_its_rate():
+    """21 actions to a life on ls20 level 2 — 84 cells at 4 a press."""
+    steps = [bar(84 - 4 * i, 80 - 4 * i, 4 * i, 4 * i + 4) for i in range(5)]
+    grid = np.zeros((64, 64), dtype=int)
+    grid[60:, :64] = 3
+    grid[60, :40] = 11                      # 40 cells of bar left, below the play area
+    assert actions_left([grid], steps) == 10
+
+
+def test_no_clock_reads_as_no_limit_rather_than_as_zero():
+    """A game with no visible budget must not look like one about to starve, or every
+    plan is rejected as unaffordable."""
+    assert actions_left([np.zeros((64, 64), dtype=int)], []) is None
+
+
+def test_the_rate_is_measured_from_recent_history_not_the_whole_run():
+    """The same bar spends 2 cells an action on ls20 level 1 and 4 on level 2. Averaged
+    over the run it reads a level-2 life as twice as long as it is."""
+    old = [bar(84 - 2 * i, 82 - 2 * i, 2 * i, 2 * i + 2) for i in range(30)]
+    new = [bar(84 - 4 * i, 80 - 4 * i, 4 * i, 4 * i + 4) for i in range(5)]
+    grid = np.zeros((64, 64), dtype=int)
+    grid[60, :40] = 11
+    assert actions_left([grid], old + new, window=5) == 10
+    assert actions_left([grid], old + new, window=40) == 20   # what the whole run says
 
 
 def test_a_death_that_refills_the_clock_is_not_a_pickup():
