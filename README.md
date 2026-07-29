@@ -608,6 +608,14 @@ measured and costs level 3 twenty-six actions, so only the blind ones pay it —
 that, level 5 falls in **306** instead of 347 (one fewer death), the game stands at
 **22.246%**, and level 6's probe loop is gone from its accounting.
 
+One more carry-over joined the model and the controls: **the ink alphabet is a property of
+the game**. `ls20` runs the same `12 → 9 → 14 → 8` on levels 3 and 5, and re-watching it was
+part of every deep level's price. Ink transitions (ints — never shapes, which have
+per-square graphs; level 5 alone has two shape-changers walking two different ones) now
+carry across levels in `Gate.legacy`, consulted only for a square already seen to move that
+half on this board, and dropped by the same refutation that kills a phantom edge if a game's
+levels turn out to disagree. Level 5 falls in **292**; the game stands at **22.419%**.
+
 One more thing fell out of the trace: level 3 has an undocumented carry, `(9, 10)` throwing
 the piece to `(34, 5)` with no clock rise — met twice by the wider-ranging trips, learned by
 the same two-sighting rule as every other cell, and invisible until now because the winning

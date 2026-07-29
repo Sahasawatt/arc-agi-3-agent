@@ -130,7 +130,16 @@ class Gate:
     One per level: the mechanic carries across a level boundary but the positions do not.
     """
 
-    def __init__(self):
+    def __init__(self, legacy=None):
+        # The ink ALPHABET is a property of the game, not the level: `ls20` runs the same
+        # 12 -> 9 -> 14 -> 8 on levels 3 and 5, and paying to watch it again on every
+        # board is the single most expensive part of a deep level's learning. `legacy` is
+        # the game-level value graph for INK values only — an ink is an int, a shape is a
+        # bitmap string, and a shape must NOT carry: level 5 alone has two shape-changers
+        # walking two different graphs. A wrong seed on a game whose levels disagree costs
+        # one entry: the square does nothing, and the refutation that already handles a
+        # phantom edge drops the legacy claim with it.
+        self.legacy = {} if legacy is None else legacy
         self.icons = {}        # plate box -> (ink colour, shape) when last looked at
         self.displays = set()  # plates that have changed: they report state
         self.changer = None    # (x, y) the piece was standing on when one changed
@@ -199,6 +208,8 @@ class Gate:
                 if before is not None:
                     for h in moved:
                         self.cycles.setdefault((self.changer, h), {})[before[h]] = after[h]
+                        if isinstance(before[h], int) and isinstance(after[h], int):
+                            self.legacy[before[h]] = after[h]
                         # A quarter turn states the whole cycle in one press: fill the
                         # orbit instead of paying an entry per edge to walk it round.
                         orbit = turned(before[h], after[h])
@@ -347,6 +358,11 @@ class Gate:
             spun = turned(value)
             if spun:
                 return spun[1]
+        # The game's own ink alphabet, learned on an earlier level. Only for a square that
+        # has already been watched moving THIS half on THIS board (it is in `edges` at
+        # all), and only for ink — an int — because shapes have per-square graphs.
+        if isinstance(value, int):
+            return self.legacy.get(value)
         return None
 
     def path_for(self, o, half):

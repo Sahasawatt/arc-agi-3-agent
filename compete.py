@@ -946,8 +946,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             done, spent_at_level, plan, door = obs.levels_completed, 0, [], None
             expect, trip = [], []
             # The mechanic carries across a level boundary; the plates and the square that
-            # changes them are drawn somewhere else on the new board, so they do not.
-            gate, carried, full, redirects, once = Gate(), model, 0, {}, {}
+            # changes them are drawn somewhere else on the new board, so they do not — but
+            # the game's ink alphabet does (see Gate.legacy).
+            gate, carried, full, redirects, once = Gate(gate.legacy), model, 0, {}, {}
             stood, refused = set(), set()   # a new board; nothing known of it
             button, button_once, tried, sure = {}, {}, set(), set()
             read = {}
@@ -1077,6 +1078,10 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                             if step and step.get(v) is not None and step[v] != v:
                                 del step[v]
                                 gate.rotates.discard((sq, h))
+                            # A legacy ink edge that lied is dropped the same way: this
+                            # game's levels do not share the alphabet after all.
+                            if isinstance(v, int):
+                                gate.legacy.pop(v, None)
 
                 # Mid-flight validation of a staged trip. The trip predicted, per action,
                 # whether the display moves — an entry onto a changer — or holds — a

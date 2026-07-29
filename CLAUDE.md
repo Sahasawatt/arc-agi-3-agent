@@ -126,9 +126,11 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   Scanned on the piece's own lattice and measured against the board's background colour —
   not against `passable`, which grows until it contains the changer's own colours — that
   reads both of level 3's changers exactly and two of level 5's three, from one frame.
-  Driving the walk with it costs level 4 (3 of 7) and offering it as a guessed changer costs
-  levels 3 and 4 (2 of 7), so it is not in the code. The reading is sound; the wiring is the
-  open problem.
+  Driving the walk with it costs level 4 (3 of 7), offering it as a guessed changer costs
+  levels 3 and 4 (2 of 7), and a third wiring — reordering the discovery candidates so the
+  many-coloured blocks go first, before any display has moved — is measured exactly inert
+  (every per-level count identical), so none of it is in the code. The reading is sound;
+  the wiring is still the open problem, and the cheap wirings are now exhausted.
 - **A press executed inside a committed plan books nothing.** The standing-on-the-changer
   rungs call `gate.cycled()` per entry, and that counter is what forgets a changer that has
   stopped paying — the loop-breaker on a board with a wrong guess in the table. Baking the
@@ -142,6 +144,12 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   alone re-costs level 3 its 55 actions through single-entry trips, `known` plus an
   interleaved-half requirement never fires (level 5's ink is one leg), and a stood-on check
   is vacuous because a watched edge implies the square was stood on.
+- **The ink alphabet is a property of the game; the squares that write it are not.**
+  `ls20` runs the same `12 -> 9 -> 14 -> 8` on levels 3 and 5, so ink transitions (ints)
+  carry across levels in `Gate.legacy` — consulted only for a square already seen to move
+  that half on this board, dropped by the phantom-edge refutation if a game disagrees with
+  itself. Shapes must NOT carry: level 5 alone has two shape-changers walking two
+  different graphs. Worth 306 -> 292 on level 5.
 - **A blind probe budgeted one way is a death, and a death resets the panel the probes
   serve.** Twelve of fourteen lives lost in one accounted run ended `probe → desperate`;
   level 6 spent 65% of 1,708 actions in the probe rung and still did not fall (which also
