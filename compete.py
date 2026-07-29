@@ -253,10 +253,6 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
             got = hop(pos, ("turn", square))
             if not got:
                 continue
-            # Arriving turns it once. Every turn after that is a step off the square and
-            # back on, and how many are needed is read off the cycles the changers have been
-            # seen to walk — assuming one was the planner arriving with the wrong half
-            # showing, over and over.
             cost = got[0] + 2 * (presses - 1)
             out = escape(got[1])
             if cost <= clock and out is not None and cost + out <= clock:
@@ -926,6 +922,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         if button_once.get(key) == got:
                             button[key] = got
                         button_once[key] = got
+                state_was = gate.state()
                 if gate.observe(obs.frame, here_after,
                                 bool(log and log[-1]["walked"]) or (moved and fresh)):
                     # A door that was shut may now be open, so what the buttons pointing
@@ -934,6 +931,20 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     button = {k: v for k, v in button.items() if v != k[0]}
                     button_once = {k: v for k, v in button_once.items()
                                    if v != k[0]}
+                elif was_here is not None and here_after is not None                         and was_here[:2] != here_after[:2] and state_was:
+                    # The piece ENTERED a square the table claims changes the display, and
+                    # the display did not move: the edge lied. A changer credited off a
+                    # death plants exactly this phantom, and `path_for` then routes every
+                    # plan through a press that does nothing — level 5 sat on a computed
+                    # three-leg recipe for thirty rounds because leg one was a phantom.
+                    # Refutation costs one entry, the same as belief did.
+                    sq = (here_after[0], here_after[1])
+                    for val in state_was:
+                        for h, v in enumerate(val):
+                            step = gate.cycles.get((sq, h))
+                            if step and step.get(v) is not None and step[v] != v:
+                                del step[v]
+                                gate.rotates.discard((sq, h))
 
             last = value if shifts.get(model.player) == model.dirs.get(value) else None
         prev = cur
