@@ -122,6 +122,17 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   Driving the walk with it costs level 4 (3 of 7) and offering it as a guessed changer costs
   levels 3 and 4 (2 of 7), so it is not in the code. The reading is sound; the wiring is the
   open problem.
+- **On a carrying floor, a repeat-count cannot tell a livelock from an honest walk.** Every
+  legitimate walk across such a board is dropped and re-planned several times (a carry moves
+  the piece, the plan is rebuilt), so "the same goal planned N times without the display
+  moving" is true of the door walk that WINS the level as well as of the loop that loses it
+  — benching goals on that count was measured three ways and cost level 4 all three times.
+  The discriminator would have to be progress (the route to the goal getting shorter across
+  replans), not repetition. Related and also open: `slid` drops the plan on every carried
+  step including the shortcuts the plan itself routed through (285 drops, 902 planned
+  actions in one level-5 run), but both narrow keep-fixes turned level 4's cheap two-square
+  bounces into thirty-step circuits — the bounce and the circuit are the same livelock at
+  different plan lengths, and the cure has to attack the livelock, not the plan-dropping.
 
 ## What the scoring actually rewards
 
