@@ -142,6 +142,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   alone re-costs level 3 its 55 actions through single-entry trips, `known` plus an
   interleaved-half requirement never fires (level 5's ink is one leg), and a stood-on check
   is vacuous because a watched edge implies the square was stood on.
+- **A blind probe budgeted one way is a death, and a death resets the panel the probes
+  serve.** Twelve of fourteen lives lost in one accounted run ended `probe → desperate`;
+  level 6 spent 65% of 1,708 actions in the probe rung and still did not fall (which also
+  measured out doubling BUDGET — the block is structural). A blind probe now has to afford
+  the walk back to a known refill. Only the blind ones: demanding it of targeted probes too
+  costs level 3 twenty-six actions, spent by the rungs that fill the gap when a short,
+  useful probe is refused.
 - **On a carrying floor, a repeat-count cannot tell a livelock from an honest walk.** Every
   legitimate walk across such a board is dropped and re-planned several times (a carry moves
   the piece, the plan is rebuilt), so "the same goal planned N times without the display

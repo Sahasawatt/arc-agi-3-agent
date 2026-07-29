@@ -38,7 +38,10 @@ PLAYABLE = ["ar25", "cn04", "dc22", "ka59", "ls20", "m0r0", "re86", "sc25", "sp8
             "bp35", "g50t", "sk48", "tr87", "tu93", "wa30", "cd82", "sb26"]
 WARMUP = 24        # actions before the model is worth trusting, at the outside
 CONTROLS = 4       # directions that make a model worth planning on
-BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h do
+BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h do.
+                   # Doubling it was measured and reverted: level 6 spent 1,708 actions
+                   # (65% of them in the confirm-probe rung) and still did not fall, so
+                   # the block is structural, not the budget.
 CANDIDATES = 6     # targets considered per plan, rarest first
 CLOCK_WINDOW = 20  # actions of history the clock's rate is measured over
 MARGIN = 2         # actions of slack between reaching a refill and starving
@@ -545,8 +548,29 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                         stuck or footprints_touching(grid, model, locked[0]), stood, blind,
                         refused, tried)
         if probe and (left is None or len(probe) <= left):
-            gate.rung = "probe"
-            return probe, None
+            # A BLIND probe is a walk into the unknown, and it was budgeted only one way.
+            # The accounting run put a probe immediately before 13 of level 6's 32 deaths
+            # and 4 of level 5's five, and level 6 spent 1,115 of 1,708 actions — 65% —
+            # inside this rung: the walk out fitted the tank, the walk back to any refill
+            # did not, and a death resets the panel the probes exist to serve. So a blind
+            # probe has to afford the way back to a refill too. Only the blind ones:
+            # demanding it of the targeted probes as well was measured and costs level 3
+            # twenty-six actions (99 -> 125), spent by the rungs that fill the gap when a
+            # short, useful probe is refused. And only when a refill is known — before the
+            # first one has been seen there is nothing to budget against.
+            tank0 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+            fuel0 = [o for o in targets(frame, model) if o["colour"] in tank0]
+            ok = left is None or not fuel0 or not blind
+            if not ok:
+                end = _after(model, here, probe, redirects)
+                outs = [r for o in fuel0
+                        if (r := bfs(grid, model, end,
+                                     footprints_touching(grid, model, o),
+                                     redirects)) is not None]
+                ok = bool(outs) and len(probe) + len(min(outs, key=len)) <= left
+            if ok:
+                gate.rung = "probe"
+                return probe, None
     if doors:
         # The changer is the one place not to go while a door is open: walking over it
         # turns the display, and the door with it.

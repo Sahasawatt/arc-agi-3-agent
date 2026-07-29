@@ -593,6 +593,21 @@ with every other game and level holding its number (`cd82` 1,034; `m0r0` 53; `ar
 347 against a 96 baseline scores the level low — the next inch is walking it tighter, and
 the ceiling for clearing levels 6 and 7 is now open.
 
+### Where the actions go, measured — and the first two levers pulled
+
+`ARC_ACCT` writes one line per executed action naming the rung of `choose` that emitted it
+(invariants: per-level counts sum to the reported actions; two runs are byte-identical).
+The first table it produced redirected the tuning twice. **Doubling the budget was measured
+and reverted**: level 6 spent 1,708 actions and did not fall, with 65% of them — 1,115 —
+inside the confirm-probe rung, so the block is structural, not the budget. **And the deaths
+were signed**: of the fourteen lives lost in one run, twelve ended in the `desperate` rung
+with a probe two steps earlier — a blind probe walks out on a tank that cannot pay for the
+walk back, and a death resets the panel the probes exist to serve. A blind probe now has to
+afford the way back to a known refill. Demanding that of the *targeted* probes as well was
+measured and costs level 3 twenty-six actions, so only the blind ones pay it — and with
+that, level 5 falls in **306** instead of 347 (one fewer death), the game stands at
+**22.246%**, and level 6's probe loop is gone from its accounting.
+
 One more thing fell out of the trace: level 3 has an undocumented carry, `(9, 10)` throwing
 the piece to `(34, 5)` with no clock rise — met twice by the wider-ranging trips, learned by
 the same two-sighting rule as every other cell, and invisible until now because the winning
