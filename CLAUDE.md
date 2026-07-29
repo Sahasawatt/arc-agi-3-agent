@@ -144,6 +144,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   alone re-costs level 3 its 55 actions through single-entry trips, `known` plus an
   interleaved-half requirement never fires (level 5's ink is one leg), and a stood-on check
   is vacuous because a watched edge implies the square was stood on.
+- **Routing walks around the recorded changer squares is inert — measured three times.**
+  On stage hops, and again on probe/sweep walks (with the fallback kept), every per-level
+  count came back identical: the shortest paths do not cross the *recorded entry squares*.
+  The unmeant [chg] events mid-walk come from NEIGHBOURING positions whose 5x5 footprint
+  overlaps the same cluster, which the entry-square set cannot name — an avoid set built
+  from entry squares is the wrong shape for the thing being avoided. Widening it to a
+  footprint neighbourhood is untried and risks sealing corridors.
 - **The ink alphabet is a property of the game; the squares that write it are not.**
   `ls20` runs the same `12 -> 9 -> 14 -> 8` on levels 3 and 5, so ink transitions (ints)
   carry across levels in `Gate.legacy` — consulted only for a square already seen to move
