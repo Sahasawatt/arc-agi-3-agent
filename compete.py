@@ -150,7 +150,7 @@ def _after(model, at, route, redirects=None):
 
 
 def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
-    """The first leg of a route that finishes the level, or None.
+    """A whole trip that finishes the level as (actions, marks), or None.
 
     The rungs in `choose` each pick the best next thing; a level with two locks and two
     refills needs the *order* picked instead. On `ls20` level 3 the two squares that move
@@ -161,8 +161,16 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
     between a route and none, and no rung can see that: it is two legs away.
 
     So enumerate the orders. There are at most a handful of waypoints, the search is over
-    which changer to turn first and which refill to spend before which leg, and only the
-    first leg is committed — the rest is re-planned from what actually happened.
+    which changer to turn first and which refill to spend before which leg.
+
+    The whole trip is committed, not the first leg — re-running the search every round is
+    where `ls20` level 5 spent most of its 250+ planning rounds — but it is not committed
+    BLIND: committing blind cost level 3 fifty-five actions, because walking one leg at a
+    time is how that level notices the display moving under it and finds its second
+    changer. `marks` carries the trip's prediction, per action, of whether the display
+    changes on that action (an entry onto a changer) or not (a walking step); the play loop
+    drops the trip the moment reality disagrees either way, which is exactly the moment
+    every press still in the plan is counted against a panel that is not there.
     """
     turns = gate.turns_for(door)
     if not turns:
@@ -173,9 +181,15 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
     # as one square per half, the order search came back empty in 378 of 383 rounds there:
     # not for want of fuel, but because the plan it was asked to find cannot be written down
     # in that shape.
+    #
+    # `known` is half of what decides how much of the trip to commit — see the return.
+    known = True
     legs = {}
     for h, pos in turns.items():
-        path = gate.path_for(door, h) or gate.learning_path(door, h)
+        path = gate.path_for(door, h)
+        if not path:
+            known = False
+            path = gate.learning_path(door, h)
         if not path:
             # Nothing known gets this half where the door wants it, so the plan has to buy
             # the watching that would. Costing it at one press is what keeps it unknown:
@@ -234,17 +248,31 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
     # of it would only be refused.
     whole = set(turns) >= gate.wrong_halves(door)
 
-    def walk(pos, clock, todo, fuel, spent, first):
+    # How much of the trip to commit. The default is the FIRST HOP's route — exactly what
+    # this search always committed — because a level under discovery lives on re-planning
+    # and on the changer bookkeeping the ordinary rungs do: entries executed inside a trip
+    # never book `gate.cycled()`, so a changer that has stopped paying is never forgotten,
+    # and committed whole `ls20` level 4 looped on one such square for 864 actions and lost
+    # the level (measured at every widening tried: whole trips, first-leg-with-presses).
+    # The whole trip is committed only when it is a *recipe*: every leg from a watched
+    # cycle (`known`) and some half needing its changers INTERLEAVED (`multi`) — `ls20`
+    # level 5's shape, the one case where walking one leg and re-planning forgets the weave
+    # the search chose, spends the refill the next leg needed, and starves at the changer
+    # with the cycle unclosed.
+    commit_whole = known and any(len(p) > 1 for p in legs.values())
+
+    def walk(pos, clock, todo, fuel, spent, acts, marks, cut):
         if spent >= (best[0][0] if best[0] else 10 ** 6):
             return
         if not any(todo.values()):
             if not whole:
-                if first:
-                    best[0] = (spent, first)
+                if acts:
+                    best[0] = (spent, acts, marks, cut)
                 return
             got = hop(pos, ("door", None))
             if got and got[0] <= clock:
-                best[0] = (spent + got[0], first or got[2])
+                best[0] = (spent + got[0], acts + got[2],
+                           marks + [False] * len(got[2]), cut or len(got[2]))
             return
         for h, rest in todo.items():
             if not rest:
@@ -253,18 +281,39 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
             got = hop(pos, ("turn", square))
             if not got:
                 continue
+            # The extra entries are a step off the square and back on, planned into the
+            # acts only when the whole trip is being committed — a square with no way off
+            # and back is then a leg the trip cannot write down. A truncated commit leaves
+            # the entries to the standing-on-the-changer rungs, which book each attempt.
+            pair = cycle(grid, model, square, redirects) \
+                if commit_whole and presses > 1 else []
+            if commit_whole and presses > 1 and not pair:
+                continue
             cost = got[0] + 2 * (presses - 1)
             out = escape(got[1])
             if cost <= clock and out is not None and cost + out <= clock:
+                leg_acts = got[2] + pair * (presses - 1)
+                # The last step of the route ENTERS the square, and so does the second
+                # action of every off/on pair — those are where the display must move.
+                leg_marks = (([False] * (len(got[2]) - 1) + [True]) if got[2] else []) \
+                    + ([False, True] * (presses - 1) if pair else [])
                 walk(got[1], clock - cost, {**todo, h: rest[1:]}, fuel,
-                     spent + cost, first or got[2])
+                     spent + cost, acts + leg_acts, marks + leg_marks,
+                     cut or len(got[2]))
         for n in fuel:
             got = hop(pos, ("fuel", n))
             if got and got[0] <= clock:
-                walk(got[1], full, todo, fuel - {n}, spent + got[0], first or got[2])
+                walk(got[1], full, todo, fuel - {n}, spent + got[0],
+                     acts + got[2], marks + [False] * len(got[2]),
+                     cut or len(got[2]))
 
-    walk(at, left, legs, frozenset(range(len(refills))), 0, None)
-    return best[0][1] if best[0] else None
+    walk(at, left, legs, frozenset(range(len(refills))), 0, [], [], 0)
+    if not best[0]:
+        return None
+    _, acts, marks, cut = best[0]
+    if not commit_whole:
+        acts, marks = acts[:cut], marks[:cut]
+    return acts, marks
 
 
 def trajectory(model, at, route, redirects=None):
@@ -419,6 +468,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     * **then the old rule** — rarest first, as long as the clock covers the walk.
     """
     grid = np.array(frame)[-1][:model.rows]
+    gate.trip = None   # only a staged plan carries a display prediction
     at = locate(frame, model)
     # Rarest first, plus any marked place that order left out. A plate is somewhere the
     # board has drawn a shape, and there are one or two per board — but rarity ranks by
@@ -574,10 +624,11 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             fuel = sorted((o for o in seen if o["colour"] in tank),
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
-        ordered = stage(grid, model, gate, here, left, full, locked[0], fuel,
-                        redirects)
-        if ordered:
-            return ordered, None
+        staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
+                       redirects)
+        if staged and staged[0]:
+            gate.trip = staged[1]
+            return staged[0], None
 
     if at and not doors and locked and (turn := gate.changer_for(locked[0])):
         here = (at[0], at[1])
@@ -632,23 +683,25 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             fuel = sorted((o for o in seen if o["colour"] in tank),
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
-        leg = stage(grid, model, gate, here, left, full, locked[0], fuel,
-                    redirects) if full else None
-        if leg:
-            gate.heading = _after(model, here, leg)
-        elif gate.heading and gate.heading != here:
+        staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
+                       redirects) if full else None
+        if staged and staged[0]:
+            # The whole trip, watched rather than trusted: the play loop checks the
+            # piece's square before every action and the display against `marks` after
+            # every action, and drops the trip the moment either disagrees. Re-running
+            # this search every round is where level 5's planning time went; committing
+            # blind is what cost level 3 its second-changer discovery.
+            gate.heading = _after(model, here, staged[0])
+            gate.trip = staged[1]
+            return staged[0], None
+        if gate.heading and gate.heading != here:
             # The plan disappeared for a step — a display reads back differently for one
             # frame and the search finds nothing. Keep walking to where it was going rather
             # than hand the wheel to rarity, which on `ls20` level 3 walks straight back
             # over the square that recolours the ink and undoes the half already set.
             leg = bfs(grid, model, here, {gate.heading})
-        if leg:
-            # One action at a time. A planned route is a commitment that only pays if the
-            # piece arrives exactly, and a plan run blind desynchronises the moment a move
-            # is refused — nineteen actions of a route to a refill ended somewhere else
-            # entirely. Re-planning every step is a handful of BFS on a board the engine
-            # runs at 2,000 FPS, and it cannot drift.
-            return leg[:1], None
+            if leg:
+                return leg[:1], None
 
         # Failing that, the changer is simply the thing to refuel *for*. Which refill still
         # decides the level: from the near one `ls20` level 3 is 10 to the changer and 9 on
@@ -705,6 +758,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     cur_goal = None   # the object the plan in flight is walking to, None for lock work
     last_pos = None
     expect = []  # where the piece must be before each remaining action of the plan
+    trip = []    # the staged plan's per-action display prediction, [] for any other plan
     full = 0        # actions a refill buys, as the largest this level has read
     trail = deque(maxlen=TRAIL)   # the squares just occupied; a route may not step back into them
     stood = set()     # squares the piece has actually occupied on this level
@@ -739,7 +793,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if plan and model and expect and gate.displays:
             here = locate(obs.frame, model)
             if here is not None and (here[0], here[1]) != expect[0]:
-                plan, expect = [], []
+                plan, expect, trip = [], [], []
         here_now = locate(obs.frame, model) if model else None
         if here_now is not None:
             stood.add((here_now[0], here_now[1]))
@@ -761,8 +815,11 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # Lock work is exempt — its rungs budget their own way out, and diverting it cost
         # level 3 seventy-nine actions from two interrupts — EXCEPT when the plan in flight
         # is longer than the fuel, which no budget can excuse: walking it is a death and a
-        # death puts the display back.
-        lock_doomed = (cur_goal is None and plan and model and gate.displays)
+        # death puts the display back. A staged trip is exempt from that exception too: it
+        # weaves its own refills, so its length against the tank means nothing, and its
+        # mispredictions are caught by the square and display checks instead.
+        lock_doomed = (cur_goal is None and plan and model and gate.displays
+                       and not trip)
         if lock_doomed:
             lnow0 = actions_left(obs.frame, log, CLOCK_WINDOW)
             lock_doomed = lnow0 is not None and len(plan) > lnow0
@@ -790,11 +847,14 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                           footprints_touching(grid, model, o),
                                           redirects)) is not None]
                     if (not after or lnow - 1 < len(min(after, key=len)))                             and len(nearest) <= lnow:
-                        plan, expect = list(nearest), []
+                        plan, expect, trip = list(nearest), [], []
         if here_now is not None and (not trail or trail[-1] != (here_now[0], here_now[1])):
             trail.append((here_now[0], here_now[1]))
+        mark = None   # what the staged trip says this action does to the display
         if plan:
             value = plan.pop(0)
+            if trip:
+                mark = trip.pop(0)
             if expect:
                 expect.pop(0)
         else:
@@ -819,6 +879,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if obs.levels_completed > done:
             per_level.append(spent_at_level)
             done, spent_at_level, plan, door = obs.levels_completed, 0, [], None
+            expect, trip = [], []
             # The mechanic carries across a level boundary; the plates and the square that
             # changes them are drawn somewhere else on the new board, so they do not.
             gate, carried, full, redirects, once = Gate(), model, 0, {}, {}
@@ -854,6 +915,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # the case where those ids would land on something else entirely.
             prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
             plan, last, door = [], None, None
+            expect, trip = [], []
             continue
 
         cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows)
@@ -923,8 +985,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                             button[key] = got
                         button_once[key] = got
                 state_was = gate.state()
-                if gate.observe(obs.frame, here_after,
-                                bool(log and log[-1]["walked"]) or (moved and fresh)):
+                changed = gate.observe(obs.frame, here_after,
+                                       bool(log and log[-1]["walked"]) or (moved and fresh))
+                if changed:
                     # A door that was shut may now be open, so what the buttons pointing
                     # into it did is no longer what they do.
                     refused.clear()
@@ -945,6 +1008,17 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                             if step and step.get(v) is not None and step[v] != v:
                                 del step[v]
                                 gate.rotates.discard((sq, h))
+
+                # Mid-flight validation of a staged trip. The trip predicted, per action,
+                # whether the display moves — an entry onto a changer — or holds — a
+                # walking step. Reality disagreeing EITHER way ends the trip: a change the
+                # plan did not schedule means the route crossed a changer nobody planned
+                # for (which is how level 3 finds its second one), and a scheduled press
+                # that moved nothing is a phantom edge. From here on every press left in
+                # the plan is counted against a panel that is not there, so the honest
+                # move is to drop it and plan from what the board now says.
+                if mark is not None and changed != mark:
+                    plan, expect, trip = [], [], []
 
             last = value if shifts.get(model.player) == model.dirs.get(value) else None
         prev = cur
@@ -978,7 +1052,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     if once.get(aim) == off:
                         redirects[aim] = off
                     once[aim] = off
-                plan = []
+                plan, expect, trip = [], [], []
 
         # Two ways of reacting to a move that did not happen were built here and both were
         # measured out again, which is worth more written down than the code was:
@@ -1000,7 +1074,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # to be comparable across scales, and that is a hypothesis — the engine settles it.
         if door is not None and log and not log[-1]["walked"] and model                 and locate(before.frame, model) == locate(obs.frame, model):
             gate.reject(door)
-            plan, door = [], None
+            plan, door, expect, trip = [], None, [], []
 
         # Warm up until the CONTROLS are known, not for a fixed count. The 24-action wait
         # is a worst case, not a price: `ls20` level 1 has its goal box seven actions from
@@ -1051,6 +1125,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                     frozenset(list(trail)[:-1]), stood, refused, tried, sure)
                 here = locate(obs.frame, model)
                 expect = trajectory(model, here, plan, rules) if (plan and here) else []
+                trip = list(gate.trip) if (plan and gate.trip) else []
                 cur_goal = goal
                 door = goal if goal is not None and gate.matched(goal) else None
 

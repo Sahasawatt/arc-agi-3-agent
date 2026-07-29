@@ -122,6 +122,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   Driving the walk with it costs level 4 (3 of 7) and offering it as a guessed changer costs
   levels 3 and 4 (2 of 7), so it is not in the code. The reading is sound; the wiring is the
   open problem.
+- **A press executed inside a committed plan books nothing.** The standing-on-the-changer
+  rungs call `gate.cycled()` per entry, and that counter is what forgets a changer that has
+  stopped paying — the loop-breaker on a board with a wrong guess in the table. Baking the
+  off/on pairs into a staged trip bypasses it: `ls20` level 4 looped on one such square for
+  864 actions across 102 trips (98% dead within three actions) and lost the level, at every
+  widening tried — whole trips and first-leg-with-presses both. A truncated stage commit
+  ends at the first hop's route; the entries stay with the rungs that book them. Two fixes
+  that were *not* the cause, both measured inert on the same loop (every count identical):
+  filtering stage's routes against `refused`, and gating the commit on the legs being known.
 - **On a carrying floor, a repeat-count cannot tell a livelock from an honest walk.** Every
   legitimate walk across such a board is dropped and re-planned several times (a carry moves
   the piece, the plan is rebuilt), so "the same goal planned N times without the display

@@ -139,6 +139,7 @@ class Gate:
         self.doubted = set()   # marks whose bitmap match the engine disagreed with
         self.changers = {}     # (x, y) -> which halves of a display it was seen to move
         self.heading = None    # where the last plan that existed was walking to
+        self.trip = None       # the staged plan's per-action display prediction, if any
         self.cycles = {}
         self.stuck = 0     # planning rounds in a row with nothing left to watch
         self.rotates = set()  # (square, half) seen to TURN its glyph, not merely change it       # (changer, half) -> {value seen: the value it became}

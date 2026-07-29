@@ -538,6 +538,38 @@ what 14 turns into. Four attempts at that are written up below as rules that wer
 back out; the fifth, reserving fuel for a way out of every leg, is in and is not enough on
 its own.
 
+### A trip is now validated mid-flight, and committed whole only when it is a recipe
+
+The order search used to be re-run every planning round and commit one hop, which is where
+most of level 5's 250+ rounds went; an earlier experiment committed the whole trip blind and
+bought those rounds back at the price of level 3, whose second changer is found by noticing
+the display move under a walk one leg at a time. `stage` now returns the trip with a
+per-action prediction of what it does to the display — an entry onto a changer moves it, a
+walking step does not — and the play loop drops the trip the moment reality disagrees either
+way, checking the piece's square before every action and the display after it.
+
+How much of the trip to commit was then measured, and the answer is sharper than the
+validation: **committed whole by default it loses level 4 outright**, 864 actions looping on
+one square across 102 trips of which 98% died within three actions. The killer is not the
+blindness the validation guards against — it is that a press executed inside a plan never
+books `gate.cycled()`, so the counter that forgets a changer that has stopped paying never
+moves and the loop never breaks. Two plausible fixes measured inert on that loop before the
+real one landed: filtering stage's routes against the squares a press has been refused from,
+and gating the whole-trip commit on every leg coming from a watched cycle. So the default
+commit is the first hop's route, exactly as before, and the whole trip — walk, off/on pairs
+and refills woven — is committed only when it is a *recipe*: every leg from a watched cycle
+AND some half needing its changers interleaved, which is level 5's shape and the one case
+where re-planning between legs forgets the weave, spends the refill the next leg needed, and
+starves at the changer with the cycle unclosed. On this run that path never fired — level 5's
+recipe is not yet fully watched by the time the budget reaches it — so every game and level
+holds its number (`ls20` 23, 45, 99, 178; `cd82` 1,034; `m0r0` 53; `ar25` 173), and the
+machinery for the level that needs it is in place.
+
+One more thing fell out of the trace: level 3 has an undocumented carry, `(9, 10)` throwing
+the piece to `(34, 5)` with no clock rise — met twice by the wider-ranging trips, learned by
+the same two-sighting rule as every other cell, and invisible until now because the winning
+route never crossed it.
+
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->
 
