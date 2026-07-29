@@ -95,13 +95,23 @@ def step_to(model, pos, act, redirects=None):
     way of arriving and the router almost never has the row it needs; keyed on the
     destination it is one row per redirecting cell and every route through it gets that row.
     """
+    # The cell rule first: "anything aiming at this square ends up there", which is what
+    # `ls20` level 4 measured and what one sighting can generalise from. A per-button rule
+    # is the narrower reading — one press from one square — and letting it outrank the cell
+    # rule costs level 4.
     dx, dy = model.dirs[act]
     aim = (pos[0] + dx, pos[1] + dy)
     off = (redirects or {}).get(aim)
-    return aim if off is None else (aim[0] + off[0], aim[1] + off[1])
+    if off is not None:
+        return (aim[0] + off[0], aim[1] + off[1])
+    # No rule for the square being aimed at. Fall back to what THIS button did from THIS
+    # square, if it has been watched — one press from one place, which is less than the cell
+    # rule knows (that one reading covers every approach) but more than nothing.
+    exact = (redirects or {}).get((pos, act))
+    return exact if exact is not None else aim
 
 
-def bfs(grid, model, start, goals, redirects=None, came_from=None):
+def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None):
     """Shortest action list from `start` to any position in `goals`, or None.
 
     The first action may not land back on `came_from`, the square the piece occupied one
@@ -120,6 +130,8 @@ def bfs(grid, model, start, goals, redirects=None, came_from=None):
     while q:
         cur = q.popleft()
         for act in model.dirs:
+            if sure is not None and (cur, act) not in sure:
+                continue
             nxt = step_to(model, cur, act, redirects)
             if cur == start and nxt == came_from:
                 continue
@@ -161,7 +173,7 @@ def bfs_all(grid, model, start, redirects=None):
     return seen
 
 
-def route_to(frame, model, o, redirects=None, came_from=None):
+def route_to(frame, model, o, redirects=None, came_from=None, sure=None):
     """Action list that walks the piece onto object `o`, or None.
 
     A map of redirecting cells can only be as complete as the walking that built it, and an
@@ -177,5 +189,58 @@ def route_to(frame, model, o, redirects=None, came_from=None):
         return None
     goals = footprints_touching(grid, model, o)
     here = (at[0], at[1])
-    return (bfs(grid, model, here, goals, redirects, came_from)
-            or bfs(grid, model, here, goals, came_from=came_from))
+    # Shortest of the routes the agent can actually BELIEVE — verified steps only, and the
+    # map — rather than the first one that comes back non-None. Fewer actions is less fuel,
+    # and on a board where a life is 21 actions that is the difference between arriving and
+    # starving. The plain route stays last and is not part of the comparison: it is shorter
+    # precisely because it does not believe in the carries, so walking it costs MORE than its
+    # length says — the piece is taken somewhere else and the plan is dropped.
+    believed = [r for r in (bfs(grid, model, here, goals, redirects, came_from, sure),
+                            bfs(grid, model, here, goals, redirects, came_from))
+                if r is not None]
+    return min(believed, key=len) if believed else         bfs(grid, model, here, goals, came_from=came_from)
+
+
+def slides(frame, grid, model, shut=()):
+    """Cells the board MARKS as throwing the piece, read off one frame -> {cell: offset}.
+
+    `ls20` level 4 and 5 draw a bar beside every such cell — one cell thick, one step long —
+    and the piece entering that cell is thrown away from the bar until something blocks it.
+    Eight of the eight cells found by walking level 5 come out of this rule exactly, given
+    that a goal box whose display does not match is one of the things that blocks.
+
+    Discovered by walking, the same map costs a few hundred actions and arrives late; read
+    off the frame it is there before the first step. Nothing here is specific to a colour or
+    a game: what is looked for is the SHAPE — a marker exactly one cell thick and one step
+    long — and a rule that comes out wrong is dropped the moment a walk disagrees with it.
+    """
+    from perception import objects
+    step = model.step or 5
+    w, h = model.box
+    out = {}
+    objs, _ = objects(frame)
+    for o in objs:
+        ow = o["x"][1] - o["x"][0] + 1
+        oh = o["y"][1] - o["y"][0] + 1
+        if not ((ow == 1 and oh == step) or (oh == 1 and ow == step)):
+            continue
+        # The cell it marks is the one flush against it on the piece's own lattice, and the
+        # throw is away from the marker along the marker's short axis.
+        for d in ((step, 0), (-step, 0), (0, step), (0, -step)):
+            if (oh == 1) != (d[0] == 0):
+                continue                      # a flat bar throws vertically, and vice versa
+            cell = (o["x"][0] - (d[0] and (d[0] // step) * 1) * 0 + (0 if d[0] == 0 else 0),
+                    o["y"][0])
+            cell = (o["x"][0] if d[0] == 0 else o["x"][0] + (1 if d[0] > 0 else -w),
+                    o["y"][0] if d[1] == 0 else o["y"][0] + (1 if d[1] > 0 else -h))
+            if not walkable(grid, model, cell[0], cell[1]):
+                continue
+            pos = cell
+            for _ in range(model.rows // step + 2):
+                nxt = (pos[0] + d[0], pos[1] + d[1])
+                if nxt in shut or not walkable(grid, model, nxt[0], nxt[1]):
+                    break
+                pos = nxt
+            if pos != cell:
+                out[cell] = (pos[0] - cell[0], pos[1] - cell[1])
+    return out

@@ -80,6 +80,33 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 - **Cost a route the way the router walks it.** `stage` costed its legs with plain `bfs` and
   `_after`, so on a carrying board every distance it compared was fiction, and it predicted
   endpoints off the board and costed plans against them.
+- **"Never stood on" is permanent for a square the piece can never stand on.** The explorer
+  hunts squares nobody has occupied; the inside of a shut goal box is walkable in every
+  colour it is painted, so it is picked, walked to, pressed into, refused, and picked again
+  — 598 of `ls20` level 5's planning rounds went to one such square. A press the piece did
+  not move for is the evidence, and it expires when a display changes, which is exactly when
+  a door can open.
+- **Find the rung that emitted the action before theorising about it.** Four fixes aimed at
+  a livelock from its symptoms were all measured neutral; tagging every `return` in `choose`
+  and counting them found the real one in a single run.
+- **The warm-up is a worst case, not a price.** Waiting a fixed 24 actions before the model
+  is trusted costs `ls20` level 1 sixteen of the thirty-nine it spends on a goal box seven
+  steps away. Planning can start as soon as the controls are *coherent* — four displacements
+  on two perpendicular axes, opposite in pairs. Not sooner: `ar25` answers ACTION3 with right
+  and ACTION4 with left, so a model built from a couple of presses can hold a sign backwards
+  and lose the level outright. The convention cannot simply be assumed either — measured over
+  nine games, the axis is right 8 times of 9 and the full mapping 7, and every game has its
+  own step size.
+- **A board marks what it does to the piece; read it instead of walking into it.** `ls20`
+  draws a bar one cell thick and one step long beside every carrying cell, and the piece
+  entering one is thrown away from the bar until something blocks it — all eight of level 5's
+  cells come out of that rule exactly, before the first step. Filed as a first sighting rather
+  than as the map: believed outright it costs level 4, because some marker-shaped object on
+  those boards is not a carry.
+- **A quarter turn states its whole cycle in one press.** Every shape change on `ls20` levels
+  1, 2 and 3 is exactly a rotation (7 of 7 on level 2), so one observation gives four states
+  and their order. Walked instead, the same cycle costs an entry per edge — and a life is 21
+  actions.
 
 ## What the scoring actually rewards
 

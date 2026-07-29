@@ -110,7 +110,7 @@ def refills(steps, clock_colours):
     level's route is longer than one life's budget, so it cannot be walked without picking
     a refill up on the way. Returns {(colour, x, y)} of the objects seen to do it.
     """
-    out = set()
+    out, seen_with, seen_without = set(), {}, {}
     for s in steps:
         rose = any(int(k) in clock_colours and now > was
                    for k, (was, now) in s.get("hud", {}).items())
@@ -118,7 +118,19 @@ def refills(steps, clock_colours):
         # a step the piece actually WALKED can be a pickup; without this the detector marks
         # whatever happened to vanish around a death, which on ls20 is the level's marker.
         if rose and s.get("walked", True):
-            out.update(tuple(g) for g in s.get("gone", []))
+            for g in s.get("gone", []):
+                out.add(tuple(g))
+                seen_with[g[0]] = seen_with.get(g[0], 0) + 1
+        elif s.get("gone"):
+            for g in s["gone"]:
+                seen_without[g[0]] = seen_without.get(g[0], 0) + 1
+    # A thing can also stop being drawn because the PIECE IS ON TOP OF IT, and on the step
+    # that happens to be the one a refill was taken, everything under the footprint is
+    # reported gone together. `ls20` level 5 credited the white cross and the markers that
+    # label its carrying cells, and the order search was then handed three waypoints with
+    # no fuel in them and asked to plan a level whose whole shape is weaving refills.
+    # What separates them: a refill only ever disappears WITH the clock going up.
+    return {g for g in out if seen_with.get(g[0], 0) > seen_without.get(g[0], 0)}
     return out
 
 

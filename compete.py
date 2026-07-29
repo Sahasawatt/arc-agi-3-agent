@@ -25,7 +25,8 @@ from discover import (Model, body_box, choose_next, classify_colours, infer_body
                       infer_player, infer_step, locate, see, terrain_samples, walkable, _shifts)
 from gate import Gate, cycle
 from perception import HUD_ROW, hud
-from plan import bfs, bfs_all, footprints_touching, route_to, step_to, targets
+from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
+                  targets)
 from scoring import environment_score, level_score
 from signals import actions_left, drain, refills
 from trace import step as trace_step
@@ -33,7 +34,8 @@ from trace import step as trace_step
 OUT = Path("results")
 PLAYABLE = ["ar25", "cn04", "dc22", "ka59", "ls20", "m0r0", "re86", "sc25", "sp80",
             "bp35", "g50t", "sk48", "tr87", "tu93", "wa30", "cd82", "sb26"]
-WARMUP = 24        # actions before the model is worth trusting
+WARMUP = 24        # actions before the model is worth trusting, at the outside
+CONTROLS = 4       # directions that make a model worth planning on
 BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h do
 CANDIDATES = 6     # targets considered per plan, rarest first
 CLOCK_WINDOW = 20  # actions of history the clock's rate is measured over
@@ -284,7 +286,7 @@ def _probe(grid, model, at, aim, redirects):
 
 
 def confirm(grid, model, at, once, redirects, goals=None, stood=None,
-            blind=False):
+            blind=False, refused=(), tried=()):
     """A walk that ends by re-aiming at a cell seen to redirect once, to find out if it is real.
 
     Waiting to trip over the same cell again does not happen: a redirect drops the plan, the
@@ -339,10 +341,28 @@ def confirm(grid, model, at, once, redirects, goals=None, stood=None,
         # display is, because the square that writes the missing half could be anywhere.
         away = bfs_all(grid, model, min(goals)) if (blocked and goals) else {}
         fresh = [(len(r) + (len(away.get(p, [])) + (0 if p in away else 999) if away else 0),
-                  p) for p, r in known.items() if p not in stood and r]
+                  p) for p, r in known.items()
+                 if p not in stood and p not in refused and r]
         if fresh:
             return known[min(fresh)[1]]
     return None
+
+
+def coherent(dirs):
+    """Are these four controls a believable set — two axes, each with both signs?
+
+    Waiting a fixed 24 actions before planning costs `ls20` level 1 sixteen of the
+    thirty-nine it spends on a goal box seven steps away. Not waiting at all costs `ar25`
+    its only level: that game answers ACTION3 with *right* and ACTION4 with *left*, so a
+    model built from a couple of presses can hold a direction with the wrong sign and every
+    route walks away from where it meant to go. What separates a usable early reading from
+    a lucky one is not how many actions have been spent but whether the readings agree with
+    each other: four displacements, on two perpendicular axes, opposite in pairs.
+    """
+    seen = [d for d in dirs.values() if d != (0, 0)]
+    if len(seen) < CONTROLS:
+        return False
+    return all(any(o == (-d[0], -d[1]) for o in seen) for d in seen) and         len({(abs(d[0]) > 0, abs(d[1]) > 0) for d in seen}) == 2
 
 
 def keep_identity(fresh, prior, frame):
@@ -372,7 +392,7 @@ def keep_identity(fresh, prior, frame):
 
 
 def choose(frame, model, log, gate, left, full, redirects=None, once=None,
-           came_from=None, stood=None):
+           came_from=None, stood=None, refused=(), tried=(), sure=None):
     """Where to walk next, as (actions, the target it is for).
 
     Each rung is here because the one above it was not enough on `ls20` level 2:
@@ -428,7 +448,8 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # the sweep anywhere in particular would be a guess, so it goes back to nearest-first.
         blind = any(gate.exhausted(locked[0], h) for h in gate.wrong_halves(locked[0]))
         probe = confirm(grid, model, here, once, redirects,
-                        stuck or footprints_touching(grid, model, locked[0]), stood, blind)
+                        stuck or footprints_touching(grid, model, locked[0]), stood, blind,
+                        refused, tried)
         if probe and (left is None or len(probe) <= left):
             return probe, None
     if doors:
@@ -454,7 +475,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     def routed(o):
         k = (o["colour"], o["x"][0], o["y"][0])
         if k not in known:
-            known[k] = route_to(frame, model, o, redirects, came_from)
+            known[k] = route_to(frame, model, o, redirects, came_from, sure)
         return known[k]
 
     def route(o):
@@ -607,6 +628,25 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         if top:
             return top, f
 
+    # Last resort before wandering: the piece is standing on a changer for a half that is
+    # wrong, nothing above found a plan that fits, and a turn costs two actions. What the
+    # turn buys outlives the life it is spent in — a death puts the DISPLAY back but not
+    # the record of what the changer was seen to do, and that record is what makes the
+    # level plannable at all. Measured on `ls20` level 5: the piece stood on the ink
+    # cluster showing 14, one entry from the 8 the door wants, with four actions in the
+    # tank and every refill already spent — and walked nine actions to something else and
+    # starved, so the edge 14 -> 8 was never watched and the ink half never had a plan.
+    #
+    # Only while that half's cycle is unknown. Once it is known the presses are counted
+    # and the walk is the thing to spend a life on; without that guard `ls20` level 2
+    # stands on its cross for 434 extra actions.
+    if at and locked and (left is None or left >= 2):
+        here = (at[0], at[1])
+        for h, square in gate.turns_for(locked[0]).items():
+            if square == here and gate.path_for(locked[0], h) is None:
+                gate.cycled()
+                return cycle(grid, model, here, redirects), None
+
     for o in cands:
         if not gate.locked(o) and (r := route(o)):
             return r, o
@@ -638,6 +678,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     full = 0        # actions a refill buys, as the largest this level has read
     came_from = None  # where the piece stood one move ago; a route may not undo that move
     stood = set()     # squares the piece has actually occupied on this level
+    refused = set()   # squares a press aimed at and the piece did not enter
+    button = {}       # (square, action) -> where that press landed, seen twice
+    tried = set()     # (square, action) pairs the piece has actually pressed
+    sure = set()      # of those, the ones that landed where they were predicted
+    read = {}         # carry cells read straight off the frame, before walking
+    button_once = {}  # the same, seen once and not believed yet
     redirects, once = {}, {}  # a cell that sends the piece on -> its offset, confirmed / seen
     gate = Gate()
     done, spent_at_level, per_level = obs.levels_completed, 0, []
@@ -655,6 +701,11 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # must stand on and a door that will refuse anything else; a board without one is
         # walking to objects, where the next action is usually still worth taking and
         # dropping the plan costs `m0r0` its only level.
+        # Only where the walk has to be exact. Measured three ways: checked on every board,
+        # `cd82` clears in 820 actions instead of 1,034 but `m0r0` needs 144 instead of 73;
+        # narrowed to "moved somewhere unexpected but not merely refused" — which reads as
+        # the careful version — `cd82` loses its level outright. Gated on the board having a
+        # display, every game keeps its best.
         if plan and model and expect and gate.displays:
             here = locate(obs.frame, model)
             if here is not None and (here[0], here[1]) != expect[0]:
@@ -674,7 +725,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # out again), and a model carried across one falls back to recognising the
             # piece by appearance. Using `locate` unconditionally cost m0r0 its level.
             at = None
-            if model and i >= WARMUP:
+            if model and (i >= WARMUP or coherent(model.dirs)):
                 at = body_box(prev, model.body) or locate(obs.frame, model)
             value = choose_next(grid, at, model.dirs if model else {},
                                 (model.passable | model.blocking) if model else set(),
@@ -693,7 +744,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # The mechanic carries across a level boundary; the plates and the square that
             # changes them are drawn somewhere else on the new board, so they do not.
             gate, carried, full, redirects, once = Gate(), model, 0, {}, {}
-            stood = set()          # a new board; nothing on it has been stood on yet
+            stood, refused = set(), set()   # a new board; nothing known of it
+            button, button_once, tried, sure = {}, {}, set(), set()
+            read = {}
             # The board is new, so the evidence and the track ids are worthless — but the
             # MECHANICS are not. Within one game the piece and its controls carry across
             # levels, and paying discovery again on every level is paying it where the
@@ -742,6 +795,17 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if model is not None and np.array(obs.frame).size:
             here_after = locate(obs.frame, model)
             if here_after is not None:
+                # A press the piece did not move for says the square it aimed at cannot be
+                # entered right now. The explorer below hunts squares nobody has stood on,
+                # and the inside of a shut goal box is one it can NEVER stand on — so it is
+                # picked, walked to, pressed into, refused, and picked again: 598 of `ls20`
+                # level 5's planning rounds went to that one square. Cleared whenever a
+                # display changes, because that is exactly when a door can open.
+                was_here = locate(before.frame, model)
+                if was_here is not None and was_here[:2] == here_after[:2]:
+                    step = model.dirs.get(value)
+                    if step:
+                        refused.add((was_here[0] + step[0], was_here[1] + step[1]))
                 # `walked` means an object moved by exactly the action's displacement, so a
                 # step the floor CARRIES reports False — and on a board where the changers
                 # are reached through carries that means no changer is ever credited: 64
@@ -749,13 +813,45 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # is actually for is not crediting a death, which rewrites the display and
                 # teleports the piece to the spawn. A death is what puts the clock UP, so
                 # ask that instead: the piece moved, and nothing refilled.
-                was_here = locate(before.frame, model)
                 moved = (was_here is not None
                          and was_here[:2] != here_after[:2])
                 fresh = not any(hud(obs.frame).get(k, 0) > hud(before.frame).get(k, 0)
                                 for k in drain(log[-CLOCK_WINDOW:]))
-                gate.observe(obs.frame, here_after,
-                             bool(log and log[-1]["walked"]) or (moved and fresh))
+                # What this button did from THIS square. The cell map says "anything aiming
+                # at that square ends up there", which is what `ls20` level 4 measured and
+                # is the right rule for a floor that carries. It cannot say "this button
+                # does nothing from here" — a wall, or a door that is shut. Recording that
+                # too freezes the board: something standing in the way for one action reads
+                # as a wall for the rest of the level, and `ls20` drops from four levels to
+                # one. So only a press that MOVED the piece somewhere the model did not
+                # predict is written down, and the table stays the size of the surprises.
+                # Only when the step was an honest one: a death teleports the piece
+                if was_here is not None and fresh:
+                # to the spawn, and written down that reads as a button that teleports.
+                    src = (was_here[0], was_here[1])
+                    got = (here_after[0], here_after[1])
+                    d = model.dirs.get(value)
+                    if d is not None:
+                        aim = (src[0] + d[0], src[1] + d[1])
+                        if aim in read and got != step_to(model, src, value, {**read}):
+                            del read[aim]      # the board's marking, refuted by a walk
+                    if got != src and got != step_to(model, src, value, redirects):
+                        # Believed on the second sighting, the same bar a cell rule has to
+                        # clear. Believed on the first, the router starts steering by it
+                        # before the deliberate re-probe that the map is built on has run,
+                        # and `ls20` level 4 stops clearing.
+                        key = (src, value)
+                        if button_once.get(key) == got:
+                            button[key] = got
+                        button_once[key] = got
+                if gate.observe(obs.frame, here_after,
+                                bool(log and log[-1]["walked"]) or (moved and fresh)):
+                    # A door that was shut may now be open, so what the buttons pointing
+                    # into it did is no longer what they do.
+                    refused.clear()
+                    button = {k: v for k, v in button.items() if v != k[0]}
+                    button_once = {k: v for k, v in button_once.items()
+                                   if v != k[0]}
 
             last = value if shifts.get(model.player) == model.dirs.get(value) else None
         prev = cur
@@ -813,7 +909,21 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             gate.reject(door)
             plan, door = [], None
 
-        if i >= WARMUP and not plan:
+        # Warm up until the CONTROLS are known, not for a fixed count. The 24-action wait
+        # is a worst case, not a price: `ls20` level 1 has its goal box seven actions from
+        # the opening square and spent thirty-nine getting there, because planning could not
+        # start until the counter said so. Measured across nine games, the fourth direction
+        # is usually known long before that — and the games do not agree on which button is
+        # which (`ar25` swaps left and right) or on the step size (2 to 5 cells), so the
+        # convention cannot simply be assumed either.
+        if not plan and model is None and CONTROLS <= i < WARMUP:
+            # Try to build early — the gate cannot ask whether the controls are known while
+            # nothing has been built to ask.
+            early = build_model(records, colours, rows, prior=carried)
+            if early is not None and coherent(early.dirs):
+                model = early
+        ready = (model is not None and coherent(model.dirs)) or i >= WARMUP
+        if ready and not plan:
             model = keep_identity(
                 build_model(records, colours, rows, prior=carried), carried, obs.frame) or model
             if model and locate(obs.frame, model):
@@ -828,10 +938,26 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                     else log, CLOCK_WINDOW)
                 if left is not None:
                     full = max(full, left)
-                plan, goal = choose(obs.frame, model, log, gate, left, full, redirects, once,
-                                    came_from, stood)
+                # The board MARKS its carrying cells — a bar one cell thick and one
+                # step long beside each — and the piece entering one is thrown away from
+                # the bar until something blocks it. Read off the frame, `ls20` level 5's
+                # eight cells are all there before the first step; walked into, they cost
+                # a few hundred actions and arrive too late to plan with. A reading a walk
+                # contradicts is dropped on the spot, so a marker-shaped object that is not
+                # a carry costs one wasted step, not a broken map.
+                # …but as a HYPOTHESIS, not as the map. Believed outright it costs `ls20`
+                # level 4 outright — some marker-shaped object on those boards is not a
+                # carry — so each reading is filed as a first sighting instead, and the
+                # confirmation the map already runs promotes it the first time a walk
+                # agrees. That halves the cost of learning a real one and costs nothing for
+                # a false one.
+                for cell, off in slides(obs.frame, grid, model).items():
+                    once.setdefault(cell, off)
+                rules = {**redirects, **button}
+                plan, goal = choose(obs.frame, model, log, gate, left, full, rules, once,
+                                    came_from, stood, refused, tried, sure)
                 here = locate(obs.frame, model)
-                expect = trajectory(model, here, plan, redirects) if (plan and here) else []
+                expect = trajectory(model, here, plan, rules) if (plan and here) else []
                 door = goal if goal is not None and gate.matched(goal) else None
 
     return per_level, log

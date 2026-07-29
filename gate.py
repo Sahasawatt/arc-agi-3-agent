@@ -97,6 +97,31 @@ def cycle(grid, model, at, redirects=None):
     return []
 
 
+def turned(a, b):
+    """The whole orbit when `b` is `a` given a quarter turn, else None.
+
+    A changer that rotates its glyph is telling the agent everything in one press: four
+    states, in order, and which one follows which. Walked instead, the same cycle costs an
+    entry per edge — and on a board where a life is 21 actions those are the actions the
+    level needed. Measured on `ls20`: every shape change on levels 1, 2 and 3 is exactly a
+    quarter turn (7 of 7 on level 2, 3 of 3 on level 3), and level 5's second changer is
+    too. Levels whose changer walks an alphabet instead simply do not match, and nothing is
+    inferred.
+    """
+    if not isinstance(a, str) or not isinstance(b, str):
+        return None                     # an ink colour has no orientation to turn
+    rows = a.split("/")
+    n = len(rows)
+    if n < 2 or any(len(r) != n for r in rows):
+        return None
+    orbit = [a]
+    for _ in range(3):
+        cur = orbit[-1].split("/")
+        orbit.append("/".join("".join(cur[n - 1 - j][i] for j in range(n))
+                              for i in range(n)))
+    return orbit if orbit[1] == b and len(set(orbit)) == 4 else None
+
+
 class Gate:
     """What the board's displays are showing, and what was seen to change them.
 
@@ -168,6 +193,13 @@ class Gate:
                 if before is not None:
                     for h in moved:
                         self.cycles.setdefault((self.changer, h), {})[before[h]] = after[h]
+                        # A quarter turn states the whole cycle in one press: fill the
+                        # orbit instead of paying an entry per edge to walk it round.
+                        orbit = turned(before[h], after[h])
+                        if orbit:
+                            step = self.cycles[(self.changer, h)]
+                            for i, v in enumerate(orbit):
+                                step.setdefault(v, orbit[(i + 1) % len(orbit)])
         return bool(changed)
 
     def cycled(self):

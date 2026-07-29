@@ -4,10 +4,10 @@
     "levels": 4,
     "of": 7,
     "actions": [
-      39,
+      23,
       45,
-      109,
-      306
+      142,
+      200
     ],
     "baseline": [
       22,
@@ -15,6 +15,6 @@
       73,
       84
     ],
-    "environment_score": 15.233
+    "environment_score": 16.834
   }
 ]
