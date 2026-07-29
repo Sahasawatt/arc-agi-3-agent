@@ -7,10 +7,10 @@ eligibility anyway.
 ## Where this is
 
 The loop is closed and it is getting through levels. Playing under the competition's own
-rules — one `make()`, no rewinding — the agent clears **`ls20` levels 1 to 4 with no
-human in it**, in 39, 45, 109 and 306 actions against human baselines of 22, 123, 73 and 84.
-Level 2 is inside the 1.15x cap so it scores the maximum 115, and the game goes from 1.136%
-to **15.233%**.
+rules — one `make()`, no rewinding — the agent clears **`ls20` levels 1 to 5 with no
+human in it**, in 23, 45, 99, 178 and 347 actions against human baselines of 22, 123, 73,
+84 and 96. Level 2 is inside the 1.15x cap so it scores the maximum 115, and the game
+stands at **21.856%**.
 
 Neither level is a bigger maze. Both are **locks**. Level 2 draws a glyph inside the goal box
 and shows another on a plate in the corner, and refuses the piece until they are the same.
@@ -557,13 +557,41 @@ moves and the loop never breaks. Two plausible fixes measured inert on that loop
 real one landed: filtering stage's routes against the squares a press has been refused from,
 and gating the whole-trip commit on every leg coming from a watched cycle. So the default
 commit is the first hop's route, exactly as before, and the whole trip — walk, off/on pairs
-and refills woven — is committed only when it is a *recipe*: every leg from a watched cycle
-AND some half needing its changers interleaved, which is level 5's shape and the one case
-where re-planning between legs forgets the weave, spends the refill the next leg needed, and
-starves at the changer with the cycle unclosed. On this run that path never fired — level 5's
-recipe is not yet fully watched by the time the budget reaches it — so every game and level
-holds its number (`ls20` 23, 45, 99, 178; `cd82` 1,034; `m0r0` 53; `ar25` 173), and the
-machinery for the level that needs it is in place.
+and refills woven — is committed only when it is a *recipe with a chain in it*: every leg
+from a watched cycle AND some leg needing two or more entries. Both halves of that gate are
+measured against the two neighbouring shapes: `known` alone re-costs level 3 its 55 actions
+through single-entry trips (an unmapped carry, `(9, 10)` to `(34, 5)`, throws the piece
+mid-walk and the rest of the committed walk starves the life), and requiring an interleaved
+half instead never fires at all, because level 5's ink is one leg of one square. Under the
+landed gate every game and level holds its number (`ls20` 23, 45, 99, 178; `cd82` 1,034;
+`m0r0` 53; `ar25` 173) and the trips fire where they were built to: on level 5's ink,
+`[((29, 25), 3)]`, once its cycle is watched. In the best traced run the committed trip
+landed two of the three entries — the panel walked `12 → 9 → 14`, one press from the 8 the
+door wants — before a death put it back, which is further round that cycle than any
+truncated run has been. What was left was fuel, and two rules about it are what cleared the
+level.
+
+### Level 5 falls: a chain starts full, unless the alternative is starving
+
+The chains were being committed from whatever tank the moment offered — an exact fit,
+`cost + escape = clock`, on a board that carries the piece 2-3 actions off the route a
+couple of times per crossing. Each bounce came out of a margin the plan did not have; the
+piece starved between the second and third entry, the death reset the panel, and the level
+looped through seven deaths in one run, always the same way. Giving a chain leg three
+`MARGIN`s of slack on top of its escape is what pushes the order search to put a **refill in
+front of the chain** — a chain walked from a full tank is the one that affords the bounces —
+and deaths fell from seven to four, with the ink finishing for the first time.
+
+The run that finished the ink then exposed the rule's other half: the recipe stood one leg
+from done — shape twice, everything else right — with eight actions on the clock, and the
+slack that had saved the early chains refused every plan, so the piece starved while
+refusing to try. The slack is a preference, not a wall: **a search that finds nothing with
+it runs again without it**, because an exact fit that might land beats a certain death.
+With both halves in, `ls20` level 5 falls — 23, 45, 99, 178, **347** against baselines of
+22, 123, 73, 84, 96, one death on the level, and the game goes from 20.489% to **21.856%**
+with every other game and level holding its number (`cd82` 1,034; `m0r0` 53; `ar25` 173).
+347 against a 96 baseline scores the level low — the next inch is walking it tighter, and
+the ceiling for clearing levels 6 and 7 is now open.
 
 One more thing fell out of the trace: level 3 has an undocumented carry, `(9, 10)` throwing
 the piece to `(34, 5)` with no clock rise — met twice by the wider-ranging trips, learned by

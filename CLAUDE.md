@@ -17,7 +17,14 @@ that directory, and it has leaked into a staging area before).
 uv run python compete.py            # all 17 playable environments, writes results/compete.json
 uv run python compete.py ls20       # one game, ~30-90s
 uv run python -m pytest -q          # the suite
+ARC_ACCT=out.jsonl uv run python compete.py ls20   # + action accounting, one line per action
 ```
+
+`ARC_ACCT` writes, per executed action, which rung of `choose` emitted it (`{"i","lvl","src"}`)
+plus event lines (`slid` / `chg` / `silentdeath` / `gameover`). Its invariants are its
+verification: the per-level line counts must sum to the reported per-level actions, and two
+runs must be byte-identical. This is how "where do level 4's 178 actions go" is answered
+with a table instead of a theory — tune from it, never from a hunch.
 
 ⚠️ `rtk` is on PATH and rewrites pytest's output — a run with failures has been reported as
 `No tests collected` with **exit code 0**. Redirect to a file and read the file.
@@ -131,6 +138,10 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   ends at the first hop's route; the entries stay with the rungs that book them. Two fixes
   that were *not* the cause, both measured inert on the same loop (every count identical):
   filtering stage's routes against `refused`, and gating the commit on the legs being known.
+  The whole-trip gate that holds is `known` AND a leg needing two or more entries — `known`
+  alone re-costs level 3 its 55 actions through single-entry trips, `known` plus an
+  interleaved-half requirement never fires (level 5's ink is one leg), and a stood-on check
+  is vacuous because a watched edge implies the square was stood on.
 - **On a carrying floor, a repeat-count cannot tell a livelock from an honest walk.** Every
   legitimate walk across such a board is dropped and re-planned several times (a carry moves
   the piece, the plan is rebuilt), so "the same goal planned N times without the display

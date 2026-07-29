@@ -15,6 +15,7 @@ forces when it ends — which is legal, and is a level reset by definition.
 """
 
 import json
+import os
 import sys
 from collections import deque
 from pathlib import Path
@@ -44,6 +45,7 @@ MARGIN = 2         # actions of slack between reaching a refill and starving
 TRAIL = 3          # squares of memory a route may not step back into
 STUCK = 30         # rounds with nothing left to watch before going to look elsewhere
 LEARN = 3          # entries a plan buys for a changer whose cycle is not known yet
+ACCT = os.environ.get("ARC_ACCT")  # action-accounting JSONL path, opt-in
 
 
 def build_model(records, colours, rows=HUD_ROW, prior=None):
@@ -149,7 +151,7 @@ def _after(model, at, route, redirects=None):
     return pos
 
 
-def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
+def stage(grid, model, gate, at, left, full, door, refills, redirects=None, stood=()):
     """A whole trip that finishes the level as (actions, marks), or None.
 
     The rungs in `choose` each pick the best next thing; a level with two locks and two
@@ -254,12 +256,18 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
     # never book `gate.cycled()`, so a changer that has stopped paying is never forgotten,
     # and committed whole `ls20` level 4 looped on one such square for 864 actions and lost
     # the level (measured at every widening tried: whole trips, first-leg-with-presses).
-    # The whole trip is committed only when it is a *recipe*: every leg from a watched
-    # cycle (`known`) and some half needing its changers INTERLEAVED (`multi`) — `ls20`
-    # level 5's shape, the one case where walking one leg and re-planning forgets the weave
-    # the search chose, spends the refill the next leg needed, and starves at the changer
-    # with the cycle unclosed.
-    commit_whole = known and any(len(p) > 1 for p in legs.values())
+    # The whole trip is committed only when it is a *recipe with a chain in it*: every leg
+    # from a watched cycle (`known`), and some leg needing two or more entries — `ls20`
+    # level 5's ink, three entries that must land inside one life or a death resets the
+    # panel and the same first edge is watched forever. A single-entry trip has no chain to
+    # protect, so committing it whole buys nothing and pays anyway: measured, `known` alone
+    # re-costs level 3 its 55 actions through exactly such trips (an unmapped carry throws
+    # the piece mid-walk and the rest of the committed walk starves the life), and gating
+    # on interleave alone (a half with two legs) never fires at all — level 5's ink is one
+    # leg, and level 5 is the level this exists for.
+    commit_whole = known and any(n >= 2 for p in legs.values() for _, n in p)
+
+    lean = [False]   # second pass: no chain slack, because the alternative is starving
 
     def walk(pos, clock, todo, fuel, spent, acts, marks, cut):
         if spent >= (best[0][0] if best[0] else 10 ** 6):
@@ -291,7 +299,17 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
                 continue
             cost = got[0] + 2 * (presses - 1)
             out = escape(got[1])
-            if cost <= clock and out is not None and cost + out <= clock:
+            # A chain leg gets three MARGINs of slack on top of its escape, a single
+            # entry none. An exact fit is how the committed ink chain starves two actions
+            # short of its last press: `ls20` level 5 carries the piece off the route a
+            # couple of times per crossing at 2-3 actions a bounce, and a life is 21. The
+            # slack is what pushes the search to put a refill in FRONT of the chain —
+            # a chain walked from a full tank is the one that affords the bounces. It is a
+            # preference, not a wall: with the recipe one leg from done at left=8, slack
+            # returned nothing and the piece starved anyway — an exact fit that might land
+            # beats a certain death, so a search that finds nothing runs again without it.
+            slack = 3 * MARGIN if commit_whole and presses > 1 and not lean[0] else 0
+            if cost <= clock and out is not None and cost + out + slack <= clock:
                 leg_acts = got[2] + pair * (presses - 1)
                 # The last step of the route ENTERS the square, and so does the second
                 # action of every off/on pair — those are where the display must move.
@@ -308,6 +326,9 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
                      cut or len(got[2]))
 
     walk(at, left, legs, frozenset(range(len(refills))), 0, [], [], 0)
+    if not best[0] and commit_whole:
+        lean[0] = True
+        walk(at, left, legs, frozenset(range(len(refills))), 0, [], [], 0)
     if not best[0]:
         return None
     _, acts, marks, cut = best[0]
@@ -524,6 +545,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                         stuck or footprints_touching(grid, model, locked[0]), stood, blind,
                         refused, tried)
         if probe and (left is None or len(probe) <= left):
+            gate.rung = "probe"
             return probe, None
     if doors:
         # The changer is the one place not to go while a door is open: walking over it
@@ -581,11 +603,13 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
 
     for o in doors:
         if (r := route(o)):
+            gate.rung = "door"
             return r, o
 
     if doors and at:
         leg, f = refuel(footprints_touching(grid, model, doors[0]))
         if leg:
+            gate.rung = "door-fuel"
             return leg, f
 
     # A refill is not something to do when the tank reads "low" — a fraction of full needs
@@ -608,6 +632,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 if o["colour"] in tank and (r := routed(o)) and len(r) <= left]
         if near and min(near, key=lambda t: t[0])[0] + MARGIN >= left:
             o = min(near, key=lambda t: t[0])[1]
+            gate.rung = "near-fuel"
             return routed(o), o
 
     # With more than one half wrong the question is an ORDER, and the rung below cannot
@@ -625,9 +650,10 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
         staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
-                       redirects)
+                       redirects, stood)
         if staged and staged[0]:
             gate.trip = staged[1]
+            gate.rung = "stage1"
             return staged[0], None
 
     if at and not doors and locked and (turn := gate.changer_for(locked[0])):
@@ -657,7 +683,9 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 # a changer that has stopped paying out, and reading it back afterwards
                 # reads None.
                 gate.cycled()
+                gate.rung = "cycle-on-turn"
                 return cycle(grid, model, here, redirects), None
+            gate.rung = "turn-walk"
             return leg, None
 
         # Turning it now does not fit this life, so the question is what to do first — and
@@ -684,7 +712,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
         staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
-                       redirects) if full else None
+                       redirects, stood) if full else None
         if staged and staged[0]:
             # The whole trip, watched rather than trusted: the play loop checks the
             # piece's square before every action and the display against `marks` after
@@ -693,6 +721,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             # blind is what cost level 3 its second-changer discovery.
             gate.heading = _after(model, here, staged[0])
             gate.trip = staged[1]
+            gate.rung = "stage2"
             return staged[0], None
         if gate.heading and gate.heading != here:
             # The plan disappeared for a step — a display reads back differently for one
@@ -701,6 +730,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             # over the square that recolours the ink and undoes the half already set.
             leg = bfs(grid, model, here, {gate.heading})
             if leg:
+                gate.rung = "heading"
                 return leg[:1], None
 
         # Failing that, the changer is simply the thing to refuel *for*. Which refill still
@@ -708,6 +738,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # to the door, inside one 21-action life; from the far one it is 18.
         top, f = refuel({turn})
         if top:
+            gate.rung = "turn-fuel"
             return top, f
 
     # Last resort before wandering: the piece is standing on a changer for a half that is
@@ -727,10 +758,12 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         for h, square in gate.turns_for(locked[0]).items():
             if square == here and gate.path_for(locked[0], h) is None:
                 gate.cycled()
+                gate.rung = "cycle-last"
                 return cycle(grid, model, here, redirects), None
 
     for o in cands:
         if not gate.locked(o) and (r := route(o)):
+            gate.rung = "cand"
             return r, o
 
     # Nothing fits the clock. Walking somewhere is still better than wandering — a short
@@ -739,7 +772,9 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
               if not gate.locked(o) and (r := routed(o))]
     if routes:
         o = cands[min(routes, key=lambda t: (cands[t[1]]["colour"] not in tank, t[0]))[1]]
+        gate.rung = "desperate"
         return routed(o), o
+    gate.rung = None
     return [], None
 
 
@@ -771,6 +806,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     redirects, once = {}, {}  # a cell that sends the piece on -> its offset, confirmed / seen
     gate = Gate()
     done, spent_at_level, per_level = obs.levels_completed, 0, []
+    acct = open(ACCT, "w", encoding="utf-8") if ACCT else None
+    psrc = "wander"  # which rung emitted the plan in flight, for the accounting
 
     for i in range(budget):
         grid = np.array(obs.frame)[-1][:rows]
@@ -848,6 +885,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                           redirects)) is not None]
                     if (not after or lnow - 1 < len(min(after, key=len)))                             and len(nearest) <= lnow:
                         plan, expect, trip = list(nearest), [], []
+                        psrc = "fuel-int"
         if here_now is not None and (not trail or trail[-1] != (here_now[0], here_now[1])):
             trail.append((here_now[0], here_now[1]))
         mark = None   # what the staged trip says this action does to the display
@@ -858,6 +896,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             if expect:
                 expect.pop(0)
         else:
+            psrc = "wander"
             # Track ids first — they are exact on the board that made them. They die at a
             # level boundary (numbering carries on there, so the old ids are never handed
             # out again), and a model carried across one falls back to recognising the
@@ -873,6 +912,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         before = obs
         obs = env.step(by_value[value])
         spent_at_level += 1
+        if acct:
+            acct.write(json.dumps({"i": i, "lvl": done, "src": psrc}) + chr(10))
         if obs is None:
             break
 
@@ -906,6 +947,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # A game over ends the run; the reset the engine gives back is a LEVEL reset, which
         # is what competition mode permits, and the level's action count carries on.
         if np.array(obs.frame).size == 0 or obs.state == GameState.GAME_OVER:
+            if acct:
+                acct.write(json.dumps({"event": "gameover", "lvl": done}) + chr(10))
             obs = env.reset()
             if obs is None or np.array(obs.frame).size == 0:
                 break
@@ -987,6 +1030,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 state_was = gate.state()
                 changed = gate.observe(obs.frame, here_after,
                                        bool(log and log[-1]["walked"]) or (moved and fresh))
+                if acct and changed:
+                    acct.write(json.dumps({"event": "chg", "lvl": done}) + chr(10))
                 if changed:
                     # A door that was shut may now be open, so what the buttons pointing
                     # into it did is no longer what they do.
@@ -1040,8 +1085,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # clock as it does; that is a teleport, not a property of a cell.
                 dx, dy = model.dirs[value]
                 aim = (was[0] + dx, was[1] + dy)
-                if not any(hud(obs.frame).get(k, 0) > hud(before.frame).get(k, 0)
-                           for k in (drain(log[-CLOCK_WINDOW:]) if log else {})):
+                clock_rose = any(hud(obs.frame).get(k, 0) > hud(before.frame).get(k, 0)
+                                 for k in (drain(log[-CLOCK_WINDOW:]) if log else {}))
+                if acct:
+                    acct.write(json.dumps({"event": "silentdeath" if clock_rose
+                                           else "slid", "lvl": done}) + chr(10))
+                if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a
                     # property of the board; a shove from something that happened to be
@@ -1126,6 +1175,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 here = locate(obs.frame, model)
                 expect = trajectory(model, here, plan, rules) if (plan and here) else []
                 trip = list(gate.trip) if (plan and gate.trip) else []
+                psrc = (gate.rung or "none") if plan else "wander"
                 cur_goal = goal
                 door = goal if goal is not None and gate.matched(goal) else None
 
