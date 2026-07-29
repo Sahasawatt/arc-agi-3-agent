@@ -144,6 +144,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   alone re-costs level 3 its 55 actions through single-entry trips, `known` plus an
   interleaved-half requirement never fires (level 5's ink is one leg), and a stood-on check
   is vacuous because a watched edge implies the square was stood on.
+- **The piece covers what it stands on, so two far-apart frames cannot tell a moving
+  object from a static one the piece visited.** Level 6's crosses were read as patrolling
+  from two frames 500 actions apart; they are static, and the "trail" of thirteen changer
+  squares is the set of footprint-overlap positions — all real. A collider-attribution
+  model built on the patrol reading measured empty (no mover ever detected), and its
+  discriminator needed three exclusions (zero shift, lockstep shift, own colours) just to
+  stop reading the piece's churn-renamed body parts as movers — the naive version cost
+  levels 3-5 in one run. Level 6's real shape: changers IN the corridors, walking is
+  pressing, `locked` reads 0 because the panel never holds still — the planner it needs is
+  phase-counting BFS (see README), triggered by the corridor signature, never by `locked`.
 - **Routing walks around the recorded changer squares is inert — measured three times.**
   On stage hops, and again on probe/sweep walks (with the fallback kept), every per-level
   count came back identical: the shortest paths do not cross the *recorded entry squares*.

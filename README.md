@@ -608,6 +608,34 @@ measured and costs level 3 twenty-six actions, so only the blind ones pay it —
 that, level 5 falls in **306** instead of 347 (one fewer death), the game stands at
 **22.246%**, and level 6's probe loop is gone from its accounting.
 
+### The sixth level puts the changers in the corridors
+
+Level 6 is diagnosed and not cleared, and both halves of that sentence were bought with
+measurements worth keeping. The board: a ring of walkways, two goal boxes wearing two
+different glyphs, refills in the corners — and its white crosses sit **inside the
+walkways**, wide enough that the piece's 5x5 footprint enters them from three to five
+lattice squares per row. Every route to anywhere presses; one accounted run saw the display
+move 365 times in 1,708 actions with nobody ever *choosing* to press. The thirteen
+"changers" the gate learns there are all real — they are the overlap positions — and the
+whole planning stack, built on "a changer is a square you walk to on purpose", cannot say
+anything about a board where walking IS pressing: `locked` reads 0 nearly every round
+because the panel never holds still long enough to disagree with a door.
+
+Two wrong turns are recorded so they are not walked again. **The crosses do not patrol** —
+two frames 500 actions apart showed them in different places and the piece *covers what it
+stands on*, so a static cross under the piece reads as a vanished one; a collider-attribution
+model built on that reading found nothing to attribute (movers stayed empty) while its
+discriminator mis-fired on the piece's own churned track ids and cost levels 3-5 in one
+stroke before it was tightened, then reverted whole. And a **phase-counting router** — BFS
+over (position, presses mod cycle), arriving at the door with the panel already right — is
+the correct planner shape for this board, but wired under `locked` it structurally cannot
+fire (locked is 0 there), and gated on "≥4 squares moving one half" it fires on level 5
+instead (entry-square counts cross any threshold) and loses it; the guard that held was
+*uniformity* — every counted shape square proven a rotator in `gate.rotates`, which silences
+level 5's alphabet-walking cross by mechanism rather than by number. What the next attempt
+needs is the trigger `locked` cannot provide: the corridor signature itself (many squares,
+one half), plus `phase_need` answered from the rotation law and the game's ink alphabet.
+
 One more carry-over joined the model and the controls: **the ink alphabet is a property of
 the game**. `ls20` runs the same `12 → 9 → 14 → 8` on levels 3 and 5, and re-watching it was
 part of every deep level's price. Ink transitions (ints — never shapes, which have
