@@ -133,6 +133,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   actions in one level-5 run), but both narrow keep-fixes turned level 4's cheap two-square
   bounces into thirty-step circuits — the bounce and the circuit are the same livelock at
   different plan lengths, and the cure has to attack the livelock, not the plan-dropping.
+  Progress-based benching (route stops shortening) and teaching-aware benching (map stopped
+  growing) were also measured and also cost level 4: what gets benched there is the goal box
+  itself, and the walk that looks like a livelock toward it IS the discovery walk that finds
+  the level's changer. No local signal separates the two — the next lever is structural:
+  either model deaths inside the order search (make the display-reset a cost it can weigh),
+  or execute a staged multi-leg plan as a unit instead of committing one leg and rediscovering
+  the rest.
 
 ## What the scoring actually rewards
 
