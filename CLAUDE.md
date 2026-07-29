@@ -107,6 +107,21 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   1, 2 and 3 is exactly a rotation (7 of 7 on level 2), so one observation gives four states
   and their order. Walked instead, the same cycle costs an entry per edge — and a life is 21
   actions.
+- **A glyph match is exact, and the escape hatch that said otherwise is gone.** `matched`
+  used to let a rejected display state un-reject every glyph the old lossy comparison might
+  have confused it with — reasonable while collapsing runs of identical rows mapped
+  `#.#/#.#/###` onto `#.#/###`, and wrong now that the normal form divides by the scale the
+  glyph is drawn at. With it, the piece walks into a shut door wearing a glyph that plainly
+  does not match.
+- **The board says where the controls are, and using that is a separate problem from reading
+  it.** Terrain is painted in one colour and so is most of what there is to walk onto; every
+  changer on `ls20` is four or five colours packed into a block the size of the piece.
+  Scanned on the piece's own lattice and measured against the board's background colour —
+  not against `passable`, which grows until it contains the changer's own colours — that
+  reads both of level 3's changers exactly and two of level 5's three, from one frame.
+  Driving the walk with it costs level 4 (3 of 7) and offering it as a guessed changer costs
+  levels 3 and 4 (2 of 7), so it is not in the code. The reading is sound; the wiring is the
+  open problem.
 
 ## What the scoring actually rewards
 

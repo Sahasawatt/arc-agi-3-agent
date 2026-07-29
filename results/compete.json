@@ -6,8 +6,8 @@
     "actions": [
       23,
       45,
-      142,
-      200
+      99,
+      178
     ],
     "baseline": [
       22,
@@ -15,6 +15,6 @@
       73,
       84
     ],
-    "environment_score": 16.834
+    "environment_score": 20.489
   }
 ]

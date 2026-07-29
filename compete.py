@@ -16,6 +16,7 @@ forces when it ends — which is legal, and is a level reset by definition.
 
 import json
 import sys
+from collections import deque
 from pathlib import Path
 
 import numpy as np
@@ -40,6 +41,8 @@ BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h 
 CANDIDATES = 6     # targets considered per plan, rarest first
 CLOCK_WINDOW = 20  # actions of history the clock's rate is measured over
 MARGIN = 2         # actions of slack between reaching a refill and starving
+TRAIL = 3          # squares of memory a route may not step back into
+STUCK = 30         # rounds with nothing left to watch before going to look elsewhere
 LEARN = 3          # entries a plan buys for a changer whose cycle is not known yet
 
 
@@ -172,7 +175,7 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
     # in that shape.
     legs = {}
     for h, pos in turns.items():
-        path = gate.path_for(door, h)
+        path = gate.path_for(door, h) or gate.learning_path(door, h)
         if not path:
             # Nothing known gets this half where the door wants it, so the plan has to buy
             # the watching that would. Costing it at one press is what keeps it unknown:
@@ -226,10 +229,19 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
 
     best = [None]
 
+    # Everything the door wants, or only the halves a square is known for. A plan that
+    # cannot finish the level still turns what it can — and walking to the door at the end
+    # of it would only be refused.
+    whole = set(turns) >= gate.wrong_halves(door)
+
     def walk(pos, clock, todo, fuel, spent, first):
         if spent >= (best[0][0] if best[0] else 10 ** 6):
             return
         if not any(todo.values()):
+            if not whole:
+                if first:
+                    best[0] = (spent, first)
+                return
             got = hop(pos, ("door", None))
             if got and got[0] <= clock:
                 best[0] = (spent + got[0], first or got[2])
@@ -446,7 +458,22 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # A half that has been watched through several values and still cannot be brought
         # to what the door wants: another square writes it, and nobody knows where. Aiming
         # the sweep anywhere in particular would be a guess, so it goes back to nearest-first.
-        blind = any(gate.exhausted(locked[0], h) for h in gate.wrong_halves(locked[0]))
+        #
+        # Tried and measured out: firing when the half's known graph has no unwatched edge
+        # left (`path_for` and `learning_path` both empty), which reads as the sharper test
+        # and costs `ls20` level 4 — that board's changer walks a short alphabet, so its
+        # graph is exhausted long before the level is.
+        # A half whose target has been out of reach of everything known for a long time.
+        # Not "the graph has nothing left to watch" — a changer that walks a long alphabet
+        # always has another edge to go and see, so that condition never fires and the agent
+        # presses the one square it knows forever. And not the bare condition either: it is
+        # true from the first round, and leaving to wander then costs `ls20` level 4. What
+        # separates a board that needs a second changer from one that is merely early is how
+        # LONG the target stays unreachable.
+        empty = any(gate.path_for(locked[0], h) is None
+                    for h in gate.wrong_halves(locked[0]))
+        gate.stuck = gate.stuck + 1 if empty else 0
+        blind = gate.stuck >= STUCK or             any(gate.exhausted(locked[0], h) for h in gate.wrong_halves(locked[0]))
         probe = confirm(grid, model, here, once, redirects,
                         stuck or footprints_touching(grid, model, locked[0]), stood, blind,
                         refused, tried)
@@ -525,10 +552,16 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     # locked yet there is nothing to refuel *towards*, so the agent never crosses the board,
     # never finds a changer, and never learns what the level wants in the first place.
     if left is not None and at:
-        near = [(len(r), n) for n, o in enumerate(cands)
-                if o["colour"] in tank and (r := routed(o))]
-        if near and min(near)[0] + MARGIN >= left:
-            o = cands[min(near)[1]]
+        # Over every refill on the BOARD, not the rarity shortlist — `cands` is ranked by
+        # rarity and a refill is rarely rare, so the nearest one is exactly the object most
+        # likely to have been cut, and the rung then walks to a far one it cannot reach:
+        # every one of level 5's ten deaths was a plan issued longer than the tank
+        # (`len=11 left=6`, `len=9 left=0`). Of the ones that still FIT, the nearest; a
+        # refill that does not fit is not a refill, it is a place to die en route to.
+        near = [(len(r), o) for o in seen
+                if o["colour"] in tank and (r := routed(o)) and len(r) <= left]
+        if near and min(near, key=lambda t: t[0])[0] + MARGIN >= left:
+            o = min(near, key=lambda t: t[0])[1]
             return routed(o), o
 
     # With more than one half wrong the question is an ORDER, and the rung below cannot
@@ -673,10 +706,11 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
     records, visits, log = [], {}, []
     model, plan, last, carried, door = None, [], None, None, None
+    cur_goal = None   # the object the plan in flight is walking to, None for lock work
     last_pos = None
     expect = []  # where the piece must be before each remaining action of the plan
     full = 0        # actions a refill buys, as the largest this level has read
-    came_from = None  # where the piece stood one move ago; a route may not undo that move
+    trail = deque(maxlen=TRAIL)   # the squares just occupied; a route may not step back into them
     stood = set()     # squares the piece has actually occupied on this level
     refused = set()   # squares a press aimed at and the piece did not enter
     button = {}       # (square, action) -> where that press landed, seen twice
@@ -713,8 +747,56 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         here_now = locate(obs.frame, model) if model else None
         if here_now is not None:
             stood.add((here_now[0], here_now[1]))
-        came_from = last_pos if here_now and last_pos != (here_now[0], here_now[1]) else came_from
-        last_pos = (here_now[0], here_now[1]) if here_now else last_pos
+
+        # Watch the tank WHILE walking, not only when a new plan is chosen. Every one of
+        # level 5's ten deaths had the same shape: a long plan was walked while the fuel
+        # fell, and by the time the planner looked again the nearest refill was further away
+        # than the actions left — `len=11 left=6` — so the refuel it then ordered was a walk
+        # it could not finish, and a death puts the whole display back. The interrupt fires
+        # only on a board with a lock (a death costs nothing worth guarding elsewhere), only
+        # while the tank is readable, and never on the walk into an open door.
+        # …and only an ordinary object walk. Lock work — a changer leg, a cycle, a stage
+        # plan — arrives with no goal object, is short, and is already budgeted; diverting
+        # it cost level 3 seventy-nine actions from two interrupts. A refill walk is
+        # already going where the interrupt would send it.
+        tankc = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+        walk_goal = (cur_goal is not None and plan
+                     and cur_goal.get("colour") not in tankc)
+        # Lock work is exempt — its rungs budget their own way out, and diverting it cost
+        # level 3 seventy-nine actions from two interrupts — EXCEPT when the plan in flight
+        # is longer than the fuel, which no budget can excuse: walking it is a death and a
+        # death puts the display back.
+        lock_doomed = (cur_goal is None and plan and model and gate.displays)
+        if lock_doomed:
+            lnow0 = actions_left(obs.frame, log, CLOCK_WINDOW)
+            lock_doomed = lnow0 is not None and len(plan) > lnow0
+        if plan and model and gate.displays and door is None                 and (walk_goal or lock_doomed) and here_now is not None:
+            lnow = actions_left(obs.frame, log, CLOCK_WINDOW)
+            if lnow is not None:
+                tankc = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+                fuels = [o for o in targets(obs.frame, model) if o["colour"] in tankc]
+                routes_f = [r for o in fuels
+                            if (r := bfs(grid, model, (here_now[0], here_now[1]),
+                                         footprints_touching(grid, model, o),
+                                         redirects)) is not None]
+                if routes_f:
+                    nearest = min(routes_f, key=len)
+                    # Only when the NEXT step would cross the point of no return. "The
+                    # refill is far" is not that — it is true the whole way back from a far
+                    # refill, and diverting on it walks level 3 in 178 actions instead of
+                    # 99. Walking toward the fuel keeps the margin constant; walking away
+                    # shrinks it, and the last safe moment is the step before the walk back
+                    # stops fitting.
+                    nxt = step_to(model, (here_now[0], here_now[1]), plan[0],
+                                  {**read, **redirects, **button})
+                    after = [r for o in fuels
+                             if (r := bfs(grid, model, nxt,
+                                          footprints_touching(grid, model, o),
+                                          redirects)) is not None]
+                    if (not after or lnow - 1 < len(min(after, key=len)))                             and len(nearest) <= lnow:
+                        plan, expect = list(nearest), []
+        if here_now is not None and (not trail or trail[-1] != (here_now[0], here_now[1])):
+            trail.append((here_now[0], here_now[1]))
         if plan:
             value = plan.pop(0)
             if expect:
@@ -955,9 +1037,10 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     once.setdefault(cell, off)
                 rules = {**redirects, **button}
                 plan, goal = choose(obs.frame, model, log, gate, left, full, rules, once,
-                                    came_from, stood, refused, tried, sure)
+                                    frozenset(list(trail)[:-1]), stood, refused, tried, sure)
                 here = locate(obs.frame, model)
                 expect = trajectory(model, here, plan, rules) if (plan and here) else []
+                cur_goal = goal
                 door = goal if goal is not None and gate.matched(goal) else None
 
     return per_level, log

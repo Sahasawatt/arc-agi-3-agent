@@ -168,9 +168,17 @@ def test_a_door_that_refuses_settles_the_state_it_refused_under():
     assert not gate.matched(door)
 
 
-def test_once_the_bitmap_is_disproved_every_untried_state_is_worth_a_try():
-    """The comparison was wrong for this door, so the shape it wears means nothing; what is
-    left is the states, and there are only ever a handful."""
+def test_a_refused_state_does_not_un_reject_every_glyph_it_resembles():
+    """The door wants one glyph and no other.
+
+    This used to be the opposite assertion. Collapsing runs of identical rows and columns
+    made the two drawing scales comparable but not injectively — `#.#/#.#/###` collapsed
+    onto `#.#/###` — so an equality was only a hypothesis, and once the engine refused the
+    state the bitmaps had agreed on, every glyph that comparison might have confused was
+    worth a try. Dividing by the scale the glyph is actually drawn at is exact, so equal
+    means equal, and the escape hatch only walks the piece into a shut door wearing a glyph
+    that plainly does not match — which is what `ls20` level 5 spends its lives doing.
+    """
     g = blank()
     goal_box(g)
     panel(g, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (3, 3)))
@@ -182,9 +190,9 @@ def test_once_the_bitmap_is_disproved_every_untried_state_is_worth_a_try():
     gate.observe(frame(g2), (49, 45), True)
     gate.observe(frame(g), (49, 45), True)
     door = obj(13, 19, 39, 45)
-    gate.reject(door)                       # refused under the state the bitmaps agreed on
-    gate.observe(frame(g2), (49, 45), True)  # turn it: a state nothing has ruled out
-    assert gate.matched(door)
+    gate.reject(door)                        # refused under the state the bitmaps agreed on
+    gate.observe(frame(g2), (49, 45), True)  # a different glyph, and not the one it wants
+    assert not gate.matched(door), "a different glyph is a different glyph"
 
 
 def test_the_ink_is_part_of_what_a_plate_says():

@@ -200,13 +200,14 @@ def test_agreement_needs_no_arbitration():
 def test_a_route_may_not_begin_by_stepping_back_where_it_came_from():
     """`ls20` level 5 spent twenty actions bouncing between two squares until it starved: a
     floor cell carried the piece back, and the plain route — which does not believe in the
-    carry — walked into it again. Refusing to undo the last move breaks the cycle without
-    removing any route, since anything reachable through the previous square is reachable
-    without it."""
+    carry — walked into it again. Refusing to step back into the squares just occupied breaks
+    the cycle without removing any route, since anything reachable through one of them is
+    reachable without it. A trail rather than a single square, because a five-square bounce
+    down a column is 107 of that level's steps and one square of memory cannot see it."""
     from plan import bfs
     g, m = board(), prior()
     assert bfs(g, m, (10, 5), {(5, 5)}) == [3]           # straight back, normally
-    path = bfs(g, m, (10, 5), {(5, 5)}, came_from=(5, 5))
+    path = bfs(g, m, (10, 5), {(5, 5)}, came_from={(5, 5)})
     assert path and path[0] != 3, "the first action must not return to where it came from"
     pos = (10, 5)
     for a in path:

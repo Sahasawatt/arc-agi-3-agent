@@ -114,12 +114,14 @@ def step_to(model, pos, act, redirects=None):
 def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None):
     """Shortest action list from `start` to any position in `goals`, or None.
 
-    The first action may not land back on `came_from`, the square the piece occupied one
-    move ago. This refuses to undo the last move and nothing else — no route is removed,
+    The first action may not land on any square in `came_from` — the handful the piece has
+    just been on. This refuses to undo the last move and nothing else — no route is removed,
     because any square reachable through the previous one is reachable without it. It is
     what stops `ls20` level 5 bouncing between two squares for twenty actions until it
     starves: a floor cell carries the piece back, the plain route walks into it again
-    because it does not believe in the carry, and neither square is ever left.
+    because it does not believe in the carry, and neither square is ever left. One square of
+    memory only catches a two-square bounce; `ls20` level 5 runs a five-square one down a
+    column, 107 of its steps, so what is remembered is a short TRAIL.
     """
     if not goals:
         return None
@@ -133,7 +135,7 @@ def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None):
             if sure is not None and (cur, act) not in sure:
                 continue
             nxt = step_to(model, cur, act, redirects)
-            if cur == start and nxt == came_from:
+            if cur == start and came_from and nxt in came_from:
                 continue
             if nxt in seen or not walkable(grid, model, nxt[0], nxt[1]):
                 continue

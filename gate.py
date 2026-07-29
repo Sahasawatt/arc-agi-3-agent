@@ -97,7 +97,7 @@ def cycle(grid, model, at, redirects=None):
     return []
 
 
-def turned(a, b):
+def turned(a, b=None):
     """The whole orbit when `b` is `a` given a quarter turn, else None.
 
     A changer that rotates its glyph is telling the agent everything in one press: four
@@ -108,7 +108,7 @@ def turned(a, b):
     too. Levels whose changer walks an alphabet instead simply do not match, and nothing is
     inferred.
     """
-    if not isinstance(a, str) or not isinstance(b, str):
+    if not isinstance(a, str) or (b is not None and not isinstance(b, str)):
         return None                     # an ink colour has no orientation to turn
     rows = a.split("/")
     n = len(rows)
@@ -119,6 +119,8 @@ def turned(a, b):
         cur = orbit[-1].split("/")
         orbit.append("/".join("".join(cur[n - 1 - j][i] for j in range(n))
                               for i in range(n)))
+    if b is None:
+        return orbit if len(set(orbit)) == 4 else None
     return orbit if orbit[1] == b and len(set(orbit)) == 4 else None
 
 
@@ -137,7 +139,9 @@ class Gate:
         self.doubted = set()   # marks whose bitmap match the engine disagreed with
         self.changers = {}     # (x, y) -> which halves of a display it was seen to move
         self.heading = None    # where the last plan that existed was walking to
-        self.cycles = {}       # (changer, half) -> {value seen: the value it became}
+        self.cycles = {}
+        self.stuck = 0     # planning rounds in a row with nothing left to watch
+        self.rotates = set()  # (square, half) seen to TURN its glyph, not merely change it       # (changer, half) -> {value seen: the value it became}
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.
@@ -197,6 +201,7 @@ class Gate:
                         # orbit instead of paying an entry per edge to walk it round.
                         orbit = turned(before[h], after[h])
                         if orbit:
+                            self.rotates.add((self.changer, h))
                             step = self.cycles[(self.changer, h)]
                             for i, v in enumerate(orbit):
                                 step.setdefault(v, orbit[(i + 1) % len(orbit)])
@@ -240,18 +245,20 @@ class Gate:
     def matched(self, o):
         """Is this target wearing what a display says the piece is wearing — and untried?
 
-        Two shapes compare equal when their collapsed bitmaps are equal, and collapsing runs
-        of identical rows and columns is what makes a glyph comparable across the two scales
-        it is drawn at. It also throws away detail, so equal is a **hypothesis**, and the
-        engine is the oracle: a door that refuses the piece under some display state settles
-        that state. Once the state the bitmaps agreed on has been refused, the comparison has
-        been proved wrong for this plate, and every state that has not been tried is worth a
-        try — there are only ever a handful.
+        Exactly what a display says — nothing looser. Two glyphs compare equal when their
+        bitmaps are equal after each is divided by the scale it is drawn at, and that
+        division is exact, so equal means equal.
+
+        It used to mean less. Collapsing runs of identical rows and columns also made the
+        two scales comparable, but not injectively — `#.#/#.#/###` collapsed onto `#.#/###`
+        — so equality was a hypothesis and a rejected state was allowed to un-reject every
+        glyph it had been confused with, on the grounds that one of them might be the right
+        one. With an exact normal form that escape hatch only walks the piece into a shut
+        door wearing a glyph that visibly does not match.
         """
         if self.state() in self.rejected:
             return False
-        marks = self._marks(o)
-        return bool(marks & self.state()) or bool(marks & self.doubted)
+        return bool(self._marks(o) & self.state())
 
     def reject(self, o=None):
         """The door refused the piece while the display said this. Do not believe it again.
@@ -307,6 +314,39 @@ class Gate:
             seen.add(here)
         return n if here == want else None
 
+    def _edges(self, half):
+        """{square: {before: after}} for this half — watched tables, plus an empty one for
+        every square known to TURN the glyph.
+
+        A rotating square answers for any state (`_step` computes it), so it belongs in the
+        search whether or not it has been watched in the state being asked about. Left out
+        because its table happens to be empty, `ls20` level 5 can never plan its shape: the
+        square was pressed in one orbit and the glyph the door wants lives in another.
+        """
+        out = {pos: dict(step) for (pos, h), step in self.cycles.items()
+               if h == half and step}
+        for pos, h in self.rotates:
+            if h == half:
+                out.setdefault(pos, {})
+        return out
+
+    def _step(self, pos, half, value, edges):
+        """What `pos` turns `value` into — watched, or computed when the square ROTATES.
+
+        Rotation is a law, not a fact about the one state it was watched in. Filling only
+        the orbit it was observed in leaves `ls20` level 5 unable to plan: its spin square
+        was pressed in one orbit while the glyph the goal box wants lives in another, and
+        the two halves of a known law never joined up.
+        """
+        seen = edges.get(pos, {}).get(value)
+        if seen is not None:
+            return seen
+        if (pos, half) in self.rotates:
+            spun = turned(value)
+            if spun:
+                return spun[1]
+        return None
+
     def path_for(self, o, half):
         """Every leg of the shortest way to bring `half` to what `o` wears, or None.
 
@@ -321,7 +361,7 @@ class Gate:
         if not marks or not state:
             return None
         want, here = min(marks)[half], min(state)[half]
-        edges = {pos: step for (pos, h), step in self.cycles.items() if h == half and step}
+        edges = self._edges(half)
         if here == want:
             return []
         if not edges:
@@ -329,8 +369,8 @@ class Gate:
         seen, queue = {here: []}, deque([here])
         while queue:
             cur = queue.popleft()
-            for pos, step in edges.items():
-                nxt = step.get(cur)
+            for pos in edges:
+                nxt = self._step(pos, half, cur, edges)
                 if nxt is None or nxt in seen:
                     continue
                 seen[nxt] = seen[cur] + [pos]
@@ -343,6 +383,44 @@ class Gate:
                             legs.append((sq, 1))
                     return legs
                 queue.append(nxt)
+        return None
+
+    def learning_path(self, o, half):
+        """Legs to the nearest state whose outgoing edges are not all known, or None.
+
+        `path_for` answers "how do I get the display to what the door wants" and gives up
+        whole when the known edges do not reach it — which on `ls20` level 5 is every round,
+        so the order search falls back to pressing one square a fixed number of times and
+        hoping. Knowing part of a graph is not knowing nothing: the states with an unwatched
+        edge are exactly where a press buys a new edge, and walking to one is the difference
+        between learning on purpose and learning by accident.
+        """
+        marks, state = self._marks(o), self.state()
+        if not marks or not state:
+            return None
+        here = min(state)[half]
+        edges = self._edges(half)
+        if not edges:
+            return None
+        seen, queue = {here: []}, deque([here])
+        while queue:
+            cur = queue.popleft()
+            unwatched = [pos for pos in edges if cur not in edges.get(pos, {})
+                         and (pos, half) not in self.rotates]
+            if unwatched:
+                path = seen[cur] + [unwatched[0]]
+                legs = []
+                for sq in path:
+                    if legs and legs[-1][0] == sq:
+                        legs[-1] = (sq, legs[-1][1] + 1)
+                    else:
+                        legs.append((sq, 1))
+                return legs
+            for pos in edges:
+                nxt = self._step(pos, half, cur, edges)
+                if nxt is not None and nxt not in seen:
+                    seen[nxt] = seen[cur] + [pos]
+                    queue.append(nxt)
         return None
 
     def leg_for(self, o, half):
@@ -384,7 +462,11 @@ class Gate:
                 if h in moves:
                     out[h] = pos
                     break
-        return out if len(out) == len(wrong) else {}
+        # What is known, even when it is only half of what is needed. Returning nothing
+        # unless every wrong half has a square abandons the half that DOES have one: on
+        # `ls20` that is 21 of the order search's failures, and the agent falls through to
+        # walking at whatever is rarest instead of turning the changer it can see.
+        return out
 
     def changer_for(self, o):
         """The square that moves the half of the display this target disagrees on.
