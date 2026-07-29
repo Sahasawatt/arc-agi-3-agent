@@ -1,38 +1,20 @@
 [
   {
-    "game": "cd82",
-    "levels": 1,
-    "of": 6,
+    "game": "ls20",
+    "levels": 4,
+    "of": 7,
     "actions": [
-      1034
+      39,
+      45,
+      109,
+      306
     ],
     "baseline": [
-      55
+      22,
+      123,
+      73,
+      84
     ],
-    "environment_score": 0.013
-  },
-  {
-    "game": "m0r0",
-    "levels": 1,
-    "of": 6,
-    "actions": [
-      73
-    ],
-    "baseline": [
-      30
-    ],
-    "environment_score": 0.804
-  },
-  {
-    "game": "ar25",
-    "levels": 1,
-    "of": 8,
-    "actions": [
-      173
-    ],
-    "baseline": [
-      32
-    ],
-    "environment_score": 0.095
+    "environment_score": 15.233
   }
 ]

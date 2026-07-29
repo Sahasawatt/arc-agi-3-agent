@@ -62,6 +62,25 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   waiting to trip over it twice never happens: a redirect drops the plan and the next route
   goes elsewhere.
 
+- **A plate the piece is standing on is obscured, not read.** The piece is 5x5 and a goal
+  box can be 7x7, so walking in garbles the glyph and then hides it. Read fresh, that looks
+  like a display changing under the square the piece is on — which is exactly how a changer
+  is recognised, so the square in front of the door gets recorded as one. `Gate.observe`
+  ignores any plate under the footprint and keeps its last reading from off it; a plate that
+  vanishes while the piece is elsewhere is a refill that has been taken, and is forgotten.
+- **The clock's rate belongs to the LEVEL, so measure it over this level's steps only.** The
+  same 84-cell bar spends 2 cells an action on `ls20` level 1 and 4 on level 2. A window that
+  still holds the previous level's steps reads the most common fall off the wrong board, and
+  because `full` is the largest reading ever taken, one bad reading at the boundary stands
+  for the whole level — level 5 believed a life was 40 actions long instead of 21.
+- **`walked` means an object moved by exactly the action's displacement**, so on a floor that
+  carries the piece it is False for every carried step. Guarding changer-credit on it means
+  no changer is ever credited on such a board. What the guard is actually for is not
+  crediting a death, and a death is what puts the clock UP — ask that instead.
+- **Cost a route the way the router walks it.** `stage` costed its legs with plain `bfs` and
+  `_after`, so on a carrying board every distance it compared was fiction, and it predicted
+  endpoints off the board and costed plans against them.
+
 ## What the scoring actually rewards
 
 `min((baseline_actions / actions_taken)² × 100, 115)` per level, averaged **weighted by level

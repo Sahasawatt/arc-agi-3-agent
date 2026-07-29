@@ -116,6 +116,24 @@ def slid(model, before, after, action):
     return bool(step) and (after[0] - before[0], after[1] - before[1]) != step
 
 
+def _lands(grid, model, at, route, redirects=None):
+    """Where a route ends up, stopping at the last square the piece could stand on.
+
+    `_after` walks the map blind. A route the map could not plan — the plain fallback —
+    carries the piece somewhere the route never assumed, and applying the map to it can
+    walk the prediction clean off the board: `ls20` level 5 costed a leg whose end it
+    believed was `(64, 40)` on a board 60 squares wide. A prediction that cannot happen is
+    worse than a short one, because the order search costs plans against it.
+    """
+    pos = (at[0], at[1])
+    for a in route:
+        nxt = step_to(model, pos, a, redirects)
+        if not walkable(grid, model, nxt[0], nxt[1]):
+            return pos
+        pos = nxt
+    return pos
+
+
 def _after(model, at, route, redirects=None):
     """Where a route ends up. The model says what each action displaces, so a plan's
     destination is known before a single action of it is spent — and a cell known to carry
@@ -186,7 +204,7 @@ def stage(grid, model, gate, at, left, full, door, refills, redirects=None):
             r = (bfs(grid, model, pos, goals[key], redirects)
                  or bfs(grid, model, pos, goals[key]))
             memo[(pos, key)] = (None if r is None
-                                else (len(r), _after(model, pos, r, redirects), r))
+                                else (len(r), _lands(grid, model, pos, r, redirects), r))
         return memo[(pos, key)]
 
     ways_out = [k for k in goals if k[0] == "fuel"] + [("door", None)]
@@ -799,7 +817,15 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             model = keep_identity(
                 build_model(records, colours, rows, prior=carried), carried, obs.frame) or model
             if model and locate(obs.frame, model):
-                left = actions_left(obs.frame, log, CLOCK_WINDOW)
+                # Only this level's steps. The rate belongs to the LEVEL — the same
+                # 84-cell bar spends 2 cells an action on `ls20` level 1 and 4 on level 2 —
+                # and a window that still holds the previous level's steps reads the most
+                # common fall off the wrong board. On level 5 that made a life look 40
+                # actions long instead of 21, `full` is the largest reading ever taken, so
+                # it stayed wrong for the whole level, and every plan the order search
+                # costed against a refill was costed against a tank twice the real size.
+                left = actions_left(obs.frame, log[-spent_at_level:] if spent_at_level
+                                    else log, CLOCK_WINDOW)
                 if left is not None:
                     full = max(full, left)
                 plan, goal = choose(obs.frame, model, log, gate, left, full, redirects, once,

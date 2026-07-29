@@ -125,26 +125,30 @@ class Gate:
         the wrong colour and is refused, which is exactly what happened.
         """
         now, old = plates(frame), self.icons
+
+        # A plate the piece is standing on is not being read, it is being obscured. The
+        # piece is 5x5 and `ls20` level 5's goal box is 7x7, so walking in first garbles
+        # what the box is asking for and then hides it altogether. Read fresh, the garbled
+        # value looks like a display changing under the square the piece is on — which is
+        # exactly how a changer is recognised, so the square that touches the goal box gets
+        # recorded as one and the agent stands there turning nothing for 549 rounds. What
+        # was last seen from off the plate is the honest reading.
+        w, h = (at[2], at[3]) if at is not None and len(at) > 3 else (5, 5)
+
+        def under_piece(box):
+            return (at is not None and at[0] < box[1] + 1 and at[0] + w > box[0]
+                    and at[1] < box[3] + 1 and at[1] + h > box[2])
+
+        now = {b: v for b, v in now.items() if not under_piece(b)}
         changed = {box for box, v in now.items() if old.get(box, v) != v}
         moved = {i for box in changed
                  for i, (was, is_) in enumerate(zip(self.icons.get(box, now[box]), now[box]))
                  if was != is_}
         self.displays |= changed
-        # A plate that has stopped being reported has either been COVERED or been USED UP,
-        # and the two want opposite treatment. The piece is 5x5 and `ls20` level 5's goal
-        # box is 7x7, so walking in hides what the box is asking for — `plates` reports it
-        # right up until the moment it matters and then stops, and reading fresh there says
-        # the panel that took ninety actions to set is wrong. But a refill that has been
-        # taken is gone for good, and remembering that one leaves the planner routing to
-        # fuel that is not there; measured, keeping every vanished plate — or every one
-        # never seen to change — costs `ls20` levels 3 and 4.
-        #
-        # So keep exactly the ones the piece is standing on.
-        w, h = (at[2], at[3]) if at is not None and len(at) > 3 else (5, 5)
-        kept = {k: v for k, v in self.icons.items()
-                if k not in now and at is not None
-                and at[0] < k[1] + 1 and at[0] + w > k[0]
-                and at[1] < k[3] + 1 and at[1] + h > k[2]}
+        # And keep the last reading of one that has stopped being reported *because the
+        # piece is on it*. A refill that has been taken is gone for good, and remembering
+        # that one leaves the planner routing to fuel that is not there.
+        kept = {k: v for k, v in self.icons.items() if k not in now and under_piece(k)}
         self.icons = {**kept, **now}
         # Losing a life also rewrites the display, and teleports the piece back to the
         # start; reading that as a discovery would name the starting square as the changer.

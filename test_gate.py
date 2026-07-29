@@ -437,35 +437,54 @@ def two_plates():
     return g
 
 
+OFF = (40, 10, 5, 5)      # nowhere near either plate
+ON_BOX = (14, 40, 5, 5)   # standing on the goal box at x13-19, y39-45
+
+
 def test_a_plate_the_piece_is_standing_on_keeps_its_last_reading():
     g = Gate()
-    g.observe(frame(two_plates()), (14, 40, 5, 5), True)
+    g.observe(frame(two_plates()), OFF, True)
     was = dict(g.icons)
     gone = blank()
     panel(gone)                    # the goal box is no longer drawn: the piece is on it
-    g.observe(frame(gone), (14, 40, 5, 5), True)
+    g.observe(frame(gone), ON_BOX, True)
     assert g.icons.get((13, 19, 39, 45)) == was[(13, 19, 39, 45)]
+
+
+def test_a_plate_read_through_the_piece_is_not_a_display_changing():
+    """The piece covers part of the box before it covers all of it, so the glyph reads
+    garbled — and a plate whose value changes under the square the piece is on is exactly
+    how a changer is recognised. `ls20` level 5 recorded the square that touches its goal
+    box as one and stood there turning nothing for 549 planning rounds."""
+    g = Gate()
+    g.observe(frame(two_plates()), OFF, True)
+    garbled = blank()
+    goal_box(garbled, shape=((1, 1), (2, 1)))   # most of the glyph hidden by the piece
+    panel(garbled)
+    g.observe(frame(garbled), ON_BOX, True)
+    assert (13, 19, 39, 45) not in g.displays, "not a display, just an obscured one"
+    assert g.changer != (14, 40), "and the square standing on it is not a changer"
 
 
 def test_a_plate_that_vanishes_out_of_reach_is_forgotten():
     """A refill that has been taken. Remembering it is routing to fuel that is not there."""
     g = Gate()
-    g.observe(frame(two_plates()), (40, 10, 5, 5), True)
+    g.observe(frame(two_plates()), OFF, True)
     gone = blank()
     panel(gone)
-    g.observe(frame(gone), (40, 10, 5, 5), True)
+    g.observe(frame(gone), OFF, True)
     assert (13, 19, 39, 45) not in g.icons
 
 
-def test_a_plate_still_on_the_board_is_read_fresh_not_remembered():
-    """Remembering must not outrank looking: while the plate is visible its current value
-    is the answer, even with the piece standing on the same square."""
+def test_a_plate_the_piece_is_off_is_read_fresh_not_remembered():
+    """Remembering must not outrank looking: from off the plate, what it says now is the
+    answer."""
     g = Gate()
-    g.observe(frame(two_plates()), (14, 40, 5, 5), True)
+    g.observe(frame(two_plates()), OFF, True)
     before = g.icons[(13, 19, 39, 45)]
     moved = blank()
     goal_box(moved, shape=((1, 1), (2, 1), (3, 1), (1, 2), (1, 3), (2, 3)))
     panel(moved)
-    g.observe(frame(moved), (14, 40, 5, 5), True)
+    g.observe(frame(moved), OFF, True)
     assert g.icons[(13, 19, 39, 45)] != before, "the new drawing wins while it is drawn"
     assert len([k for k in g.icons if k[0] == 13]) == 1, "no phantom copy alongside it"
