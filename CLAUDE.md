@@ -226,6 +226,18 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   each — measured on one sighting AND on three consecutive — with 1,981 of 2,000 actions
   spent wandering a board painted from the memory of a board redrawn under them. A general
   version has to find the fog colour in the frame instead of being told it is 5.
+  **Both halves the level looked to lack were behind the window.** Using the stitched map
+  as a stability oracle — a cell that comes back DIFFERENT while not under the piece is the
+  board acting, not the window moving — level 7 has a PATROLLER (16 cells at x55-57, a
+  five-cell cross of colours 0+1 at y=12/17/22/27/32, the same object as level 6's cross-2;
+  "nothing patrols" came from an 18-action probe at the start, where the window reaches x40)
+  and an INDICATOR (the colour-12 L glyph at x3-8 y55-60 turns a QUARTER TURN per press,
+  four states and back — `turned()` already handles that, but `plates()` cannot see it
+  because nothing frames it). Route to the patroller from a standing start, inside one life:
+  `1,1,4,4,2,4,2,4,2,4` (the last is a carry) then `4,4,4`, then `1` up x54. Open: the door
+  asks `(8, #.#/##./.##)` and the indicator normalises to `.#./###` and its rotations — the
+  inks and the shapes both differ, so either a second display is still in the fog or that
+  plate is not the lock.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
   `route_moving` builds its patroller list from movers with a period **and a known half**;

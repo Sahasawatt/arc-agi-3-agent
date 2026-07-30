@@ -42,6 +42,17 @@ def line(tag):
     ys, xs = np.where(grid == 3)
     box = ("x%d-%d y%d-%d" % (xs.min(), xs.max(), ys.min(), ys.max())
            if len(xs) else "no floor")
+    full = np.array(obs.frame)[-1]
+    gl = [(int(x), int(y)) for y in range(50, full.shape[0]) for x in range(0, 20)
+          if int(full[y][x]) == 12]
+    if gl:
+        x0 = min(p[0] for p in gl); x1 = max(p[0] for p in gl)
+        y0 = min(p[1] for p in gl); y1 = max(p[1] for p in gl)
+        bits = "/".join("".join("#" if (x, y) in gl else "." for x in range(x0, x1 + 1))
+                        for y in range(y0, y1 + 1))
+    else:
+        bits = "none"
+    print("   glyph %s" % bits, flush=True)
     print("%-9s lvl=%d piece=%s floor=%d %s  c1=%d c11=%d c4=%d c5=%d hud=%s"
           % (tag, obs.levels_completed, piece[0] if piece else None,
              c.get(3, 0), box, c.get(1, 0), c.get(11, 0), c.get(4, 0), c.get(5, 0),
@@ -69,10 +80,15 @@ def remember():
                 continue
             if any(x0 - 1 <= x <= x1 + 1 and y0 - 1 <= y <= y1 + 5 for x0, x1, y0, y1 in ps):
                 continue
+            # A cell that comes back DIFFERENT is the only thing on this board that can
+            # be a lock's indicator: the window explains a cell going to 5 and back, and
+            # the piece explains its own footprint, so anything left is the board acting.
+            if world.get((x, y), c) != c:
+                changed.setdefault((x, y), []).append((world[(x, y)], c))
             world[(x, y)] = c
 
 
-world = {}
+world, changed = {}, {}
 line("start")
 if "-map" in sys.argv:
     remember()
@@ -102,3 +118,6 @@ if "-map" in sys.argv:
     for box, (ink, ic) in sorted(plates([comp.tolist()]).items()):
         print("   %s ink=%s %s" % (box, ink, ic))
     print("colours present:", sorted(Counter(world.values()).items()))
+    print("\ncells that came back DIFFERENT: %d" % len(changed))
+    for (x, y), hist in sorted(changed.items(), key=lambda kv: -len(kv[1]))[:20]:
+        print("   (%2d,%2d) x%d  %s" % (x, y, len(hist), hist[:6]))

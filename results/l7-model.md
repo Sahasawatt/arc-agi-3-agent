@@ -92,6 +92,43 @@ from the memory of a board that had been redrawn under them. A general version h
 identify the fog colour from the frame rather than being told it is 5, which is its own
 problem. The stitching code is therefore NOT in the repo; this file is what it measured.
 
+## It IS the level 2-6 machine: a patroller, a rotating indicator, and a door
+
+Both halves the level looked to be missing were behind the window.
+
+**A patroller.** Using the stitched world as a stability oracle — any cell that comes back
+DIFFERENT from what was remembered, while not under the piece, is the board acting rather
+than the window moving — a 40-action walk turns up exactly **16 such cells, all at x55-57**,
+flipping between floor and colours 0 and 1 at y = 12, 17, 22, 27 and 32, five apart, which
+is the lattice step. Per site the shape is `(56,y-1)=0, (55,y)=1, (56,y)=0, (57,y)=0,
+(56,y+1)=1` — a five-cell cross of colours 0 and 1, the same object as level 6's cross-2.
+The first look concluded "nothing patrols" from an 18-action oscillation at the start
+position, where the window reaches x40 and the patroller is at x55: it was never on screen.
+
+**An indicator.** Driven along the right-hand corridor at x54, the big colour-12 L glyph at
+x3-8 y55-60 turns a **quarter turn per press**, four states and back to the first:
+
+    ..##../..##../..##../..##../######/######      hud 12: 6
+    ##..../##..../######/######/##..../##....      hud 12: 2
+    ######/######/..##../..##../..##../..##..      hud 12: 2
+    ....##/....##/######/######/....##/....##      hud 12: 2
+    ..##../..##../..##../..##../######/######      back to the first
+
+`turned()` already knows what to do with a quarter turn — one observation gives four states
+and their order. What `plates()` cannot do is SEE it: the glyph has no frame around it, and
+a plate is defined here as a region with its own colour all the way round.
+
+**A route.** From the start, `1,1,4,4,2,4,2,4,2,4` reaches (39,40) in ten actions — the
+last of those is the carrying cell — then `4,4,4` walks the row-40 corridor to (54,40) and
+`1` repeated climbs x54 through the patroller's track. Nineteen actions from a standing
+start, inside one 21-action life.
+
+**What still does not add up** is the match. The door asks `(8, #.#/##./.##)`; the indicator
+is colour 12 and its four states normalise to `.#./###` and its rotations. The inks differ
+and the shapes differ, so whatever the door checks, it is not this indicator compared the
+way levels 2-6 compare theirs. Either there is a second display still in the fog, or the
+door plate is not the lock.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
