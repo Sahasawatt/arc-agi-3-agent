@@ -309,9 +309,30 @@ The ink half is free — `Gate.legacy` has carried that alphabet since level 3, 
 presses of the block reach the ask's ink with nothing to learn. The shape half is a walk
 along an alphabet the agent already knows how to learn, by the rung that learns level 6's.
 
-What the agent still lacks here is `movers`: it reads 0 for the whole level, so
-`route_moving` — the planner that times a press against a patrol — never runs. That is the
-next thing to fix, and it is the last one between this level and a plan.
+## What still stops it: a ghost, and then identity
+
+`movers` reads 0 for the whole level, so `route_moving` — the planner that times a press
+against a patrol — never runs. Two things are behind it, and only the first is fixed.
+
+**The stitch was painting ghosts.** Remembering every non-fog cell remembers the moving
+ones too, so a patroller that left the window stayed drawn at the last place it was seen,
+and the tracker followed a copy of it standing still. Level 7 tracked 25 to 61 objects with
+full 48-entry histories and **not one ever earned a period**. The fix is to notice: a cell
+that comes back DIFFERENT is not terrain, so it is marked dirty and never painted from
+memory again. With it, `withp` goes from 0 to one to three — real, and nowhere near enough.
+
+**The rest is identity.** A patroller here is out of view most of the time, because the
+piece roams a world far bigger than its window, and the tracker hands out a NEW id every
+time one comes back. `mover_period` needs three laps of one id; `_adopt` can carry a lap
+from an old id to a new one, but only once a period has been earned, and none ever is. The
+chain is stuck at its first link.
+
+The shape of the fix is a signature rather than an id: on both boards the patrollers are
+distinguishable by what they are made of — level 6's are a 9/14/8/0/12 cluster, a four-cell
+colour-0 cross and a six-cell colour-0-and-1 cross; level 7's are a colour-0 cross and a
+colour-0-and-1 cross. Keying `movers` on (colours, size) instead of the track id would merge
+every sighting of one object into one history. It is also a change that touches level 6,
+which is where the score is, so it wants a session with room to measure it.
 
 ## Also measured, not yet explained
 

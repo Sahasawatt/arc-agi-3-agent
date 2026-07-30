@@ -885,15 +885,22 @@ def stitch(obs, world, at, model, rows=HUD_ROW):
     """
     grid = np.array(obs.frame)[-1]
     if world is None:
-        world = np.full(grid.shape, -1)
+        world = [np.full(grid.shape, -1), np.zeros(grid.shape, bool)]
+    known, dirty = world
     seen = grid[:rows] != 5
     if at is not None:
         w, h = model.box
         seen[max(0, at[1]):at[1] + h, max(0, at[0]):at[0] + w] = False
-    world[:rows][seen] = grid[:rows][seen]
-    fog = (grid[:rows] == 5) & (world[:rows] >= 0)
+    # A cell that comes back DIFFERENT is not terrain: something moves there. Painting a
+    # remembered copy of a moving object into the fog is worse than leaving the fog — the
+    # tracker then follows a ghost standing still at the last place the object was seen,
+    # and on level 7 that is why 25 to 61 objects were tracked with full histories and not
+    # one of them ever earned a period.
+    dirty[:rows] |= seen & (known[:rows] >= 0) & (known[:rows] != grid[:rows])
+    known[:rows][seen] = grid[:rows][seen]
+    fog = (grid[:rows] == 5) & (known[:rows] >= 0) & ~dirty[:rows]
     out = grid.copy()
-    out[:rows][fog] = world[:rows][fog]
+    out[:rows][fog] = known[:rows][fog]
     obs.frame[-1] = out
     return world
 

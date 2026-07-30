@@ -267,8 +267,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `.#./.#./###` → `#.#/#.#/###`, five cells to seven, so it walks an ALPHABET rather than
   turning — and it is phase-dependent, so it is a patroller too. **Level 7 is fully
   accounted for and is level 6's machine with the parts further apart than one window.**
-  What the agent still lacks is `movers`, which reads 0 for the whole level, so
-  `route_moving` never runs — the last thing between this level and a plan. A 26-action walk around it contradicts **zero** cells, so the nearest
+  What the agent still lacks is `movers`, which reads 0 for the whole
+  level, so `route_moving` never runs. Two causes. **The stitch painted GHOSTS** — it
+  remembered moving cells too, so a patroller out of view stayed drawn where it was last
+  seen and the tracker followed a copy standing still; 25-61 objects tracked with full
+  histories and not one period. Fixed: a cell that comes back DIFFERENT is marked dirty and
+  never painted from memory (`withp` 0 → 1-3, every game unchanged). **The rest is
+  IDENTITY**: a patroller is out of view most of the time and the tracker issues a new id
+  every re-entry, so no id accumulates three laps and `_adopt` cannot help because it needs
+  a period first. The fix is a signature instead of an id — on both boards the patrollers
+  are distinguishable by what they are MADE of — and it touches level 6, where the score is. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
