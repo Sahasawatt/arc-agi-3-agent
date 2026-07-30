@@ -258,8 +258,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   5 and its ring was 5 as well — **the fog framed itself**, which is a hazard the stitching
   creates and nothing yet guards. The glyph is the level's ask drawn as a picture. The same
   frame shows a **multi-coloured block at x11-12 y41-43 (colours 14, 8, 12)** — four or five
-  colours in a piece-sized block is this game's signature for a changer, and it holds the
-  ask's own ink. A 26-action walk around it contradicts **zero** cells, so the nearest
+  colours in a piece-sized block is this game's signature for a changer, and standing on it
+  at (9,40) **changes the indicator's INK, 12 -> 9, shape untouched** (`hud`'s `12: 6`
+  becomes `9: 6`). So level 7 has both halves: the x55 patroller turns the SHAPE a quarter,
+  this block walks the INK — along `12 -> 9 -> 14 -> 8 -> 12`, which `Gate.legacy` has held
+  since level 3, so three presses reach the ask's ink with nothing new to learn. Unaccounted
+  for: the SHAPE. The ask has six cells, the indicator five, and a quarter turn preserves
+  the count. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**

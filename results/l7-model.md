@@ -264,6 +264,27 @@ approach is from above, down the x19 column, which is floor at rows 35-44. What 
 there is the obvious thing: overlap it, and see whether the indicator becomes something
 with six cells in it.
 
+## It IS the ink changer, and the game already knows its alphabet
+
+Standing at (9, 40) — the piece's 5x5 covering x9-13 y40-44, which overlaps the block —
+the indicator changes **ink**, shape untouched:
+
+    plate (3-8, 55-60)   ink=12   .#./.#./###      before
+    plate (3-8, 55-60)   ink=9    .#./.#./###      standing on the block
+
+`hud` agrees: the `12: 6` entry disappears and `9: 6` takes its place. (An earlier probe
+reported the glyph as "none" here, which was the probe's own reader looking for colour 12
+and finding a colour-9 glyph.)
+
+So level 7 has both halves after all — the patroller at x55 turns the SHAPE a quarter, the
+block at x11-12 y41-43 walks the INK — and the ink it walks is the one this game has used
+since level 3: `Gate.legacy` already holds `12 -> 9 -> 14 -> 8 -> 12`, so three presses of
+this block reach **8**, the ask's own ink, with nothing new to learn.
+
+What is still unaccounted for is the SHAPE. The ask is `#.#/##./.##`, six cells; the
+indicator is `.#./.#./###`, five, and a quarter turn preserves the count. Either a third
+changer exists, or the hole's glyph is not what the indicator is compared against.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
