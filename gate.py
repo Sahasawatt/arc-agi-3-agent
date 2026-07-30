@@ -169,6 +169,7 @@ class Gate:
         # what lets a plan exist again a lap after a death instead of three.
         self.reset = 0        # the tick a life last ended on
         self.mover_p = {}     # track id -> the period it has been seen to earn
+        self._laps = {}       # track id -> the squares of its circuit: its identity
         # Marked plates the piece has STOOD INSIDE. The engine only lets it in matched,
         # and a door passed that way stays open: measured on `ls20` level 6, door B
         # refused (9, A-glyph) cold and passed it after one matched entry. A death puts
@@ -328,6 +329,7 @@ class Gate:
                     break
             if by and len(set(by.values())) > 1:
                 self.mover_p[k] = p
+                self._adopt(k, set(by.values()))
                 return p
         # Nothing is consistent across the whole window, which after a death is the
         # normal case and not an unknown object: the patrollers went back to the start
@@ -351,6 +353,32 @@ class Gate:
             if by.setdefault(t % p, b) != b:
                 return None
         return p
+
+    def _adopt(self, k, lap):
+        """A track that churned is the same patroller: give the new id what the old knew.
+
+        The alphabet is the expensive half and it was being paid for again and again.
+        Level 6 ends its 285 actions holding **122 edges under 26 keys** for three
+        patrollers, and its learning arrives in six-action bursts that repeat six times —
+        the same six edges, relearned every time the tracker renamed the object that
+        carries them. A patroller is invisible exactly when it is pressed (the piece
+        covers it), so churn is not an edge case here, it is the normal course of play.
+
+        Identity is the LAP: two objects standing on two of the same squares of a
+        deterministic circuit are one object. Two rather than one, because one shared
+        square is where two tracks cross. The records are copied rather than aliased so
+        every reader stays as it was, and a wrong adoption is refutable the same way any
+        wrong edge is — the phantom-edge check drops what does not pay out.
+        """
+        for j, other in list(self._laps.items()):
+            if j != k and len(other & lap) >= 2:
+                self.movers[k].setdefault("halves", set()).update(
+                    self.movers.get(j, {}).get("halves", ()))
+                for (kk, h), edges in list(self.mover_edges.items()):
+                    if kk == j:
+                        self.mover_edges.setdefault((k, h), {}).update(edges)
+                break
+        self._laps[k] = lap
 
     def mover_at(self, k, ahead):
         """The object's box `ahead` piece-moves from now, read off its phase map.

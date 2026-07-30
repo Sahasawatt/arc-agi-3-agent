@@ -888,6 +888,28 @@ actions to 3**, `moving-learn` from 82 to 154, `turn-walk` and `desperate` from 
 to nothing and 2, and the deaths from six to **one**. Two hundred actions of walking the
 corridors hoping to trip over a press were replaced by seventy of going to find one.
 
+### 285 to 265: the same alphabet, learned six times
+
+With the learning finally deliberate it can be counted, and the count is embarrassing.
+Those 285 actions make **85 presses** and gain **51 new edges**, and they end holding 122
+edges filed under **26 keys** — for three patrollers. The gains arrive in bursts of about
+six consecutive actions, six times over. It is the same six edges, relearned.
+
+The cause is the thing that made the patrol model hard in the first place: a patroller is
+invisible exactly when it is pressed, because the piece covers it, so its track id churns
+on the tick that matters most and everything filed under the old id is stranded. Keeping
+edges across a *game over* was measured and lost the level, because the ids there land on
+whatever the tracker hands out next. Within a life there is better evidence than a guess
+about numbering: the **lap**. Two objects standing on two of the same squares of a
+deterministic circuit are one object — two rather than one, because one shared square is
+where two tracks cross — so when a track earns its period it inherits the halves and the
+alphabet of any circuit it matches. The records are copied rather than aliased, so every
+reader stays as it was, and a wrong adoption is refutable exactly like any wrong edge.
+
+    ls20  [23, 45, 99, 178, 292, 265]   33.668%     was 285 and 32.144%
+
+Levels 1-5 identical again, the other three games unmoved (`results/sweep-adopt.log`).
+
 ### The seventh level is a window, and the agent thinks it is a board
 
 Level 7 has no plates, nothing patrols, and the first look at it recorded an arena that

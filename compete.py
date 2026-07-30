@@ -1069,6 +1069,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # presses that do not happen, and a wrong edge costs more than an absent one.
             gate.mover_edges.clear()
             gate.mover_p.clear()   # periods are keyed on ids that are about to be reused
+            gate._laps.clear()
             gate.opened.clear()
             gate.reset = gate.ticks
             continue
@@ -1160,6 +1161,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         "a": i, "was": list(was_here[:2]) if was_here else None,
                         "now": list(here_after[:2]), "chg": bool(changed),
                         "state": sorted(map(list, gate.state())),
+                        "edges": sum(len(v) for v in gate.mover_edges.values()),
+                        "keys": len(gate.mover_edges),
+                        "ready": sum(1 for k in gate.movers
+                                     if gate.mover_period(k) and gate.movers[k].get("halves")),
+                        "mute": sum(1 for k in gate.movers
+                                    if gate.mover_period(k) and not gate.movers[k].get("halves")),
                     }, default=str) + chr(10))
                 if changed:
                     # A door that was shut may now be open, so what the buttons pointing

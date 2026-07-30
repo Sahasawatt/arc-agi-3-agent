@@ -571,6 +571,37 @@ def test_an_inherited_period_this_life_contradicts_is_refused():
     assert g.mover_period("cross") is None
 
 
+def test_a_track_that_churns_inherits_what_the_old_id_was_seen_to_do():
+    """A patroller is invisible exactly when it is pressed — the piece covers it — so its
+    track id churns on the tick that matters, and the alphabet learned under the old id is
+    stranded. Measured on `ls20` level 6: 285 actions end holding **122 edges under 26
+    keys** for three patrollers, and the learning arrives in six-action bursts that repeat.
+    Identity is the LAP; two shared squares of a deterministic circuit, because one is
+    where two tracks cross."""
+    g = Gate()
+    ticked(g, LAP8 + LAP8, key="old")
+    assert g.mover_period("old") == 8
+    g.movers["old"]["halves"] = {1}
+    g.mover_edges[("old", 1)] = {"a": "b"}
+
+    ticked(g, LAP8 + LAP8, key="new")          # the same circuit, a fresh id
+    assert g.mover_period("new") == 8
+    assert g.movers["new"]["halves"] == {1}, "the halves come with it"
+    assert g.mover_edges[("new", 1)] == {"a": "b"}, "and so does the alphabet"
+
+
+def test_a_different_circuit_inherits_nothing():
+    """One shared square is a crossing, not an identity."""
+    g = Gate()
+    ticked(g, LAP8 + LAP8, key="old")
+    g.movers["old"]["halves"] = {1}
+    g.mover_edges[("old", 1)] = {"a": "b"}
+    far = [(60, 50), (60, 55), (60, 60), (60, 55)]
+    ticked(g, far * 3, key="new")
+    assert g.mover_period("new")
+    assert not g.movers["new"].get("halves"), "nothing in common, nothing inherited"
+
+
 def test_the_future_position_is_read_off_the_cycle():
     g = Gate()
     lap = [(15, 11), (20, 11), (25, 11), (30, 11)]

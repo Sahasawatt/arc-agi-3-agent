@@ -89,3 +89,9 @@ nothing to `presses`, so walking over it was not modelled as a press at all and 
 could go and find out what it does — 183 of the 189 rounds the learn planner gave up on
 had two to seven of them on the board. `stage1` 209 → 3, `moving-learn` 82 → 154, deaths
 6 → 1.
+
+Then **265 at 33.668%** (`sweep-adopt.log`): those 285 actions made 85 presses for 51
+new edges and ended holding 122 edges under 26 keys for three patrollers — the same six
+edges relearned every time the tracker renamed the object carrying them. A track that
+earns a period now inherits the halves and alphabet of any circuit sharing two of its
+squares.

@@ -239,6 +239,17 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   to the action (`results/sweep-mute.log`). `stage1` 209 → **3**, `moving-learn` 82 → 154,
   deaths 6 → **1**. The lesson generalises past this board: when a search reports "nothing
   left to learn", ask what it is unable to represent before asking what it cannot afford.
+- **Identity is the LAP, and a track that churns strands the alphabet under the old id.**
+  A patroller is invisible exactly when it is pressed — the piece covers it — so the id
+  churns on the tick that matters. Level 6's 285-action run makes 85 presses, gains 51
+  edges and ends holding **122 edges under 26 keys for three patrollers**, the gains
+  arriving in six-action bursts six times over: the same six edges, relearned. Keeping
+  edges across a GAME OVER lost the level (ids land on whatever comes next); within a life
+  the lap is evidence — two objects on **two** of the same squares of a deterministic
+  circuit are one object, two rather than one because a single shared square is a crossing.
+  On earning a period a track inherits the halves and edges of the circuit it matches,
+  copied not aliased so no reader changes, and a wrong adoption is refutable like any wrong
+  edge. **285 → 265, 32.144% → 33.668%** (`results/sweep-adopt.log`).
 - **A period belongs to the OBJECT and a phase belongs to the LIFE.** A death puts every
   patroller back at the start of its lap, so pre-death entries contradict post-death ones
   at the same phase and `mover_period` returns None for the three laps they take to age
