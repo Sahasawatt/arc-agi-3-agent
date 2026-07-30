@@ -180,6 +180,33 @@ to shapes drawn on the VOID — the colour that reaches the frame's own edge, on
 that a shape on the floor is a thing to walk to while a shape in the void is a sign — is
 byte-identical, so whatever `cd82` newly admits is in its void too.
 
+## The indicator cannot produce the door's ask, and there is no second display
+
+With the bare-glyph reader in place, the stitched world holds exactly **two** plates:
+
+    (3-8, 55-59)    ink=12   the indicator, a T that turns a quarter per press
+    (28-34, 49-55)  ink=8    the door, #.#/##./.##
+
+and nothing else, over every walk run so far. So the ink mismatch is not a matter of not
+having looked hard enough — there is no colour-8 display anywhere that has been seen.
+
+Worse for the obvious reading, the two are **structurally incompatible**: the indicator's
+normal form `.#./.#./###` has five cells and the door's `#.#/##./.##` has six, so no
+rotation of one is the other and no sequence of quarter turns can produce the ask. Level
+6's door B asked for exactly this glyph and its board could produce it, because a
+shape-changer there walked an alphabet that contained it; level 7's only changer rotates.
+
+Which leaves three readings, and the session has not separated them:
+
+- a second changer exists further out in the fog, one that does something other than rotate;
+- the door plate is not the goal at all, and the refusal measured at (29, 45) is ordinary
+  terrain — the interior x28-34 y49-55 is still unmapped, so it may simply be walled from
+  above and entered from elsewhere;
+- the ink half is not compared on this level.
+
+The cheapest of the three to settle is the second: map the plate's interior by approaching
+it from the other sides, which the agent can now do for itself.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
