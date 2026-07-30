@@ -123,7 +123,25 @@ last of those is the carrying cell — then `4,4,4` walks the row-40 corridor to
 `1` repeated climbs x54 through the patroller's track. Nineteen actions from a standing
 start, inside one 21-action life.
 
-**The plate IS the lock, and it refuses.** Driven into it — `3,3,2,2,4,4,4,4,2,2,2,2`
+**CORRECTION (same session, from beside it): the "plate" is a HOLE, and the refusal is
+the void.** Driven to (29, 45) and the frame dumped from there — well inside the window,
+which reaches x11-50 and y27-66 from that square — the region x29-34 y50-55 reads as
+**colour 5 on the live board**, floor at x28 and x35 on either side of it. It is a hole
+with the colour-8 glyph floating in it at x31-33 y51-53, not a box the piece may enter
+when it wears the right thing. `plates` read it as a plate because on the STITCHED
+composite the unexplored interior was 5 and its ring was 5 too, so the fog framed itself.
+
+So the glyph is the level's ASK drawn as a picture, exactly as `l7-first-look.md` guessed
+of the L glyph, and the paragraphs below are wrong in their conclusion though right in
+their measurement. What they measured stands: the piece IS refused there. What it means
+does not: that is the void refusing it, the way every border does.
+
+The same frame shows something the earlier maps never reached: a **multi-coloured block at
+x11-12 y41-43, colours 14, 8 and 12**, with colour-0 cells beside it at x20-22. Four or
+five colours packed into a block the size of the piece is this game's signature for a
+CHANGER, and this one contains colour 8 — the ask's own ink. That is the thread to pull.
+
+**The measurement the correction is built on.** Driven into it — `3,3,2,2,4,4,4,4,2,2,2,2`
 walks left, down the x9 column, right along row 25 (open from x9 to x43) and down the x29
 column to (29, 45), which is one step above the inside position (29, 50) — the thirteenth
 action, `down`, **does not happen**: the piece is still at (29, 45). That is the level 2-6

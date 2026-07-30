@@ -251,9 +251,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `1,1,4,4,2,4,2,4,2,4` (the last is a carry) then `4,4,4`, then `1` up x54. Open: the door
   asks `(8, #.#/##./.##)` and the indicator normalises to `.#./###` and its rotations — the
   inks and the shapes both differ, so either a second display is still in the fog or that
-  plate is not the lock — but the plate IS a lock: driven to (29,45), one step above the
-  inside position (29,50), the next `down` **does not happen**, which is the level 2-6
-  refusal exactly. A 26-action walk around it contradicts **zero** cells, so the nearest
+  plate is not the lock — and it is NOT: driven to (29,45) and the frame dumped from there,
+  x29-34 y50-55 reads colour 5 on the LIVE board with floor either side, so it is a HOLE
+  with the colour-8 glyph floating in it, and the refusal measured there is the void, not a
+  lock. `plates` saw a plate because on the stitched composite the unexplored interior was
+  5 and its ring was 5 as well — **the fog framed itself**, which is a hazard the stitching
+  creates and nothing yet guards. The glyph is the level's ask drawn as a picture. The same
+  frame shows a **multi-coloured block at x11-12 y41-43 (colours 14, 8, 12)** — four or five
+  colours in a piece-sized block is this game's signature for a changer, and it holds the
+  ask's own ink. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
