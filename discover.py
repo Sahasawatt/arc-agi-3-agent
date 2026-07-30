@@ -52,7 +52,7 @@ class Model:
     evidence: tuple = (0, 0)  # (walked, blocked) — with 0 blocked, `blocking` means nothing
 
 
-def see(frame, tracks, next_id, rows=HUD_ROW, gate=None):
+def see(frame, tracks, next_id, rows=HUD_ROW, gate=None, max_missed=2):
     """One frame -> ({track id: (x, y, w, h)}, {track id: colour}, tracks, next_id).
 
     Identity comes from `identity.update`, not from a dict key: keying on
@@ -60,7 +60,9 @@ def see(frame, tracks, next_id, rows=HUD_ROW, gate=None):
     reset alone, because two objects sharing the key collide in the dict.
     """
     objs, _ = objects(frame)
-    kw = {} if gate is None else {"gate": gate}
+    kw = {"max_missed": max_missed}
+    if gate is not None:
+        kw["gate"] = gate
     tracks, assign, next_id = update(tracks, objs, next_id, **kw)
     boxes = {tid: _box(objs[oi]) for oi, tid in assign.items()}
     colours = {tid: objs[oi]["colour"] for oi, tid in assign.items()}

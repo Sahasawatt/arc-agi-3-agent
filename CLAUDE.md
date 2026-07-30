@@ -275,8 +275,14 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   never painted from memory (`withp` 0 → 1-3, every game unchanged). **The rest is
   IDENTITY**: a patroller is out of view most of the time and the tracker issues a new id
   every re-entry, so no id accumulates three laps and `_adopt` cannot help because it needs
-  a period first. The fix is a signature instead of an id — on both boards the patrollers
-  are distinguishable by what they are MADE of — and it touches level 6, where the score is. A 26-action walk around it contradicts **zero** cells, so the nearest
+  a period first. Keying on a SIGNATURE instead of an id — colour and size, and only where
+  unambiguous in the frame — was measured and **costs level 5 a hundred actions and level 6
+  eighteen** (40.503% → 36.884%): a signature unique in one frame and not the next flips the
+  key back and forth and splits the history it meant to join. What DOES hold is patience —
+  `identity.update`'s `max_missed` is 2, so a track dies two frames after the piece walks
+  away from it, and on a windowed board out of view is not gone. Raising it to 200 while
+  `windowed` takes level 7's `moving-learn` from 40 actions to **90** and its `probe` from
+  673 to 317, with every game unchanged. Still not enough to clear it. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**

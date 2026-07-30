@@ -1166,7 +1166,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             if windowed:
                 world = stitch(obs, world, locate(obs.frame, model), model, rows)
 
-        cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows)
+        # On a board whose frame is a WINDOW, an object out of view is not gone: it is
+        # behind the fog, and it comes back. Two frames of patience kills every patroller
+        # the piece walks away from, and a new id on its return is why level 7 tracks
+        # dozens of objects and earns one period. Only where the fog is known to slide.
+        cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows,
+                                           max_missed=200 if windowed else 2)
         colours.update(seen_c)
         shifts = _shifts(prev, cur)
         records.append({"action": value, "shifts": shifts, "grid": grid,
