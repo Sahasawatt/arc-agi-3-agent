@@ -66,8 +66,8 @@ credited as changer edges, which is what poisoned `Gate.legacy` this level.
 The agent version of that recipe landed the same session: patrol tracking
 (`Gate.track`/`mover_period`), press attribution to the patroller's predicted position,
 `route_moving` (BFS over position x phase x panel x refills x opened doors) and
-`route_learn` (one deliberate press at an unwatched value when no door is plannable —
-the alphabet is walked edge by edge this way). With BUDGET at 2000 — the cap binds
-mid-choreography now, the old "structural block" measurement predates the planner —
-`ls20` clears level 6 unaided: **[23, 45, 99, 178, 290, 1187], 23.006%**
-(`rung-ls20m.log`).
+a learn mode that presses what it has no edge for, walking there through the presses it
+does know (the alphabet is walked edge by edge this way). With BUDGET at 2000 — the cap
+binds mid-choreography now, the old "structural block" measurement predates the planner —
+`ls20` clears level 6 unaided: **[23, 45, 99, 178, 292, 844], 23.528%**
+(`l6-learn2.log`; the first clear was 1,187 at 23.006%, `rung-ls20m.log`).

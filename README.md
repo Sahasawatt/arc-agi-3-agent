@@ -8,9 +8,9 @@ eligibility anyway.
 
 The loop is closed and it is getting through levels. Playing under the competition's own
 rules — one `make()`, no rewinding — the agent clears **`ls20` levels 1 to 6 with no
-human in it**, in 23, 45, 99, 178, 290 and 1,187 actions against human baselines of 22,
+human in it**, in 23, 45, 99, 178, 292 and 844 actions against human baselines of 22,
 123, 73, 84, 96 and 192. Level 2 is inside the 1.15x cap so it scores the maximum 115,
-and the game stands at **23.006%**. Level 6's changers turned out to be objects
+and the game stands at **23.528%**. Level 6's changers turned out to be objects
 PATROLLING the corridors — the planner that cleared it BFSes over position × patrol
 phase × panel, and taught itself the glyph alphabet one deliberate press at a time
 ([the section below](#the-sixth-level-falls-the-changers-were-patrolling-all-along)).
@@ -707,9 +707,42 @@ ends at the cap mid-choreography with the accounting showing monotone progress �
 budget is the binding constraint for the first time.
 
 With all of it, `ls20` clears level 6 unaided: **[23, 45, 99, 178, 290, 1187]**, six of
-seven levels, **23.006%** (`results/rung-ls20m.log`). The 1,187 is mostly tuition — deaths
-reset the panel and the doors but not the learned edges, so the first lives pay for the
-alphabet — and cutting it is the next inch. Level 7 is now reachable.
+seven levels, **23.006%** (`results/rung-ls20m.log`).
+
+### Cutting level 6, and two ways of not cutting it
+
+The accounting says where the 1,187 go: **483 in `stage1`**, the square-changer order
+search, on a board whose changers are not squares — and 12 deaths, each resetting the
+panel and every door already opened. Three changes were measured against that.
+
+**What worked: press what you do not know, and walk there through what you do.** The
+first learn rung could only teach the edge leading *out of the value the panel was
+showing*, and level 6's ask sits several unwatched presses further on — so every round
+whose plan needed a deeper edge fell through to the square-changer rungs. Inverting the
+planner's goal instead — same BFS, ending on the first press whose edge is unknown,
+fuel-bounded so the press survives to be used — takes level 6 from **1,187 to 844** and
+the game to **23.528%** (`results/l6-learn2.log`), with every other level unchanged.
+
+**What did not: taking the square-changer rungs away.** Their trips aim at
+footprint-overlap positions, which are not places, and they were 317 of the remaining
+844 — apparently pure waste, so they were replaced with "top the tank up instead". That
+**loses level 6 outright** (5/7, 22.446%): the freed rounds went to the confirm-probe
+rung (40 → 329 actions) and bought nothing, because a stuck round is short of a watched
+EDGE, not of fuel. Walking the corridors toward a fictional destination still walks the
+corridors, and on a board where walking is pressing that is how the alphabet gets
+watched at all.
+
+**And neither did clearing the stale patrol histories on a death.** A death puts the
+patrollers back, so entries from before it contradict the ones after at the same phase
+and every period is lost — verified, on the exact action a life ends. Clearing the
+histories to re-earn a period in one lap rather than three also **loses level 6** (5/7,
+22.419%). The contradicting entries are not only noise: they are what stops a period
+being re-read too eagerly off a handful of post-respawn frames, and a wrong period sends
+every planned press to the wrong tick.
+
+So level 6 stands at 844 against a baseline of 192, and the way down is teaching the
+alphabet faster rather than walking less. Level 7 is now reachable — and it is a lock
+nothing in this repo can see yet (`results/l7-first-look.md`).
 
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->

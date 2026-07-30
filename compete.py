@@ -538,26 +538,31 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             return best6[0], None
         # No door is plannable, which on a patrolled board usually means an EDGE is
         # missing, not a route: the plan can only press values it has watched, and a
-        # door can ask for a glyph several presses down an alphabet nobody walked.
-        # One deliberate press of a patroller that moves the wrong half, at a value
-        # it has not been watched on, teaches the next edge — replanning after it
-        # chains the rest of the way to the door's ask.
-        state6 = gate.state()
-        if state6:
-            here6 = min(state6)
-            for o in cands:
-                if not gate.marked(o) or gate.entered(o):
-                    continue
-                for hh in gate.wrong_halves(o):
-                    for k in gate.movers:
-                        if (hh in gate.movers[k].get("halves", ())
-                                and gate.mover_period(k)
-                                and here6[hh] not in gate.mover_edges.get((k, hh), {})):
-                            leg = gate.route_learn(grid, model, here, k, fuels,
-                                                   full, left, redirects)
-                            if leg:
-                                gate.rung = "moving-learn"
-                                return leg, None
+        # door can ask for a glyph several presses down an alphabet nobody walked. So
+        # go and press what is NOT known, walking there through what is — the same
+        # search, with the goal inverted. Aiming only at the edge out of the value
+        # the panel is showing right now is not enough: level 6's ask sits several
+        # unwatched presses away, and 483 of its 1,187 actions went to the
+        # square-changer rungs filling that gap with trips to positions that are not
+        # places.
+        for o in cands:
+            if not gate.marked(o) or gate.entered(o):
+                continue
+            got = gate.route_moving(grid, model, here, o, fuels, full, left,
+                                    redirects, learn=True)
+            if got and got[0]:
+                gate.trip = got[1]
+                gate.rung = "moving-learn"
+                return got[0], None
+        # Tried here and measured back out: when neither planner has an answer, top the
+        # tank up instead of falling through to the square-changer rungs below (whose
+        # trips are to footprint-overlap positions, not places — 317 of level 6's 844
+        # actions). It reads right and it **loses level 6 outright**, 5/7 at 22.446%:
+        # the freed rounds went to the confirm-probe rung instead (40 -> 329 actions)
+        # and the refuelling never bought a plan, because what those rounds are short of
+        # is a watched EDGE, not fuel. The square-changer trips are not idle after all —
+        # they walk the piece across the corridors, which is how presses get watched at
+        # all on a board where walking is pressing.
 
     if at and locked:
         # The board carries the piece somewhere the map cannot vouch for. Settle it before
@@ -1204,6 +1209,14 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     # A death puts the panel back, and with it every door that had been
                     # passed while matched: `opened` describes a life, not the level.
                     gate.opened.clear()
+                    # The PATROLLERS go back too, so entries from before a death
+                    # contradict the ones after at the same phase and every period is
+                    # lost — measured, on the exact action a life ended. Clearing the
+                    # histories there to re-earn them in one lap instead of three was
+                    # tried and **loses level 6** (5/7, 22.419%): the contradicting
+                    # entries are not only noise, they are what keeps a period from
+                    # being re-read too eagerly off a handful of post-respawn frames,
+                    # and a wrong period sends every planned press to the wrong tick.
                 if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a

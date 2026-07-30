@@ -1,49 +1,5 @@
 [
   {
-    "game": "tr87",
-    "levels": 0,
-    "of": 6,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
-  },
-  {
-    "game": "tu93",
-    "levels": 0,
-    "of": 9,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
-  },
-  {
-    "game": "wa30",
-    "levels": 0,
-    "of": 9,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
-  },
-  {
-    "game": "cd82",
-    "levels": 1,
-    "of": 6,
-    "actions": [
-      1034
-    ],
-    "baseline": [
-      55
-    ],
-    "environment_score": 0.013
-  },
-  {
-    "game": "sb26",
-    "levels": 0,
-    "of": 8,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
-  },
-  {
     "game": "ls20",
     "levels": 6,
     "of": 7,
@@ -52,8 +8,8 @@
       45,
       99,
       178,
-      290,
-      1187
+      292,
+      844
     ],
     "baseline": [
       22,
@@ -63,6 +19,6 @@
       96,
       192
     ],
-    "environment_score": 23.006
+    "environment_score": 23.528
   }
 ]

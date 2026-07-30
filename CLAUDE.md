@@ -167,6 +167,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `(14, ##./.##/#.#)` (which is what poisoned `Gate.legacy` with a phantom `12→14`) — is
   written up in `results/l6-model.md`. What a "corridor signature" was groping for is
   patrollers; `gate.track`/`mover_period`/`route_moving` are the measured replacements.
+- **On a patrolled board the square-changer rungs are not idle — they are how presses
+  get watched.** Their trips go to `gate.changers`, which on such a board are
+  footprint-overlap positions rather than places, and they took 317 of level 6's 844
+  actions; replacing them with "top the tank up instead" reads like removing pure waste
+  and **loses level 6 outright** (5/7, 22.446%). The freed rounds went to the
+  confirm-probe rung (40 → 329 actions) and bought nothing, because what a stuck round
+  is short of is a watched EDGE, not fuel — and walking the corridors for a fictional
+  destination still walks the corridors, which is where the presses are. Cutting the
+  cost has to come from teaching the alphabet faster, not from stopping the walking.
 - **Three traps from building the patrol planner, each measured before it was found.**
   (1) `Gate.observe` reuses `h` as a half index, so code later in the method that thinks
   `h` is the footprint height gets 0 or 1 — the mover crediting silently tested a 5x1

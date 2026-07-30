@@ -599,6 +599,32 @@ def test_no_route_when_the_press_cannot_be_simulated():
     assert gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42) is None
 
 
+def test_learn_mode_walks_to_the_press_it_has_no_edge_for():
+    """The planner can only press values it has watched. Aiming only at the edge out of
+    the CURRENT value leaves a door whose ask is several unwatched presses away
+    unreachable — level 6's ask is exactly that, and the gap cost it 483 actions of
+    square-changer trips. In learn mode the unplannable press IS the goal."""
+    g, gate = moving_board()
+    gate.icons[(13, 19, 39, 45)] = (9, "###/###/###")   # an ask no known edge reaches
+    gate.mover_edges = {("m", 1): {INDICATOR: "##./##./##."}}   # one edge, elsewhere
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    door = obj(13, 19, 39, 45)
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 42) is None, "no honest plan"
+    got = gate.route_moving(g, m, (44, 40), door, [], 42, 42, learn=True)
+    assert got is not None and got[1][-1] is True, "it ends on a press"
+
+
+def test_learn_mode_will_not_spend_the_last_of_the_tank():
+    """A press the piece starves on teaches nothing that survives: a death resets the
+    panel and every door it had opened."""
+    g, gate = moving_board()
+    gate.icons[(13, 19, 39, 45)] = (9, "###/###/###")
+    gate.mover_edges = {("m", 1): {}}
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    door = obj(13, 19, 39, 45)
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 6, learn=True) is None
+
+
 def test_a_patroller_that_moves_nothing_is_no_planner():
     """A mover that has never been seen to move a half of the display is scenery; a board
     with only those is a static board, and this planner has no business on it."""

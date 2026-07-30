@@ -631,7 +631,7 @@ class Gate:
         return None
 
     def route_moving(self, grid, model, start, door, refills, full, left,
-                     redirects=None):
+                     redirects=None, learn=False):
         """(actions, display-change marks) to enter `door` wearing its ask, on a board
         whose changers PATROL — or None.
 
@@ -644,6 +644,13 @@ class Gate:
         Every marked plate is a checked gate: a position inside one is entered only when
         the simulated panel equals its mark at that step — which makes a door with
         another door behind it a corridor with a toll, not a special case.
+
+        `learn=True` inverts the goal: the plan ends on the first press whose edge is
+        NOT known, walking there through the presses that are. Without it the planner
+        can only ever teach itself the edge leading out of the value it is standing in,
+        so a door whose ask is several unwatched presses away is unreachable and the
+        old square-changer rungs fill the gap — 483 of level 6's 1,187 actions, spent
+        planning trips to footprint-overlap positions that are not places.
         """
         dbg = (lambda *a: print("[rm]", *a)) if os.environ.get("ARC_RMDBG") else (lambda *a: None)
         marks_door = self._marks(door)
@@ -726,15 +733,28 @@ class Gate:
                     continue
                 t2 = (t + 1) % period
                 hit = presses(nxt, t + 1)
-                panel2, ok = list(panel), True
+                panel2, ok, blind = list(panel), True, False
                 for half, k in hit.items():
                     got = self._mover_step(k, half, panel2[half])
                     if got is None:
-                        ok = False              # an unplannable press: do not walk there
+                        # An unplannable press. Ordinarily that is ground not to walk
+                        # on; when the job is to LEARN, it is the destination — but
+                        # only with fuel left to spend on what it teaches, because a
+                        # death resets the panel and the doors with it.
+                        if learn and fuel - 1 >= 6:
+                            blind = True
+                            break
+                        ok = False
                         break
                     panel2[half] = got
                 if not ok:
                     continue
+                if blind:
+                    acts, cur = [], node
+                    while seen[cur][1]:
+                        cur, act = seen[cur][1]
+                        acts.append(act)
+                    return acts[::-1] + [a], [False] * len(acts) + [True], 0
                 panel2 = tuple(panel2)
                 opened2 = opened
                 if nxt in gates:
@@ -786,66 +806,6 @@ class Gate:
                     changed = True
             marks.append(changed)
         return acts, marks, gates_opened
-
-    def route_learn(self, grid, model, start, target, refills, full, left,
-                    redirects=None):
-        """Actions that press patroller `target` once, fuel-aware, or None.
-
-        The moving planner can only plan through edges it has WATCHED, and a level can
-        ask for a value whose path nobody has pressed yet: `ls20` level 6's second door
-        wants a glyph five presses down an alphabet the agent has no reason to walk.
-        One deliberate press teaches the next edge; replanning after it chains the rest.
-        The press has to leave enough in the tank to matter — a press the piece starves
-        on resets the panel with it (the blind-probe lesson, again).
-        """
-        p = self.mover_period(target)
-        if p is None:
-            return None
-        boxes = [b for b in self.icons if b not in self.displays]
-        blocked = set()
-        for box in boxes:
-            if box in self.opened:
-                continue
-            o = {"x": [box[0], box[1]], "y": [box[2], box[3]]}
-            w, h = model.box
-            blocked |= {(x, y) for x, y in footprints_touching(grid, model, o)
-                        if x >= box[0] and x + w <= box[1] + 1
-                        and y >= box[2] and y + h <= box[3] + 1}
-        picks = [footprints_touching(grid, model, f) for f in refills]
-        w, h = model.box
-        fuel0 = left if left is not None else (full or 10 ** 6)
-        seen = {(start, 0, 0): (fuel0, None)}
-        q = deque([(start, 0, 0)])
-        while q:
-            node = q.popleft()
-            pos, t, used = node
-            fuel = seen[node][0]
-            if fuel <= 0:
-                continue
-            for a in model.dirs:
-                nxt = step_to(model, pos, a, redirects)
-                if nxt in blocked or not walkable(grid, model, nxt[0], nxt[1]):
-                    continue
-                t2 = (t + 1) % p
-                used2, fuel2 = used, fuel - 1
-                for n, pk in enumerate(picks):
-                    if nxt in pk and not used2 & (1 << n):
-                        used2, fuel2 = used2 | (1 << n), full or fuel0
-                key = (nxt, t2, used2)
-                if key in seen and seen[key][0] >= fuel2:
-                    continue
-                seen[key] = (fuel2, (node, a))
-                b = self.mover_at(target, t + 1)
-                if (b is not None and fuel2 >= 6
-                        and nxt[0] < b[0] + b[2] and nxt[0] + w > b[0]
-                        and nxt[1] < b[1] + b[3] and nxt[1] + h > b[1]):
-                    acts, cur = [], key
-                    while seen[cur][1]:
-                        cur, act = seen[cur][1]
-                        acts.append(act)
-                    return acts[::-1]
-                q.append(key)
-        return None
 
     def changer_for(self, o):
         """The square that moves the half of the display this target disagrees on.
