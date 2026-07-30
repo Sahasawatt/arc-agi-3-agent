@@ -17,6 +17,7 @@ import numpy as np
 
 import arc_agi
 from arcengine import GameState
+from gate import plates
 from perception import components, hud
 
 GAME = sys.argv[1]
@@ -56,7 +57,11 @@ def remember():
     fog, which is the same mistake as reading a display the piece is covering.
     """
     grid = np.array(obs.frame)[-1][:60]
-    ps = [(x0, x1, y0, y1) for x0, x1, y0, y1, n in components(grid, 12) if n >= 8]
+    # Only the PIECE, which is colour 12 over colour 9 — not every large colour-12
+    # component. The level's big L glyph is drawn in the piece's own colour, and
+    # skipping it too is how it went missing from the first map that was stitched.
+    ps = [(x0, x1, y0, y1) for x0, x1, y0, y1, n in components(grid, 12)
+          if n >= 8 and (grid[y1 + 1:y1 + 4, x0:x1 + 1] == 9).any()]
     for y in range(60):
         for x in range(64):
             c = int(grid[y][x])
@@ -88,3 +93,12 @@ if "-map" in sys.argv:
                       for x in range(64))
         if row.strip("."):
             print("%2d %s" % (y, row))
+    # The question stitching exists to answer: is there anything to walk TO that no
+    # single window ever shows whole? `plates` is the reader that finds a door.
+    comp = np.full((64, 64), 5)
+    for (x, y), c in world.items():
+        comp[y][x] = c
+    print("\nplates on the stitched world:")
+    for box, (ink, ic) in sorted(plates([comp.tolist()]).items()):
+        print("   %s ink=%s %s" % (box, ink, ic))
+    print("colours present:", sorted(Counter(world.values()).items()))

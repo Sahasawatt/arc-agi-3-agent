@@ -889,6 +889,37 @@ reason for restarting the numbering there is that the ids land on the same objec
 land on, edges filed under them plan presses that do not happen, and a wrong edge costs
 more than an absent one. The histories and the edges go together or not at all.
 
+### Stitched, level 7 has a door — and two reasons the code is not in the repo
+
+Stitching the windows offline and handing the composite to the agent's own plate reader
+answers the question the window had been hiding. There is a plate at **x28-34, y49-55,
+asking `(8, #.#/##./.##)`** — which is door B's exact ask on level 6; the game reuses its
+alphabet across levels the same way its ink does. It sits far below anything a window from
+the start can show, so "no plates at all" was a measurement of the viewport, not of the
+level. Level 7 is the level 2-6 lock after all.
+
+Built into the agent, stitching does exactly what it was designed to: the latch fires on
+the second action of the level, the remembered world grows from 1,165 to 2,839 cells, and
+the door is visible in **777 of 789 planning rounds**. It is still not in the repo.
+
+The first reason is that seeing a door is not enough. `gate.displays` stays at zero for
+the whole level, because no plate is ever seen to *change* — and a plate that never
+changes is not a display, so nothing is `locked`, and the door is just another rarity
+target the router walks to and is refused by. The indicator is probably the big colour-12
+L glyph at the bottom left, whose normal form is `.#./###` against the door's
+`#.#/##./.##`; `plates` cannot read it because nothing frames it. That is the next thread,
+and it is a perception problem rather than a planning one.
+
+The second reason is the one worth writing down. The latch keys on colour 5 trading
+terrain in both directions, which is an `ls20` fact wearing a general one's clothes.
+Measured on a single sighting and again on three consecutive sightings, `cd82`, `m0r0` and
+`ar25` all latch too and **lose their only level each** — 1,981 of 2,000 actions spent
+wandering a board painted from the memory of a board that had been redrawn underneath it.
+The failure is instructive: a memory of the world is strictly worse than no memory when
+the thing remembered was never stable, and the guard against that cannot be a threshold on
+how much changed. A general version has to find the fog colour in the frame rather than
+being handed it, which is its own problem and not this one.
+
 The full level-7 model, controls and open threads are in `results/l7-model.md`;
 `probe7.py` is the instrument, and `-map` stitches the windows into one world offline.
 

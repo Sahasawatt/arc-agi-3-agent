@@ -214,6 +214,18 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   coordinates are fixed the windows STITCH: the fix is to remember every non-5 cell at the
   coordinates it was seen at and treat colour 5 as *unknown* rather than as wall — gated on
   the colour-5 region moving with the piece, because on levels 1-6 colour 5 IS the border.
+  Stitched, the level **has a door**: `plates` on the composite finds `(28-34, 49-55)`
+  asking `(8, #.#/##./.##)` — door B's exact ask on level 6 — which no window from the
+  start can reach, so "no plates at all" was measuring the window and not the level. Built
+  into the agent it works (world 1,165 → 2,839 cells, the plate visible in 777 of 789
+  rounds) and is still **not in the repo**, for two reasons. `gate.displays` stays 0 — no
+  plate is ever seen to change, so nothing is `locked` and the door is just a rarity
+  target; the likely indicator is the unframed colour-12 L glyph at x3-8 y55-59, which
+  `plates` cannot read. And the LATCH is an `ls20` fact dressed as a general one: keying
+  on colour 5 trading terrain both ways costs `cd82`, `m0r0` and `ar25` their only level
+  each — measured on one sighting AND on three consecutive — with 1,981 of 2,000 actions
+  spent wandering a board painted from the memory of a board redrawn under them. A general
+  version has to find the fog colour in the frame instead of being told it is 5.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A period belongs to the OBJECT and a phase belongs to the LIFE.** A death puts every
   patroller back at the start of its lap, so pre-death entries contradict post-death ones

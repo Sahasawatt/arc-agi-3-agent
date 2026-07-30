@@ -62,10 +62,35 @@ viewport. So:
 
 The shape of the fix follows from the dx=dy=0 result: because world coordinates are
 fixed, the windows **stitch** — remember every non-5 cell ever seen at the coordinates it
-was seen at, and treat colour 5 as *unknown* rather than as wall. That is a change to
-perception rather than to the gate, and it has to be gated on something this level has
-and the others do not (the colour-5 region changing as the piece moves), because on
-levels 1-6 colour 5 IS the border.
+was seen at, and treat colour 5 as *unknown* rather than as wall.
+
+## Stitched, the level HAS a door — and still no display
+
+Stitching the windows offline (`probe7.py … -map`) and handing the composite to the
+agent's own `plates` reader finds one:
+
+    plate (x28-34, y49-55)   ink=8   #.#/##./.##
+
+which is door B's exact ask on level 6 — the game reuses its alphabet. It sits at y49-55
+and **no window from the start reaches it**, which is what "no plates at all" in
+`l7-first-look.md` was actually measuring. Level 7 is the level 2-6 lock after all.
+
+Built into the agent it does what it says: `windowed` latches on the second action of
+the level, the world map grows 1,165 → 2,839 cells, and the plate is visible in **777 of
+789 planning rounds** (a refill ring reads as a second plate, `(14-18, 45-49) ink=11
+###/#.#/###`). What is still missing is a **display**: `gate.displays` stays 0 for the
+whole level, because no plate is ever seen to CHANGE, so nothing is `locked`, the door is
+just another rarity target, and the agent walks to it as `cand`. The likely indicator is
+the big colour-12 L glyph at x3-8 y55-59 — normal form `.#./###`, which is not the door's
+ask — and `plates` cannot read it because it has no frame around it.
+
+**The detector is the open problem, and it is not a small one.** Latching on colour 5
+trading terrain both ways is an `ls20` fact dressed as a general one. Measured twice —
+on one sighting, and on three consecutive — `cd82`, `m0r0` and `ar25` all latch too and
+lose their only level each, spending 1,981 of 2,000 actions wandering a board painted
+from the memory of a board that had been redrawn under them. A general version has to
+identify the fog colour from the frame rather than being told it is 5, which is its own
+problem. The stitching code is therefore NOT in the repo; this file is what it measured.
 
 ## Also measured, not yet explained
 
