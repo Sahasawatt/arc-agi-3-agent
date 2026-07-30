@@ -248,8 +248,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   Both readings of the 555 tried so far are refuted: not fuel (no plan at a tank of 200),
   and not a phase map thinned by reading phases off one life — at the moment those searches
   give up the maps are **full for 83%** of the movers involved (`results/l6-fill.log`).
-  189 of the 555 are the LEARN planner giving up, which says the missing edge sits on a
-  patroller the tank cannot reach, not that there is nothing left to learn.
+  189 of the 555 are the LEARN planner giving up — and asking each of those rounds what an
+  INFINITE tank would do says the opposite of what that looked like: in **159 of the 189**
+  it finds no unknown press either, so there is genuinely **nothing left to learn within
+  reach**, at any tank size. Only 30 are affordability. So "make the learn trip affordable"
+  is not the lever; what those rounds are short of is a panel VALUE they can get to. The
+  derivation from that, not yet measured: if every press reachable from every state the
+  known edges span is itself known, that set is closed, and the door's ask is outside it —
+  which would make a DEATH, whose reset puts the panel at `(14, ##./.##/#.#)`, the only
+  move that crosses the frontier. Testable: compare the panel states visited after a death
+  with the ones reachable before it.
 - **A stuck round on the patrolled board is never short of FUEL, and the accounting that
   says otherwise is reading a tank size that is wrong.** Level 6's planner is handed a
   median of 19 actions of a 42-action tank against a 72-action recipe, five of its ten

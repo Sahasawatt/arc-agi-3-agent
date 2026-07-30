@@ -829,7 +829,23 @@ movers they are planning against** (2,634 of 3,156 mover-entries, `results/l6-fi
 The searches are refused for the reason the level has been refusing them all along: the
 alphabet. 189 of the 555 are the LEARN planner giving up, which is the sharper form of
 the same thing — not merely "no route to the ask" but "no unknown press worth walking to
-either", so the edge the level needs is on a patroller this tank cannot reach.
+either".
+
+The obvious reading of that is that the edge the level needs sits on a patroller this tank
+cannot reach, and it is wrong. Asked of every one of those 189 rounds what an **infinite**
+tank would do — the same trick that retired fuel as a lever a section ago — the answer is
+that in **159 of them there is no unknown press to walk to at any tank size**. Only 30 are
+affordability. So the learn planner is not being starved; it has genuinely run out of
+things to learn from where it stands, and making its trips cheaper would buy 30 rounds.
+
+What those rounds are short of is a panel VALUE. The derivation, which is not yet a
+measurement: if every press reachable from every state the known edges span is itself
+known, then that set of states is closed, the door's ask is outside it, and no amount of
+walking opens it. The one move that would cross the frontier is a **death** — its reset
+puts the panel at `(14, ##./.##/#.#)` regardless of where it was — which would mean the
+agent has been using its lives as a state-reset mechanism without anything in it knowing
+that. The test is cheap: compare the panel states visited after a death with the ones
+reachable before it.
 
 ### The seventh level is a window, and the agent thinks it is a board
 
