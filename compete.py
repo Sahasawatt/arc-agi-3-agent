@@ -1058,6 +1058,15 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # on the old ones would report stale phases forever. Their periods are cheap
             # to re-learn; a stale one plans routes against patrollers that are not there.
             gate.movers.clear()
+            # The EDGES go with them, and it reads like waste: an edge is a fact about
+            # the game's alphabet, level 6 refuses 555 of its 723 planning rounds with a
+            # search that finds no route (a missing edge every time), and `ls20` reaches
+            # a game over twice a run, so the alphabet is thrown away twice a level. The
+            # argument for keeping it is the comment above — same board, same objects in
+            # the same order, so the ids the edges are filed under are the ids about to
+            # be issued again. Measured, it **loses level 6 outright** (5/7, 22.419%):
+            # whatever the ids land on after a game over, edges filed under them plan
+            # presses that do not happen, and a wrong edge costs more than an absent one.
             gate.mover_edges.clear()
             gate.mover_p.clear()   # periods are keyed on ids that are about to be reused
             gate.opened.clear()

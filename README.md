@@ -861,10 +861,36 @@ colour 5 as *unknown* rather than as wall. That is a change to perception rather
 the gate, and it has to be gated on something this level has and the others do not — the
 colour-5 region moving with the piece — because on levels 1 to 6 colour 5 IS the border.
 
-What ends the level is still unknown. `hud`'s colour-8 counter reads 12 and has not moved
-through any probe, including both refill rings coming into view and a carrying cell that
-took one `right` press and moved the piece five right and twenty down. The full model,
-controls and open threads are in `results/l7-model.md`; `probe7.py` is the instrument.
+What ends the level is still unknown. But the probe that went looking for it answered a
+different question that had been open since level 1.
+
+### The counter in the corner is the lives, and the third death is not like the others
+
+`hud`'s colour-8 counter reads 12 and sat there through every walk, which is what a static
+decoration looks like. Starved on purpose three times in a row, it goes **12 → 8 → 4 →
+game over → 12**, and it reads 12 at the start of levels 2, 4, 6 and 7. It is the game's
+life counter, four cells a life, three lives, twenty-two actions each against an 84-unit
+bar spent four at a time.
+
+That matters more than a readout. The agent has always treated a death as one thing — the
+panel goes back and the doors with it. Two of the three are that. The third is a game
+over, and the engine's reset takes the patrol model and the alphabet with it: `movers`,
+`mover_edges` and `mover_p` are all cleared, because the tracker restarts its numbering
+and histories filed under the old ids would describe patrollers that are not there. `ls20`
+reaches one **twice per run** on level 6, and until now nothing in the agent knew which
+kind of death it was about to take.
+
+The obvious repair is to keep the expensive half. An edge is a fact about the game's
+alphabet, not about a life; level 6 refuses 555 of its 723 planning rounds with a search
+that finds no route, which is a missing edge every time; and the board after a game over
+is the same board, walked by the same tracker in the same order — the repo's own stated
+reason for restarting the numbering there is that the ids land on the same objects. Keeping
+`mover_edges` across it **loses level 6 outright**, 5/7 at 22.419%. Whatever those ids
+land on, edges filed under them plan presses that do not happen, and a wrong edge costs
+more than an absent one. The histories and the edges go together or not at all.
+
+The full level-7 model, controls and open threads are in `results/l7-model.md`;
+`probe7.py` is the instrument, and `-map` stitches the windows into one world offline.
 
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->

@@ -71,9 +71,12 @@ levels 1-6 colour 5 IS the border.
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
   right and twenty down. Level 4's mechanic, on a board where the map is partial.
-- **`hud` colour 8 = 12 never changes**, through every probe run so far (~40 actions,
-  including the carry and both refill rings coming into view). Whatever the level counts,
-  walking around does not count it.
+- **`hud` colour 8 is the LIVES counter** — answered, four cells a life. Starved three
+  times on purpose (70 blocked presses, `results/l7-lives.txt`): `8: 12` at the start,
+  `8: 8` after 22 actions, `8: 4` after 44, GAME OVER at 66, and `8: 12` again after the
+  reset. It reads 12 at the start of levels 2, 4, 6 and 7, so it belongs to the game.
+  A life is 22 actions; the third death is a game over, which also clears the patrol
+  model and the alphabet.
 - **The colour-1 object at y19** is not a marker but a horizontal BAR that extends as the
   window moves right: x39-40 at the start, x39-43 from (29, 5), 16 cells from (34, 15).
   It sits in a one-row gap between floor (x34-38) and wall (x44-46), so a 5x5 footprint

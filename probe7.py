@@ -47,10 +47,44 @@ def line(tag):
              {k: v for k, v in sorted(hud(obs.frame).items())}), flush=True)
 
 
+def remember():
+    """Fold this frame's window into the world map, skipping the piece's own footprint.
+
+    The windows stitch because the coordinates are fixed (measured: consecutive frames
+    match best at dx=dy=0). What must NOT be folded in is anything the piece is standing
+    on or made of — remembering those paints a trail of piece-coloured cells across the
+    fog, which is the same mistake as reading a display the piece is covering.
+    """
+    grid = np.array(obs.frame)[-1][:60]
+    ps = [(x0, x1, y0, y1) for x0, x1, y0, y1, n in components(grid, 12) if n >= 8]
+    for y in range(60):
+        for x in range(64):
+            c = int(grid[y][x])
+            if c == 5:
+                continue
+            if any(x0 - 1 <= x <= x1 + 1 and y0 - 1 <= y <= y1 + 5 for x0, x1, y0, y1 in ps):
+                continue
+            world[(x, y)] = c
+
+
+world = {}
 line("start")
+if "-map" in sys.argv:
+    remember()
 for i, a in enumerate(PROBE, start=1):
     obs = env.step(space[a])
-    if np.array(obs.frame).size == 0:
-        print("%3d act%d GAME OVER" % (i, a), flush=True)
-        break
+    if np.array(obs.frame).size == 0 or obs.state == GameState.GAME_OVER:
+        print("%3d act%d GAME OVER, reset" % (i, a), flush=True)
+        obs = env.reset()
+        continue
     line("%3d act%d" % (i, a))
+    if "-map" in sys.argv:
+        remember()
+
+if "-map" in sys.argv:
+    print("\nstitched world: %d cells" % len(world))
+    for y in range(60):
+        row = "".join("%X" % (world[(x, y)] % 16) if (x, y) in world else "."
+                      for x in range(64))
+        if row.strip("."):
+            print("%2d %s" % (y, row))

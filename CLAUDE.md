@@ -188,6 +188,20 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   square's parity, never its tick — a test board built that way proves the planner
   "broken" when the geometry makes the press physically impossible. Real patrollers sit
   off-lattice; test fixtures must too.
+- **The HUD's colour-8 counter is LIVES REMAINING, four cells each, on every level.**
+  Starved deliberately three times over: `8: 12` → `8: 8` → `8: 4` → GAME OVER → back to
+  `8: 12` (`results/l7-lives.txt`), and it reads 12 at the start of levels 2, 4, 6 and 7,
+  so it is the game's counter and not one level's. A life is 22 actions at 4 units of an
+  84-unit bar. This matters because **the three deaths are not alike**: the first two put
+  the panel back, the third is a game over that also clears `movers`, `mover_edges` and
+  `mover_p` — the patrol model and the alphabet. `ls20` reaches one twice per run and the
+  agent has never known which death it was about to take.
+- **Keeping the alphabet across a game over LOSES level 6** (5/7, 22.419%). It reads like
+  free money — the edges are the expensive half, the board is the same one, and the
+  tracker reissues the same ids in the same order, which is the repo's own stated reason
+  for restarting the numbering there. Measured, edges filed under the old ids plan presses
+  that do not happen, and a wrong edge costs more than an absent one. Only `movers`'
+  histories are safe to keep-or-drop cheaply; the edges must go with them.
 - **`ls20` level 7's frame is a 40x40 WINDOW around the piece, not the board.** Terrain is
   destroyed behind the piece and created ahead of it as it walks, reversibly and with no
   hysteresis — and comparing consecutive frames at every shift, the best match is
