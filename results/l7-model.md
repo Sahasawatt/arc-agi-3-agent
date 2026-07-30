@@ -142,6 +142,26 @@ would move `hud`'s colour-8 count, which is the lives counter and does not move)
 a second display is still in the fog, or what this door checks is not an (ink, shape) pair
 compared the way levels 2-6 compare theirs.
 
+## Testing the rotations by hand does not converge
+
+The obvious next experiment — press the patroller n times, walk to the door, try to enter,
+for n = 0..3 — was scripted as a 38-action drive with two refills (`results/l7-try1.txt`).
+It failed, twice over, and both failures are the level telling you something.
+
+**The glyph never turned.** The drive stood at (54, 35) and (54, 30), the same squares that
+turned it a quarter each on the earlier run, and nothing moved. The patroller advances one
+step per PIECE MOVE, as level 6's do, so arriving at the same square on a different tick
+arrives somewhere it is not. Pressing here is a timing problem, not a routing one.
+
+**And the map is not enough to route on.** At step 27 a plain `up` from (39, 35) landed the
+piece at **(29, 30)** — five up and ten left, a carrying cell nobody had mapped, and the
+second one found on this board. The drive was lost from there and starved at (19, 25).
+
+Which is the argument for doing it the agent's way rather than by hand: `route_moving`
+plans over position x patrol phase x panel and already solves exactly this, and it is
+`redirects` that learns a carry. Neither can run here until the frame stops being a window,
+so the general fog detector is not a nice-to-have — it is the whole gate.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
