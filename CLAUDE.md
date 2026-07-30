@@ -218,9 +218,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   asking `(8, #.#/##./.##)` — door B's exact ask on level 6 — which no window from the
   start can reach, so "no plates at all" was measuring the window and not the level. Built
   into the agent it works (world 1,165 → 2,839 cells, the plate visible in 777 of 789
-  rounds), and **it is in the repo now**. `gate.displays` still stays 0 — no plate is ever
-  seen to change, so nothing is `locked` and the door is just a rarity target; the
-  indicator is the unframed colour-12 L glyph at x3-8 y55-59, which `plates` cannot read.
+  rounds), and **it is in the repo now**. The indicator is the unframed colour-12 L glyph at
+  x3-8 y55-59, and **a plate does not need a box around it** — `plates` now also admits a
+  shape standing ALONE against ONE background colour that reaches the frame's own edge (a
+  shape on the floor is a thing to walk to; a shape in the void is a sign). That reads it as
+  `(3-8, 55-60) ink=12 .#./.#./###`, and level 7 stops wandering: `cand` collapses from 853
+  actions to 44 while `probe` (231), `stage1` (68), `moving-learn` (40), `turn-fuel` (26)
+  and `cycle-last` (16) all start firing — the whole lock machinery, including the patrol
+  planner. It costs `cd82` 179 actions (1,034 → 1,213, no level lost) and restricting the
+  rule to shapes on the void does not recover them — measured, byte-identical.
   What took two attempts is the LATCH. Keying on colour 5 trading terrain both ways is an
   `ls20` fact dressed as a general one, and costs `cd82`, `m0r0` and `ar25` their only
   level each — measured on one sighting AND on three consecutive — with 1,981 of 2,000

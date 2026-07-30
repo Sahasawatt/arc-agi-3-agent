@@ -162,6 +162,24 @@ plans over position x patrol phase x panel and already solves exactly this, and 
 `redirects` that learns a carry. Neither can run here until the frame stops being a window,
 so the general fog detector is not a nice-to-have — it is the whole gate.
 
+## A plate does not need a box around it
+
+`plates` defined a plate as a region with its own colour all the way round, which is what
+made `gate.displays` read 0 here for the whole level: the indicator is a bare glyph on the
+void. Widening it to admit a shape standing ALONE against ONE background colour reads it
+straight away —
+
+    plate (3-8, 55-60)   ink=12   .#./.#./###
+
+— and the level stops wandering. `cand` collapses from **853 actions to 44** while `probe`
+(231), `stage1` (68), `moving-learn` (40), `turn-fuel` (26) and `cycle-last` (16) all begin
+to fire: the door reads as `locked`, and the patrol planner runs here for the first time.
+
+The price is 179 actions on `cd82` (1,034 → 1,213, no level lost), and narrowing the rule
+to shapes drawn on the VOID — the colour that reaches the frame's own edge, on the argument
+that a shape on the floor is a thing to walk to while a shape in the void is a sign — is
+byte-identical, so whatever `cd82` newly admits is in its void too.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five

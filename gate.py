@@ -44,6 +44,19 @@ def _framed(grid, x0, x1, y0, y1, c):
                 and (grid[y0:y1 + 1, x0] == c).all() and (grid[y0:y1 + 1, x1] == c).all())
 
 
+def _ring(grid, x0, x1, y0, y1):
+    """The set of colours immediately surrounding a region, clipped to the frame."""
+    h, w = grid.shape
+    out = set()
+    for y in (y0 - 1, y1 + 1):
+        if 0 <= y < h:
+            out.update(int(v) for v in grid[y, max(0, x0 - 1):min(w, x1 + 2)])
+    for x in (x0 - 1, x1 + 1):
+        if 0 <= x < w:
+            out.update(int(v) for v in grid[max(0, y0 - 1):min(h, y1 + 2), x])
+    return out
+
+
 def plates(frame):
     """{(x0, x1, y0, y1): (ink colour, icon)} for every region with a shape inside it.
 
@@ -57,11 +70,26 @@ def plates(frame):
     # edges is framed by definition and holds everything drawn on top of it, so without an
     # upper bound the floor reads as one enormous display and every target on it is locked.
     wide, tall = grid.shape[1] // 3, grid.shape[0] // 3
+    # A bare shape counts only where it is drawn on the OUTSIDE — the colour that reaches
+    # the frame's own edge. A shape on the floor is a thing to walk to; a shape in the void
+    # is a sign. Admitting both reads right and costs `cd82` 179 actions (1,034 -> 1,213).
+    void = {int(v) for v in np.concatenate([grid[0], grid[-1], grid[:, 0], grid[:, -1]])}
     for c in np.unique(grid):
         for x0, x1, y0, y1, _ in components(grid, int(c)):
             if not MIN_SIDE <= x1 - x0 + 1 <= wide or not MIN_SIDE <= y1 - y0 + 1 <= tall:
                 continue
             if not _framed(grid, x0, x1, y0, y1, int(c)):
+                # A shape can report state without a box around it. `ls20` level 7 draws
+                # its indicator as a bare colour-12 glyph on the void — it turns a quarter
+                # per press, four states and back — and the frame test is exactly what made
+                # `gate.displays` read 0 there for the whole level, so nothing was `locked`
+                # and its door was just another rarity target. A shape ALONE against ONE
+                # background is the other way a board can say something; a shape touching
+                # anything else is part of a bigger object and stays out.
+                ring = _ring(grid, x0, x1, y0, y1)
+                if len(ring) == 1 and int(c) not in ring and ring <= void:
+                    out[(x0, x1, y0, y1)] = (int(c),
+                                             icon(frame, x0, x1, y0, y1, ink=int(c)))
                 continue
             inner = grid[y0 + 1:y1, x0 + 1:x1]
             inks = [(int(d), int(n)) for d, n in zip(*np.unique(inner, return_counts=True))
