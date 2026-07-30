@@ -302,7 +302,7 @@ class Gate:
                             self.mover_edges.setdefault((k, hh), {})[before[hh]] = after[hh]
         return bool(changed)
 
-    def track(self, boxes, body, moved, at=None):
+    def track(self, boxes, body, moved, at=None, colours=None):
         """Record every small object's box against the patrol clock, when it ticked.
 
         The clock is the PIECE MOVING: `ls20` level 6's patrollers advance one lattice
@@ -324,6 +324,18 @@ class Gate:
             return
         self.ticks += 1
         w, h = (at[2], at[3]) if at is not None and len(at) > 3 else (5, 5)
+        # Tried and measured out: a patroller on a board bigger than the frame is out of
+        # view most of the time and the tracker issues a NEW id every time it comes back,
+        # so no id accumulates the three laps a period needs — level 7 tracks 25 to 61
+        # objects with full histories and earns one. What survives leaving the frame is
+        # what the object is MADE of, so `movers` was keyed on (colour, size) wherever
+        # that was UNAMBIGUOUS in the frame — the uniqueness guard being there because
+        # `see` documents what keying on it outright costs (two objects sharing a key
+        # collide, and 55 went missing across the MAZE_LIKE games). The guard is not
+        # enough: it costs `ls20` level 5 a hundred actions and level 6 eighteen
+        # (292 -> 393, 209 -> 227, 40.503% -> 36.884%), because a signature that is
+        # unique in one frame and not in the next flips the key back and forth and
+        # splits the very history it was meant to join.
         for k, b in boxes.items():
             if body and k in body:
                 continue
