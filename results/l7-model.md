@@ -281,9 +281,37 @@ block at x11-12 y41-43 walks the INK — and the ink it walks is the one this ga
 since level 3: `Gate.legacy` already holds `12 -> 9 -> 14 -> 8 -> 12`, so three presses of
 this block reach **8**, the ask's own ink, with nothing new to learn.
 
-What is still unaccounted for is the SHAPE. The ask is `#.#/##./.##`, six cells; the
-indicator is `.#./.#./###`, five, and a quarter turn preserves the count. Either a third
-changer exists, or the hole's glyph is not what the indicator is compared against.
+## And the shape changer walks an ALPHABET
+
+The colour-0 object beside the ink block — x20-22 y41-43, the colour level 6's crosses are
+made of — is the other half. Standing at (19, 40), whose 5x5 covers x19-23 y40-44:
+
+    ink=9   .#./.#./###      before
+    ink=9   #.#/#.#/###      after
+
+Five cells to seven, so it is not a quarter turn: this one walks an alphabet, exactly as
+level 6's cross-1 does. And it is phase-dependent — the first arrival at (19, 40) changed
+nothing and the second did — so it is a PATROLLER, like everything else that presses on
+these boards.
+
+So level 7 is fully accounted for, and it is the same machine as level 6 with the parts
+further apart than one window:
+
+| part | where | what it does |
+|---|---|---|
+| indicator | x3-8 y55-60, unframed | reports (ink, shape) |
+| ink changer | x11-12 y41-43, four colours, static | walks `12 -> 9 -> 14 -> 8 -> 12` |
+| shape changer | colour-0 patroller by x20-22 y41-43 | walks a shape alphabet |
+| shape changer | colour-0/1 patroller at x55-57 | a quarter turn |
+| the ask | colour-8 glyph in a hole at x31-33 y51-53 | `(8, #.#/##./.##)` |
+
+The ink half is free — `Gate.legacy` has carried that alphabet since level 3, so three
+presses of the block reach the ask's ink with nothing to learn. The shape half is a walk
+along an alphabet the agent already knows how to learn, by the rung that learns level 6's.
+
+What the agent still lacks here is `movers`: it reads 0 for the whole level, so
+`route_moving` — the planner that times a press against a patrol — never runs. That is the
+next thing to fix, and it is the last one between this level and a plan.
 
 ## Also measured, not yet explained
 

@@ -262,9 +262,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   at (9,40) **changes the indicator's INK, 12 -> 9, shape untouched** (`hud`'s `12: 6`
   becomes `9: 6`). So level 7 has both halves: the x55 patroller turns the SHAPE a quarter,
   this block walks the INK — along `12 -> 9 -> 14 -> 8 -> 12`, which `Gate.legacy` has held
-  since level 3, so three presses reach the ask's ink with nothing new to learn. Unaccounted
-  for: the SHAPE. The ask has six cells, the indicator five, and a quarter turn preserves
-  the count. A 26-action walk around it contradicts **zero** cells, so the nearest
+  since level 3, so three presses reach the ask's ink with nothing new to learn. The SHAPE half is
+  the colour-0 object beside it at x20-22 y41-43: from (19,40) the indicator goes
+  `.#./.#./###` → `#.#/#.#/###`, five cells to seven, so it walks an ALPHABET rather than
+  turning — and it is phase-dependent, so it is a patroller too. **Level 7 is fully
+  accounted for and is level 6's machine with the parts further apart than one window.**
+  What the agent still lacks is `movers`, which reads 0 for the whole level, so
+  `route_moving` never runs — the last thing between this level and a plan. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
