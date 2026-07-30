@@ -207,6 +207,23 @@ Which leaves three readings, and the session has not separated them:
 The cheapest of the three to settle is the second: map the plate's interior by approaching
 it from the other sides, which the agent can now do for itself.
 
+### Two things the live run shows that the offline stitch could not
+
+Read from the agent's own `Gate` across a full level-7 run rather than from a hand-driven
+probe: `displays` is **1** from early on, so the indicator does work as a display and the
+door does read as locked — the machinery is engaged and the blocker is the shape.
+
+Two loose ends came with it, neither yet chased:
+
+- **`movers` is 0 for the whole level.** The patrol tracking never earns a period for the
+  patroller at x55-57, so `route_moving` — the planner this board needs — cannot run here
+  at all. Whether `track()` is skipping it or the piece simply never gets near enough for
+  long enough is unmeasured.
+- **Plates with ink 9 and ink 14 appear two or three times.** Colour 9 is the piece's own
+  lower half, and the bare-shape reader admits a shape alone against one background — so
+  the piece may be reading as a plate at moments when its colour-12 half is off the window.
+  A risk the sweep did not catch and nothing yet rules out.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
