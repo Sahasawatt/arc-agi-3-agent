@@ -721,6 +721,13 @@ class Gate:
             return None
         want = min(marks_door)
         panel0 = min(state)
+        # Tried and measured exactly inert: learn the half the DOOR is waiting on first,
+        # in a strict pass before the general one, on the grounds that the search returns
+        # the NEAREST unwatched press and will as happily go and learn a half that is
+        # already right. Every per-level count came back identical, because the restriction
+        # almost never bites — the panel differs from a door's ask in BOTH halves nearly
+        # all the time on this board, so the wanted set is every half and the strict pass
+        # is the general one.
         movers = [(k, self.mover_period(k)) for k in self.movers
                   if self.mover_period(k) and self.movers[k].get("halves")]
         if not movers:

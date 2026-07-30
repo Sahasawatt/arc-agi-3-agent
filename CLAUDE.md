@@ -239,6 +239,13 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   to the action (`results/sweep-mute.log`). `stage1` 209 → **3**, `moving-learn` 82 → 154,
   deaths 6 → **1**. The lesson generalises past this board: when a search reports "nothing
   left to learn", ask what it is unable to represent before asking what it cannot afford.
+- **Preferring to learn the half the DOOR wants is exactly inert.** The learn search
+  returns the NEAREST unwatched press and will as happily walk off to learn a half that is
+  already right, so a strict pass over the wanted halves before the general one reads like
+  free direction. Every per-level count came back identical: the panel differs from a
+  door's ask in **both** halves nearly all the time on this board, so the wanted set is
+  every half and the strict pass IS the general one. A preference only steers where the
+  thing preferred is sometimes a minority.
 - **Identity is the LAP, and a track that churns strands the alphabet under the old id.**
   A patroller is invisible exactly when it is pressed — the piece covers it — so the id
   churns on the tick that matters. Level 6's 285-action run makes 85 presses, gains 51
