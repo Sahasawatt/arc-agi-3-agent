@@ -329,7 +329,7 @@ class Gate:
                     break
             if by and len(set(by.values())) > 1:
                 self.mover_p[k] = p
-                self._adopt(k, set(by.values()))
+                self._adopt(k, p)
                 return p
         # Nothing is consistent across the whole window, which after a death is the
         # normal case and not an unknown object: the patrollers went back to the start
@@ -352,9 +352,10 @@ class Gate:
         for t, b in live:
             if by.setdefault(t % p, b) != b:
                 return None
+        self._adopt(k, p)
         return p
 
-    def _adopt(self, k, lap):
+    def _adopt(self, k, p):
         """A track that churned is the same patroller: give the new id what the old knew.
 
         The alphabet is the expensive half and it was being paid for again and again.
@@ -369,7 +370,23 @@ class Gate:
         square is where two tracks cross. The records are copied rather than aliased so
         every reader stays as it was, and a wrong adoption is refutable the same way any
         wrong edge is — the phantom-edge check drops what does not pay out.
+
+        Asked on every reading of the period, not only on the one that EARNS it, and
+        against a lap that ACCUMULATES: a snapshot taken the moment a period is first
+        earned holds whatever few phases had been sighted by then, and a partial circuit
+        matches nothing. That is why the first version only closed 26 keys to 24 where
+        three patrollers of two halves want six. The squares of a circuit are the same
+        on the next life — a death moves a patroller back along its track, not off it —
+        so the union is across lives while `mover_at`'s phase map stays within one.
         """
+        lap = set()
+        by = {}
+        for t, b in self.movers.get(k, {}).get("hist", []):
+            if t > max(self.ticks - 3 * p, self.reset):
+                by[t % p] = b
+        lap = self._laps.get(k, set()) | set(by.values())
+        if len(lap) < 2:
+            return
         for j, other in list(self._laps.items()):
             if j != k and len(other & lap) >= 2:
                 self.movers[k].setdefault("halves", set()).update(

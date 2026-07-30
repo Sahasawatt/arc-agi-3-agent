@@ -910,6 +910,49 @@ reader stays as it was, and a wrong adoption is refutable exactly like any wrong
 
 Levels 1-5 identical again, the other three games unmoved (`results/sweep-adopt.log`).
 
+### 265 to 209: a circuit is recognised in pieces, and on every look
+
+That first version closed 26 keys to 24, where three patrollers of two halves want six, and
+the reason is two words of the code. It asked only on the reading that **earns** a period —
+never on the far commoner one that inherits it, so a board that kills the piece adopts
+nothing for the three laps after every death — and it compared a **snapshot** of the circuit
+taken at that instant, which holds whatever few phases happened to have been sighted by
+then. A partial circuit matches nothing, and once stored it never improved.
+
+Ask on every reading, and let the lap **accumulate**: the squares of a circuit are the same
+on the next life, because a death moves a patroller back along its track rather than off it,
+so the union is taken across lives while `mover_at`'s phase map stays strictly within one.
+
+    ls20  [23, 45, 99, 178, 292, 209]   40.503%     was 265 and 33.668%
+
+Levels 1-5 identical, the other three games unmoved (`results/sweep-adopt2.log`). The key
+count barely moves — 24 to 22 — and that is the wrong number to watch: what changes is that
+the edges **spread**, 151 to 221 across those keys, so whichever id the tracker is currently
+calling a patroller already knows what it does. Level 6 now runs at **1.09x the human
+baseline**, against 4.4x when the session started.
+
+### 265 to 209: a circuit is recognised in pieces, and on every look
+
+That first version closed 26 keys to 24, where three patrollers of two halves want six, and
+the reason is in two words of the code. It asked only on the reading that **earns** a
+period — never on the far commoner one that inherits it, so a board that kills the piece
+adopts nothing for the three laps after every death — and it compared a **snapshot** of the
+circuit taken at that instant, which holds whatever few phases happened to have been sighted
+by then. A partial circuit matches nothing, and once stored it never improved.
+
+Both are one-line problems. Ask on every reading, and let the lap **accumulate**: the
+squares of a circuit are the same on the next life, because a death moves a patroller back
+along its track rather than off it, so the union is taken across lives while `mover_at`'s
+phase map stays strictly within one.
+
+    ls20  [23, 45, 99, 178, 292, 209]   40.503%     was 265 and 33.668%
+
+Levels 1-5 identical, the other three games unmoved (`results/sweep-adopt2.log`). The key
+count barely moves — 24 to 22 — and that turns out to be the wrong thing to watch: what
+changes is that the edges **spread**, 151 to 221 across those keys, so whichever id the
+tracker is currently calling a patroller already knows what it does. Level 6 now runs at
+**1.09x the human baseline**, against 4.4x when the session started.
+
 ### The seventh level is a window, and the agent thinks it is a board
 
 Level 7 has no plates, nothing patrols, and the first look at it recorded an arena that

@@ -95,3 +95,13 @@ new edges and ended holding 122 edges under 26 keys for three patrollers — the
 edges relearned every time the tracker renamed the object carrying them. A track that
 earns a period now inherits the halves and alphabet of any circuit sharing two of its
 squares.
+
+Then **209 at 40.503%** (`sweep-adopt2.log`), asking on every reading of the period rather
+than only the one that earns it, and against a lap that accumulates instead of a snapshot.
+Keys 24 → 22, but the edges spread 151 → 221. Level 6 now runs at 1.09x the human baseline
+of 192, from 4.4x at the start of the session.
+
+Then **209 at 40.503%** (`sweep-adopt2.log`), asking on every reading of the period rather
+than only the one that earns it, and against a lap that accumulates instead of a snapshot.
+Keys 24 → 22, but the edges spread 151 → 221. Level 6 now runs at 1.09x the human baseline
+(192), from 4.4x at the start of the session.

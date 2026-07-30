@@ -257,6 +257,22 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   On earning a period a track inherits the halves and edges of the circuit it matches,
   copied not aliased so no reader changes, and a wrong adoption is refutable like any wrong
   edge. **285 → 265, 32.144% → 33.668%** (`results/sweep-adopt.log`).
+  Then **265 → 209, 33.668% → 40.503%** by fixing two words of it: adoption was asked only
+  on the reading that EARNS a period — never on the commoner one that inherits it, so a
+  board that kills the piece adopted nothing for three laps after every death — and it
+  compared a SNAPSHOT of the circuit taken at that instant, which holds whatever few phases
+  had been sighted by then and never improved. Ask on every reading, accumulate the lap
+  (a death moves a patroller back ALONG its track, not off it, so the union is across lives
+  while `mover_at` stays within one). Watch the wrong number and you miss it: keys go only
+  24 → 22, while the edges SPREAD, 151 → 221.
+  Then **265 → 209, 33.668% → 40.503%** by fixing two words of it: adoption was asked only
+  on the reading that EARNS a period — never on the commoner one that inherits it, so a
+  board that kills the piece adopted nothing for three laps after every death — and it
+  compared a SNAPSHOT of the circuit taken at that instant, which holds whatever few phases
+  had been sighted by then and never improved. Ask on every reading, accumulate the lap
+  (a death moves a patroller back ALONG its track, not off it, so the union is across lives
+  while `mover_at` stays within one). Watch the wrong number and you will miss it: keys only
+  go 24 → 22, while the edges SPREAD, 151 → 221.
 - **A period belongs to the OBJECT and a phase belongs to the LIFE.** A death puts every
   patroller back at the start of its lap, so pre-death entries contradict post-death ones
   at the same phase and `mover_period` returns None for the three laps they take to age

@@ -590,6 +590,28 @@ def test_a_track_that_churns_inherits_what_the_old_id_was_seen_to_do():
     assert g.mover_edges[("new", 1)] == {"a": "b"}, "and so does the alphabet"
 
 
+def test_a_period_that_was_inherited_adopts_as_well_as_one_that_was_earned():
+    """Asked on every reading of the period, not only the one that EARNS it. A board that
+    kills the piece hands out inherited periods for three laps after every death, and the
+    first version adopted nothing across all of them — which is why it closed 26 keys to
+    24 where three patrollers of two halves want six."""
+    g = Gate()
+    ticked(g, LAP8 + LAP8, key="old")
+    assert g.mover_period("old") == 8   # a circuit registers when its period is read
+    g.movers["old"]["halves"] = {1}
+    g.mover_edges[("old", 1)] = {"a": "b"}
+
+    ticked(g, LAP8 + LAP8, key="new")
+    assert g.mover_period("new") == 8          # earned here, and it registers its circuit
+    g.movers["new"]["halves"] = set()          # pretend this one was never watched
+    g.mover_edges.pop(("new", 1), None)
+
+    g.reset = g.ticks                          # a life ends and the lap restarts OFF-phase,
+    ticked(g, LAP8[3:7], key="new")            # so the whole window contradicts itself
+    assert g.mover_period("new") == 8, "the period is INHERITED, not earned again"
+    assert g.movers["new"]["halves"] == {1}, "and the alphabet comes with it"
+
+
 def test_a_different_circuit_inherits_nothing():
     """One shared square is a crossing, not an identity."""
     g = Gate()
