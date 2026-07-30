@@ -20,12 +20,14 @@ scales — the indicator is 2x the marker — so a shape is trimmed to its own b
 runs of identical adjacent rows and columns are collapsed before anything is compared.
 """
 
+import os
 from collections import deque
+from math import gcd as _gcd
 
 import numpy as np
 
 from discover import walkable
-from plan import step_to
+from plan import footprints_touching, step_to
 from perception import components, icon
 
 MIN_SIDE = 4   # anything narrower is an icon's own notch, not a panel
@@ -153,6 +155,19 @@ class Gate:
         self.cycles = {}
         self.stuck = 0     # planning rounds in a row with nothing left to watch
         self.rotates = set()  # (square, half) seen to TURN its glyph, not merely change it       # (changer, half) -> {value seen: the value it became}
+        # Changers that MOVE. `ls20` level 6's crosses patrol the corridors — a small
+        # object advances one lattice step per PIECE MOVE (a refused press freezes it)
+        # on a short cycle, and a "press" is the piece's footprint overlapping the
+        # object after the move. Keyed on track id; a track that churns simply starts
+        # a new history and earns its period again.
+        self.ticks = 0        # piece-moves so far: the clock every patroller runs on
+        self.movers = {}      # track id -> {"hist": [(tick, box)], "halves": set}
+        self.mover_edges = {}  # (track id, half) -> {value: value it became}
+        # Marked plates the piece has STOOD INSIDE. The engine only lets it in matched,
+        # and a door passed that way stays open: measured on `ls20` level 6, door B
+        # refused (9, A-glyph) cold and passed it after one matched entry. A death puts
+        # the panel back, so the caller clears this when a life ends.
+        self.opened = set()
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.
@@ -180,6 +195,13 @@ class Gate:
                     and at[1] < box[3] + 1 and at[1] + h > box[2])
 
         now = {b: v for b, v in now.items() if not under_piece(b)}
+        # Standing fully inside a marked plate means the engine let the piece in — the
+        # door is open, and it stays open (see `opened` above).
+        if at is not None:
+            for box in self.icons:
+                if box not in self.displays and at[0] >= box[0] and at[0] + w <= box[1] + 1 \
+                        and at[1] >= box[2] and at[1] + h <= box[3] + 1:
+                    self.opened.add(box)
         changed = {box for box, v in now.items() if old.get(box, v) != v}
         moved = {i for box in changed
                  for i, (was, is_) in enumerate(zip(self.icons.get(box, now[box]), now[box]))
@@ -218,7 +240,104 @@ class Gate:
                             step = self.cycles[(self.changer, h)]
                             for i, v in enumerate(orbit):
                                 step.setdefault(v, orbit[(i + 1) % len(orbit)])
+            # A changer that MOVES: when the press was the footprint overlapping a
+            # patroller after the move, the edge belongs to the OBJECT — the square it
+            # happened on is one of many footprint-overlap positions and never repeats
+            # reliably, which is exactly why `ls20` level 6's presses read as random.
+            # The patroller being pressed is COVERED by the piece, so its own track id
+            # churns on exactly this tick: the overlap test asks each mover's PHASE MAP
+            # where it should be, and falls back to a sighting from this tick.
+            # The footprint is re-read here because the loop above reuses `h` for a
+            # half index — which silently turned the footprint 5x1 and cost every
+            # mover its credit until it was traced.
+            fw, fh = (at[2], at[3]) if len(at) > 3 else (5, 5)
+            for k, info in self.movers.items():
+                hist = info["hist"]
+                b = hist[-1][1] if hist and hist[-1][0] == self.ticks else None
+                if b is None:
+                    b = self.mover_at(k, 0)
+                if not b or not (at[0] < b[0] + b[2] and at[0] + fw > b[0]
+                                 and at[1] < b[1] + b[3] and at[1] + fh > b[1]):
+                    continue
+                info.setdefault("halves", set()).update(moved)
+                for box in changed:
+                    before, after = old.get(box), now[box]
+                    if before is not None:
+                        for hh in moved:
+                            self.mover_edges.setdefault((k, hh), {})[before[hh]] = after[hh]
         return bool(changed)
+
+    def track(self, boxes, body, moved, at=None):
+        """Record every small object's box against the patrol clock, when it ticked.
+
+        The clock is the PIECE MOVING: `ls20` level 6's patrollers advance one lattice
+        step per piece move and freeze while a press is refused — measured three times
+        in one probe. Feeding a frozen tick would smear every period, so the caller
+        only reports ticks on which the piece actually moved.
+
+        Entries carry the tick, because a patroller is INVISIBLE at the very moment it
+        matters most: the piece pressing it covers it, its track id churns, and a
+        history that pretends the ticks were contiguous slips phase on every press.
+
+        Anything overlapping the piece's own footprint is skipped: the piece's parts
+        churn ids past the `body` filter, and a piece pacing back and forth earns its
+        own parts a period and a press credit — a phantom patroller glued to the piece
+        that blankets every neighbouring square with unplannable presses. A patroller
+        loses only its occluded ticks to this, which the phase map already tolerates.
+        """
+        if not moved:
+            return
+        self.ticks += 1
+        w, h = (at[2], at[3]) if at is not None and len(at) > 3 else (5, 5)
+        for k, b in boxes.items():
+            if body and k in body:
+                continue
+            if b[2] > 8 or b[3] > 8:
+                continue                      # a mover here is a small marker-sized thing
+            if at is not None and (at[0] < b[0] + b[2] and at[0] + w > b[0]
+                                   and at[1] < b[1] + b[3] and at[1] + h > b[1]):
+                continue
+            hist = self.movers.setdefault(k, {"hist": []})["hist"]
+            hist.append((self.ticks, (int(b[0]), int(b[1]), int(b[2]), int(b[3]))))
+            del hist[:-48]                    # period detection needs 2 cycles, not a run
+
+    def mover_period(self, k, cap=16):
+        """Shortest cycle the object's recent positions are CONSISTENT with, or None.
+
+        Consistency is judged per phase of the global clock — every recorded box at the
+        same `tick mod p` must agree — so a history with occlusion gaps still earns its
+        period. A static object repeats with every period, so a real cycle must contain
+        more than one distinct position; and enough entries are demanded that at least
+        one phase has been seen twice, or a fresh track would pass vacuously.
+        """
+        hist = self.movers.get(k, {}).get("hist", [])
+        for p in range(2, cap + 1):
+            window = [(t, b) for t, b in hist if t > self.ticks - 3 * p]
+            if len(window) < p + 2:
+                continue
+            by = {}
+            for t, b in window:
+                if by.setdefault(t % p, b) != b:
+                    by = None
+                    break
+            if by and len(set(by.values())) > 1:
+                return p
+        return None
+
+    def mover_at(self, k, ahead):
+        """The object's box `ahead` piece-moves from now, read off its phase map.
+
+        None when that phase has never been observed — which is exactly the occluded
+        stretch of the lap; the components of the same patroller that survive the piece
+        passing over are the ones that answer there."""
+        p = self.mover_period(k)
+        if p is None:
+            return None
+        by = {}
+        for t, b in self.movers[k]["hist"]:
+            if t > self.ticks - 3 * p:
+                by[t % p] = b
+        return by.get((self.ticks + ahead) % p)
 
     def cycled(self):
         """Book one re-entry of the changer, and forget a square that has stopped paying.
@@ -239,6 +358,11 @@ class Gate:
         """The (ink, shape) pairs worn by the non-display plates this target sits on."""
         return {v for box, v in self.icons.items()
                 if box not in self.displays and _overlaps(o, box)}
+
+    def entered(self, o):
+        """Has the piece already stood inside this target's plate? A door that was
+        entered and did not end the level is a passage, not a goal worth re-entering."""
+        return any(box not in self.displays and _overlaps(o, box) for box in self.opened)
 
     def marked(self, o):
         """Does this target sit on a plate that is not a display?
@@ -485,6 +609,243 @@ class Gate:
         # `ls20` that is 21 of the order search's failures, and the agent falls through to
         # walking at whatever is rarest instead of turning the changer it can see.
         return out
+
+    def _mover_step(self, k, half, value):
+        """What patroller `k` turns `half`'s `value` into, or None when unplannable.
+
+        Watched edge first; a patroller whose every watched edge is a quarter turn is a
+        rotator and rotation is a law; an ink value falls back to the game's alphabet.
+        """
+        step = self.mover_edges.get((k, half), {})
+        got = step.get(value)
+        if got is not None:
+            return got
+        if step and all(turned(a, b) for a, b in step.items()
+                        if isinstance(a, str) and isinstance(b, str)) \
+                and isinstance(value, str):
+            spun = turned(value)
+            if spun:
+                return spun[1]
+        if isinstance(value, int):
+            return self.legacy.get(value)
+        return None
+
+    def route_moving(self, grid, model, start, door, refills, full, left,
+                     redirects=None):
+        """(actions, display-change marks) to enter `door` wearing its ask, on a board
+        whose changers PATROL — or None.
+
+        BFS over (position, patrol phase, panel value, refills used), fuel carried as a
+        value to maximise per state. A press is the footprint overlapping a patroller
+        AFTER the move (both tick together, and only when the piece moves), so the panel
+        along any route is fully determined — the plan arrives with the panel right
+        instead of matching first and hoping the walk keeps it.
+
+        Every marked plate is a checked gate: a position inside one is entered only when
+        the simulated panel equals its mark at that step — which makes a door with
+        another door behind it a corridor with a toll, not a special case.
+        """
+        dbg = (lambda *a: print("[rm]", *a)) if os.environ.get("ARC_RMDBG") else (lambda *a: None)
+        marks_door = self._marks(door)
+        state = self.state()
+        if not marks_door or not state:
+            dbg("no marks/state", marks_door, state)
+            return None
+        want = min(marks_door)
+        panel0 = min(state)
+        movers = [(k, self.mover_period(k)) for k in self.movers
+                  if self.mover_period(k) and self.movers[k].get("halves")]
+        if not movers:
+            dbg("no ready movers")
+            return None
+        period = 1
+        for _, p in movers:
+            g = _gcd(period, p)
+            period = period // g * p
+            if period > 64:
+                return None                   # cycles that long are not yet believable
+        # Patroller boxes per phase, indexed by ticks-from-now (1-based ahead).
+        ahead_box = {k: [self.mover_at(k, m) for m in range(period + 1)]
+                     for k, _ in movers}
+
+        # Positions inside each marked plate, and the pair it wears. The DOOR's own
+        # inside is the goal; any other marked plate is a toll gate on the way — paid
+        # either with the panel matching its mark at that step, or by having ALREADY
+        # been entered matched: a door passed that way stays open (measured, level 6),
+        # and a plan may open one mid-route on the way to the one behind it.
+        boxes = [b for b in self.icons if b not in self.displays]
+        gates = {}
+        for n, box in enumerate(boxes):
+            o = {"x": [box[0], box[1]], "y": [box[2], box[3]]}
+            w, h = model.box
+            inside = {(x, y) for x, y in footprints_touching(grid, model, o)
+                      if x >= box[0] and x + w <= box[1] + 1
+                      and y >= box[2] and y + h <= box[3] + 1}
+            for p in inside:
+                gates[p] = (n, self.icons[box])
+        opened0 = sum(1 << n for n, b in enumerate(boxes) if b in self.opened)
+        # The goal is THIS door's inside, not every plate that happens to wear the same
+        # pair. The gates check above already demands the panel equal `want` on entry.
+        goals = {p for p in gates
+                 if p[0] >= door["x"][0] - model.box[0] and p[0] <= door["x"][1]
+                 and p[1] >= door["y"][0] - model.box[1] and p[1] <= door["y"][1]}
+        if not goals:
+            dbg("no goals for door", door["x"], door["y"])
+            return None
+
+        picks = [footprints_touching(grid, model, f) for f in refills]
+
+        w, h = model.box
+
+        def presses(pos, m):
+            """Which halves patrollers move on landing at `pos`, `m` ticks from now."""
+            out = {}
+            for k, _ in movers:
+                b = ahead_box[k][m % period] if m % period else ahead_box[k][period]
+                if b is None:
+                    continue
+                if (pos[0] < b[0] + b[2] and pos[0] + w > b[0]
+                        and pos[1] < b[1] + b[3] and pos[1] + h > b[1]):
+                    for half in self.movers[k].get("halves", ()):
+                        out.setdefault(half, k)
+            return out
+
+        fuel0 = left if left is not None else (full or 10 ** 6)
+        seen = {(start, 0, panel0, 0, opened0): (fuel0, None)}
+        q = deque([(start, 0, panel0, 0, opened0)])
+        best = None
+        while q and best is None:
+            node = q.popleft()
+            pos, t, panel, used, opened = node
+            fuel = seen[node][0]
+            if fuel <= 0:
+                continue
+            for a in model.dirs:
+                nxt = step_to(model, pos, a, redirects)
+                if not walkable(grid, model, nxt[0], nxt[1]):
+                    continue
+                t2 = (t + 1) % period
+                hit = presses(nxt, t + 1)
+                panel2, ok = list(panel), True
+                for half, k in hit.items():
+                    got = self._mover_step(k, half, panel2[half])
+                    if got is None:
+                        ok = False              # an unplannable press: do not walk there
+                        break
+                    panel2[half] = got
+                if not ok:
+                    continue
+                panel2 = tuple(panel2)
+                opened2 = opened
+                if nxt in gates:
+                    n, val = gates[nxt]
+                    if opened & (1 << n):
+                        pass                    # passed matched once already: it stays open
+                    elif panel2 == val:
+                        opened2 = opened | (1 << n)
+                    else:
+                        continue                # a checked gate, and the panel is wrong
+                used2, fuel2 = used, fuel - 1
+                for n, pk in enumerate(picks):
+                    if nxt in pk and not used2 & (1 << n):
+                        used2, fuel2 = used2 | (1 << n), full or fuel0
+                key = (nxt, t2, panel2, used2, opened2)
+                if key in seen and seen[key][0] >= fuel2:
+                    continue
+                seen[key] = (fuel2, (node, a))
+                if nxt in goals and panel2 == want:
+                    best = key
+                    break
+                q.append(key)
+        if best is None:
+            dbg("bfs exhausted: states=%d want=%s panel0=%s movers=%s fuel0=%s"
+                % (len(seen), want, panel0, [(k, p) for k, p in movers], fuel0))
+            return None
+        # How many checked gates this plan passes for the first time — the goal door's
+        # own entry is among them. A plan through MORE gates has demonstrated more of
+        # the lock, and the caller prefers it: entering the shallow door first was
+        # measured to strand the piece there with no fuel for the one behind it.
+        gates_opened = bin(best[4]).count("1") - bin(opened0).count("1")
+        acts, cur = [], best
+        while seen[cur][1]:
+            cur, a = seen[cur][1]
+            acts.append(a)
+        acts = acts[::-1]
+        # Re-walk the winning route for the per-action display prediction the play
+        # loop validates a staged trip with.
+        marks, pos, panel, m = [], start, panel0, 0
+        for a in acts:
+            pos = step_to(model, pos, a, redirects)
+            m += 1
+            hit = presses(pos, m)
+            changed = False
+            for half, k in hit.items():
+                got = self._mover_step(k, half, panel[half])
+                if got is not None and got != panel[half]:
+                    panel = tuple(got if i == half else v for i, v in enumerate(panel))
+                    changed = True
+            marks.append(changed)
+        return acts, marks, gates_opened
+
+    def route_learn(self, grid, model, start, target, refills, full, left,
+                    redirects=None):
+        """Actions that press patroller `target` once, fuel-aware, or None.
+
+        The moving planner can only plan through edges it has WATCHED, and a level can
+        ask for a value whose path nobody has pressed yet: `ls20` level 6's second door
+        wants a glyph five presses down an alphabet the agent has no reason to walk.
+        One deliberate press teaches the next edge; replanning after it chains the rest.
+        The press has to leave enough in the tank to matter — a press the piece starves
+        on resets the panel with it (the blind-probe lesson, again).
+        """
+        p = self.mover_period(target)
+        if p is None:
+            return None
+        boxes = [b for b in self.icons if b not in self.displays]
+        blocked = set()
+        for box in boxes:
+            if box in self.opened:
+                continue
+            o = {"x": [box[0], box[1]], "y": [box[2], box[3]]}
+            w, h = model.box
+            blocked |= {(x, y) for x, y in footprints_touching(grid, model, o)
+                        if x >= box[0] and x + w <= box[1] + 1
+                        and y >= box[2] and y + h <= box[3] + 1}
+        picks = [footprints_touching(grid, model, f) for f in refills]
+        w, h = model.box
+        fuel0 = left if left is not None else (full or 10 ** 6)
+        seen = {(start, 0, 0): (fuel0, None)}
+        q = deque([(start, 0, 0)])
+        while q:
+            node = q.popleft()
+            pos, t, used = node
+            fuel = seen[node][0]
+            if fuel <= 0:
+                continue
+            for a in model.dirs:
+                nxt = step_to(model, pos, a, redirects)
+                if nxt in blocked or not walkable(grid, model, nxt[0], nxt[1]):
+                    continue
+                t2 = (t + 1) % p
+                used2, fuel2 = used, fuel - 1
+                for n, pk in enumerate(picks):
+                    if nxt in pk and not used2 & (1 << n):
+                        used2, fuel2 = used2 | (1 << n), full or fuel0
+                key = (nxt, t2, used2)
+                if key in seen and seen[key][0] >= fuel2:
+                    continue
+                seen[key] = (fuel2, (node, a))
+                b = self.mover_at(target, t + 1)
+                if (b is not None and fuel2 >= 6
+                        and nxt[0] < b[0] + b[2] and nxt[0] + w > b[0]
+                        and nxt[1] < b[1] + b[3] and nxt[1] + h > b[1]):
+                    acts, cur = [], key
+                    while seen[cur][1]:
+                        cur, act = seen[cur][1]
+                        acts.append(act)
+                    return acts[::-1]
+                q.append(key)
+        return None
 
     def changer_for(self, o):
         """The square that moves the half of the display this target disagrees on.

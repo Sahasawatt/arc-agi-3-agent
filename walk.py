@@ -47,6 +47,13 @@ obs = env.reset()
 
 for a in PREFIX:  # get to the state under test, quietly
     obs = env.step({x.value: x for x in env.action_space}[a])
+    # A run that starves mid-prefix ends in GAME_OVER; the engine's reset is a LEVEL
+    # reset, exactly as compete.play handles it — replaying its action list needs the
+    # same response or every step after the first death reads an empty frame.
+    import numpy as _np
+    from arcengine import GameState as _GS
+    if _np.array(obs.frame).size == 0 or obs.state == _GS.GAME_OVER:
+        obs = env.reset()
 
 prev, _ = objects(obs.frame)
 space = {a.value: a for a in env.action_space}

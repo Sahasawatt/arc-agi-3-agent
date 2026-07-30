@@ -154,6 +154,31 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   levels 3-5 in one run. Level 6's real shape: changers IN the corridors, walking is
   pressing, `locked` reads 0 because the panel never holds still — the planner it needs is
   phase-counting BFS (see README), triggered by the corridor signature, never by `locked`.
+- **CORRECTION (2026-07-30, measured per-move): level 6's changers DO patrol.** The
+  "static crosses" verdict above was the second wrong reading, not the correction. Tracked
+  one position per piece-move (`results/l6-circuits.txt`), three small objects walk
+  deterministic period-8 tracks, advance exactly one lattice step per PIECE MOVE, and
+  freeze while a press is refused. A press is the footprint overlapping a patroller AFTER
+  the move — that model predicted every position and panel value of a 23-action scripted
+  drive (`results/l6-driveB.txt`, `l6drive.py`). The collider-attribution failure above
+  stands (its discriminator was wrong, and it cost levels 3-5); its conclusion does not.
+  The full measured model — patrol tracks, ink alphabet `12→9→14→8→12` closing at level 6,
+  door B a checked PASSAGE with door A behind it, death resetting the panel to
+  `(14, ##./.##/#.#)` (which is what poisoned `Gate.legacy` with a phantom `12→14`) — is
+  written up in `results/l6-model.md`. What a "corridor signature" was groping for is
+  patrollers; `gate.track`/`mover_period`/`route_moving` are the measured replacements.
+- **Three traps from building the patrol planner, each measured before it was found.**
+  (1) `Gate.observe` reuses `h` as a half index, so code later in the method that thinks
+  `h` is the footprint height gets 0 or 1 — the mover crediting silently tested a 5x1
+  footprint and every patroller lost its credit until the condition was print-traced.
+  (2) The piece's own parts churn track ids past the `model.body` filter; a piece pacing
+  back and forth earns its own fragments a patrol period and a press credit, and that
+  phantom patroller glued to the piece blocks every BFS transition (the search explored
+  ONE state). Exclude movers by footprint overlap, not by id. (3) On a ±step lattice, a
+  patroller whose lap is aligned to the piece's own lattice can only ever share a
+  square's parity, never its tick — a test board built that way proves the planner
+  "broken" when the geometry makes the press physically impossible. Real patrollers sit
+  off-lattice; test fixtures must too.
 - **Routing walks around the recorded changer squares is inert — measured three times.**
   On stage hops, and again on probe/sweep walks (with the fallback kept), every per-level
   count came back identical: the shortest paths do not cross the *recorded entry squares*.

@@ -496,3 +496,113 @@ def test_a_plate_the_piece_is_off_is_read_fresh_not_remembered():
     g.observe(frame(moved), OFF, True)
     assert g.icons[(13, 19, 39, 45)] != before, "the new drawing wins while it is drawn"
     assert len([k for k in g.icons if k[0] == 13]) == 1, "no phantom copy alongside it"
+
+
+# --- changers that MOVE ---------------------------------------------------------------
+# `ls20` level 6's changers are not squares: they are small objects PATROLLING the
+# corridors on short cycles, advancing one lattice step per piece move — a refused press
+# freezes them — and a press is the piece's footprint overlapping one after the move.
+# Everything below is that mechanism in miniature (measured in results/l6-model.md).
+
+def ticked(gate, positions, key="cross"):
+    for p in positions:
+        gate.track({key: (p[0], p[1], 3, 3)}, set(), True)
+
+
+def test_a_patrolling_object_earns_its_period_after_two_cycles():
+    g = Gate()
+    lap = [(15, 11), (20, 11), (25, 11), (30, 11), (35, 11), (30, 11), (25, 11), (20, 11)]
+    ticked(g, lap + lap)
+    assert g.mover_period("cross") == 8
+
+
+def test_a_parked_object_has_no_period():
+    """A static object repeats with every period; only real movement is a patrol. Door
+    glyphs, carry markers and refills all sit still, and none of them may enter the set."""
+    g = Gate()
+    ticked(g, [(15, 11)] * 32)
+    assert g.mover_period("cross") is None
+
+
+def test_a_frozen_tick_is_not_recorded():
+    """The patrol clock is the piece MOVING. A refused press freezes every patroller —
+    measured three times in one probe — so feeding the frozen frame in would smear the
+    period across everything downstream."""
+    g = Gate()
+    lap = [(15, 11), (20, 11), (25, 11), (30, 11)]
+    for p in lap:
+        g.track({"cross": (p[0], p[1], 3, 3)}, set(), True)
+        g.track({"cross": (p[0], p[1], 3, 3)}, set(), False)   # the piece was refused
+    ticked(g, lap)
+    assert g.mover_period("cross") == 4
+
+
+def test_the_future_position_is_read_off_the_cycle():
+    g = Gate()
+    lap = [(15, 11), (20, 11), (25, 11), (30, 11)]
+    ticked(g, lap + lap)
+    assert g.mover_at("cross", 1)[:2] == (15, 11)   # after 30 the lap wraps
+    assert g.mover_at("cross", 2)[:2] == (20, 11)
+    assert g.mover_at("cross", 4)[:2] == (30, 11)
+
+
+def test_the_piece_itself_is_never_a_mover():
+    g = Gate()
+    for p in [(15, 11), (20, 11), (25, 11), (30, 11)] * 4:
+        g.track({"me": (p[0], p[1], 5, 5)}, {"me"}, True)
+    assert g.mover_period("me") is None
+
+
+# --- routing through a patroller ------------------------------------------------------
+# The plan has to arrive at the door wearing its ask, pressing the patroller on the way —
+# matching first and walking after is how `ls20` level 6 wasted its matched panels.
+
+def moving_board():
+    """Open floor, a door at (13,39) asking (9, WANTED), the panel showing (9, INDICATOR),
+    and one patroller shuttling between (24,25) and (29,25) that turns INDICATOR<->WANTED."""
+    g = np.full((64, 64), 3)
+    gate = Gate()
+    gate.icons = {(13, 19, 39, 45): (9, WANTED), (1, 10, 53, 62): (9, INDICATOR)}
+    gate.displays = {(1, 10, 53, 62)}
+    # The lap sits OFF the piece's own lattice (real patrollers do), because a mover
+    # aligned to it can only ever share a square's parity, never its tick — a footprint
+    # five apart from a box five apart arrives on the wrong beat every time.
+    lap = [(20, 25, 3, 3), (25, 25, 3, 3)]
+    gate.ticks = 8
+    gate.movers = {"m": {"hist": [(i, lap[i % 2]) for i in range(1, 9)], "halves": {1}}}
+    gate.mover_edges = {("m", 1): {INDICATOR: WANTED, WANTED: INDICATOR}}
+    return g, gate
+
+
+def test_a_route_presses_the_patroller_and_arrives_wearing_the_ask():
+    g, gate = moving_board()
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    got = gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42)
+    assert got is not None
+    acts, marks, opened = got
+    assert opened == 1, "the goal door itself is the one gate this plan opens"
+    assert sum(marks) % 2 == 1, "an odd number of presses flips INDICATOR to WANTED"
+    # walk the plan forward: it must end inside the door box
+    pos = (44, 40)
+    for a in acts:
+        d = m.dirs[a]
+        pos = (pos[0] + d[0], pos[1] + d[1])
+    assert 13 <= pos[0] and pos[0] + 5 <= 20 and 39 <= pos[1] and pos[1] + 5 <= 46
+
+
+def test_no_route_when_the_press_cannot_be_simulated():
+    """A patroller with no usable edge for the panel's value is unplannable ground —
+    better no plan than a walk that scrambles the panel."""
+    g, gate = moving_board()
+    gate.mover_edges = {("m", 1): {"###/###/###": WANTED}}   # nothing about INDICATOR
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    assert gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42) is None
+
+
+def test_a_patroller_that_moves_nothing_is_no_planner():
+    """A mover that has never been seen to move a half of the display is scenery; a board
+    with only those is a static board, and this planner has no business on it."""
+    g, gate = moving_board()
+    gate.movers["m"]["halves"] = set()
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    assert gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42) is None

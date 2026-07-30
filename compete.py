@@ -38,10 +38,13 @@ PLAYABLE = ["ar25", "cn04", "dc22", "ka59", "ls20", "m0r0", "re86", "sc25", "sp8
             "bp35", "g50t", "sk48", "tr87", "tu93", "wa30", "cd82", "sb26"]
 WARMUP = 24        # actions before the model is worth trusting, at the outside
 CONTROLS = 4       # directions that make a model worth planning on
-BUDGET = 1200      # actions per environment; no rule caps this, 600 RPM and 9h do.
-                   # Doubling it was measured and reverted: level 6 spent 1,708 actions
-                   # (65% of them in the confirm-probe rung) and still did not fall, so
-                   # the block is structural, not the budget.
+BUDGET = 2000      # actions per environment; no rule caps this, 600 RPM and 9h do.
+                   # Doubling it was measured and reverted once: level 6 spent 1,708
+                   # actions (65% in the confirm-probe rung) and did not fall — the
+                   # block was structural then. With the moving-changer planner the
+                   # accounting shows monotone progress per action (edges learned,
+                   # doors opened), and the run ends at the cap mid-choreography, so
+                   # the budget is the binding constraint for the first time.
 CANDIDATES = 6     # targets considered per plan, rarest first
 CLOCK_WINDOW = 20  # actions of history the clock's rate is measured over
 MARGIN = 2         # actions of slack between reaching a refill and starving
@@ -49,6 +52,7 @@ TRAIL = 3          # squares of memory a route may not step back into
 STUCK = 30         # rounds with nothing left to watch before going to look elsewhere
 LEARN = 3          # entries a plan buys for a changer whose cycle is not known yet
 ACCT = os.environ.get("ARC_ACCT")  # action-accounting JSONL path, opt-in
+L6 = os.environ.get("ARC_L6")      # gate-view JSONL for level index 5 (ls20 level 6), opt-in
 
 
 def build_model(records, colours, rows=HUD_ROW, prior=None):
@@ -502,6 +506,59 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     cands = seen[:CANDIDATES] + [o for o in seen[CANDIDATES:] if gate.marked(o)]
     doors = [o for o in cands if gate.matched(o)]
     locked = [o for o in cands if gate.locked(o)]
+
+    # Changers that MOVE want a different planner, and they want it FIRST: `ls20` level
+    # 6's crosses patrol the corridors, so a "press" is the footprint overlapping one
+    # after a move and the panel churns under every walk — matching first and walking
+    # after is how two matched panels were wasted there, and the confirm-probe below
+    # spent 207 of one run's actions settling carries a moving board does not turn on.
+    # `route_moving` plans over position x patrol phase x panel and arrives wearing the
+    # ask. It answers None unless a patroller with a known period has been seen to move
+    # a half of the display, which no board with square changers has — the rung is
+    # silent everywhere else by mechanism. A door already entered that did not end the
+    # level is a passage, not a goal.
+    if at and gate.movers and gate.displays:
+        here = (at[0], at[1])
+        tank6 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+        fuels = [o for o in seen if o["colour"] in tank6]
+        # Of the doors a plan exists for, take the one whose plan passes the MOST
+        # checked gates: a door with another door behind it is entered en route, and
+        # entering the shallow one as the goal strands the piece there with no fuel
+        # for the deep one — measured, three lives in a row.
+        best6 = None
+        for o in cands:
+            if not gate.marked(o) or gate.entered(o):
+                continue
+            got = gate.route_moving(grid, model, here, o, fuels, full, left, redirects)
+            if got and got[0] and (best6 is None or got[2] > best6[2]):
+                best6 = got
+        if best6:
+            gate.trip = best6[1]
+            gate.rung = "moving"
+            return best6[0], None
+        # No door is plannable, which on a patrolled board usually means an EDGE is
+        # missing, not a route: the plan can only press values it has watched, and a
+        # door can ask for a glyph several presses down an alphabet nobody walked.
+        # One deliberate press of a patroller that moves the wrong half, at a value
+        # it has not been watched on, teaches the next edge — replanning after it
+        # chains the rest of the way to the door's ask.
+        state6 = gate.state()
+        if state6:
+            here6 = min(state6)
+            for o in cands:
+                if not gate.marked(o) or gate.entered(o):
+                    continue
+                for hh in gate.wrong_halves(o):
+                    for k in gate.movers:
+                        if (hh in gate.movers[k].get("halves", ())
+                                and gate.mover_period(k)
+                                and here6[hh] not in gate.mover_edges.get((k, hh), {})):
+                            leg = gate.route_learn(grid, model, here, k, fuels,
+                                                   full, left, redirects)
+                            if leg:
+                                gate.rung = "moving-learn"
+                                return leg, None
+
     if at and locked:
         # The board carries the piece somewhere the map cannot vouch for. Settle it before
         # routing on it: an unconfirmed cell is either the way through or a phantom, and the
@@ -831,6 +888,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     gate = Gate()
     done, spent_at_level, per_level = obs.levels_completed, 0, []
     acct = open(ACCT, "w", encoding="utf-8") if ACCT else None
+    l6 = open(L6, "w", encoding="utf-8") if L6 else None
     psrc = "wander"  # which rung emitted the plan in flight, for the accounting
 
     for i in range(budget):
@@ -937,7 +995,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         obs = env.step(by_value[value])
         spent_at_level += 1
         if acct:
-            acct.write(json.dumps({"i": i, "lvl": done, "src": psrc}) + chr(10))
+            acct.write(json.dumps({"i": i, "lvl": done, "src": psrc, "v": value}) + chr(10))
         if obs is None:
             break
 
@@ -984,6 +1042,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
             plan, last, door = [], None, None
             expect, trip = [], []
+            # The tracker restarting hands the patrollers new ids too: histories keyed
+            # on the old ones would report stale phases forever. Their periods are cheap
+            # to re-learn; a stale one plans routes against patrollers that are not there.
+            gate.movers.clear()
+            gate.mover_edges.clear()
+            gate.opened.clear()
             continue
 
         cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows)
@@ -1025,6 +1089,10 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                          and was_here[:2] != here_after[:2])
                 fresh = not any(hud(obs.frame).get(k, 0) > hud(before.frame).get(k, 0)
                                 for k in drain(log[-CLOCK_WINDOW:]))
+                # Changers that MOVE tick on the piece moving — a refused press freezes
+                # them (measured, `ls20` level 6) — so their positions are recorded on
+                # exactly those ticks and nothing else.
+                gate.track(cur, model.body, moved, here_after)
                 # What this button did from THIS square. The cell map says "anything aiming
                 # at that square ends up there", which is what `ls20` level 4 measured and
                 # is the right rule for a floor that carries. It cannot say "this button
@@ -1039,24 +1107,37 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     src = (was_here[0], was_here[1])
                     got = (here_after[0], here_after[1])
                     d = model.dirs.get(value)
+                    # A value the model has no direction for cannot be scored as a
+                    # surprise — `step_to` reads `model.dirs[value]` and dies on it.
+                    # tr87 pressed one 1,343 actions in, which no run under the old
+                    # 1,200 budget had lived long enough to reach.
                     if d is not None:
                         aim = (src[0] + d[0], src[1] + d[1])
                         if aim in read and got != step_to(model, src, value, {**read}):
                             del read[aim]      # the board's marking, refuted by a walk
-                    if got != src and got != step_to(model, src, value, redirects):
-                        # Believed on the second sighting, the same bar a cell rule has to
-                        # clear. Believed on the first, the router starts steering by it
-                        # before the deliberate re-probe that the map is built on has run,
-                        # and `ls20` level 4 stops clearing.
-                        key = (src, value)
-                        if button_once.get(key) == got:
-                            button[key] = got
-                        button_once[key] = got
+                        if got != src and got != step_to(model, src, value, redirects):
+                            # Believed on the second sighting, the same bar a cell rule
+                            # has to clear. Believed on the first, the router starts
+                            # steering by it before the deliberate re-probe that the map
+                            # is built on has run, and `ls20` level 4 stops clearing.
+                            key = (src, value)
+                            if button_once.get(key) == got:
+                                button[key] = got
+                            button_once[key] = got
                 state_was = gate.state()
                 changed = gate.observe(obs.frame, here_after,
                                        bool(log and log[-1]["walked"]) or (moved and fresh))
                 if acct and changed:
                     acct.write(json.dumps({"event": "chg", "lvl": done}) + chr(10))
+                # Per-action movement + display line for the level-6 press-rule measurement:
+                # which steps actually press is the transition model a phase-counting
+                # planner has to get right, and it cannot be derived from the per-round view.
+                if l6 and done == 5:
+                    l6.write(json.dumps({
+                        "a": i, "was": list(was_here[:2]) if was_here else None,
+                        "now": list(here_after[:2]), "chg": bool(changed),
+                        "state": sorted(map(list, gate.state())),
+                    }, default=str) + chr(10))
                 if changed:
                     # A door that was shut may now be open, so what the buttons pointing
                     # into it did is no longer what they do.
@@ -1119,6 +1200,10 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 if acct:
                     acct.write(json.dumps({"event": "silentdeath" if clock_rose
                                            else "slid", "lvl": done}) + chr(10))
+                if clock_rose:
+                    # A death puts the panel back, and with it every door that had been
+                    # passed while matched: `opened` describes a life, not the level.
+                    gate.opened.clear()
                 if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a
@@ -1130,7 +1215,16 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     if once.get(aim) == off:
                         redirects[aim] = off
                     once[aim] = off
-                plan, expect, trip = [], [], []
+                # A carry the PLAN already predicted is not a surprise: a moving-changer
+                # trip is planned through the known carries, and dropping it for being
+                # right costs the whole choreography — the timing against the patrol
+                # clock is the plan. ONLY the moving planner's trips earn this: extending
+                # the keep to every trip with a correct prediction was measured and cost
+                # level 5 forty-seven actions (292 -> 339), through the same replanning
+                # the staged chains were tuned around.
+                if not (psrc == "moving" and trip and expect
+                        and (now[0], now[1]) == expect[0]):
+                    plan, expect, trip = [], [], []
 
         # Two ways of reacting to a move that did not happen were built here and both were
         # measured out again, which is worth more written down than the code was:
@@ -1207,6 +1301,45 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 psrc = (gate.rung or "none") if plan else "wander"
                 cur_goal = goal
                 door = goal if goal is not None and gate.matched(goal) else None
+                # Level-6 gate view, one line per planning round. Measurement only: what
+                # the marked plates wear, what the panel says, which squares are proven
+                # rotators, and the fuel picture — the inputs a phase-counting planner
+                # would plan from, written down before one is built.
+                if l6 and done == 5:
+                    marked6 = [{"colour": o["colour"], "x": o["x"], "y": o["y"],
+                                "marks": sorted(map(list, gate._marks(o))),
+                                "locked": gate.locked(o), "matched": gate.matched(o)}
+                               for o in targets(obs.frame, model) if gate.marked(o)]
+                    l6.write(json.dumps({
+                        "i": i, "at": list(here[:2]) if here else None,
+                        "left": left, "full": full, "rung": psrc,
+                        "tank": sorted(map(list, refills(
+                            log, set(drain(log[-CLOCK_WINDOW:]))))),
+                        "state": sorted(map(list, gate.state())),
+                        "marked": marked6,
+                        "rotates": sorted(str(r) for r in gate.rotates),
+                        "changers": {str(k): sorted(v) for k, v in gate.changers.items()},
+                        "cycles": {str(k): {str(a): str(b) for a, b in v.items()}
+                                   for k, v in gate.cycles.items()},
+                        "legacy": {str(a): b for a, b in gate.legacy.items()},
+                        "redirects": {str(k): list(v) for k, v in redirects.items()},
+                        "movers": {str(k): {"p": (p := gate.mover_period(k)),
+                                            "halves": sorted(gate.movers[k].get("halves", [])),
+                                            "edges": {str(h): len(v) for (kk, h), v
+                                                      in gate.mover_edges.items() if kk == k},
+                                            "cov": (sorted({t % p for t, _ in
+                                                            gate.movers[k]["hist"]
+                                                            if t > gate.ticks - 3 * p})
+                                                    if p else None),
+                                            "last": gate.movers[k]["hist"][-1]
+                                            if gate.movers[k]["hist"] else None}
+                                   for k in gate.movers
+                                   if gate.mover_period(k) or gate.movers[k].get("halves")},
+                        "opened": len(gate.opened),
+                        "once": {str(k): list(v) for k, v in once.items()
+                                 if isinstance(k, tuple) and len(k) == 2
+                                 and not isinstance(k[0], tuple)},
+                    }, default=str) + chr(10))
 
     return per_level, log
 

@@ -7,10 +7,13 @@ eligibility anyway.
 ## Where this is
 
 The loop is closed and it is getting through levels. Playing under the competition's own
-rules — one `make()`, no rewinding — the agent clears **`ls20` levels 1 to 5 with no
-human in it**, in 23, 45, 99, 178 and 347 actions against human baselines of 22, 123, 73,
-84 and 96. Level 2 is inside the 1.15x cap so it scores the maximum 115, and the game
-stands at **21.856%**.
+rules — one `make()`, no rewinding — the agent clears **`ls20` levels 1 to 6 with no
+human in it**, in 23, 45, 99, 178, 290 and 1,187 actions against human baselines of 22,
+123, 73, 84, 96 and 192. Level 2 is inside the 1.15x cap so it scores the maximum 115,
+and the game stands at **23.006%**. Level 6's changers turned out to be objects
+PATROLLING the corridors — the planner that cleared it BFSes over position × patrol
+phase × panel, and taught itself the glyph alphabet one deliberate press at a time
+([the section below](#the-sixth-level-falls-the-changers-were-patrolling-all-along)).
 
 Neither level is a bigger maze. Both are **locks**. Level 2 draws a glyph inside the goal box
 and shows another on a plate in the corner, and refuses the piece until they are the same.
@@ -648,6 +651,65 @@ One more thing fell out of the trace: level 3 has an undocumented carry, `(9, 10
 the piece to `(34, 5)` with no clock rise — met twice by the wider-ranging trips, learned by
 the same two-sighting rule as every other cell, and invisible until now because the winning
 route never crossed it.
+
+### The sixth level falls: the changers were patrolling all along
+
+The diagnosis above got the planner shape right and the board wrong, twice over. The
+crosses were first read as patrolling from two frames 500 actions apart, then corrected to
+static because the piece covers what it stands on — and the correction was the error.
+Tracked one position per piece-move (`results/l6-circuits.txt`), the changers are three
+small objects walking deterministic **period-8 patrol tracks**: an ink cluster circling the
+mid-left block and two crosses shuttling the corridors. They advance exactly one lattice
+step per piece MOVE — a refused press freezes all of them — and a press is the piece's
+footprint overlapping a patroller **after** the move. That model, driven by a scripted BFS
+over position × patrol phase × panel (`l6drive.py`), predicted every position and every
+panel value of a 23-action drive exactly, which is what "the presses are random" had been
+hiding: the randomness was patroller phase.
+
+The locks are two doors and a corridor between them. Door B asks `(8, #.#/##./.##)` — the
+full pair, three mixed-panel combinations refused — and is a checked PASSAGE: behind it a
+pocket only reachable through it, holding door A, which asks `(9, #.#/..#/###)`. No
+patroller reaches the pocket, so the panel is frozen there and one pass cannot satisfy
+both doors. What resolves it is measured in `results/l6-driveAB2.txt`: **a door passed
+while matched stays open** (until a death resets the panel, and the door with it), and
+**entering door A wearing its ask ends the level**. The ink alphabet closes into a cycle
+at level 6 — `12 → 9 → 14 → 8 → 12` — and the phantom `12 → 14` edge that poisoned
+`Gate.legacy` was the death reset (panel back to `(14, ##./.##/#.#)`, respawn at the
+start) recorded as if a square had done it.
+
+The agent's version is four pieces, each of which failed measurably before it worked.
+`Gate.track` records every small object against a **piece-move clock** and reads periods
+off phase consistency, because a patroller is invisible exactly when it matters — the
+piece pressing it covers it and its track id churns — and the piece's own parts must be
+excluded by footprint overlap, not by id: a piece pacing back and forth earns its own
+fragments a period and a press credit, and that phantom patroller glued to the piece
+blanketed every neighbouring square with unplannable presses (the BFS explored ONE state).
+Press credit goes to the patroller whose **predicted** position overlaps the footprint —
+crediting what is visible instead left every period-carrier without edges (and finding
+that took tracing a shadowed variable: the observe loop reuses `h` for a half index, so
+the footprint had been 5×1 for the whole hunt). `Gate.route_moving` is the planner: BFS
+over position × phase × panel × refills × opened doors, fuel carried as a value to
+maximise, marked plates as checked gates a plan may open mid-route — and the goal chosen
+is the plan that opens the MOST gates, because entering the shallow door as the goal
+strands the piece there with no fuel for the deep one (measured, three lives in a row).
+`Gate.route_learn` is the missing half of discovery: the planner can only press values it
+has watched, and door A's glyph sits five presses down an alphabet nobody had a reason to
+walk — so when no door is plannable and a patroller moves the wrong half at a value it has
+never been watched on, one deliberate, fuel-bounded press teaches the next edge, and
+replanning chains the rest.
+
+Two supporting changes are scoped deliberately. A carry the plan predicted does not drop a
+"moving" trip — the timing against the patrol clock IS the plan — but extending that keep
+to every trip was measured at once: level 5 went 292 → 339, so it is `psrc == "moving"`
+only. And BUDGET rises 1200 → 2000: the earlier doubling was rightly reverted when 65% of
+the extra went to a structurally-blocked probe loop, but with the planner in place the run
+ends at the cap mid-choreography with the accounting showing monotone progress — the
+budget is the binding constraint for the first time.
+
+With all of it, `ls20` clears level 6 unaided: **[23, 45, 99, 178, 290, 1187]**, six of
+seven levels, **23.006%** (`results/rung-ls20m.log`). The 1,187 is mostly tuition — deaths
+reset the panel and the doors but not the learned edges, so the first lives pay for the
+alphabet — and cutting it is the next inch. Level 7 is now reachable.
 
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->
