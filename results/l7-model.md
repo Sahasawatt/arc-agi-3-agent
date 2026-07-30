@@ -242,6 +242,28 @@ Two loose ends came with it, neither yet chased:
   the piece may be reading as a plate at moments when its colour-12 half is off the window.
   A risk the sweep did not catch and nothing yet rules out.
 
+## The thread to pull next: a changer, read
+
+With the window shifted left (piece at (29, 40)) the block at x11-12 y41-43 reads:
+
+    (11,41)=14  (12,41)=14
+    (11,42)= 0  (12,42)= 8
+    (11,43)=12  (12,43)= 8
+
+Four colours in a block the size of the piece, which is this game's signature for a
+changer on every level that has one — and one of those colours is **8**, the ink the level
+asks for. It sits at x11, which is exactly the window's left edge from (29, 40), so it may
+run further left than this.
+
+Beside it, a small colour-0 object at x20-22 y41-43: colour 0 is what level 6's crosses
+are made of, so this board may have a second patroller down here as well as the one at
+x55.
+
+Getting to it: `left` from (29, 40) is blocked — row 40 is wall at x24-28 — so the
+approach is from above, down the x19 column, which is floor at rows 35-44. What to do
+there is the obvious thing: overlap it, and see whether the indicator becomes something
+with six cells in it.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five
