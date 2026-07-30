@@ -123,11 +123,24 @@ last of those is the carrying cell — then `4,4,4` walks the row-40 corridor to
 `1` repeated climbs x54 through the patroller's track. Nineteen actions from a standing
 start, inside one 21-action life.
 
+**The plate IS the lock, and it refuses.** Driven into it — `3,3,2,2,4,4,4,4,2,2,2,2`
+walks left, down the x9 column, right along row 25 (open from x9 to x43) and down the x29
+column to (29, 45), which is one step above the inside position (29, 50) — the thirteenth
+action, `down`, **does not happen**: the piece is still at (29, 45). That is the level 2-6
+refusal exactly, the move simply not occurring, so the level does end at a door after all.
+
+**Nothing changes near it.** Running the stability oracle over a 26-action walk around the
+door region turns up **zero** contradicted cells. The only changer on this board that has
+been found is the patroller at x55-57, twelve actions away from the door in the other
+direction, on a level whose life is 21 actions — so the choreography needs a refill, and
+there is a ring at x55-57 y51-53 beside the patroller itself.
+
 **What still does not add up** is the match. The door asks `(8, #.#/##./.##)`; the indicator
 is colour 12 and its four states normalise to `.#./###` and its rotations. The inks differ
-and the shapes differ, so whatever the door checks, it is not this indicator compared the
-way levels 2-6 compare theirs. Either there is a second display still in the fog, or the
-door plate is not the lock.
+and the shapes differ, and the glyph stays colour 12 through every rotation (a change of ink
+would move `hud`'s colour-8 count, which is the lives counter and does not move). So either
+a second display is still in the fog, or what this door checks is not an (ink, shape) pair
+compared the way levels 2-6 compare theirs.
 
 ## Also measured, not yet explained
 

@@ -237,7 +237,10 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `1,1,4,4,2,4,2,4,2,4` (the last is a carry) then `4,4,4`, then `1` up x54. Open: the door
   asks `(8, #.#/##./.##)` and the indicator normalises to `.#./###` and its rotations — the
   inks and the shapes both differ, so either a second display is still in the fog or that
-  plate is not the lock.
+  plate is not the lock — but the plate IS a lock: driven to (29,45), one step above the
+  inside position (29,50), the next `down` **does not happen**, which is the level 2-6
+  refusal exactly. A 26-action walk around it contradicts **zero** cells, so the nearest
+  changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
   `route_moving` builds its patroller list from movers with a period **and a known half**;
