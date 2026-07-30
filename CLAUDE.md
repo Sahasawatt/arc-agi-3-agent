@@ -282,7 +282,19 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `identity.update`'s `max_missed` is 2, so a track dies two frames after the piece walks
   away from it, and on a windowed board out of view is not gone. Raising it to 200 while
   `windowed` takes level 7's `moving-learn` from 40 actions to **90** and its `probe` from
-  673 to 317, with every game unchanged. Still not enough to clear it. A 26-action walk around it contradicts **zero** cells, so the nearest
+  673 to 317, with every game unchanged. Still not enough to clear it.
+- **Learn mode may run on mute patrollers alone ONLY on a windowed board.** The guard
+  `if not movers: return None` deadlocks level 7 — 1,034 of its 1,816 refusals had one to
+  three period-carrying, never-watched patrollers on the board, and nothing ever presses
+  one on purpose, so nothing ever becomes ready. Ungated, letting learn through **costs
+  ls20 levels 5 AND 6** (4/7, 20.489%) — measured twice, once with `period` degenerating
+  to 1 and once with the mute periods folded into the LCM correctly, identical to the
+  digit: on a board with a ready mover coming, a learn trip to a mute one pre-empts the
+  rungs that win the level. Gated on `gate.windowed` (set by the fog latch, which levels
+  1-6 never trip) it is clean — every game unchanged, and level 7's `moving-learn` rises
+  90 → 139. Level 7 still does not fall: 31 deaths in one run and 15 presses, so the trips
+  are being planned and starved. The next axis is fuel-awareness of those learn trips, not
+  more of them. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**

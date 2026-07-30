@@ -787,11 +787,36 @@ class Gate:
         # is the general one.
         movers = [(k, self.mover_period(k)) for k in self.movers
                   if self.mover_period(k) and self.movers[k].get("halves")]
-        if not movers:
-            dbg("no ready movers: lvl=%s" % getattr(self, "lvl", -1))
+        # Letting LEARN mode through this guard on mute patrollers alone — a mover with
+        # a period and no known half is exactly the thing to go and press, and level 7
+        # reaches here with one to three of those in 1,034 of its 1,816 refusals — was
+        # measured twice and **costs ls20 levels 5 AND 6 both times** (4/7, 20.489%).
+        # First with the guard alone, where `period` degenerates to 1 and the plans press
+        # blind; then with the mute periods folded into the LCM properly, where the score
+        # comes back identical to the digit — so the deaths are not the degenerate phase
+        # axis, they are the rung itself: on a board that HAS a ready mover coming, a
+        # learn trip aimed at a mute one pre-empts the rungs that were winning the level.
+        # Level 7's deadlock (nothing ever becomes ready because nothing is ever pressed
+        # on purpose) needs a key that does not turn this lock: the board being WINDOWED,
+        # which levels 5 and 6 never are — on a windowed board there are no square-changer
+        # rungs pressing things by accident, so a deliberate trip to a mute patroller is
+        # the only way anything ever becomes ready at all. `self.windowed` is set by the
+        # play loop when the fog latch fires.
+        if not movers and not (learn and getattr(self, "windowed", False) and any(
+                self.mover_period(k) and not self.movers[k].get("halves")
+                for k in self.movers)):
+            dbg("no ready movers: lvl=%s withp=%d withh=%d n=%d"
+                % (getattr(self, "lvl", -1),
+                   sum(1 for k in self.movers if self.mover_period(k)),
+                   sum(1 for k in self.movers if self.movers[k].get("halves")),
+                   len(self.movers)))
             return None
+        # The combined period covers the mute patrollers when learn may aim at them:
+        # with `movers` empty it otherwise degenerates to 1 and the phase axis vanishes.
+        mute_p = [self.mover_period(k) for k in self.movers
+                  if learn and self.mover_period(k) and not self.movers[k].get("halves")]
         period = 1
-        for _, p in movers:
+        for p in [p for _, p in movers] + (mute_p if not movers else []):
             g = _gcd(period, p)
             period = period // g * p
             if period > 64:

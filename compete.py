@@ -1165,6 +1165,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     windowed = run >= 2
             if windowed:
                 world = stitch(obs, world, locate(obs.frame, model), model, rows)
+            gate.windowed = windowed
 
         # On a board whose frame is a WINDOW, an object out of view is not gone: it is
         # behind the fog, and it comes back. Two frames of patience kills every patroller
