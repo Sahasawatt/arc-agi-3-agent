@@ -648,6 +648,27 @@ def test_learn_mode_walks_to_the_press_it_has_no_edge_for():
     assert got is not None and got[1][-1] is True, "it ends on a press"
 
 
+def test_learn_goes_to_press_the_patroller_nobody_has_watched():
+    """A patroller with a period and no known halves contributes nothing to `presses`, so
+    walking over it is not modelled as a press at all and the planner has no way to go and
+    find out what it does. That is what "nothing left to learn" turned out to be: on
+    `ls20` level 6, **183 of the 189 rounds** the learn planner gave up on had two to seven
+    such patrollers on the board — while the search correctly reported no unknown press
+    among the ones it could see, even handed an infinite tank."""
+    g, gate = moving_board()          # both of `m`'s edges are known on this fixture
+    gate.icons[(13, 19, 39, 45)] = (9, "###/###/###")     # an ask no edge reaches
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    door = obj(13, 19, 39, 45)
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 42) is None, "no honest plan"
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 42, learn=True) is None, \
+        "and nothing unwatched among the halves that ARE known"
+
+    lap = [(20, 45, 3, 3), (25, 45, 3, 3)]
+    gate.movers["q"] = {"hist": [(i, lap[i % 2]) for i in range(1, 9)]}   # no "halves"
+    got = gate.route_moving(g, m, (44, 40), door, [], 42, 42, learn=True)
+    assert got is not None and got[1][-1] is True, "now there is somewhere to go"
+
+
 def test_learn_mode_will_not_spend_the_last_of_the_tank():
     """A press the piece starves on teaches nothing that survives: a death resets the
     panel and every door it had opened."""

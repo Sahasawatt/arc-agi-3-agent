@@ -856,9 +856,37 @@ whole level, `(14, ##./.##/#.#)` at the first one, which is the reset and nothin
 So "nothing left to learn within reach" is a **local** condition — of the piece's position,
 the patrol phase and the panel's current value together — and not a closure. The level does
 walk its whole alphabet, in a burst of five presses, once it is finally standing somewhere
-it can. What costs the four hundred actions before that is getting there, and that is a
-different problem from either fuel or edges: it is that nothing in the agent plans toward
-*a place from which learning becomes possible*, only toward learning that is possible now.
+it can.
+
+### 570 to 285: the planner could not see the patrollers it had not watched
+
+One question was left: with an infinite tank and no unknown press anywhere, what is
+actually missing? Asked of the board rather than of the search, the answer is sitting in
+plain sight. `route_moving` builds its patroller list from movers that have a period **and
+a known half** — everything else contributes nothing to `presses`, so walking over it is
+not modelled as a press at all. A patroller nobody has watched yet is therefore not
+"unknown" to the planner; it is *invisible*, and no plan can be made to go and find out
+what it does.
+
+Measured, that is not a corner case: in **183 of the 189** rounds the learn planner gave
+up on, there were two to seven such patrollers on the board, every one of them already
+carrying period 8. The search was right that nothing among the movers it could see was
+unknown, and the movers it could see were not all of them.
+
+In learn mode, a patroller with a period and no known halves IS the unknown press. Six
+lines: collect them, read each against its own period (so the least common multiple above
+does not have to cover them), and treat a footprint overlapping one as the blind press the
+learn goal already knows how to walk to — under the same fuel guard, because a press the
+piece starves on teaches nothing that survives.
+
+    ls20  [23, 45, 99, 178, 292, 285]   32.144%     was 570 and 24.85%
+
+Levels 1-5 identical to the action, `cd82`, `m0r0` and `ar25` unmoved
+(`results/sweep-mute.log`). The accounting says exactly what happened: `stage1` — the
+square-changer order search, on a board whose changers are not squares — goes from **209
+actions to 3**, `moving-learn` from 82 to 154, `turn-walk` and `desperate` from 38 and 29
+to nothing and 2, and the deaths from six to **one**. Two hundred actions of walking the
+corridors hoping to trip over a press were replaced by seventy of going to find one.
 
 ### The seventh level is a window, and the agent thinks it is a board
 

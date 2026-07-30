@@ -750,6 +750,31 @@ class Gate:
                         out.setdefault(half, k)
             return out
 
+        # A patroller with a period and NO known halves is not scenery, and `movers` above
+        # cannot represent it: with no half to move it contributes nothing to `presses`, so
+        # walking over it is not modelled as a press at all and the planner has no way to
+        # go and find out what it does. That is what "nothing left to learn" was: measured
+        # on level 6, **183 of the 189 rounds** the learn planner gave up on had two to
+        # seven such patrollers on the board, every one of them carrying period 8, while
+        # the search correctly reported no unknown press among the ones it could see —
+        # even handed an infinite tank (159 of 189). In learn mode they ARE the unknown
+        # press. `mover_at` reads each one against its own period, so the LCM above does
+        # not have to cover them.
+        mute = [k for k in self.movers
+                if not self.movers[k].get("halves") and self.mover_period(k)] if learn else []
+        mute_box = {k: [self.mover_at(k, m) for m in range(period + 1)] for k in mute}
+
+        def unknown_mover(pos, m):
+            """Does landing at `pos` `m` ticks from now press something never watched?"""
+            for k in mute:
+                b = mute_box[k][m % period] if m % period else mute_box[k][period]
+                if b is None:
+                    continue
+                if (pos[0] < b[0] + b[2] and pos[0] + w > b[0]
+                        and pos[1] < b[1] + b[3] and pos[1] + h > b[1]):
+                    return True
+            return False
+
         fuel0 = left if left is not None else (full or 10 ** 6)
         seen = {(start, 0, panel0, 0, opened0): (fuel0, None)}
         q = deque([(start, 0, panel0, 0, opened0)])
@@ -782,6 +807,8 @@ class Gate:
                     panel2[half] = got
                 if not ok:
                     continue
+                if learn and not blind and fuel - 1 >= 6 and unknown_mover(nxt, t + 1):
+                    blind = True
                 if blind:
                     acts, cur = [], node
                     while seen[cur][1]:

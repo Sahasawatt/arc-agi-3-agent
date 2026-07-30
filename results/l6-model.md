@@ -82,3 +82,10 @@ Then **570 at 24.85%** (`sweep-phase.log`), by keeping a patroller's period acro
 death and re-anchoring only its phase: the period is the object's and the same next
 life, and while it was being lost for three laps neither planner — including the one
 that teaches edges — could plan at all. Deaths 9 → 6, `stage1` 317 → 209.
+
+Then **285 at 32.144%** (`sweep-mute.log`), by letting the learn planner see the
+patrollers it had never watched. A mover with a period but no known half contributes
+nothing to `presses`, so walking over it was not modelled as a press at all and no plan
+could go and find out what it does — 183 of the 189 rounds the learn planner gave up on
+had two to seven of them on the board. `stage1` 209 → 3, `moving-learn` 82 → 154, deaths
+6 → 1.

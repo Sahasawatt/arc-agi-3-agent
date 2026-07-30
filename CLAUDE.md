@@ -227,6 +227,18 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   spent wandering a board painted from the memory of a board redrawn under them. A general
   version has to find the fog colour in the frame instead of being told it is 5.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
+- **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
+  `route_moving` builds its patroller list from movers with a period **and a known half**;
+  one with no half contributes nothing to `presses`, so walking over it is not modelled as
+  a press and no plan can go and find out what it does. Measured: **183 of the 189** rounds
+  level 6's learn planner gave up on had two to seven of them on the board, all carrying
+  period 8 — the search was right that nothing it could see was unknown, and what it could
+  see was not all of them. In learn mode they ARE the unknown press (read each against its
+  own period, so the LCM does not have to cover them; same fuel guard, because a press the
+  piece starves on teaches nothing). **570 → 285, 24.85% → 32.144%**, levels 1-5 identical
+  to the action (`results/sweep-mute.log`). `stage1` 209 → **3**, `moving-learn` 82 → 154,
+  deaths 6 → **1**. The lesson generalises past this board: when a search reports "nothing
+  left to learn", ask what it is unable to represent before asking what it cannot afford.
 - **A period belongs to the OBJECT and a phase belongs to the LIFE.** A death puts every
   patroller back at the start of its lap, so pre-death entries contradict post-death ones
   at the same phase and `mover_period` returns None for the three laps they take to age
