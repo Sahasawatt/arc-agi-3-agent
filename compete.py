@@ -871,6 +871,74 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     return [], None
 
 
+def stitch(obs, world, at, model, rows=HUD_ROW):
+    """Remember every non-fog cell, and paint what is remembered back into the fog.
+
+    The windows stitch because the coordinates are FIXED. What that buys is the level:
+    `ls20` level 7's lock is a plate at x28-34 y49-55 that physically refuses the piece,
+    and no window from the start reaches it — which is why `plates()` read zero there and
+    the level was written up as a lock with no keyhole.
+
+    The piece's own footprint is never remembered: it moves, and a remembered cell of it
+    smears piece-coloured litter across the fog. The live frame always wins, so the world
+    only fills in what the window is not currently showing.
+    """
+    grid = np.array(obs.frame)[-1]
+    if world is None:
+        world = np.full(grid.shape, -1)
+    seen = grid[:rows] != 5
+    if at is not None:
+        w, h = model.box
+        seen[max(0, at[1]):at[1] + h, max(0, at[0]):at[0] + w] = False
+    world[:rows][seen] = grid[:rows][seen]
+    fog = (grid[:rows] == 5) & (world[:rows] >= 0)
+    out = grid.copy()
+    out[:rows][fog] = world[:rows][fog]
+    obs.frame[-1] = out
+    return world
+
+
+def windowed_step(before, after, moved, rows=HUD_ROW):
+    """Is this frame a WINDOW that slid with the piece, rather than a board that redrew?
+
+    Not "did a lot change". That is true of any board that redraws, and latching on it cost
+    `cd82`, `m0r0` and `ar25` their only level each — measured twice, on one sighting and on
+    three consecutive, with 1,981 of 2,000 actions then spent wandering a board painted from
+    the memory of a board that had been redrawn underneath it.
+
+    What is specific to a window is WHERE the change is. The fog is everything outside a box
+    around the piece, so the fog SET translates by exactly the piece's displacement while the
+    content underneath stays in world coordinates (measured on `ls20` level 7: consecutive
+    frames match best at dx=dy=0, and the non-fog extent is the piece ± (-18, +21)). A board
+    that merely redraws has no reason to agree with the piece's own step, so the test is
+    whether the candidate colour's mask, SHIFTED by that step, predicts the next frame better
+    than leaving it where it was.
+    """
+    dx, dy = moved
+    if not dx and not dy:
+        return False
+    a, b = np.array(before.frame), np.array(after.frame)
+    if a.size == 0 or b.size == 0 or a.shape != b.shape:
+        return False
+    a, b = a[-1][:rows], b[-1][:rows]
+    h, w = a.shape
+    # Only a colour that reaches the frame's edge can be the outside of anything.
+    edge = {int(v) for v in np.concatenate([a[0], a[-1], a[:, 0], a[:, -1]])}
+    dst = (slice(max(0, dy), h + min(0, dy)), slice(max(0, dx), w + min(0, dx)))
+    src = (slice(max(0, -dy), h + min(0, -dy)), slice(max(0, -dx), w + min(0, -dx)))
+    for c in edge:
+        fa, fb = a == c, b == c
+        if fa.sum() < 200 or fb.sum() < 200:
+            continue                        # a border stripe is not a fog
+        if fa[src].size < 500:
+            continue
+        slid = float((fa[src] == fb[dst]).mean())
+        still = float((fa == fb).mean())
+        if slid > 0.97 and slid > still + 0.02:
+            return True
+    return False
+
+
 def play(env, budget=BUDGET, rows=HUD_ROW):
     """One environment, forward only. Returns (actions per completed level, trace)."""
     obs = env.reset()
@@ -879,6 +947,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         return [], []
     by_value = {a.value: a for a in actions}
     values = sorted(by_value)
+    world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
 
     prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
     records, visits, log = [], {}, []
@@ -1020,6 +1089,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # the game's ink alphabet does (see Gate.legacy).
             gate, carried, full, redirects, once = Gate(gate.legacy), model, 0, {}, {}
             stood, refused = set(), set()   # a new board; nothing known of it
+            world, windowed, run = None, False, 0   # ...including whether it is a window
             button, button_once, tried, sure = {}, {}, set(), set()
             read = {}
             # The board is new, so the evidence and the track ids are worthless — but the
@@ -1073,6 +1143,21 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             gate.opened.clear()
             gate.reset = gate.ticks
             continue
+
+        # Before anything reads this frame: on a board whose frame is a WINDOW, fold it
+        # into the world and paint the world back into the fog, so every reader below sees
+        # a board that holds still. Latched on two steps running, and only on a fog that
+        # slid by the piece's own displacement. A game over keeps the world — same board,
+        # same coordinates; a level boundary throws it away.
+        if model is not None and np.array(obs.frame).size and not np.array(before.frame).size == 0:
+            if not windowed:
+                w0, w1 = locate(before.frame, model), locate(obs.frame, model)
+                if w0 and w1:
+                    run = run + 1 if windowed_step(
+                        before, obs, (w1[0] - w0[0], w1[1] - w0[1]), rows) else 0
+                    windowed = run >= 2
+            if windowed:
+                world = stitch(obs, world, locate(obs.frame, model), model, rows)
 
         cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows)
         colours.update(seen_c)
