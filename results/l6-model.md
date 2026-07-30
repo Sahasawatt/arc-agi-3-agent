@@ -46,7 +46,13 @@ colour-12 component on the frame).
 
 ## Fuel
 
-Full tank = 84 units = 42 moves. Three refills, one-shot per life, pickup positions
+Full tank = 84 units = 42 moves — but the AGENT reads that as 21 in 72 of the 121
+rounds where both patrol planners come back empty (`l6-fueldbg3.log`): `drain` takes the
+most common fall over the last 20 steps and it flips between 2 and 4 within the level.
+Fuel is nonetheless NOT what blocks those rounds — at a tank of 200 not one of the 121
+has a plan either, so the trip-from-a-full-tank fix is inert and is not in the code.
+
+Three refills, one-shot per life, pickup positions
 (9,5), (39,5), (9,45). Death respawns at (24,50) and resets the panel to
 `(14, ##./.##/#.#)` — the "12 -> 14" legacy edges the gate learned were death resets
 credited as changer edges, which is what poisoned `Gate.legacy` this level.
@@ -71,3 +77,8 @@ does know (the alphabet is walked edge by edge this way). With BUDGET at 2000 �
 binds mid-choreography now, the old "structural block" measurement predates the planner —
 `ls20` clears level 6 unaided: **[23, 45, 99, 178, 292, 844], 23.528%**
 (`l6-learn2.log`; the first clear was 1,187 at 23.006%, `rung-ls20m.log`).
+
+Then **570 at 24.85%** (`sweep-phase.log`), by keeping a patroller's period across a
+death and re-anchoring only its phase: the period is the object's and the same next
+life, and while it was being lost for three laps neither planner — including the one
+that teaches edges — could plan at all. Deaths 9 → 6, `stage1` 317 → 209.

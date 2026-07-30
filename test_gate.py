@@ -537,6 +537,40 @@ def test_a_frozen_tick_is_not_recorded():
     assert g.mover_period("cross") == 4
 
 
+LAP8 = [(15, 11), (20, 11), (25, 11), (30, 11), (35, 11), (30, 11), (25, 11), (20, 11)]
+
+
+def test_a_period_outlives_a_death_and_a_phase_does_not():
+    """A death puts every patroller back at the start of its lap, so every entry from the
+    life before contradicts this one at the same phase and the period is lost for the
+    three laps the old entries take to age out — 588 of the 1,687 rounds `ls20` level 6
+    asked its planner for a route. What the death actually invalidated is the PHASE: a
+    period belongs to the object and is the same on the next life."""
+    g = Gate()
+    ticked(g, LAP8 + LAP8 + LAP8[:1])         # 17 ticks: the lap restarts off-phase
+    assert g.mover_period("cross") == 8
+    g.reset = g.ticks
+    ticked(g, LAP8)
+    assert g.mover_period("cross") == 8, "kept: the object still walks an 8-lap"
+    # Phase 2 held (20, 11) in the life before and holds (15, 11) in this one, so the
+    # answer says which life it was read from. A phase this life has not seen is still
+    # None — the same silence the occluded stretch of a lap gives.
+    assert g.mover_at("cross", 1)[:2] == (15, 11)
+
+
+def test_an_inherited_period_this_life_contradicts_is_refused():
+    """It is only ever CHECKED against the short post-respawn history, never read off it
+    — which is what separates this from clearing the histories outright, measured at 5/7
+    and 22.419%: a period re-earned off a handful of frames can be the wrong one, and a
+    wrong period sends every planned press to the wrong tick."""
+    g = Gate()
+    ticked(g, LAP8 + LAP8)
+    assert g.mover_period("cross") == 8
+    g.reset = g.ticks
+    ticked(g, LAP8 + [(99, 11)])              # same phase as LAP8[0], different place
+    assert g.mover_period("cross") is None
+
+
 def test_the_future_position_is_read_off_the_cycle():
     g = Gate()
     lap = [(15, 11), (20, 11), (25, 11), (30, 11)]
@@ -623,6 +657,27 @@ def test_learn_mode_will_not_spend_the_last_of_the_tank():
     m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
     door = obj(13, 19, 39, 45)
     assert gate.route_moving(g, m, (44, 40), door, [], 42, 6, learn=True) is None
+
+
+def test_the_tank_bounds_the_plan_and_an_unwatched_edge_is_not_thirst():
+    """The two reasons a patrolled board has no plan, and the question that separates
+    them: would a bigger tank have one?
+
+    Asked of `ls20` level 6 in anger, the answer is always no. Level 6's planner is
+    handed a median of 19 actions of a 42-action tank against a 72-action recipe
+    (`results/l6-rmdbg.log`), which reads like thirst — but in all 121 rounds where both
+    planners came back empty, no marked door had a plan at a tank of **200** either
+    (`results/l6-fueldbg3.log`). A stuck round there is short of an EDGE, and no amount
+    of fuel buys one; the refuel rung built on the other answer is not in the code."""
+    g, gate = moving_board()
+    m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+    door = obj(13, 19, 39, 45)
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 4) is None, "not in this tank"
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 42), "but in a full one"
+
+    gate.mover_edges = {("m", 1): {"###/###/###": WANTED}}   # nothing about INDICATOR
+    assert gate.route_moving(g, m, (44, 40), door, [], 42, 42) is None, \
+        "an unwatched edge is not thirst: no tank size makes this plan appear"
 
 
 def test_a_patroller_that_moves_nothing_is_no_planner():

@@ -744,6 +744,128 @@ So level 6 stands at 844 against a baseline of 192, and the way down is teaching
 alphabet faster rather than walking less. Level 7 is now reachable — and it is a lock
 nothing in this repo can see yet (`results/l7-first-look.md`).
 
+### A third way of not cutting it: the tank was never the problem
+
+Every arrow the accounting draws on level 6 points at fuel. The level is **ten lives**,
+nine of them ending in a death that puts the panel and every opened door back; five end
+with the square-changer rungs spending 42, 43, 43, 43 and 44 actions — a full tank each,
+to the action — and then starving. Every one of the nine has a tail of `desperate` and
+`cand` walking on an empty tank, about ninety actions in all. Not one of the 844 actions
+goes to a refuel rung: `near-fuel`, `turn-fuel` and `door-fuel` are all zero here, where
+level 5 spends thirty actions in them. And the patrol planner is handed a median of
+**19** actions of a 42-action tank (`results/l6-rmdbg.log`) against a recipe that takes
+72 by hand. Read together that is one story — the choreography is being planned out of a
+half-empty tank and never fits — and it names its own fix: make the door trip leave from
+a full one.
+
+The fix is inert, and asking why is the interesting part. It went in as a
+discriminator rather than as a rule, because topping the tank up whenever neither
+planner answered had already been measured and had lost the level: refuel *only* when
+the same search finds a plan that the tank is the only thing blocking, and otherwise
+fall through to the square-changer rungs, which is where presses get watched. That
+question can be asked of any round, and the answer on level 6 is always the same one.
+In **121 of 121** rounds where both planners came back empty, no marked door has a plan
+at a tank of **200** actions either — five times the real one
+(`results/l6-fueldbg3.log`). The rung never fires, the four-game sweep is byte-identical
+to the baseline, and the code is not in the repo.
+
+What that buys is not the level, it is the elimination. "Those rounds were short of an
+EDGE, not of fuel" was previously an inference from a level that got lost; it is now a
+per-round measurement, and fuel is retired as a lever on this board. Two things fell out
+of asking the question. A resource hypothesis is settled by handing the search an absurd
+amount of the resource — one run, no code, no sweep to interpret. And `full` itself is
+unreliable here: it reads **21 in 72 of those 121 rounds** on a board whose tank is 42,
+because `drain` takes the most common fall over the last twenty steps and that flips
+between 2 and 4 within the level. Any lever keyed on the tank size is reading a number
+that is wrong most of the time — which is its own open thread, and not the one that was
+costing level 6 its actions.
+
+### 844 to 570: a period outlives a death, a phase does not
+
+With fuel eliminated, what is left is the other reason the planner refuses: *"no ready
+movers"*, which is `mover_period` returning None for every patroller at once. It happens
+for a reason with a shape. A death puts each one back at the start of its lap, so every
+entry recorded before it contradicts the ones after it at the same phase, and the period
+stays lost for the three laps the old entries need to age out of the window. While it is
+lost neither planner can plan — including the learn planner, which is the only thing that
+deliberately teaches an edge — so the rounds fall through to the square-changer rungs and
+the alphabet is learned only by accident, by walking.
+
+(How big that is was not knowable from the debug log at the time, and one of this
+session's numbers was wrong for a while because of it. `ARC_RMDBG` printed the refusals
+without saying which LEVEL had asked, and the rung is called — and correctly refuses — on
+every board with any tracked object, so its 588 refusals were read as level 6's when most
+of them belong to levels 2 to 5, where there is nothing patrolling to be ready. The lines
+now carry `lvl=`, and level 6's own split is in the next paragraph but one.)
+
+Clearing the histories on a death was the obvious fix and it lost the level (5/7,
+22.419%), because a period re-read off a handful of post-respawn frames can be the wrong
+one, and a wrong period sends every planned press to the wrong tick. The distinction that
+was missing: **a period belongs to the object and a phase belongs to the life.** The lap
+is eight steps long on this life and it was eight steps long on the last one; what the
+death destroyed is only the knowledge of where along it each patroller now is.
+
+So the period is remembered once earned and, when the full window is contradictory,
+re-used — never re-read off the short history, only *checked* against it, so this life's
+frames can refute the inherited period and can never invent one. The phase map is built
+from this life's sightings alone, and a phase this life has not seen yet answers None,
+which is the same silence the occluded stretch of a lap already gives. Two lines of state
+(`Gate.reset`, `Gate.mover_p`), one branch in `mover_period`, one bound in `mover_at`.
+
+Level 6 goes **844 → 570** and the game to **24.85%**, with levels 1-5 unchanged to the
+action and `cd82`, `m0r0` and `ar25` unmoved (`results/sweep-phase.log`). Deaths fall
+from nine to six, the square-changer rungs from 317 actions to 209, and the level is now
+reached with enough budget left that level 7 gets 793 actions to be baffled by instead of
+519.
+
+And with the refusals finally attributed to the level that asked, what is left on level 6
+is not this: of 723 refusals, **555 are `bfs exhausted`** — a real search, median 1,968
+states and up to 70,046, that finds no route — against 168 of "no ready movers". Two
+readings of the 555 have been tried and both are refuted. It is not fuel: no marked door
+has a plan at a tank of 200 either. And it is not a phase map too thin to predict the
+presses along a route, which is what one would expect the cost of reading phases off one
+life to be — at the moment those searches give up the maps are **full for 83% of the
+movers they are planning against** (2,634 of 3,156 mover-entries, `results/l6-fill.log`).
+The searches are refused for the reason the level has been refusing them all along: the
+alphabet. 189 of the 555 are the LEARN planner giving up, which is the sharper form of
+the same thing — not merely "no route to the ask" but "no unknown press worth walking to
+either", so the edge the level needs is on a patroller this tank cannot reach.
+
+### The seventh level is a window, and the agent thinks it is a board
+
+Level 7 has no plates, nothing patrols, and the first look at it recorded an arena that
+"shrinks into a triangle". Walked with a census printed per step, what it actually does is
+stranger and simpler. One step up destroys 98 floor cells and 86 wall cells behind the
+piece and creates 38 wall and 8 floor cells ahead of it; one step back restores every
+count exactly, in both axes, with no hysteresis. The board is a pure function of where the
+piece is standing.
+
+The obvious reading — a scrolling world — is wrong, and one measurement settles it.
+Comparing two consecutive frames at every shift from -8 to +8 in both axes, the best match
+is **dx=0, dy=0 at 94-95%**: the world is not moving under a camera. What moves is the
+colour-5 region, and across ten positions the non-5 extent is `piece_x - 18 … piece_x + 21`
+by `piece_y - 18 … piece_y + 21`, clipped by the screen and by the world's own walls. The
+frame is a **40x40 window around the piece**, and everything outside it is painted the same
+colour this game has used for its border since level 1.
+
+Which is exactly why the agent gets nowhere: every reader in the repo treats the frame as
+the whole board. The fog reads as wall, so the piece appears boxed in by something that
+recedes as it walks; every planning round sees a different board, so targets appear and
+vanish and the route is rebuilt from scratch. Level 7's accounting is **776 of 793 actions
+in `cand`**, the rarity router — which is what a board that will not hold still looks like
+from the inside, and it was previously being read as the agent having no idea what to do.
+
+The shape of the fix falls out of the same measurement. Because the coordinates are fixed,
+the windows stitch: remember every non-5 cell at the coordinates it was seen at, and treat
+colour 5 as *unknown* rather than as wall. That is a change to perception rather than to
+the gate, and it has to be gated on something this level has and the others do not — the
+colour-5 region moving with the piece — because on levels 1 to 6 colour 5 IS the border.
+
+What ends the level is still unknown. `hud`'s colour-8 counter reads 12 and has not moved
+through any probe, including both refill rings coming into view and a carrying cell that
+took one `right` press and moved the piece five right and twenty down. The full model,
+controls and open threads are in `results/l7-model.md`; `probe7.py` is the instrument.
+
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->
 

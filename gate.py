@@ -163,6 +163,12 @@ class Gate:
         self.ticks = 0        # piece-moves so far: the clock every patroller runs on
         self.movers = {}      # track id -> {"hist": [(tick, box)], "halves": set}
         self.mover_edges = {}  # (track id, half) -> {value: value it became}
+        # A death puts every patroller back at the start of its lap. What that destroys
+        # is the PHASE — where on the lap each one is — and not the period, which is a
+        # property of the object and the same on the next life. Splitting the two is
+        # what lets a plan exist again a lap after a death instead of three.
+        self.reset = 0        # the tick a life last ended on
+        self.mover_p = {}     # track id -> the period it has been seen to earn
         # Marked plates the piece has STOOD INSIDE. The engine only lets it in matched,
         # and a door passed that way stays open: measured on `ls20` level 6, door B
         # refused (9, A-glyph) cold and passed it after one matched entry. A death puts
@@ -321,21 +327,48 @@ class Gate:
                     by = None
                     break
             if by and len(set(by.values())) > 1:
+                self.mover_p[k] = p
                 return p
-        return None
+        # Nothing is consistent across the whole window, which after a death is the
+        # normal case and not an unknown object: the patrollers went back to the start
+        # of their laps, so every entry from the previous life contradicts this one at
+        # the same phase, and the period stays lost for the three laps it takes them to
+        # age out. Meanwhile no plan can be made at all — not even by the LEARN planner,
+        # which is the only thing that deliberately goes and watches an edge.
+        #
+        # A period, though, is a property of the OBJECT. Clearing the histories to earn
+        # it again in one lap was measured and lost the level, because a period earned
+        # off a handful of post-respawn frames can be the wrong one. Re-using the period
+        # already earned is not that: it is never read off the short history, only
+        # CHECKED against it, so this life's frames can refute it and can never invent
+        # one. The phase comes from this life only — see `mover_at`.
+        p = self.mover_p.get(k)
+        live = [(t, b) for t, b in hist if t > self.reset]
+        if p is None or len(live) < 2:
+            return None
+        by = {}
+        for t, b in live:
+            if by.setdefault(t % p, b) != b:
+                return None
+        return p
 
     def mover_at(self, k, ahead):
         """The object's box `ahead` piece-moves from now, read off its phase map.
 
         None when that phase has never been observed — which is exactly the occluded
         stretch of the lap; the components of the same patroller that survive the piece
-        passing over are the ones that answer there."""
+        passing over are the ones that answer there.
+
+        Only this life's sightings, because a death moves every patroller back to the
+        start of its lap: where one was at a phase before that says nothing about where
+        it is at the same phase now, and the period may have been inherited across
+        exactly that boundary."""
         p = self.mover_period(k)
         if p is None:
             return None
         by = {}
         for t, b in self.movers[k]["hist"]:
-            if t > self.ticks - 3 * p:
+            if t > max(self.ticks - 3 * p, self.reset):
                 by[t % p] = b
         return by.get((self.ticks + ahead) % p)
 
@@ -663,7 +696,7 @@ class Gate:
         movers = [(k, self.mover_period(k)) for k in self.movers
                   if self.mover_period(k) and self.movers[k].get("halves")]
         if not movers:
-            dbg("no ready movers")
+            dbg("no ready movers: lvl=%s" % getattr(self, "lvl", -1))
             return None
         period = 1
         for _, p in movers:
@@ -778,8 +811,9 @@ class Gate:
                     break
                 q.append(key)
         if best is None:
-            dbg("bfs exhausted: states=%d want=%s panel0=%s movers=%s fuel0=%s"
-                % (len(seen), want, panel0, [(k, p) for k, p in movers], fuel0))
+            dbg("bfs exhausted: lvl=%s learn=%s states=%d want=%s panel0=%s movers=%s fuel0=%s"
+                % (getattr(self, "lvl", -1), learn, len(seen), want, panel0,
+                   [(k, p) for k, p in movers], fuel0))
             return None
         # How many checked gates this plan passes for the first time — the goal door's
         # own entry is among them. A plan through MORE gates has demonstrated more of

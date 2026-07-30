@@ -563,6 +563,13 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # is a watched EDGE, not fuel. The square-changer trips are not idle after all —
         # they walk the piece across the corridors, which is how presses get watched at
         # all on a board where walking is pressing.
+        #
+        # Retried with a discriminator — refuel only when the same search finds a plan
+        # the tank is the only thing blocking — and the discriminator never once fired:
+        # in all 121 rounds that reach here, no marked door has a plan at a tank of 200
+        # actions either, against a real tank of 42. So a stuck round on this board is
+        # never waiting for fuel; the rung is dead code by measurement, and the way down
+        # is teaching the alphabet faster (`results/l6-fueldbg3.log`).
 
     if at and locked:
         # The board carries the piece somewhere the map cannot vouch for. Settle it before
@@ -1052,7 +1059,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             # to re-learn; a stale one plans routes against patrollers that are not there.
             gate.movers.clear()
             gate.mover_edges.clear()
+            gate.mover_p.clear()   # periods are keyed on ids that are about to be reused
             gate.opened.clear()
+            gate.reset = gate.ticks
             continue
 
         cur, seen_c, tracks, next_id = see(obs.frame, tracks, next_id, rows)
@@ -1217,6 +1226,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     # entries are not only noise, they are what keeps a period from
                     # being re-read too eagerly off a handful of post-respawn frames,
                     # and a wrong period sends every planned press to the wrong tick.
+                    #
+                    # What a death actually invalidates is the PHASE, not the period.
+                    # Marking the tick lets `mover_period` keep the period it already
+                    # earned — checked against this life's frames, never re-read off
+                    # them — while `mover_at` answers from this life's sightings only.
+                    gate.reset = gate.ticks
                 if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a
@@ -1311,6 +1326,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 here = locate(obs.frame, model)
                 expect = trajectory(model, here, plan, rules) if (plan and here) else []
                 trip = list(gate.trip) if (plan and gate.trip) else []
+                gate.lvl = done
                 psrc = (gate.rung or "none") if plan else "wander"
                 cur_goal = goal
                 door = goal if goal is not None and gate.matched(goal) else None

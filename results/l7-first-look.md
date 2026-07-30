@@ -1,5 +1,10 @@
 # ls20 level 7: first look (2026-07-30)
 
+> **Superseded in part by `l7-model.md` (same day).** The "play area SHRINKS into a
+> triangle" below is real but was read as a property of the level; it is the frame being
+> a 40x40 WINDOW around the piece, sliding as it walks. Everything else here still holds.
+
+
 Replay `results/prefix1822.txt` (the level-6-clearing run's actions) with `probe6.py`;
 grid dump in `results/l7-grid.txt`. Everything below is one frame plus one action — a
 sighting, not a model.

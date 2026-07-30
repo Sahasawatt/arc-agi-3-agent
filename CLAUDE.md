@@ -188,6 +188,58 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   square's parity, never its tick — a test board built that way proves the planner
   "broken" when the geometry makes the press physically impossible. Real patrollers sit
   off-lattice; test fixtures must too.
+- **`ls20` level 7's frame is a 40x40 WINDOW around the piece, not the board.** Terrain is
+  destroyed behind the piece and created ahead of it as it walks, reversibly and with no
+  hysteresis — and comparing consecutive frames at every shift, the best match is
+  **dx=0, dy=0 at 94-95%**, so the world is not scrolling: what moves is the colour-5
+  region, and the non-5 extent is `piece ± (-18, +21)` in both axes, clipped by the screen
+  and the world's own walls. Every reader here treats the frame as the whole board, so the
+  fog reads as wall, the piece looks boxed in by something that recedes as it walks, and
+  every planning round sees a different board — **776 of level 7's 793 actions are `cand`**,
+  which is what a board that will not hold still looks like from inside. Because the
+  coordinates are fixed the windows STITCH: the fix is to remember every non-5 cell at the
+  coordinates it was seen at and treat colour 5 as *unknown* rather than as wall — gated on
+  the colour-5 region moving with the piece, because on levels 1-6 colour 5 IS the border.
+  Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
+- **A period belongs to the OBJECT and a phase belongs to the LIFE.** A death puts every
+  patroller back at the start of its lap, so pre-death entries contradict post-death ones
+  at the same phase and `mover_period` returns None for the three laps they take to age
+  out — and while it is lost the LEARN planner is out too, so nothing teaches an edge
+  deliberately and the alphabet is only picked up by walking. Clearing the histories there
+  lost the level (5/7, 22.419%) because a period re-read off a handful of post-respawn
+  frames can be wrong. Remembering the period and re-using it is not the same act: it is
+  **checked** against this life's frames and never read off them, so they can refute it
+  and can never invent one — and the phase map is built from this life's sightings alone,
+  an unseen phase answering None exactly as the occluded stretch of a lap already does.
+  **844 → 570, 23.528% → 24.85%**, levels 1-5 identical to the action
+  (`results/sweep-phase.log`). Deaths 9 → 6, `stage1` 317 → 209.
+- **`ARC_RMDBG`'s refusals were not attributed to a level, and reading them as one level's
+  cost is how a number gets invented.** `route_moving` is called on every board with a
+  tracked object and correctly refuses wherever nothing patrols, so its 588 `no ready
+  movers` lines look like level 6's and are mostly levels 2-5. The lines carry `lvl=` now.
+  Level 6's own split, measured: **723 refusals — 555 `bfs exhausted`, 168 no-ready-movers**,
+  so the search failing is 77% of it and the periods are no longer the binding constraint.
+  Both readings of the 555 tried so far are refuted: not fuel (no plan at a tank of 200),
+  and not a phase map thinned by reading phases off one life — at the moment those searches
+  give up the maps are **full for 83%** of the movers involved (`results/l6-fill.log`).
+  189 of the 555 are the LEARN planner giving up, which says the missing edge sits on a
+  patroller the tank cannot reach, not that there is nothing left to learn.
+- **A stuck round on the patrolled board is never short of FUEL, and the accounting that
+  says otherwise is reading a tank size that is wrong.** Level 6's planner is handed a
+  median of 19 actions of a 42-action tank against a 72-action recipe, five of its ten
+  lives end with the square-changer rungs draining a full tank and starving, and not one
+  of its 844 actions goes to a refuel rung — every arrow points at thirst. Asked per
+  round instead of inferred — *would this door have a plan at a tank of 200?* — the
+  answer is no in **121 of 121** rounds where both patrol planners came back empty
+  (`results/l6-fueldbg3.log`), so a refuel rung gated on it never fires and the sweep is
+  byte-identical. The earlier "the freed rounds bought nothing because what they are
+  short of is an EDGE" was an inference from a lost level; this is the same conclusion
+  measured directly, and it retires fuel as a lever on this board. Two things fell out
+  of asking: `full` itself reads **21 in 72 of those 121 rounds** on a board whose tank
+  is 42 — `drain` takes the most common fall over the last 20 steps and that flips 2↔4
+  within the level — so any lever keyed on the tank is reading a number that is wrong
+  most of the time; and a hypothesis about a resource is settled by handing the search an
+  absurd amount of it, which costs one run and no code.
 - **Routing walks around the recorded changer squares is inert — measured three times.**
   On stage hops, and again on probe/sweep walks (with the fallback kept), every per-level
   count came back identical: the shortest paths do not cross the *recorded entry squares*.
