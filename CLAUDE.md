@@ -218,14 +218,22 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   asking `(8, #.#/##./.##)` — door B's exact ask on level 6 — which no window from the
   start can reach, so "no plates at all" was measuring the window and not the level. Built
   into the agent it works (world 1,165 → 2,839 cells, the plate visible in 777 of 789
-  rounds) and is still **not in the repo**, for two reasons. `gate.displays` stays 0 — no
-  plate is ever seen to change, so nothing is `locked` and the door is just a rarity
-  target; the likely indicator is the unframed colour-12 L glyph at x3-8 y55-59, which
-  `plates` cannot read. And the LATCH is an `ls20` fact dressed as a general one: keying
-  on colour 5 trading terrain both ways costs `cd82`, `m0r0` and `ar25` their only level
-  each — measured on one sighting AND on three consecutive — with 1,981 of 2,000 actions
-  spent wandering a board painted from the memory of a board redrawn under them. A general
-  version has to find the fog colour in the frame instead of being told it is 5.
+  rounds), and **it is in the repo now**. `gate.displays` still stays 0 — no plate is ever
+  seen to change, so nothing is `locked` and the door is just a rarity target; the
+  indicator is the unframed colour-12 L glyph at x3-8 y55-59, which `plates` cannot read.
+  What took two attempts is the LATCH. Keying on colour 5 trading terrain both ways is an
+  `ls20` fact dressed as a general one, and costs `cd82`, `m0r0` and `ar25` their only
+  level each — measured on one sighting AND on three consecutive — with 1,981 of 2,000
+  actions then spent wandering a board painted from the memory of a board redrawn under
+  them. The question that separates them is not how MUCH changed but WHERE: the fog is
+  everything outside a box around the piece, so the fog SET translates by exactly the
+  piece's displacement while the content stays in world coordinates, and a board that
+  merely redraws has no reason to agree with the piece's own step. Shift the candidate
+  colour's mask by that step and ask whether it predicts the next frame better than leaving
+  it put; over colours that reach the frame's edge, latched on two steps running. Measured:
+  no game loses a level, levels 1-6 identical to the action, fires only on level 7 — where
+  `near-fuel` goes 0 → 280 actions because the agent can finally see refills it is not
+  standing next to. It buys **no points yet**, and it is the only route to any.
   **Both halves the level looked to lack were behind the window.** Using the stitched map
   as a stability oracle — a cell that comes back DIFFERENT while not under the piece is the
   board acting, not the window moving — level 7 has a PATROLLER (16 cells at x55-57, a
