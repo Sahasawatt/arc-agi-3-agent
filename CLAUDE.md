@@ -253,11 +253,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   it finds no unknown press either, so there is genuinely **nothing left to learn within
   reach**, at any tank size. Only 30 are affordability. So "make the learn trip affordable"
   is not the lever; what those rounds are short of is a panel VALUE they can get to. The
-  derivation from that, not yet measured: if every press reachable from every state the
-  known edges span is itself known, that set is closed, and the door's ask is outside it —
-  which would make a DEATH, whose reset puts the panel at `(14, ##./.##/#.#)`, the only
-  move that crosses the frontier. Testable: compare the panel states visited after a death
-  with the ones reachable before it.
+  derivation that followed — that the reachable set is CLOSED, so a death's reset to
+  `(14, ##./.##/#.#)` is the only move that crosses the frontier — was written down as a
+  hypothesis and is **refuted by the panel trace** (`ARC_L6`, 24 distinct states over the
+  level): the level's five deepest shapes are first seen at a=1039, 1040, 1041, 1042, 1043
+  — five consecutive actions, so five PRESSES, ending on door A's own glyph — and the
+  deaths are at 679, 760, 837, 916, 993 and 1098. A death is not what opens the alphabet.
+  What a death does introduce is exactly one state, `(14, ##./.##/#.#)` at the first one.
+  So "nothing left to learn within reach" is a LOCAL condition of the piece's position,
+  phase and panel value, not a permanent closure — the level walks the alphabet in a burst
+  when it finally stands where it can, and what costs the ~400 actions is getting there.
 - **A stuck round on the patrolled board is never short of FUEL, and the accounting that
   says otherwise is reading a tank size that is wrong.** Level 6's planner is handed a
   median of 19 actions of a 42-action tank against a 72-action recipe, five of its ten

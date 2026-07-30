@@ -838,14 +838,27 @@ that in **159 of them there is no unknown press to walk to at any tank size**. O
 affordability. So the learn planner is not being starved; it has genuinely run out of
 things to learn from where it stands, and making its trips cheaper would buy 30 rounds.
 
-What those rounds are short of is a panel VALUE. The derivation, which is not yet a
-measurement: if every press reachable from every state the known edges span is itself
-known, then that set of states is closed, the door's ask is outside it, and no amount of
-walking opens it. The one move that would cross the frontier is a **death** — its reset
-puts the panel at `(14, ##./.##/#.#)` regardless of where it was — which would mean the
-agent has been using its lives as a state-reset mechanism without anything in it knowing
-that. The test is cheap: compare the panel states visited after a death with the ones
-reachable before it.
+What those rounds are short of is a panel VALUE. The derivation that followed was that the
+reachable set must be *closed* — every press from every state the known edges span already
+recorded — so the door's ask lies outside it and the only move that crosses the frontier is
+a **death**, whose reset puts the panel at `(14, ##./.##/#.#)` wherever it was. That would
+have meant the agent was using its lives as a state-reset mechanism without anything in it
+knowing so, which is a good story, and the panel trace refutes it in one look.
+
+`ARC_L6` records the panel per round; over the level it visits **24 distinct states**, and
+what matters is when each was first seen. The five deepest shapes — the tail of the
+alphabet, ending on door A's own glyph `#.#/..#/###` — are first seen at actions 1039,
+1040, 1041, 1042 and 1043. Five consecutive actions is five *presses*, not a death; the
+deaths are at 679, 760, 837, 916, 993 and 1098. Door A's full ask `(9, #.#/..#/###)` first
+appears at 1192 and the level ends at 1207. A death introduces exactly one state in the
+whole level, `(14, ##./.##/#.#)` at the first one, which is the reset and nothing more.
+
+So "nothing left to learn within reach" is a **local** condition — of the piece's position,
+the patrol phase and the panel's current value together — and not a closure. The level does
+walk its whole alphabet, in a burst of five presses, once it is finally standing somewhere
+it can. What costs the four hundred actions before that is getting there, and that is a
+different problem from either fuel or edges: it is that nothing in the agent plans toward
+*a place from which learning becomes possible*, only toward learning that is possible now.
 
 ### The seventh level is a window, and the agent thinks it is a board
 
