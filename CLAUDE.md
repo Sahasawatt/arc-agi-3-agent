@@ -303,7 +303,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   trace now drops, on windowed boards only, `gone` entries whose square is FOG in the raw
   frame (slid out of view, not vanished) and `new` entries whose square was fog a step ago
   (slid in, not appeared) — `tank=[11]` goes 31 → 172 rounds and `fuels>0` 31 → 112, every
-  game unchanged. Still decays in the second half of the level; not yet the clear. A 26-action walk around it contradicts **zero** cells, so the nearest
+  game unchanged. The remaining decay was OCCLUSION — the piece walking past a ring hides
+  it for a step with the clock flat, and each of those counted against the colour
+  (with=58 vs without=68 by run's end, `ARC_RFDBG` since removed). A second windowed-only
+  filter drops `gone` under the piece's own footprint when no draining colour rose (a
+  pickup rises, so pickups still count): `tank=[11]` 172 → **196 of 345**, `fuels>0` → 118.
+  Level 7 still does not fall — the remaining empty-tank rounds are early-level (before the
+  first pickup ever happens) plus post-death windows, and the deaths themselves are what
+  starve the learning. Next session: check whether learn trips now weave the refill at all
+  (accounting: deaths per run, chg per run), and if not, why `route_moving` still plans
+  short trips when `fuels` is non-empty. A 26-action walk around it contradicts **zero** cells, so the nearest
   changer is still the patroller twelve actions away at x55-57, on a level whose life is 21.
   Full model, controls and the open questions: `results/l7-model.md`, probe `probe7.py`.
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**

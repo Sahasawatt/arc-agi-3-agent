@@ -521,9 +521,6 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         here = (at[0], at[1])
         tank6 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
         fuels = [o for o in seen if o["colour"] in tank6]
-        if os.environ.get("ARC_FUELS") and getattr(gate, "lvl", -1) == 6:
-            print("[fu] at=%s tank=%s fuels=%d left=%s" % (
-                here, sorted(tank6), len(fuels), left), flush=True)
         # Of the doors a plan exists for, take the one whose plan passes the MOST
         # checked gates: a door with another door behind it is entered en route, and
         # entering the shallow one as the goal strands the piece there with no fuel
@@ -1200,6 +1197,22 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 if prev_raw5 is not None:
                     row["new"] = [n for n in row["new"]
                                   if not (0 <= n[2] < rows and prev_raw5[n[2]][n[1]])]
+                # ...and an object that vanished UNDER the piece while the clock did not
+                # rise is occluded, not gone: the piece walking past a refill ring hides
+                # it for a step, and each of those counted against colour 11 until
+                # `seen_without` outgrew `seen_with` and the detector withdrew the one
+                # refill colour it had — with=58 against without=68 by the end of a run.
+                # A pickup is occlusion WITH the clock rising, so those keep counting.
+                falls = set(drain(log[-CLOCK_WINDOW:]))
+                rose = any(row["hud"].get(str(k), [0, 0])[1] > row["hud"].get(str(k), [0, 0])[0]
+                           for k in falls)
+                pat = locate(obs.frame, model)
+                if pat is not None and not rose:
+                    px, py = pat[0], pat[1]
+                    pw, ph = (pat[2], pat[3]) if len(pat) > 3 else (5, 5)
+                    row["gone"] = [g for g in row["gone"]
+                                   if not (px - 4 <= g[1] <= px + pw + 4
+                                           and py - 4 <= g[2] <= py + ph + 4)]
             prev_raw5 = raw5
 
         # Read the plates after EVERY action, not once per plan. A changer is credited to
