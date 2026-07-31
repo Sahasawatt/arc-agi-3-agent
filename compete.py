@@ -521,6 +521,9 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         here = (at[0], at[1])
         tank6 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
         fuels = [o for o in seen if o["colour"] in tank6]
+        if os.environ.get("ARC_FUELS") and getattr(gate, "lvl", -1) == 6:
+            print("[fu] at=%s tank=%s fuels=%d left=%s" % (
+                here, sorted(tank6), len(fuels), left), flush=True)
         # Of the doors a plan exists for, take the one whose plan passes the MOST
         # checked gates: a door with another door behind it is entered en route, and
         # entering the shallow one as the goal strands the piece there with no fuel
@@ -955,6 +958,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     by_value = {a.value: a for a in actions}
     values = sorted(by_value)
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
+    prev_raw5 = None      # last step's fog mask, for the trace filter below
 
     prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
     records, visits, log = [], {}, []
@@ -1163,6 +1167,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     run = run + 1 if windowed_step(
                         before, obs, (w1[0] - w0[0], w1[1] - w0[1]), rows) else 0
                     windowed = run >= 2
+            raw5 = (np.array(obs.frame)[-1][:rows] == 5) if windowed else None
             if windowed:
                 world = stitch(obs, world, locate(obs.frame, model), model, rows)
             gate.windowed = windowed
@@ -1179,6 +1184,23 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         "boxes": prev, "after": set(cur)})
         if model:
             log.append(trace_step(before, obs, value, model))
+            # On a windowed board, an object whose square is FOG now did not vanish — it
+            # slid out of view — and one whose square was fog last step did not appear.
+            # Without this the refill detector unlearns the one refill colour it has: the
+            # ring drops off the window's edge on nearly every walk, `seen_without` for
+            # colour 11 outgrows `seen_with`, and `refills()` withdraws it — measured at
+            # tank=[] in 384 of level 7's 415 planning rounds, with 31 rounds of [11] in
+            # between (the window after the first pickup, before the ratio tipped). Every
+            # learn trip was then planned with no fuel to weave, and one run starved
+            # nineteen times. `raw5` is the fog BEFORE the stitch painted memory into it.
+            if windowed and raw5 is not None and log:
+                row = log[-1]
+                row["gone"] = [g for g in row["gone"]
+                               if not (0 <= g[2] < rows and raw5[g[2]][g[1]])]
+                if prev_raw5 is not None:
+                    row["new"] = [n for n in row["new"]
+                                  if not (0 <= n[2] < rows and prev_raw5[n[2]][n[1]])]
+            prev_raw5 = raw5
 
         # Read the plates after EVERY action, not once per plan. A changer is credited to
         # the square the piece was standing on when the display changed, so the credit is
