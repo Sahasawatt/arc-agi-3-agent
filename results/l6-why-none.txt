@@ -1,0 +1,8 @@
+rounds: 100
+rungs: {'cand': 22, 'probe': 10, 'stage1': 38, 'cycle-last': 2, 'desperate': 7, 'turn-walk': 10, 'cycle-on-turn': 6, 'door': 3, 'moving': 1, 'near-fuel': 1}
+i=637 rung=cand left=41 opened=0 movers={}
+i=731 rung=stage1 left=40 opened=0 movers={"53": {"p": 8, "halves": [], "edges": {}}, "54": {"p": 8, "halves": [], "edges": {}}, "81": {"p": 8, "halves": [], "edges": {}}, "82": {"p": null, "halves": [1], "edges": {"1": 1}}, "84": {"p": null, "halves": [1], "edges": {"1": 7}}}
+i=974 rung=stage1 left=42 opened=0 movers={"12": {"p": null, "halves": [1], "edges": {"1": 2}}, "29": {"p": null, "halves": [1], "edges": {"1": 1}}}
+i=1196 rung=near-fuel left=14 opened=1 movers={"9": {"p": 8, "halves": [], "edges": {}}, "0": {"p": 8, "halves": [], "edges": {}}, "1": {"p": 8, "halves": [], "edges": {}}, "2": {"p": 8, "halves": [], "edges": {}}, "3": {"p": 8, "halves": [], "edges": {}}, "4": {"p": 8, "halves": [], "edges": {}}, "11": {"p": 8, "halves": [], "edges": {}}, "12": {"p": null, "halves": [1], "edges": {"1": 2}}, "13": {"p": 8, "halves": [], "edges": {}}, "16": {"
+rounds with period+halves mover: 2 of 100
+(#with-period, #with-halves) per round: {(0, 0): 4, (2, 0): 1, (5, 0): 2, (10, 0): 3, (10, 1): 15, (8, 1): 2, (6, 1): 3, (11, 1): 3, (3, 1): 2, (3, 2): 2, (8, 2): 2, (13, 2): 4, (11, 2): 1, (5, 2): 4, (6, 2): 1, (4, 2): 1, (4, 3): 3, (14, 3): 4, (12, 3): 1, (6, 3): 4, (7, 3): 1, (0, 1): 6, (7, 1): 2, (5, 1): 6, (0, 2): 2, (10, 2): 4, (2, 2): 4, (1, 2): 1, (1, 3): 2, (11, 3): 4, (9, 3): 1, (3, 3): 4, (9, 1): 1}

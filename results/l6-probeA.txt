@@ -1,0 +1,57 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 02:29:36 | INFO | Got anonymous API key: 9b6f5481-5a56-44f0-bbc1-252f16d54fcb
+2026-07-30 02:29:36 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 02:29:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 02:29:37 | INFO | Created new scorecard: 9a44e369-07ff-41e9-8941-56a22a6db4fe
+2026-07-30 02:29:38 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 02:29:38 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start  lvl=5  block=x29-33 y10-11  hud={3: 66, 4: 18, 5: 140, 8: 12, 9: 2, 11: 18}
+       yellow=[]
+  1 act2  lvl=5  block=x29-33 y10-11  budget=16  yellow=0  differ
+      plate@x1y53 = ..##../..##../######/######/##....
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  2 act4  lvl=5  block=x34-38 y10-11  budget=14  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  3 act4  lvl=5  block=x39-43 y10-11  budget=12  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  4 act2  lvl=5  block=x39-43 y15-16  budget=10  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  5 act2  lvl=5  block=x39-43 y20-21  budget=8  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  6 act2  lvl=5  block=x39-43 y25-26  budget=6  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  7 act2  lvl=5  block=x39-43 y30-31  budget=4  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  8 act2  lvl=5  block=x20-21 y28-28  budget=2  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+  9 act2  lvl=5  block=x20-21 y23-23  budget=0  yellow=0  differ
+      plate@x1y53 = ##..##/##..##/....##/....##/######
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+ 10 act2  lvl=5  block=x25-26 y33-33  budget=84  yellow=3  differ
+      plate@x1y53 = (empty)
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+ 11 act4  lvl=5  block=x20-21 y33-33  budget=82  yellow=3  differ
+      plate@x1y53 = (empty)
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###
+ 12 act4  lvl=5  block=x20-21 y28-28  budget=80  yellow=3  differ
+      plate@x1y53 = (empty)
+      plate@x53y34 = (empty)
+      plate@x53y49 = #.#/..#/###

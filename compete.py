@@ -52,7 +52,8 @@ TRAIL = 3          # squares of memory a route may not step back into
 STUCK = 30         # rounds with nothing left to watch before going to look elsewhere
 LEARN = 3          # entries a plan buys for a changer whose cycle is not known yet
 ACCT = os.environ.get("ARC_ACCT")  # action-accounting JSONL path, opt-in
-L6 = os.environ.get("ARC_L6")      # gate-view JSONL for level index 5 (ls20 level 6), opt-in
+L6 = os.environ.get("ARC_L6")      # gate-view JSONL for one level (index ARC_L6LVL, default 5), opt-in
+L6LVL = int(os.environ.get("ARC_L6LVL", "5"))
 
 
 def build_model(records, colours, rows=HUD_ROW, prior=None):
@@ -476,6 +477,26 @@ def keep_identity(fresh, prior, frame):
     return prior if locate(frame, prior) is not None else fresh
 
 
+def tank_colours(log, gate):
+    """Refill colours to plan fuel with — `refills()`'s answer, latched on a WINDOWED board.
+
+    `refills()` re-derives its with/without ratio from the trace every round, and on a
+    board whose frame slides the ratio decays toward empty whenever the piece spends a
+    while away from a ring — measured at tank=[] in 149 of level 7's 345 planning rounds
+    after the trace filters, all of them early-level or post-death, which are exactly the
+    rounds a learn trip starves in. A refill colour is a property of the level, so once
+    earned it holds for the level: the latch lives on the Gate, which dies at the level
+    boundary, so nothing leaks to the next board. Windowed only — everywhere else
+    `refills()` is already stable and the withdraw-on-doubt behaviour is what guards
+    against a false pickup (`ls20` level 5's white cross).
+    """
+    got = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+    if getattr(gate, "windowed", False):
+        gate.tank |= got
+        return set(gate.tank)
+    return got
+
+
 def choose(frame, model, log, gate, left, full, redirects=None, once=None,
            came_from=None, stood=None, refused=(), tried=(), sure=None):
     """Where to walk next, as (actions, the target it is for).
@@ -517,9 +538,10 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     # a half of the display, which no board with square changers has — the rung is
     # silent everywhere else by mechanism. A door already entered that did not end the
     # level is a passage, not a goal.
+    learn6 = None   # a windowed board's learn trip, held back for the square rungs
     if at and gate.movers and gate.displays:
         here = (at[0], at[1])
-        tank6 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+        tank6 = tank_colours(log, gate)
         fuels = [o for o in seen if o["colour"] in tank6]
         # Of the doors a plan exists for, take the one whose plan passes the MOST
         # checked gates: a door with another door behind it is entered en route, and
@@ -551,9 +573,18 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             got = gate.route_moving(grid, model, here, o, fuels, full, left,
                                     redirects, learn=True)
             if got and got[0]:
-                gate.trip = got[1]
-                gate.rung = "moving-learn"
-                return got[0], None
+                # On a WINDOWED board the learn trip is a fallback, not the answer: the
+                # movers it aims at are mostly ghosts (no press here is ever credited to
+                # the thing pressed — the changers are spatially static, so no period is
+                # ever earned; see results/l7-model.md), while every walked press has
+                # been landing in `gate.changers`/`gate.cycles` under its SQUARE. Stash
+                # the plan and let the square rungs below have the round first.
+                if not getattr(gate, "windowed", False):
+                    gate.trip = got[1]
+                    gate.rung = "moving-learn"
+                    return got[0], None
+                learn6 = got
+                break
         # Tried here and measured back out: when neither planner has an answer, top the
         # tank up instead of falling through to the square-changer rungs below (whose
         # trips are to footprint-overlap positions, not places — 317 of level 6's 844
@@ -571,10 +602,108 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # never waiting for fuel; the rung is dead code by measurement, and the way down
         # is teaching the alphabet faster (`results/l6-fueldbg3.log`).
 
-    if at and locked:
+    # The held-back learn trip jumps the queue when the square graph is CLOSED: every
+    # wrong half watched through five or more states with the ask still unreachable
+    # means no amount of pressing the known squares can open the door — the missing
+    # edge is on something unwatched, which is exactly what the learn trip walks to.
+    # Without this the reordered square rungs churn the closed ring forever and the
+    # east half of the board is never explored (measured: 1,029 bfs-exhausted rounds,
+    # cycle-last 148 actions, the x54 rotators never learned in-run).
+    # ANY wrong half being exhausted is enough: the panel must match in every half at
+    # once, so one half the known squares cannot reach blocks the whole plan no matter
+    # how fixable the others are (`all` here never fired — the ink half is always
+    # fixable, so it vetoed the yield while the shape half sat closed).
+    if learn6 and locked and os.environ.get("ARC_YDBG"):
+        wh = gate.wrong_halves(locked[0])
+        print("[yd] lvl=%s wrong=%s exh=%s path=%s state=%s" % (
+            getattr(gate, "lvl", -1), sorted(wh),
+            {h: gate.exhausted(locked[0], h) for h in wh},
+            {h: (p if (p := gate.path_for(locked[0], h)) is None else len(p))
+             for h in wh},
+            sorted(map(str, gate.state()))[:1]))
+    # Yield to exploration ONLY when pressing what is already known teaches nothing:
+    # `learning_path` finds a walk to a state with an unwatched edge, and while one
+    # exists the square rungs below should have the round — the ring completes, and a
+    # complete ring plus the x54 rotators is exactly the ask (verified offline:
+    # path_for returns [((19,40),5), ((54,30),2)] the moment all six ring edges are in).
+    if learn6 and locked and any(
+            gate.exhausted(o, h) and gate.learning_path(o, h) is None
+            for o in locked for h in gate.wrong_halves(o)):
+        # The missing edge is usually OFF-MAP, not on a tracked ghost: measured, 598
+        # actions of learn trips pressed the west changers' own fragments while the
+        # east half of the board — and the changer the ask needs — stayed fog. On a
+        # windowed board the unexplored set IS the colour-5 region, so walk to the
+        # nearest never-stood position whose neighbourhood still holds fog, and fall
+        # back to the learn trip only when no frontier fits the tank.
+        if at is not None and left is not None:
+            here5 = (at[0], at[1])
+            w5, h5 = model.box
+            dists5 = bfs_all(grid, model, here5, redirects)
+
+            def poky(pos):
+                """A direction never poked whose plain target no route can reach."""
+                for a5, s5 in model.dirs.items():
+                    tgt = (pos[0] + s5[0], pos[1] + s5[1])
+                    if (tgt not in dists5 and tgt not in refused
+                            and (a5, pos) not in gate.poked):
+                        return a5
+                return None
+
+            # Standing at a dead end of the ROUTABLE map, press into it: one action
+            # buys a wall (recorded, never repeated) or a carry — and a carry is the
+            # only way into a region no route can aim at. Level 7's east half hangs
+            # entirely on the (34,20) warp, which `slides` cannot read off a marker.
+            if left > 6 and (a5 := poky(here5)):
+                gate.poked.add((a5, here5))
+                gate.rung = "fog-poke"
+                return [a5], None
+            best5, far5 = None, False
+            for pos, route5 in sorted(dists5.items(), key=lambda t: len(t[1])):
+                if not route5:
+                    continue
+                x5, y5 = pos
+                fogy = (pos not in stood
+                        and (grid[max(0, y5 - 1):y5 + h5 + 1,
+                                  max(0, x5 - 1):x5 + w5 + 1] == 5).any())
+                if len(route5) > left - 2:
+                    # A frontier the tank cannot reach is still the frontier — note it
+                    # and refuel below rather than giving the round to the ghosts. The
+                    # east half of level 7 is 20+ actions out on a 21-action life, so
+                    # without this the far frontier is simply never visited.
+                    if fogy or poky(pos):
+                        far5 = True
+                        break
+                    continue
+                if fogy:
+                    gate.rung = "fog-explore"
+                    return route5, None
+                if best5 is None and poky(pos):
+                    best5 = route5
+            if best5:
+                gate.rung = "fog-explore"
+                return best5, None
+            if far5:
+                tank5 = tank_colours(log, gate)
+                legs5 = [r for o in targets(frame, model) if o["colour"] in tank5
+                         and (r := bfs(grid, model, here5,
+                                       footprints_touching(grid, model, o),
+                                       redirects)) is not None and len(r) <= left]
+                if legs5:
+                    gate.rung = "fog-fuel"
+                    return min(legs5, key=len), None
+        gate.trip = learn6[1]
+        gate.rung = "moving-learn"
+        return learn6[0], None
+
+    if at and locked and not (getattr(gate, "windowed", False)
+                              and gate.turns_for(locked[0])):
         # The board carries the piece somewhere the map cannot vouch for. Settle it before
         # routing on it: an unconfirmed cell is either the way through or a phantom, and the
         # two are indistinguishable from here.
+        # On a WINDOWED board the probe yields whenever a square that writes a wrong half
+        # is already known: probes took 516 of level 7's 1,154 actions while the recorded
+        # changers sat unpressed, because this rung sits above the square press rungs.
+        # Everywhere else the order stays as measured on levels 2-5.
         #
         # Only on a board with a lock, which is the only place the walk has to end on an
         # exact square. Firing it wherever the floor carries the piece instead costs `cd82`
@@ -627,7 +756,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             # twenty-six actions (99 -> 125), spent by the rungs that fill the gap when a
             # short, useful probe is refused. And only when a refill is known — before the
             # first one has been seen there is nothing to budget against.
-            tank0 = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+            tank0 = tank_colours(log, gate)
             fuel0 = [o for o in targets(frame, model) if o["colour"] in tank0]
             ok = left is None or not fuel0 or not blind
             if not ok:
@@ -652,7 +781,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # gating the exclusion on "something is locked" does not save it, since by then the
         # goal box is locked and the cross is the only way to unlock it.
         cands = [o for o in cands if o in doors or not gate.changing(o, model.box)]
-    tank = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+    tank = tank_colours(log, gate)
 
     # Several rungs below ask about the same targets on the same frame, and `route_to` reads
     # nothing but its arguments, so asking twice is pure waste. Measured, a route is 2-3ms
@@ -777,7 +906,21 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 # reads None.
                 gate.cycled()
                 gate.rung = "cycle-on-turn"
-                return cycle(grid, model, here, redirects), None
+                steps = cycle(grid, model, here, redirects)
+                # On a windowed board a changer can be phase-gated: the ring press
+                # fires every second MOVE, so a single bounce landing on the wrong
+                # tick changes nothing — while continuous oscillation walks the whole
+                # six-state ring without one no-op (`results/l7-hashpress.txt`). While
+                # a wrong half is unplannable but its graph is still OPEN, commit
+                # three bounces instead of one: the round-churn after a lone no-op
+                # bounce is what left the ring unclosed at 4 edges for 800 ticks.
+                if steps and getattr(gate, "windowed", False) and left is not None:
+                    wrong = gate.wrong_halves(locked[0])
+                    blind = any(gate.path_for(locked[0], h) is None
+                                and not gate.exhausted(locked[0], h) for h in wrong)
+                    if blind and 3 * len(steps) + rest <= left:
+                        return steps * 3, None
+                return steps, None
             gate.rung = "turn-walk"
             return leg, None
 
@@ -854,6 +997,14 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 gate.rung = "cycle-last"
                 return cycle(grid, model, here, redirects), None
 
+    # The held-back learn trip (windowed boards only): every square rung above had its
+    # chance at this round and none had a plan, so go and press something unwatched
+    # rather than fall to rarity.
+    if learn6:
+        gate.trip = learn6[1]
+        gate.rung = "moving-learn"
+        return learn6[0], None
+
     for o in cands:
         if not gate.locked(o) and (r := route(o)):
             gate.rung = "cand"
@@ -871,7 +1022,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     return [], None
 
 
-def stitch(obs, world, at, model, rows=HUD_ROW):
+def stitch(obs, world, at, model, rows=HUD_ROW, boxes=()):
     """Remember every non-fog cell, and paint what is remembered back into the fog.
 
     The windows stitch because the coordinates are FIXED. What that buys is the level:
@@ -891,6 +1042,25 @@ def stitch(obs, world, at, model, rows=HUD_ROW):
     if at is not None:
         w, h = model.box
         seen[max(0, at[1]):at[1] + h, max(0, at[0]):at[0] + w] = False
+        # A display's OFF pixels are state, not fog. A glyph pixel that turns off goes
+        # non-5 → 5, which the dirty test below (non-5 → different non-5) cannot see,
+        # so the remembered ON pixel was painted back INSIDE the window and the
+        # indicator read as the UNION of its states on the press tick itself
+        # (reproduced raw-vs-composite in `results/ug-repro.txt`; a "late report"
+        # suppressor keyed on the box re-entering reading range was byte-identical
+        # three times because that is not when the garble happens). Both WHOLE-WINDOW
+        # repairs measure worse than the disease — in-window paint-back is legitimate
+        # behind walls ("clipped by the world's own walls", measured at y17/y22) —
+        # so the rule is scoped to the plate boxes the gate knows, fully in view:
+        # record their 5s as KNOWN 5s, and painting 5 into 5 is a no-op forever.
+    else:
+        # No piece found on this frame means no way to keep its own cells out of the
+        # memory — and a remembered piece cell is LITTER: one colour-12 pixel beside
+        # the bare indicator merges into its glyph, the garble reads as a shape
+        # CHANGE, and the phantom edge lands under whatever square the piece stood
+        # on (the ink block once carried five shape edges that way, and the planner
+        # then pressed it ninety times to fix the shape half). Absorb nothing.
+        seen[:] = False
     # A cell that comes back DIFFERENT is not terrain: something moves there. Painting a
     # remembered copy of a moving object into the fog is worse than leaving the fog — the
     # tracker then follows a ghost standing still at the last place the object was seen,
@@ -898,7 +1068,20 @@ def stitch(obs, world, at, model, rows=HUD_ROW):
     # one of them ever earned a period.
     dirty[:rows] |= seen & (known[:rows] >= 0) & (known[:rows] != grid[:rows])
     known[:rows][seen] = grid[:rows][seen]
+    for x0, x1, y0, y1 in boxes:
+        if at is not None and x0 >= at[0] - 18 and x1 <= at[0] + 21 \
+                and y0 >= at[1] - 18 and y1 <= at[1] + 21:
+            reg = (slice(y0, min(y1 + 1, rows)), slice(x0, x1 + 1))
+            known[reg][grid[reg] == 5] = 5
     fog = (grid[:rows] == 5) & (known[:rows] >= 0) & ~dirty[:rows]
+    if os.environ.get("ARC_UGDBG") and at is not None:
+        win = np.zeros_like(fog)
+        win[max(0, at[1] - 18):at[1] + 22, max(0, at[0] - 18):at[0] + 22] = True
+        inwin = fog & win
+        if inwin.any():
+            ys, xs = np.nonzero(inwin)
+            print("[ug] at=%s paintback-in-window n=%d cells=%s"
+                  % (at[:2], len(xs), list(zip(xs.tolist(), ys.tolist()))[:14]))
     out = grid.copy()
     out[:rows][fog] = known[:rows][fog]
     obs.frame[-1] = out
@@ -1017,7 +1200,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # plan — arrives with no goal object, is short, and is already budgeted; diverting
         # it cost level 3 seventy-nine actions from two interrupts. A refill walk is
         # already going where the interrupt would send it.
-        tankc = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+        tankc = tank_colours(log, gate)
         walk_goal = (cur_goal is not None and plan
                      and cur_goal.get("colour") not in tankc)
         # Lock work is exempt — its rungs budget their own way out, and diverting it cost
@@ -1034,7 +1217,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if plan and model and gate.displays and door is None                 and (walk_goal or lock_doomed) and here_now is not None:
             lnow = actions_left(obs.frame, log, CLOCK_WINDOW)
             if lnow is not None:
-                tankc = {g[0] for g in refills(log, set(drain(log[-CLOCK_WINDOW:])))}
+                tankc = tank_colours(log, gate)
                 fuels = [o for o in targets(obs.frame, model) if o["colour"] in tankc]
                 routes_f = [r for o in fuels
                             if (r := bfs(grid, model, (here_now[0], here_now[1]),
@@ -1149,6 +1332,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             gate.mover_p.clear()   # periods are keyed on ids that are about to be reused
             gate._laps.clear()
             gate.opened.clear()
+            gate._fresh.clear()    # a kept reading from before the reset spans it
             gate.reset = gate.ticks
             continue
 
@@ -1166,7 +1350,17 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     windowed = run >= 2
             raw5 = (np.array(obs.frame)[-1][:rows] == 5) if windowed else None
             if windowed:
-                world = stitch(obs, world, locate(obs.frame, model), model, rows)
+                # displays ONLY, not every icon: a STATIC plate's fogged pixels are
+                # exactly what the paint-back stabilises (the door's ask-picture is
+                # partially fogged from positions the ±18/21 test calls readable —
+                # measured: its (32,53) pixel is visible at dx=13 and fog at dx=18,
+                # the window is wall-clipped, not square). Recording those as OFF
+                # made the box flicker with the piece, 85 phantom edges in one run.
+                # A box that has actually CHANGED is the one whose off-pixels are
+                # state — and it changes ink before it ever changes shape, so it is
+                # in `displays` before the first union pixel can exist.
+                world = stitch(obs, world, locate(obs.frame, model), model, rows,
+                               boxes=gate.displays)
             gate.windowed = windowed
 
         # On a board whose frame is a WINDOW, an object out of view is not gone: it is
@@ -1289,7 +1483,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # Per-action movement + display line for the level-6 press-rule measurement:
                 # which steps actually press is the transition model a phase-counting
                 # planner has to get right, and it cannot be derived from the per-round view.
-                if l6 and done == 5:
+                if l6 and done == L6LVL:
                     l6.write(json.dumps({
                         "a": i, "was": list(was_here[:2]) if was_here else None,
                         "now": list(here_after[:2]), "chg": bool(changed),
@@ -1335,7 +1529,17 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # that moved nothing is a phantom edge. From here on every press left in
                 # the plan is counted against a panel that is not there, so the honest
                 # move is to drop it and plan from what the board now says.
-                if mark is not None and changed != mark:
+                # ...unless the display itself is under the fog of a windowed board:
+                # a press out there really does move the panel, and `plates` really
+                # cannot see it, so disagreement is blindness rather than refutation.
+                # The position check below still validates every step of the walk.
+                seen_disp = True
+                if windowed and raw5 is not None:
+                    for (x0, x1, y0, y1) in gate.displays:
+                        if raw5[y0:y1 + 1, x0:x1 + 1].any():
+                            seen_disp = False
+                            break
+                if mark is not None and changed != mark and seen_disp:
                     plan, expect, trip = [], [], []
 
             last = value if shifts.get(model.player) == model.dirs.get(value) else None
@@ -1381,6 +1585,13 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     # earned — checked against this life's frames, never re-read off
                     # them — while `mover_at` answers from this life's sightings only.
                     gate.reset = gate.ticks
+                    # And the fresh-read ledger: a display reading from before this
+                    # death must never be the OLD half of a booked edge (the panel
+                    # reset would be folded into the transition — the phantom shape
+                    # edges the ink square kept collecting, equality-hole included:
+                    # a death on a blocked action leaves `ticks` flat, so a tick
+                    # comparison cannot see it).
+                    gate._fresh.clear()
                 if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a
@@ -1483,7 +1694,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # the marked plates wear, what the panel says, which squares are proven
                 # rotators, and the fuel picture — the inputs a phase-counting planner
                 # would plan from, written down before one is built.
-                if l6 and done == 5:
+                if l6 and done == L6LVL:
                     marked6 = [{"colour": o["colour"], "x": o["x"], "y": o["y"],
                                 "marks": sorted(map(list, gate._marks(o))),
                                 "locked": gate.locked(o), "matched": gate.matched(o)}

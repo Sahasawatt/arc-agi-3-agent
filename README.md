@@ -1045,6 +1045,34 @@ being handed it, which is its own problem and not this one.
 The full level-7 model, controls and open threads are in `results/l7-model.md`;
 `probe7.py` is the instrument, and `-map` stitches the windows into one world offline.
 
+### Level 7, solved by hand: the ask is a composition, and the door is a hole
+
+The lock's last secret was that no single changer can produce what it asks. The
+indicator's shape changer at (19,40) walks a six-state ring that CLOSES without ever
+showing the ask `#.#/##./.##` — measured by driving it round twice (`results/l7-ring.txt`)
+— and the nearest it gets, `##./.##/#.#`, is the ask rotated 180°. The x55 patroller
+turns the shape a quarter per press. Two quarters are 180°: ring state plus two patroller
+presses is the ask exactly, and `down` from (29,45) — the move that had refused every
+wrong panel — simply happens when the panel is right, and ends the level.
+
+`results/l7-solution.txt` is a 71-action line from the level-7 start that does it: ink to
+8 (three re-entries of one square), the ring to `##./.##/#.#` (five re-entries of
+another, a refill woven mid-walk because the ring does not fit one life), a loop north to
+a second refill taken on the life's final action, a carry into the east corridor, two
+CHASE presses of the patroller — following it down its own lap overlaps it every tick,
+so the count is controlled by stepping off the column sideways the moment the panel
+reads right — a third refill beside the patroller, a carry home, and in. Three refills,
+two carries, zero deaths (`results/l7-solve.txt` ends `lvl=7`).
+
+The agent itself still plays 6/7. The plan above mixes the square machinery's presses
+with phase-timed patroller presses and three woven refills, and no planner in the repo
+can compose the two: the square order search cannot extrapolate a rotator to a value it
+has never seen, and `route_moving` cannot hand off to `stage` mid-plan. That
+integration is the open problem the solution defines. What this session DID land in the
+agent: refill colours latch for the level on windowed boards, and the square rungs get
+the round before the learn trip there — presses 31 → 68 per run, probe 516 → 73, every
+other game and level unchanged to the digit.
+
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->
 

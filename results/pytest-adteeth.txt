@@ -1,0 +1,29 @@
+........................................................................ [ 35%]
+................................F....................................... [ 71%]
+.........................................................                [100%]
+================================== FAILURES ===================================
+______ test_a_track_that_churns_inherits_what_the_old_id_was_seen_to_do _______
+
+    def test_a_track_that_churns_inherits_what_the_old_id_was_seen_to_do():
+        """A patroller is invisible exactly when it is pressed — the piece covers it — so its
+        track id churns on the tick that matters, and the alphabet learned under the old id is
+        stranded. Measured on `ls20` level 6: 285 actions end holding **122 edges under 26
+        keys** for three patrollers, and the learning arrives in six-action bursts that repeat.
+        Identity is the LAP; two shared squares of a deterministic circuit, because one is
+        where two tracks cross."""
+        g = Gate()
+        ticked(g, LAP8 + LAP8, key="old")
+        assert g.mover_period("old") == 8
+        g.movers["old"]["halves"] = {1}
+        g.mover_edges[("old", 1)] = {"a": "b"}
+    
+        ticked(g, LAP8 + LAP8, key="new")          # the same circuit, a fresh id
+        assert g.mover_period("new") == 8
+>       assert g.movers["new"]["halves"] == {1}, "the halves come with it"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'halves'
+
+test_gate.py:589: KeyError
+=========================== short test summary info ===========================
+FAILED test_gate.py::test_a_track_that_churns_inherits_what_the_old_id_was_seen_to_do
+1 failed, 200 passed in 1.42s

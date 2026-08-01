@@ -1,0 +1,54 @@
+........................................................................ [ 37%]
+................................F.F..................................... [ 74%]
+.................................................                        [100%]
+================================== FAILURES ===================================
+_______ test_a_route_presses_the_patroller_and_arrives_wearing_the_ask ________
+
+    def test_a_route_presses_the_patroller_and_arrives_wearing_the_ask():
+        g, gate = moving_board()
+        m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+        got = gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42)
+>       assert got is not None
+E       assert None is not None
+
+test_gate.py:578: AssertionError
+______________ test_a_patroller_that_moves_nothing_is_no_planner ______________
+
+    def test_a_patroller_that_moves_nothing_is_no_planner():
+        """A mover that has never been seen to move a half of the display is scenery; a board
+        with only those is a static board, and this planner has no business on it."""
+        g, gate = moving_board()
+        gate.movers = {"m": {"hist": [(24, 25, 3, 3), (29, 25, 3, 3)] * 4, "halves": set()}}
+        m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+>       assert gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42) is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_gate.py:604: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+gate.py:640: in route_moving
+    if self.mover_period(k) and self.movers[k].get("halves")]
+       ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <gate.Gate object at 0x0000016D0B151E80>, k = 'm', cap = 16
+
+    def mover_period(self, k, cap=16):
+        """Shortest cycle the object's recent positions are CONSISTENT with, or None.
+    
+        Consistency is judged per phase of the global clock — every recorded box at the
+        same `tick mod p` must agree — so a history with occlusion gaps still earns its
+        period. A static object repeats with every period, so a real cycle must contain
+        more than one distinct position; and enough entries are demanded that at least
+        one phase has been seen twice, or a fresh track would pass vacuously.
+        """
+        hist = self.movers.get(k, {}).get("hist", [])
+        for p in range(2, cap + 1):
+>           window = [(t, b) for t, b in hist if t > self.ticks - 3 * p]
+                                 ^^^^
+E           ValueError: too many values to unpack (expected 2)
+
+gate.py:300: ValueError
+=========================== short test summary info ===========================
+FAILED test_gate.py::test_a_route_presses_the_patroller_and_arrives_wearing_the_ask
+FAILED test_gate.py::test_a_patroller_that_moves_nothing_is_no_planner - Valu...
+2 failed, 191 passed in 1.66s

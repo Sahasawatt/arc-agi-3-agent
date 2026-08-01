@@ -203,6 +203,36 @@ class Gate:
         # refused (9, A-glyph) cold and passed it after one matched entry. A death puts
         # the panel back, so the caller clears this when a life ends.
         self.opened = set()
+        # (action, position) pairs already POKED into the unroutable dark on a windowed
+        # board — each is pressed once; a wall refuses, a carry teaches `redirects` the
+        # only entrance to a region no route can otherwise aim at (level 7's east half).
+        self.poked = set()
+        # Refill colours, LATCHED for the level once earned — windowed boards only. On a
+        # board whose frame slides, `refills()`'s with/without ratio decays whenever the
+        # piece is far from a ring for a while, and the rounds it goes empty are exactly
+        # the early-level and post-death windows where a learn trip most needs fuel to
+        # weave. A refill colour is a property of the LEVEL, not of the last few hundred
+        # trace rows; the Gate dies at the level boundary, so the latch scopes with it.
+        self.tank = set()
+        # Plate boxes read FRESH (present in `now`, not kept) THIS LIFE — the caller
+        # clears it when a life ends. An edge is only booked for a box already read
+        # fresh since the death:
+        # a change reported against a value kept from before a death folds the death's
+        # panel reset into one "transition" — that is the phantom shape edge the ink
+        # square carried on level 7 (`#.#/#.#/### -> .#./.#./###`, which closed the ring
+        # graph two real edges short), and the phantom `12 -> 14` that poisoned `legacy`
+        # on level 6. A late report with no death in between still books: the x54
+        # rotators are learned exactly that way.
+        self._fresh = {}
+        self._obs = 0         # observe() calls so far: the freshness clock for _fresh
+        # Square arrivals, for the fold test below: (observe #, square) each time the
+        # piece lands on a new square. An edge is a fold exactly when the pressed
+        # square was ENTERED more than once since the display was last read fresh —
+        # one entry is one press however stale the reading (the bounce's off-square
+        # can be a wall-clipped blind spot, and the x54 rotators are only ever
+        # learned from a stale reading); two entries are two presses in one report.
+        self._arrivals = deque(maxlen=500)
+        self._last_at = None
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.
@@ -214,7 +244,34 @@ class Gate:
         in 9, so a run that compares shapes alone walks to a door wearing the right shape in
         the wrong colour and is refused, which is exactly what happened.
         """
+        self._obs += 1
+        cur = None if at is None else (int(at[0]), int(at[1]))
+        if cur is not None and cur != self._last_at:
+            self._arrivals.append((self._obs, cur))
+        self._last_at = cur
         now, old = plates(frame), self.icons
+        # On a WINDOWED board colour 5 is the fog, and a "plate" whose ink is 5 is the
+        # fog framing itself — the hazard that once read the door's hole as a plate.
+        # Purge standing entries too: one kept while fogged would otherwise never leave.
+        # A plate whose box holds ANY fog is not readable either: the glyph comes back
+        # garbled (seven-cell "shapes" were read off the half-visible indicator), the
+        # garble reads as a CHANGE, and the phantom edge lands in some square's cycle —
+        # this run's ink block carried four shape edges it never earned. Unreadable
+        # keeps its last full reading, exactly like a plate under the piece.
+        if getattr(self, "windowed", False):
+            # "Contains any colour 5" cannot be the test: the bare indicator sits ON
+            # the void, so its box always holds 5s and that rule blinded every display
+            # (one run: 977 of 1,154 actions in `cand`, zero presses). What makes a
+            # plate unreadable is being partly OUTSIDE the window, and the window is
+            # geometry: piece ± (-18, +21) on both axes, measured on this board.
+            def foggy(box):
+                return at is None or not (
+                    box[0] >= at[0] - 18 and box[1] <= at[0] + 21
+                    and box[2] >= at[1] - 18 and box[3] <= at[1] + 21)
+
+            now = {b: v for b, v in now.items() if v[0] != 5 and not foggy(b)}
+            self.icons = {b: v for b, v in self.icons.items() if v[0] != 5}
+            self.displays = {b for b in self.displays if b in self.icons or b in now}
 
         # A plate the piece is standing on is not being read, it is being obscured. The
         # piece is 5x5 and `ls20` level 5's goal box is 7x7, so walking in first garbles
@@ -238,18 +295,69 @@ class Gate:
                         and at[1] >= box[2] and at[1] + h <= box[3] + 1:
                     self.opened.add(box)
         changed = {box for box, v in now.items() if old.get(box, v) != v}
-        moved = {i for box in changed
+        if os.environ.get("ARC_UGDBG") and changed:
+            for box in changed:
+                print("[ug] tick=%d at=%s box=%s %s -> %s"
+                      % (self.ticks, None if at is None else tuple(at[:2]),
+                         box, old.get(box), now[box]))
+        # A change reported against a reading kept from BEFORE the last death is real —
+        # the display moved — but the TRANSITION is not one press's work: the death's
+        # panel reset is folded in. Book edges only for boxes read fresh since the
+        # death (`self._fresh`, see __init__); the change itself still updates
+        # `displays`/`icons`.
+        # On a windowed board a walk can press a changer where the display cannot be
+        # read (the window is wall-clipped), and the change then surfaces squares
+        # later. Whether that report is bookable depends on HOW MANY presses are in
+        # the gap: one entry of the pressed square since the display's last fresh
+        # reading is one press however stale the reading — refuse those and the
+        # bounce whose off-square is a blind spot books nothing, which left the ring
+        # at 2 booked edges over 80 bounces. Two entries are two presses folded into
+        # one "transition": one run booked `#.#/#.#/### -> .#./##./.##` that way
+        # (the `.##` state worn unread between them), which CLOSED the shape graph
+        # minus a state and sent `exhausted` exploring with the ring short.
+        def _foldsafe(box):
+            if not getattr(self, "windowed", False):
+                return True
+            if cur is None:
+                return False
+            since = self._fresh.get(box, -1)
+            return sum(1 for o, sq in self._arrivals
+                       if o > since and sq == cur) <= 1
+        booked = {box for box in changed if box in self._fresh and _foldsafe(box)}
+        moved = {i for box in booked
                  for i, (was, is_) in enumerate(zip(self.icons.get(box, now[box]), now[box]))
                  if was != is_}
         self.displays |= changed
         # And keep the last reading of one that has stopped being reported *because the
         # piece is on it*. A refill that has been taken is gone for good, and remembering
         # that one leaves the planner routing to fuel that is not there.
-        kept = {k: v for k, v in self.icons.items() if k not in now and under_piece(k)}
+        # On a WINDOWED board, also keep one whose box is under the FOG: it slid out of
+        # view, it did not vanish — dropping it blanks `state()`, and with the panel
+        # unreadable `path_for` answers None, `exhausted` reads closed-graph where it
+        # should read blind, and the planner explores forever with a complete graph in
+        # hand. The kept value can be stale by the presses made while away; a replan the
+        # moment it is visible again corrects that, and the door's own mark never moves.
+        def fogged(box):
+            return at is None or not (
+                box[0] >= at[0] - 18 and box[1] <= at[0] + 21
+                and box[2] >= at[1] - 18 and box[3] <= at[1] + 21)
+
+        # ...and on a windowed board keep a DISPLAY whenever `plates` fails to read it,
+        # not only when the ±18/+21 geometry calls it fogged: the window is wall-clipped
+        # (measured — the door glyph's (32,53) pixel is fog at dx=18), so there are
+        # positions the geometry calls readable where the half-fogged glyph defeats
+        # `plates` — and dropping the icon there empties `state()`, prunes `displays`,
+        # and blinds the whole lock machinery mid-walk (state=[] in most of one run's
+        # planning rounds; `cand` owned the level). A display on a windowed board never
+        # stops existing; unreadable keeps its last reading, like a plate under the piece.
+        kept = {k: v for k, v in self.icons.items() if k not in now
+                and (under_piece(k)
+                     or (getattr(self, "windowed", False)
+                         and (fogged(k) or k in self.displays)))}
         self.icons = {**kept, **now}
         # Losing a life also rewrites the display, and teleports the piece back to the
         # start; reading that as a discovery would name the starting square as the changer.
-        if changed and walked and at is not None:
+        if booked and walked and at is not None:
             self.changer, self.tried = (at[0], at[1]), 0
             # And remember WHICH half it moved. A board can have more than one of these:
             # `ls20` level 3 has a cross that turns the shape and a multi-coloured square
@@ -260,7 +368,7 @@ class Gate:
             # cycle, and knowing the cycle is the difference between "go and press it" and
             # knowing the press costs two actions or six: `ls20` level 2 needs three extra
             # turns of the shape, level 4's inks are four deep.
-            for box in changed:
+            for box in booked:
                 before, after = old.get(box), now[box]
                 if before is not None:
                     for h in moved:
@@ -286,20 +394,45 @@ class Gate:
             # half index — which silently turned the footprint 5x1 and cost every
             # mover its credit until it was traced.
             fw, fh = (at[2], at[3]) if len(at) > 3 else (5, 5)
+            crdbg = os.environ.get("ARC_CRDBG")
+            if crdbg:
+                near = {k: (info["hist"][-1] if info["hist"] else None,
+                            self.mover_p.get(k), self.mover_at(k, 0))
+                        for k, info in self.movers.items()
+                        if info["hist"] and abs(info["hist"][-1][1][0] - at[0]) <= 12
+                        and abs(info["hist"][-1][1][1] - at[1]) <= 12}
+                print("[cr] lvl=%s tick=%d at=%s moved=%s near=%s"
+                      % (getattr(self, "lvl", -1), self.ticks, at[:2], moved, near))
             for k, info in self.movers.items():
                 hist = info["hist"]
                 b = hist[-1][1] if hist and hist[-1][0] == self.ticks else None
                 if b is None:
                     b = self.mover_at(k, 0)
+                if (b is None and hist and hist[-1][0] == self.ticks - 1
+                        and getattr(self, "windowed", False)):
+                    # The pressed patroller is COVERED, so it has no sighting on this
+                    # tick, and before a period is earned `mover_at` has no answer
+                    # either — which is why level 7's x55 patroller went 0-for-8 on
+                    # credits. A sighting from ONE tick ago is the object beside where
+                    # the piece now stands, at most one lattice step from where it was;
+                    # widen its box by that step before the overlap test. One tick only:
+                    # every extra tick of age widens the reach and with it the odds of
+                    # crediting a bystander's halves.
+                    bb = hist[-1][1]
+                    b = (bb[0] - 5, bb[1] - 5, bb[2] + 10, bb[3] + 10)
                 if not b or not (at[0] < b[0] + b[2] and at[0] + fw > b[0]
                                  and at[1] < b[1] + b[3] and at[1] + fh > b[1]):
                     continue
+                if crdbg:
+                    print("[cr] CREDIT k=%s b=%s" % (k, b))
                 info.setdefault("halves", set()).update(moved)
-                for box in changed:
+                for box in booked:
                     before, after = old.get(box), now[box]
                     if before is not None:
                         for hh in moved:
                             self.mover_edges.setdefault((k, hh), {})[before[hh]] = after[hh]
+        for box in now:
+            self._fresh[box] = self._obs
         return bool(changed)
 
     def track(self, boxes, body, moved, at=None, colours=None):
@@ -700,9 +833,16 @@ class Gate:
         alphabet of six and more, and the glyph its goal box asks for is in none of them —
         it is written by a second square, which is what this sends the agent to look for.
         """
-        states = {v for (pos, h), step in self.cycles.items() if h == half
-                  for v in list(step) + list(step.values())}
-        return len(states) >= seen_states and self.path_for(o, half) is None
+        steps = [step for (pos, h), step in self.cycles.items() if h == half]
+        states = {v for step in steps for v in list(step) + list(step.values())}
+        # A state with no outgoing edge is a walk stopped mid-cycle, not a closed
+        # alphabet — the ring on `ls20` level 7 parks on exactly such a state at 5 of
+        # its 6 values seen, and declaring it exhausted there sends the agent off to
+        # explore two presses short of closing the ring. Exhausted means CLOSED and
+        # still short of the ask; blind means keep pressing.
+        outgoing = {v for step in steps for v in step}
+        return (len(states) >= seen_states and states <= outgoing
+                and self.path_for(o, half) is None)
 
     def turns_for(self, o):
         """{half that is wrong: the square to enter}, empty if any half has none.
@@ -802,7 +942,14 @@ class Gate:
         # rungs pressing things by accident, so a deliberate trip to a mute patroller is
         # the only way anything ever becomes ready at all. `self.windowed` is set by the
         # play loop when the fog latch fires.
-        if not movers and not (learn and getattr(self, "windowed", False) and any(
+        # On a windowed board the recorded SQUARES can carry a whole plan with no ready
+        # mover at all — level 7's ask is ink + ring + two quarter turns, every press of
+        # it recorded under a square (the x54 sites hold the rotation, and `_step`
+        # extrapolates a rotator to any value) — so the guard lets squares through.
+        # Measured before this: 1,198 of the level's rounds died here with the halves
+        # credited but no period on the same track id.
+        if not movers and not (getattr(self, "windowed", False) and self.changers) \
+                and not (learn and getattr(self, "windowed", False) and any(
                 self.mover_period(k) and not self.movers[k].get("halves")
                 for k in self.movers)):
             dbg("no ready movers: lvl=%s withp=%d withh=%d n=%d"
@@ -838,6 +985,13 @@ class Gate:
             inside = {(x, y) for x, y in footprints_touching(grid, model, o)
                       if x >= box[0] and x + w <= box[1] + 1
                       and y >= box[2] and y + h <= box[3] + 1}
+            if not inside and getattr(self, "windowed", False):
+                # A door drawn as a HOLE (level 7): its interior is the void colour,
+                # so the walkable filter above returns nothing and the door can never
+                # be a goal. Enumerate the contained positions directly — entry is
+                # still gated on the panel matching, and the engine enforces its own.
+                inside = {(x, y) for x in range(box[0], box[1] + 2 - w)
+                          for y in range(box[2], box[3] + 2 - h)}
             for p in inside:
                 gates[p] = (n, self.icons[box])
         opened0 = sum(1 << n for n, b in enumerate(boxes) if b in self.opened)
@@ -892,6 +1046,15 @@ class Gate:
                     return True
             return False
 
+        # On a WINDOWED board the changers are effectively square-pressable (one press
+        # per re-entry — l7-model.md) and every press is recorded under its SQUARE, so
+        # fold them into this search: one plan can then walk the ink, the shape ring,
+        # the quarter turns and the refills — the composition level 7's ask demands,
+        # which neither machinery could plan alone. Windowed only: everywhere else the
+        # square rungs own these squares and this rung is silent by the movers guard.
+        squares = self.changers if getattr(self, "windowed", False) else {}
+        sq_edges = {h: self._edges(h) for hs in squares.values() for h in hs}
+
         fuel0 = left if left is not None else (full or 10 ** 6)
         seen = {(start, 0, panel0, 0, opened0): (fuel0, None)}
         q = deque([(start, 0, panel0, 0, opened0)])
@@ -904,7 +1067,12 @@ class Gate:
                 continue
             for a in model.dirs:
                 nxt = step_to(model, pos, a, redirects)
-                if not walkable(grid, model, nxt[0], nxt[1]):
+                # A marked plate's inside is enterable when the panel matches — the
+                # engine's own rule, checked at the gates test below. On level 7 the
+                # door is a HOLE: its interior is the fog/void colour, so `walkable`
+                # alone would keep the goal out of the search forever.
+                if not walkable(grid, model, nxt[0], nxt[1]) \
+                        and not (squares and nxt in gates):
                     continue
                 t2 = (t + 1) % period
                 hit = presses(nxt, t + 1)
@@ -922,6 +1090,20 @@ class Gate:
                         ok = False
                         break
                     panel2[half] = got
+                # A recorded square changer presses on every arrival; walk the panel
+                # through it the same way, and in learn mode an unknown edge is a
+                # destination here too.
+                if ok and not blind and nxt in squares:
+                    for half in squares[nxt]:
+                        got = self._step(nxt, half, panel2[half],
+                                         sq_edges.get(half, {}))
+                        if got is None:
+                            if learn and fuel - 1 >= 6:
+                                blind = True
+                                break
+                            ok = False
+                            break
+                        panel2[half] = got
                 if not ok:
                     continue
                 if learn and not blind and fuel - 1 >= 6 and unknown_mover(nxt, t + 1):
@@ -982,6 +1164,13 @@ class Gate:
                 if got is not None and got != panel[half]:
                     panel = tuple(got if i == half else v for i, v in enumerate(panel))
                     changed = True
+            if pos in squares:
+                for half in squares[pos]:
+                    got = self._step(pos, half, panel[half], sq_edges.get(half, {}))
+                    if got is not None and got != panel[half]:
+                        panel = tuple(got if i == half else v
+                                      for i, v in enumerate(panel))
+                        changed = True
             marks.append(changed)
         return acts, marks, gates_opened
 

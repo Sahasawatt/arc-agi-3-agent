@@ -1,0 +1,16 @@
+F
+================================== FAILURES ===================================
+_______ test_a_route_presses_the_patroller_and_arrives_wearing_the_ask ________
+
+    def test_a_route_presses_the_patroller_and_arrives_wearing_the_ask():
+        g, gate = moving_board()
+        m = model(box=(5, 5), passable={3, 5, 9}, blocking={4})
+        got = gate.route_moving(g, m, (44, 40), obj(13, 19, 39, 45), [], 42, 42)
+>       assert got is not None
+E       assert None is not None
+
+test_gate.py:578: AssertionError
+=========================== short test summary info ===========================
+FAILED test_gate.py::test_a_route_presses_the_patroller_and_arrives_wearing_the_ask
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 39 deselected in 0.34s

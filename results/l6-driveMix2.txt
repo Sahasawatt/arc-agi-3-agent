@@ -1,0 +1,42 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 02:44:08 | INFO | Got anonymous API key: 630ca7ca-7edf-4b08-b106-2f5125b46ed7
+2026-07-30 02:44:08 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 02:44:09 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 02:44:09 | INFO | Created new scorecard: b482c555-bdc9-476b-96d3-9516d7e1d1be
+2026-07-30 02:44:10 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 02:44:10 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start at (24, 50) panel=(14, ##./.##/#.#) budget=84 -> door B wants (8, #.#/..#/###)
+plan: 29 actions: 1,3,3,1,3,1,1,1,4,4,3,3,1,1,1,4,4,4,4,4,4,2,4,4,1,1,4,2,2
+  1 act1 lvl=5 pos=(24, 45) pred=(24, 45) panel=(14, '##./.##/#.#') pred=(14, ##./.##/#.#) OK 
+  2 act3 lvl=5 pos=(19, 45) pred=(19, 45) panel=(14, '##./.##/#.#') pred=(14, ##./.##/#.#) OK 
+  3 act3 lvl=5 pos=(14, 45) pred=(14, 45) panel=(14, '##./.##/#.#') pred=(14, ##./.##/#.#) OK 
+  4 act1 lvl=5 pos=(14, 40) pred=(14, 40) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+  5 act3 lvl=5 pos=(9, 40) pred=(9, 40) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+  6 act1 lvl=5 pos=(9, 35) pred=(9, 35) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+  7 act1 lvl=5 pos=(9, 30) pred=(9, 30) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+  8 act1 lvl=5 pos=(9, 25) pred=(9, 25) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+  9 act4 lvl=5 pos=(14, 25) pred=(14, 25) panel=(14, '#.#/.##/##.') pred=(14, #.#/.##/##.) OK 
+ 10 act4 lvl=5 pos=(19, 25) pred=(19, 25) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 11 act3 lvl=5 pos=(14, 25) pred=(14, 25) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 12 act3 lvl=5 pos=(9, 25) pred=(9, 25) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 13 act1 lvl=5 pos=(9, 20) pred=(9, 20) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 14 act1 lvl=5 pos=(9, 15) pred=(9, 15) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 15 act1 lvl=5 pos=(9, 10) pred=(9, 10) panel=(8, '#.#/.##/##.') pred=(8, #.#/.##/##.) OK 
+ 16 act4 lvl=5 pos=(14, 10) pred=(14, 10) panel=(8, '#../###/#..') pred=(8, #../###/#..) OK 
+ 17 act4 lvl=5 pos=(19, 10) pred=(19, 10) panel=(8, '###/#../###') pred=(8, ###/#../###) OK 
+ 18 act4 lvl=5 pos=(24, 10) pred=(24, 10) panel=(8, '.#./#.#/.##') pred=(8, .#./#.#/.##) OK 
+ 19 act4 lvl=5 pos=(29, 10) pred=(29, 10) panel=(8, '.#./###/#..') pred=(8, .#./###/#..) OK 
+ 20 act4 lvl=5 pos=(34, 10) pred=(34, 10) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 21 act4 lvl=5 pos=(39, 10) pred=(39, 10) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 22 act2 lvl=5 pos=(39, 15) pred=(39, 15) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 23 act4 lvl=5 pos=(44, 15) pred=(44, 15) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 24 act4 lvl=5 pos=(49, 15) pred=(49, 15) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 25 act1 lvl=5 pos=(49, 10) pred=(49, 10) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 26 act1 lvl=5 pos=(49, 25) pred=(49, 25) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 27 act4 lvl=5 pos=(54, 25) pred=(54, 25) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 28 act2 lvl=5 pos=(54, 30) pred=(54, 30) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) OK 
+ 29 act2 lvl=5 pos=(54, 30) pred=(54, 35) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) DIVERGED
+ 30 act2 lvl=5 pos=(54, 30) pred=(54, 40) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) DIVERGED
+ 31 act2 lvl=5 pos=(54, 30) pred=(54, 45) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) DIVERGED
+ 32 act2 lvl=5 pos=(54, 30) pred=(54, 50) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) DIVERGED
+ 33 act2 lvl=5 pos=(54, 30) pred=(54, 55) panel=(8, '#.#/..#/###') pred=(8, #.#/..#/###) DIVERGED

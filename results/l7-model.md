@@ -334,6 +334,263 @@ colour-0-and-1 cross. Keying `movers` on (colours, size) instead of the track id
 every sighting of one object into one history. It is also a change that touches level 6,
 which is where the score is, so it wants a session with room to measure it.
 
+## The press credit never reaches the movers — and the squares already hold it (2026-07-31)
+
+Traced per press with `ARC_CRDBG` (prints, at every display change, each nearby track's
+last sighting, period and `mover_at` answer):
+
+- **Shape presses at (19,40)** — 8 in one run (ticks 13, 83, 85, 410, 447, 544, 581, 678).
+  The changer's fragments (`(20,41,1,1)`, `(21,42,2,2)`) sit at the SAME box in every
+  sighting, so `mover_period` can never earn them a period (a cycle needs >1 distinct
+  positions), `mover_at` answers None, and `hist[-1]` is one tick stale at the press
+  because the piece covers the object. Credit lands 0 of 8 times. So "it is a patroller"
+  in the section above is wrong in its mechanism half: the thing is SPATIALLY STATIC and
+  phase-dependent in its RESPONSE — some arrivals change nothing — which is a different
+  animal from level 6's walking crosses.
+- **Right-patroller press at (54,25)** — track has period 4, but the press phase is
+  exactly the occluded one (`mover_at` None), so it is uncredited too.
+- **Ink presses at (9,40)** — the block's fragments flicker box SIZE under the footprint's
+  edge (1x2 ↔ 1x1), which `mover_period` reads as two positions and earns a GHOST period;
+  those were level 7's only three mover credits.
+
+Consequence, measured: `withh=0` in **all 1,302** `no ready movers` refusals — the moving
+planner can never plan a press here. But the WALKED presses (18 of 23) all land in
+`gate.changers` / `gate.cycles` under their square — (9,40) ink, (19,40) shape — because
+both changers are effectively square-pressable. What keeps that idle is the moving rung
+swallowing every round: 30+ junk tracks keep `gate.movers` non-empty, so `choose` never
+falls through to the square machinery that won levels 2-5. The lever is rung order on
+windowed boards, not mover identity.
+
+Fuel, same session: the learn trips DO weave refills now (139 → 383 `moving-learn`,
+presses 15 → 23, deaths 31 → 28), and latching the refill colour on the Gate for the
+level (`tank_colours`, windowed only) removes the post-death empty-tank windows too —
+deaths 22, presses 31, `probe` 627 → 516, every other game unchanged to the digit.
+
+Acting on the rung-order lever (same session): on windowed boards `choose` now stashes
+the learn trip, lets the probe rung yield whenever `turns_for` knows a square for a
+wrong half, and returns the stashed trip only after every square rung has passed.
+Presses 31 → **68**, `stage1` 13 → 276, `turn-walk` 9 → 115, `probe` 516 → 73,
+`moving-learn` 475 → 106; deaths 24. Sweep clean — every other game and level identical
+to the digit. The square records (`changers`/`cycles`) also SURVIVE a game over, which
+wipes `mover_edges` twice a run — the alphabet now accumulates across all three lives.
+Still 6/7: what the 68 presses have and have not reached is the next read
+(`ARC_L6=... ARC_L6LVL=6` dumps the panel and cycles per round).
+
+## The shape ring is SIX states, closed, and the ask is not in it (2026-07-31, driven)
+
+Hand-driven with `probe7.py` after the rung reorder found the stall (`results/l7-ring.txt`,
+prefix + `3,3,2,2,2,2,2,1,2,1,2,4,2,1,4,1,2,...`): pressing the left changer walks
+
+    .#./.#./### -> #.#/#.#/### -> .##/#.#/.#. -> .#./##./.## -> ###/..#/#.# -> ##./.##/#.# -> (closes)
+
+one press per re-entry at (19,40) — and the `##./.##/#.# -> .#./.#./###` edge the agent had
+recorded near the start squares is REAL, so the ring closes at six and **the ask
+`#.#/##./.##` is not among them**. The ink walk `12 -> 9 -> 14 -> 8` at (9,40) is three
+re-entries, exactly as `legacy` says (one press per entry, no phase dependence observed).
+The "phase-dependent" reading earlier was press-per-ENTRY: standing still and pressing
+again does nothing; every off/on re-entry pressed, in every drive this session.
+
+**The nearest the indicator gets is `##./.##/#.#`, which is the ask rotated 180°** — and
+worn with the ask's own ink, the hole still refuses (`results/l7-holetry.txt`: full
+choreography ink→8 then shape→`##./.##/#.#` with a mid-sequence refill at (14,45),
+arriving (29,45) at action 36 wearing `(8, ##./.##/#.#)`; the `down` does not happen).
+Also measured on the way: `(12, ##./.##/#.#)` refused too; from (29,45) `right` is
+refused twice (no eastern approach from there); starving out confirms the death
+mechanics — lives `8: 16 -> 8`, piece back to (19,15), panel back to `(12, .#./.#./###)`.
+
+**What can still produce the exact ask: composition.** The x55-57 patroller is a quarter-
+turn changer (its recorded cycles at (54,30)/(54,10)/(54,15) are the pure rotation orbit),
+and two quarter turns are 180° — so `##./.##/#.#` plus TWO presses of the x55 patroller is
+`#.#/##./.##` exactly. Untested: the drive needs the (39,40) corridor (reached via the
+carry, east of (29,45) is walled), the x55 presses are phase-timed (the earlier 38-action
+drive stood on the turning squares and nothing moved), and the ring beside the patroller
+(x55-57 y51-53) is the only refill on that side. The route skeleton that works for the
+left half — ink, then shape with the (14,45) refill woven mid-walk — is in
+`results/l7-holetry.txt` and fits one life with three actions spare.
+
+**Agent gap this exposes:** the square machinery holds the (54,*) squares as rotators
+(`gate.rotates`), but their cycles only contain the five-cell T orbit that was walked —
+`path_for` cannot extrapolate a quarter turn to a value it has never seen there, so no
+square plan can compose ring + rotation to reach the ask. Extending rotator squares to
+answer `turned()` on ANY value (the way `_mover_step` already does for movers) is the
+cheapest route to making the composition plannable.
+
+## SOLVED: the level falls to ink + ring + two quarter turns (2026-07-31)
+
+`results/l7-solution.txt` is a 71-action line from the level-7 start that completes the
+level (`results/l7-solve.txt`, final line `lvl=7`); replay it with
+
+    uv run python probe7.py ls20 results/prefix-l7.txt "$(cat results/l7-solution.txt)"
+
+The composition hypothesis held exactly: the ask `(8, #.#/##./.##)` is the ring state
+`##./.##/#.#` plus TWO quarter turns of the x55-57 patroller, and the door is the hole at
+x28-34 y49-55, entered from the north — `down` from (29,45), which had refused every
+wrong panel, simply happens when the panel is right.
+
+The line, by phase (every segment verified in isolation first):
+
+| acts | what | detail |
+|---|---|---|
+| 1-11 | ink `12→9→14→8` | three re-entries of (9,40) via the x9 column |
+| 12-23 | shape ring ×5 to `##./.##/#.#` | re-entries of (19,40); **refill (14,45) woven in at act 19** — the ring walk does not fit one life |
+| 24-40 | north loop to the TOP RING | (9,25)→(9,15)→(19,15)→(19,5)→(29,5)→(29,10)→(34,10)→(39,10)→**(39,5) refill at act 40, the last action of that life** |
+| 41-48 | carry to the east corridor | (34,20) `right` CARRIES to (39,40); row 40 east to (54,40) |
+| 49-53 | **chase-press ×2** | climb x54; the patroller walks DOWN its lap as the piece steps down after it, so overlap repeats every tick — press at act 52 (`#.#/.##/##.`) and act 53 = **the ask**. A third press is one more step: escape SIDEWAYS at once |
+| 54-59 | side-step and descend x49 | (49,25)→(49,45); x49 never overlaps the x55-57 patroller, so the ask survives |
+| 60-62 | EAST RING | (49,50)→`right` picks up x55-57 y51-53 at act 60 |
+| 63-67 | carry home | back to (39,40), then (39,35) `up` CARRIES to (29,30) |
+| 68-71 | enter | x29 column down; `down` from (29,45) **completes the level** |
+
+Three refills, two carries, zero deaths. What the earlier failures taught, condensed:
+
+- **A press is footprint overlap after the move, and a chase presses every tick.** The
+  climb presses nothing when the patroller is elsewhere on its lap (measured twice);
+  arriving so that the patroller walks INTO the footprint as the piece follows it down
+  gives three consecutive presses — count them and step OFF the column (x49) the moment
+  the panel is right. The patroller's lap is y12↔32 bounce, period 8, read live by
+  scanning x54-58 for colours 0/1 (`pat=` in probe7).
+- **The refills are the choreography's skeleton**: (14,45) mid-ring, (39,5) reached on a
+  life's last action, (55-57,51-53) after the quarters. None is optional; east of
+  (29,45), south of (39,10)/x19's gap, and west of row 50's x44 block are all walled,
+  which is why the route is the loop it is.
+- Both `(12, ##./.##/#.#)` and `(8, ##./.##/#.#)` refused at (29,45) — the check is the
+  exact pair, ink AND shape.
+
+**What the agent still cannot do** (`compete.py` plays this level to 6/7): compose the
+two machineries. ~~The square order search cannot extrapolate a rotator to values it has
+not seen~~ — wrong on reading the code: `_step`/`_edges` already extrapolate any rotator
+to any value, and `path_for` searches across squares. The real walls were found by
+building the composition and watching where each run died (same session, later):
+
+1. `route_moving` knew nothing of square presses — folded in (windowed only), with the
+   hole enterable as a checked gate (its void interior never passed `footprints_touching`'s
+   walkable filter, so it could not be a goal) and the no-ready-movers guard relaxed when
+   squares exist (1,198 rounds died there with halves on period-less churned ids).
+2. Press credit: an age-1 sighting, one step inflated, credits the covered patroller
+   (ungated this cost level 6 fifty actions; gated on windowed it is clean).
+3. Trip marks tolerate an invisible display (all displays under `raw5` fog) so an east
+   leg can run open-loop; position checks still validate every step.
+4. The square rungs churned the CLOSED ring forever — `moving-learn` now jumps them when
+   ANY wrong half is `exhausted`, and ahead of it a `fog-explore` rung walks to the
+   nearest never-stood fog-bordering position (the unexplored set IS the fog).
+
+After all four, measured per full run: fog-explore 346-514 actions, presses still all
+west, east-of-x44 coverage 22 actions, `(54,*)` never learned in-run. **The binding wall
+is the (34,20) carry** — the only entrance to the east half, a +5,+20 warp `slides`
+cannot hypothesise from any marker, so no route can aim east before the carry is walked
+once by luck. Next: deliberate frontier pokes (press the unexplored direction where the
+routable map dead-ends), then the x55 period from `track` once the east is routine —
+the plan machinery past that point is already in place.
+
+## The union garble, caught in the act and fixed (2026-08-01)
+
+The KNOWN GAP at the stitch site is closed, and the three byte-identical suppressor
+runs are explained. Instrumented (`ARC_UGDBG`: per-frame paint-back cells inside the
+window + every plate change with old → new), then reproduced offline
+(`results/ug-repro.txt`, prefix + the solution's first 23 actions with the agent's
+stitch running alongside): during ink/ring presses at (9,40)/(19,40) the RAW indicator
+is clean while the COMPOSITE wears the union of its states — the off-pixels of the
+previous glyph are painted back from memory **in the same frame the press changes the
+rest**, with the box fully in view. The "late report on re-entering reading range"
+hypothesis pointed at ticks that never coincide with the garble, which is why every
+suppressor built on it executed zero times.
+
+The fix is one rule in `stitch`, scoped tight: for boxes in `gate.displays` that sit
+fully inside the window, record their colour-5 cells as KNOWN 5 — an off-pixel is
+state, and painting 5 into 5 is a no-op forever. Nothing else moves: `dirty` is not
+touched (the whole-window dirty repair is what made patroller tracks permanent fog
+holes), memory outside the boxes is untouched.
+
+Two measured traps on the way:
+
+- **Scoping to `icons | displays` flickers.** The door's ask-picture (x29-34 y49-55)
+  is STATIC; its right pixel (32,53) is visible from (19,40) (dx=13) and fogged from
+  (14,40) (dx=18) — the window is wall-clipped, so the ±18/+21 geometric test
+  overestimates visibility and no fixed margin fixes it. Recording those fogged
+  pixels as OFF made the box's reading follow the piece — 85 phantom edges
+  (`#.#/##./.##` ↔ `#.#/##./.#.`) under (14,40)/(14,45)/(19,35) in one run. A static
+  plate is exactly what the old paint-back was silently stabilising; only a box that
+  has actually changed has off-pixels worth recording.
+- The first-press hole does not exist: a changer changes its **ink before its shape**
+  (the ink walk starts every choreography), so the box is in `displays` before the
+  first shape transition can leave a union pixel behind.
+
+Measured on the full run (`results/ug-run3.txt` vs `ug-run1.txt`, all four games
+sweep-clean and identical, `results/sweep-ugfix.log`): junk shape-edges 85 → **0**
+(every change event now at (9,40)/(19,40), every after-value a real ring state),
+`desperate` 113 → **0**, `cand` 182 → 55, level-7 deaths 22 → **11**. The shape ring
+assembles CLEAN in-run for the first time: 4 of 6 edges, no phantoms mixed in.
+
+**What still stops 7/7** — the panel parks on `#.#/#.#/###`, which has no outgoing
+edge in `cycles`, and nothing presses (19,40) again for ~800 ticks (presses at ticks
+13/83-89, then 917/999 repeating the first edge after deaths reset the panel). The
+missing edges are exactly `#.#/#.#/### → .##/#.#/.#. → .#./##./.##`. The wall is now
+the planner's: from a state with no outgoing edge, `path_for` is blind and whatever
+round-owner follows (heading 280 / turn-walk 298 in the accounting) never spends two
+re-entries on the known changer to learn the rest of the ring.
+
+## The ring press is every-second-MOVE, not every re-entry (2026-08-01, driven)
+
+`results/l7-hashpress.txt`: prefix → ink column → (14,40) → (19,40), then oscillate
+(19,35)↔(19,40) with plain `1,2` pairs. The display advances one ring state per TWO
+piece-moves for as long as the oscillation continues — including on the step-OFF move
+(the glyph changes while the piece stands at (19,35), which no footprint-overlap or
+entry model predicts) — and it never no-ops: 21 actions walked the full six-state ring
+and kept going. Two consequences:
+
+- **"Press per re-entry" is the wrong model for this changer.** The response is gated
+  on a period-2 clock, and a single bounce that lands on the wrong tick of it changes
+  nothing. That is exactly what the agent measures: its one `cycle-on-turn` bounce at
+  the parked state no-oped (`chg=0`), it ceded the round (to `near-fuel` at `left=6`,
+  legitimately), and the changer was never bounced twice in a row — while a walk that
+  merely passes through the square (`cand` at i=984→986) presses it and skips a state
+  past every reader. One more bounce after a no-op is all the probe needed, ever.
+- The intermediate state `.##/#.#/.#.` is real but worn briefly between reads on
+  walk-through presses, which is why the agent's cycles hold 4 of 6 edges with the
+  two edges out of `#.#/#.#/###` and `.##/#.#/.#.` never booked.
+
+## The fold family: every way a stale reading poisons a booked edge (2026-08-01)
+
+Fixing the union garble exposed a family of subtler bookings, each found by the same
+loop (instrumented run → wrong entry in `cycles` → mechanism → guard → re-measure).
+All landed, all sweeps clean:
+
+1. **Death fold.** The panel reset of a death, read late, booked `#.#/#.#/### ->
+   .#./.#./###` under the ink square — a phantom that closed the ring graph two real
+   edges short, so the closed-graph `exhausted` (itself fixed this session to demand
+   every seen state have an outgoing edge) declared the shape half done. Tick-age
+   guards have an equality hole — a death on a blocked action leaves `ticks` flat —
+   so the guard is life-scoped: `gate._fresh` (boxes read fresh since the last death,
+   cleared at both death sites) must contain the box.
+2. **Walk-through fold.** A press made where the display is unreadable surfaces
+   squares later; two presses in the gap booked as one edge (`#.#/#.#/### ->
+   .#./##./.##`, the `.##` state worn unread in between) — closed the graph again,
+   minus a whole state, and `fog-explore` inherited the level (487 actions). Age-1
+   booking rejects these but also rejects every bounce whose off-square is a
+   wall-clipped blind spot — measured at 2 booked edges over ~80 bounces, the ring's
+   knowledge thrown away wholesale. The correct discriminator: **count ARRIVALS of
+   the pressed square since the display's last fresh reading** — one arrival is one
+   press however stale the reading (this is also the only channel the x54 rotators
+   can ever be learned through), two arrivals are a fold. `_arrivals`/`_foldsafe`,
+   windowed-gated.
+3. **Wall-clip blindness.** A display `plates` cannot read from a position the
+   ±18/+21 geometry calls readable fell out of `icons` entirely, emptying `state()`
+   and pruning `displays` — 354 of 355 planning rounds ran blind and `cand` owned
+   the level. A display on a windowed board never stops existing: unreadable keeps
+   its last reading (like a plate under the piece). One run later, state=[] rounds:
+   1 of 290.
+
+Where this leaves level 7: `cycles` are finally CLEAN — four true ring edges under
+(19,40), the ink cycle under (9,40), correct halves, zero junk — but the ring still
+does not close in-run. The missing edges are the two out of `#.#/#.#/###` and
+`.##/#.#/.#.`; the probe proves a persistent bounce session books them (one state
+per two moves, no no-ops), and `cycle-on-turn` now commits three bounces when a
+wrong half is unplannable-but-open, but the fuel rungs (`turn-fuel` 295 /
+`near-fuel` 248 in the last run) own the rounds a bounce session needs. The wall is
+round-ownership economics: a bounce session costs ~12 actions plus the (14,45)
+refill, a life is 21, and nothing prices "two more bounces close the ring" against
+"top up first". Deaths run 16-23 a run against the hand solution's zero.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five

@@ -1,0 +1,58 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 22:56:57 | INFO | Got anonymous API key: 84a1ddb3-6d57-4801-bf07-bbe08babe856
+2026-07-30 22:56:57 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 22:56:58 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 22:56:58 | INFO | Created new scorecard: 96250c0a-06e5-4a21-a2c4-7422bc43c70f
+2026-07-30 22:56:59 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 22:56:59 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start lvl=6 hud={5: 154, 8: 12, 11: 84, 12: 6}
+   piece12: x19-23 y15-16 (10); x3-8 y55-60 (20)
+   small: c1 x39-40 y19-19
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  1 act3 lvl=6 hud={3: 4, 5: 154, 8: 12, 11: 80, 12: 6}
+   piece12: x14-18 y15-16 (10); x3-8 y55-60 (20)
+   small: 
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  2 act3 lvl=6 hud={3: 8, 5: 154, 8: 12, 11: 76, 12: 6}
+   piece12: x9-13 y15-16 (10); x3-8 y55-60 (20)
+   small: 
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  3 act2 lvl=6 hud={3: 12, 5: 154, 8: 12, 11: 72, 12: 6}
+   piece12: x9-13 y20-21 (10); x3-8 y55-60 (20)
+   small: c14 x11-12 y41-41; c9 x10-10 y41-41
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  4 act2 lvl=6 hud={3: 16, 5: 154, 8: 12, 11: 68, 12: 6}
+   piece12: x9-13 y25-26 (10); x10-11 y43-43 (2); x3-8 y55-60 (20)
+   small: c0 x11-11 y42-42; c0 x20-20 y41-41; c0 x21-22 y42-43; c14 x11-12 y41-41; c8 x12-12 y42-43; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  5 act2 lvl=6 hud={3: 20, 5: 154, 8: 12, 11: 64, 12: 6}
+   piece12: x9-13 y30-31 (10); x10-11 y43-43 (2); x3-8 y55-60 (20)
+   small: c0 x11-11 y42-42; c0 x20-20 y41-41; c0 x21-22 y42-43; c14 x11-12 y41-41; c8 x12-12 y42-43; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  6 act2 lvl=6 hud={3: 24, 5: 154, 8: 12, 11: 60, 12: 6}
+   piece12: x9-13 y35-36 (10); x10-11 y43-43 (2); x3-8 y55-60 (20)
+   small: c0 x11-11 y42-42; c0 x20-20 y41-41; c0 x21-22 y42-43; c14 x11-12 y41-41; c8 x12-12 y42-43; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=12 .#./.#./###
+  7 act2 lvl=6 hud={3: 28, 4: 2, 5: 152, 8: 12, 9: 6, 11: 56}
+   piece12: x9-13 y40-41 (10)
+   small: c0 x20-20 y41-41; c0 x21-22 y42-43
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=9 .#./.#./###
+  8 act4 lvl=6 hud={3: 32, 4: 1, 5: 153, 8: 12, 9: 6, 11: 52}
+   piece12: x14-18 y40-41 (10); x10-11 y43-43 (2)
+   small: c0 x11-11 y42-42; c0 x20-20 y41-41; c0 x21-22 y42-43; c1 x34-34 y35-35; c14 x11-12 y41-41; c8 x12-12 y42-43; c8 x30-31 y51-53; c8 x32-32 y51-51; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=9 .#./.#./###
+   plate(np.int64(14), np.int64(18), np.int64(45), np.int64(49)) ink=11 ###/#.#/###
+  9 act4 lvl=6 hud={3: 36, 5: 154, 8: 12, 9: 6, 11: 48}
+   piece12: x19-23 y40-41 (10); x10-11 y43-43 (2)
+   small: c0 x11-11 y42-42; c1 x34-38 y35-35; c14 x11-12 y41-41; c8 x12-12 y42-43; c8 x30-32 y51-53; c8 x32-32 y51-51; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=9 #.#/#.#/###
+   plate(np.int64(28), np.int64(34), np.int64(49), np.int64(55)) ink=8 #.#/##./.##
+ 10 act3 lvl=6 hud={3: 40, 4: 1, 5: 153, 8: 12, 9: 6, 11: 44}
+   piece12: x14-18 y40-41 (10); x10-11 y43-43 (2)
+   small: c0 x11-11 y42-42; c0 x20-20 y41-41; c0 x21-22 y42-43; c1 x34-34 y35-35; c14 x11-12 y41-41; c8 x12-12 y42-43; c8 x30-31 y51-53; c8 x32-32 y51-51; c9 x10-10 y41-42
+   plate(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) ink=9 #.#/#.#/###
+   plate(np.int64(14), np.int64(18), np.int64(45), np.int64(49)) ink=11 ###/#.#/###
+ 11 act4 lvl=6 hud={3: 44, 5: 158, 8: 12, 9: 2, 11: 40}
+   piece12: x19-23 y40-41 (10); x10-11 y43-43 (2)
+   small: c0 x11-11 y42-42; c1 x34-38 y35-35; c14 x11-12 y41-41; c8 x12-12 y42-43; c8 x30-32 y51-53; c8 x32-32 y51-51; c9 x10-10 y41-42; c9 x3-4 y57-58; c9 x5-6 y59-59; c9 x5-8 y55-58
+   plate(np.int64(28), np.int64(34), np.int64(49), np.int64(55)) ink=8 #.#/##./.##

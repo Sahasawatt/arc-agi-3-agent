@@ -1,0 +1,132 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 02:32:41 | INFO | Got anonymous API key: 1fdd27fc-f18d-4b19-9ddb-c0cf7feb5444
+2026-07-30 02:32:41 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 02:32:42 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 02:32:42 | INFO | Created new scorecard: 27fff62d-2667-48d9-9d80-247d8d92aff4
+2026-07-30 02:32:43 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 02:32:43 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start lvl=5 hud={3: 4, 4: 18, 5: 138, 8: 8, 11: 84, 14: 4}
+   piece12: x25-26 y33-33 (2); x24-28 y50-51 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  1 act1 lvl=5 hud={3: 6, 4: 18, 5: 138, 8: 8, 11: 82, 14: 4}
+   piece12: x20-21 y33-33 (2); x24-28 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  2 act4 lvl=5 hud={3: 8, 4: 18, 5: 138, 8: 8, 11: 80, 14: 4}
+   piece12: x20-21 y28-28 (2); x29-33 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  3 act1 lvl=5 hud={3: 10, 4: 18, 5: 138, 8: 8, 11: 78, 14: 4}
+   piece12: x20-21 y23-23 (2); x29-33 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  4 act1 lvl=5 hud={3: 12, 4: 18, 5: 138, 8: 8, 11: 76, 14: 4}
+   piece12: x20-21 y23-23 (2); x29-33 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  5 act1 lvl=5 hud={3: 14, 4: 18, 5: 138, 8: 8, 11: 74, 14: 4}
+   piece12: x20-21 y23-23 (2); x29-33 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  6 act3 lvl=5 hud={3: 16, 4: 18, 5: 138, 8: 8, 11: 72, 14: 4}
+   piece12: x25-26 y23-23 (2); x24-28 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 ##./.##/#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  7 act3 lvl=5 hud={3: 18, 4: 18, 5: 138, 8: 8, 11: 70, 14: 4}
+   piece12: x30-31 y23-23 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  8 act1 lvl=5 hud={3: 20, 4: 18, 5: 138, 8: 8, 11: 68, 14: 4}
+   piece12: x30-31 y23-23 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+  9 act1 lvl=5 hud={3: 22, 4: 18, 5: 138, 8: 8, 11: 66, 14: 4}
+   piece12: x30-31 y23-23 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 10 act2 lvl=5 hud={3: 24, 4: 18, 5: 138, 8: 8, 11: 64, 14: 4}
+   piece12: x30-31 y28-28 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 11 act1 lvl=5 hud={3: 26, 4: 18, 5: 138, 8: 8, 11: 62, 14: 4}
+   piece12: x30-31 y33-33 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 12 act2 lvl=5 hud={3: 28, 4: 18, 5: 138, 8: 8, 11: 60, 14: 4}
+   piece12: x25-26 y33-33 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 13 act1 lvl=5 hud={3: 30, 4: 18, 5: 138, 8: 8, 11: 58, 14: 4}
+   piece12: x20-21 y33-33 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 14 act2 lvl=5 hud={3: 32, 4: 18, 5: 138, 8: 8, 11: 56, 14: 4}
+   piece12: x20-21 y28-28 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/.##/##.
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 15 act1 lvl=5 hud={3: 34, 4: 18, 5: 138, 8: 8, 11: 54, 14: 4}
+   piece12: x20-21 y23-23 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 16 act2 lvl=5 hud={3: 36, 4: 18, 5: 138, 8: 8, 11: 52, 14: 4}
+   piece12: x25-26 y23-23 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 17 act1 lvl=5 hud={3: 38, 4: 18, 5: 138, 8: 8, 11: 50, 14: 4}
+   piece12: x30-31 y23-23 (2); x19-23 y40-41 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 18 act2 lvl=5 hud={3: 40, 4: 18, 5: 138, 8: 8, 11: 48, 14: 4}
+   piece12: x30-31 y28-28 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 19 act3 lvl=5 hud={3: 42, 4: 18, 5: 138, 8: 8, 11: 46, 14: 4}
+   piece12: x30-31 y33-33 (2); x14-18 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 20 act4 lvl=5 hud={3: 44, 4: 18, 5: 138, 8: 8, 11: 44, 14: 4}
+   piece12: x25-26 y33-33 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 21 act3 lvl=5 hud={3: 46, 4: 18, 5: 138, 8: 8, 11: 42, 14: 4}
+   piece12: x20-21 y33-33 (2); x14-18 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 22 act4 lvl=5 hud={3: 48, 4: 18, 5: 138, 8: 8, 11: 40, 14: 4}
+   piece12: x20-21 y28-28 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 23 act3 lvl=5 hud={3: 50, 4: 18, 5: 138, 8: 8, 11: 38, 14: 4}
+   piece12: x20-21 y23-23 (2); x14-18 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###
+ 24 act4 lvl=5 hud={3: 52, 4: 18, 5: 138, 8: 8, 11: 36, 14: 4}
+   piece12: x25-26 y23-23 (2); x19-23 y45-46 (10)
+   plate(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) ink=14 .##/##./#.#
+   plate(np.int64(53), np.int64(59), np.int64(34), np.int64(40)) ink=8 #.#/##./.##
+   plate(np.int64(53), np.int64(59), np.int64(49), np.int64(55)) ink=9 #.#/..#/###

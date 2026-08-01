@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_a_period_that_was_inherited_adopts_as_well_as_one_that_was_earned ____
+
+    def test_a_period_that_was_inherited_adopts_as_well_as_one_that_was_earned():
+        """Asked on every reading of the period, not only the one that EARNS it. A board that
+        kills the piece hands out inherited periods for three laps after every death, and the
+        first version adopted nothing across all of them — which is why it closed 26 keys to
+        24 where three patrollers of two halves want six."""
+        g = Gate()
+        ticked(g, LAP8 + LAP8, key="old")
+        g.movers["old"]["halves"] = {1}
+        g.mover_edges[("old", 1)] = {"a": "b"}
+    
+        ticked(g, LAP8 + LAP8, key="new")
+        g.movers["new"]["halves"] = set()          # pretend this one was never watched
+        g.mover_edges.pop(("new", 1), None)
+    
+        g.reset = g.ticks                          # a life ends: the earn path now fails
+        ticked(g, LAP8[:4], key="new")             # too few frames to earn it again
+        assert g.mover_period("new") == 8, "the period is inherited"
+>       assert g.movers["new"]["halves"] == {1}, "and the alphabet comes with it"
+E       AssertionError: and the alphabet comes with it
+E       assert set() == {1}
+E         
+E         Extra items in the right set:
+E         1
+E         Use -v to get more diff
+
+test_gate.py:610: AssertionError
+=========================== short test summary info ===========================
+FAILED test_gate.py::test_a_period_that_was_inherited_adopts_as_well_as_one_that_was_earned
+1 failed in 0.28s

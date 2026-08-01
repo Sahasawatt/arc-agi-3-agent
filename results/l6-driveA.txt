@@ -1,0 +1,9 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 02:40:37 | INFO | Got anonymous API key: 360301ff-7f66-45e0-9d5a-9885531eca74
+2026-07-30 02:40:37 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 02:40:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 02:40:37 | INFO | Created new scorecard: c71c8bf2-1eb6-43d0-8fa6-68199b2cce02
+2026-07-30 02:40:39 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 02:40:39 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start at (24, 50) panel=(14, ##./.##/#.#) budget=84 -> door A wants (9, #.#/..#/###)
+NO PLAN

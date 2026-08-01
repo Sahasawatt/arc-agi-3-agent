@@ -1,0 +1,18 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 10:52:09 | INFO | Got anonymous API key: 5244a809-70d3-4441-a6a2-d3993f4550df
+2026-07-30 10:52:09 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 10:52:10 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 10:52:10 | INFO | Created new scorecard: 742bfe6a-e99f-433d-b5b3-5d2113387336
+2026-07-30 10:52:11 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 10:52:11 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start     lvl=6 piece=(np.int64(19), np.int64(15)) floor=606 x9-40 y5-36  c1=2 c11=16 c4=527 c5=2650 hud={5: 154, 8: 12, 11: 84, 12: 6}
+  1 act3  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 hud={3: 4, 5: 154, 8: 12, 11: 80, 12: 6}
+  2 act3  lvl=6 piece=(np.int64(9), np.int64(15)) floor=389 x9-30 y5-36  c1=0 c11=8 c4=444 c5=2960 hud={3: 8, 5: 154, 8: 12, 11: 76, 12: 6}
+  3 act4  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 hud={3: 12, 5: 154, 8: 12, 11: 72, 12: 6}
+  4 act4  lvl=6 piece=(np.int64(19), np.int64(15)) floor=606 x9-40 y5-36  c1=2 c11=16 c4=527 c5=2650 hud={3: 16, 5: 154, 8: 12, 11: 68, 12: 6}
+  5 act4  lvl=6 piece=(np.int64(19), np.int64(15)) floor=606 x9-40 y5-36  c1=2 c11=16 c4=527 c5=2650 hud={3: 20, 5: 154, 8: 12, 11: 64, 12: 6}
+  6 act3  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 hud={3: 24, 5: 154, 8: 12, 11: 60, 12: 6}
+  7 act2  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 hud={3: 28, 5: 154, 8: 12, 11: 56, 12: 6}
+  8 act2  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 hud={3: 32, 5: 154, 8: 12, 11: 52, 12: 6}
+  9 act1  lvl=6 piece=(np.int64(14), np.int64(10)) floor=426 x9-35 y5-31  c1=0 c11=15 c4=444 c5=2916 hud={3: 36, 5: 154, 8: 12, 11: 48, 12: 6}
+ 10 act1  lvl=6 piece=(np.int64(14), np.int64(5)) floor=324 x9-35 y5-26  c1=0 c11=8 c4=405 c5=3064 hud={3: 40, 5: 154, 8: 12, 11: 44, 12: 6}

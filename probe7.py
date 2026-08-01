@@ -43,8 +43,12 @@ def line(tag):
     box = ("x%d-%d y%d-%d" % (xs.min(), xs.max(), ys.min(), ys.max())
            if len(xs) else "no floor")
     full = np.array(obs.frame)[-1]
+    # The indicator keeps its place but walks its INK along 12 -> 9 -> 14 -> 8, so a
+    # scan pinned to colour 12 reports "none" the moment the ink changer is pressed —
+    # which is exactly the earlier probe trap. Scan the glyph's own corner for any of
+    # the game's four inks instead.
     gl = [(int(x), int(y)) for y in range(50, full.shape[0]) for x in range(0, 20)
-          if int(full[y][x]) == 12]
+          if int(full[y][x]) in (12, 9, 14, 8)]
     if gl:
         x0 = min(p[0] for p in gl); x1 = max(p[0] for p in gl)
         y0 = min(p[1] for p in gl); y1 = max(p[1] for p in gl)
@@ -53,10 +57,14 @@ def line(tag):
     else:
         bits = "none"
     print("   glyph %s" % bits, flush=True)
-    print("%-9s lvl=%d piece=%s floor=%d %s  c1=%d c11=%d c4=%d c5=%d hud=%s"
+    # The x55-57 patroller's live position, when its column is inside the window:
+    # the five-cell cross is colours 0 and 1 on an otherwise floor/wall column.
+    pys = sorted({int(y) for y in range(60) for x in range(54, 59)
+                  if int(grid[y][x]) in (0, 1)})
+    print("%-9s lvl=%d piece=%s floor=%d %s  c1=%d c11=%d c4=%d c5=%d pat=%s hud=%s"
           % (tag, obs.levels_completed, piece[0] if piece else None,
              c.get(3, 0), box, c.get(1, 0), c.get(11, 0), c.get(4, 0), c.get(5, 0),
-             {k: v for k, v in sorted(hud(obs.frame).items())}), flush=True)
+             pys, {k: v for k, v in sorted(hud(obs.frame).items())}), flush=True)
 
 
 def remember():

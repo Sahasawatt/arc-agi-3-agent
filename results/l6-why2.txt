@@ -1,0 +1,3 @@
+rounds: 100 rungs: {'cand': 22, 'probe': 10, 'stage1': 38, 'cycle-last': 2, 'desperate': 7, 'turn-walk': 10, 'cycle-on-turn': 6, 'door': 4, 'near-fuel': 1}
+rounds with period+halves mover: 0
+rungs when ready: {}

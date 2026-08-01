@@ -1,0 +1,34 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-07-30 10:49:30 | INFO | Got anonymous API key: af5ddc8d-8d9b-483b-9c49-568005b4cad9
+2026-07-30 10:49:30 | INFO | You can register for an API key at https://three.arcprize.org
+2026-07-30 10:49:30 | INFO | Successfully fetched 25 environment(s) from API
+2026-07-30 10:49:30 | INFO | Created new scorecard: 3b906295-b11d-41f0-928e-07ca1147caf4
+2026-07-30 10:49:32 | INFO | Successfully fetched metadata for game ls20
+2026-07-30 10:49:32 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+start lvl=6 hud={5: 154, 8: 12, 11: 84, 12: 6}
+   piece12: x19-23 y15-16 (10); x3-8 y55-60 (20)
+   small: c1 x39-40 y19-19
+  1 act1 lvl=6 hud={3: 4, 5: 154, 8: 12, 11: 80, 12: 6}
+   piece12: x19-23 y10-11 (10); x3-8 y55-60 (20)
+   small: c1 x39-39 y19-19
+  2 act1 lvl=6 hud={3: 8, 5: 154, 8: 12, 11: 76, 12: 6}
+   piece12: x19-23 y5-6 (10); x3-8 y55-60 (20)
+   small: 
+  3 act2 lvl=6 hud={3: 12, 5: 154, 8: 12, 11: 72, 12: 6}
+   piece12: x19-23 y10-11 (10); x3-8 y55-60 (20)
+   small: c1 x39-39 y19-19
+  4 act2 lvl=6 hud={3: 16, 5: 154, 8: 12, 11: 68, 12: 6}
+   piece12: x19-23 y15-16 (10); x3-8 y55-60 (20)
+   small: c1 x39-40 y19-19
+  5 act3 lvl=6 hud={3: 20, 5: 154, 8: 12, 11: 64, 12: 6}
+   piece12: x14-18 y15-16 (10); x3-8 y55-60 (20)
+   small: 
+  6 act3 lvl=6 hud={3: 24, 5: 154, 8: 12, 11: 60, 12: 6}
+   piece12: x9-13 y15-16 (10); x3-8 y55-60 (20)
+   small: 
+  7 act4 lvl=6 hud={3: 28, 5: 154, 8: 12, 11: 56, 12: 6}
+   piece12: x14-18 y15-16 (10); x3-8 y55-60 (20)
+   small: 
+  8 act4 lvl=6 hud={3: 32, 5: 154, 8: 12, 11: 52, 12: 6}
+   piece12: x19-23 y15-16 (10); x3-8 y55-60 (20)
+   small: c1 x39-40 y19-19
