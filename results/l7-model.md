@@ -591,6 +591,270 @@ round-ownership economics: a bounce session costs ~12 actions plus the (14,45)
 refill, a life is 21, and nothing prices "two more bounces close the ring" against
 "top up first". Deaths run 16-23 a run against the hand solution's zero.
 
+First economics finding (same day, kept — sweep clean): `refuel()` chose its refill
+off `cands`, the rarity shortlist that cuts refills ("a refill is rarely rare" —
+`stage`'s fuel had the widening for years, `refuel` never did), so `turn-fuel`
+walked the piece between whichever far northern rings survived the ranking:
+**twenty consecutive lives** ran the exact loop `stage1(4) → near-fuel(10) →
+turn-fuel(14) → cand(13) → desperate(2) → death` — the whole life spent walking to
+fuel, dying at (9,40) with `left=1`, zero presses. Widened to every refill seen,
+the 44-action loop is gone (deaths 23 → 20) but the level still does not fall: the
+late game now thrashes `stage1`/`wander` in single-action alternation — a plan is
+issued and dropped every other action. That thrash is the next thing to read
+(`results/ug-acct12.jsonl`, `l7-gate9.jsonl`, a=1950 onward).
+
+One hypothesis about the thrash already measured OUT: the refill rings do read as
+marked plates (a donut of colour 11 wearing `###/#.#/###`, `locked=True` in the
+gate log) and "stage is aiming at a ring-door" fit the northern oscillation — but
+filtering tank-colour objects out of `locked` was **byte-identical over a full
+run**, so the rings sit behind the real door in the list and nothing ever aimed at
+them; the filter was reverted as inert. The plan-drop log (`ARC_PDBG`) then showed
+the decisive negative: **zero drops in the thrash region** — the plans were not
+being dropped, they were SHORT, completing normally. stage was aiming 2-3-action
+fuel hops at rings **already eaten this life**: the rings respawn with the next
+life (turn-fuel picked the same northern ring up on twenty consecutive lives), but
+within one they are spent, and nothing knew that — the piece bounced between two
+spent rings until the clock ran out. Fixed with `gate.spent` (pickup positions,
+recorded when the clock rises on an ordinary walked step, cleared at both death
+sites, windowed-gated) excluded from `refuel`'s pool and `stage`'s fuel list.
+Measured: the thrash pattern is gone (long `stage1` runs return), deaths 20 → 19,
+chg 36 → 52, `turn-fuel` 176 → 121, `desperate` 93 → 52, `stage2` reappears (15
+actions). Sweep clean, all four games identical. Still 6/7 — the ring's last two
+edges remain unbooked in-run.
+
+A second hypothesis also measured OUT after that: "the bounce's off-square is a
+wall-clipped blind spot, so its presses surface as folds" — teaching `cycle` to
+avoid positions where a display failed to read while geometrically visible was
+**byte-identical**, because no such position ever registered: the indicator box is
+readable from (14,40); the wall-clip flicker belonged to the DOOR's box. Reverted.
+The `_foldsafe` refusal log (`ARC_FDBG`) then named the channel — 15 refusals in a
+full run tell the whole story:
+
+- **Six of the refusals are deaths wearing `#.#/#.#/###`** (`NOT-FRESH-THIS-LIFE`,
+  old `#.#`, new the post-death `.#./.#./###`). The sequencing puts shape presses at
+  the tail of a life, and the life ends there.
+- **The `#.#` press is NOT dead — it fires on walk-throughs** (tick 21: gap
+  `(19,40),(14,40),(9,40),(14,40),(19,40)`, old `#.#`, both missing edges consumed
+  inside one 2-arrival gap; tick 512 same). The fold guard refuses these correctly:
+  two presses, the `.##` state worn unread between.
+- **The bounce at `#.#` no-ops while the walk-through fires**, and the lattice
+  explains it: the response is phase-gated (the x55 patroller runs period 8, frozen
+  on refused presses), and a 4-connected lattice is bipartite — every closed walk
+  has even length, so a bounce session samples only `p, p+2, p+4, p+6` of the
+  phases and a session born on the wrong parity no-ops until it gives up
+  (`cycled` hands off after two tries). What breaks the parity is a CARRY — the
+  piece displaces five cells in one tick — which is exactly what a walk-through
+  route via the redirects does and a bounce cannot.
+
+Ranked levers for next session: (a) after two no-op bounces at a no-outgoing
+state, plan the next re-entry THROUGH a known carry (odd effective displacement —
+changes the phase-position relationship the bounce is stuck in); (b) make the
+shape press the life's FIRST errand while fuel is full, not its last (six deaths
+wear `#.#`); (c) NOT inference-booking of unique 2-paths — the `.##` state has
+never been observed and the repo does not book what was not seen.
+
+## Lever (b) landed — and the "six-state closed ring" model is WRONG (2026-08-02)
+
+`changer_for` now prefers the BLIND half on windowed boards (the plannable half
+can be fixed any time; insertion order used to hand every life to the ink square
+first). Sweep clean, all four games identical. The run it produced
+(`results/ug-run19.txt`, `l7-gate13.jsonl`) booked **8 shape edges under (19,40)**
+— the 4 known ring edges plus a chain of four states never seen in any prior run
+or hand drive:
+
+    .#./###/#.. -> #.#/..#/### -> #.#/.##/##. -> #../###/#.. -> ###/#../###
+
+Two facts about that chain: `.#./###/#..` is EXACTLY the clockwise quarter turn
+of the ring state `.#./##./.##` (verified cell by cell), and `#.#/.##/##.` is
+**the ask minus one quarter** — the state the hand solution wore at act 52, one
+x55 press before the door opened. So the (19,40) changer's response is
+phase-dependent between two DIFFERENT acts: some presses STEP the six-state ring,
+others TURN the glyph a quarter — the "ring closes at six and the ask is not in
+it" conclusion was sampling only the step half. The shape graph is the ring x
+rotation composite, the ask (`#.#/##./.##` = 180 deg of `##./.##/#.#`) lives in
+the turned family, and **the (19,40) square alone may reach it** — no x55 chase,
+no (54,*) rotators. What is still missing: no edge INTO the ask is booked yet,
+and no edge out of `###/#../###` or `#.#/#.#/###`; `path_for` needs one of the
+remaining edges to plan the last hop. The level is still 6/7 (deaths 19, fuel
+rungs 455 of 1,154 actions) — but for the first time the ask is reachable in the
+booked graph's own terms, two or three unexplored presses away.
+
+## The family mechanics, pinned by three experiments (2026-08-02)
+
+- **A death does NOT turn the panel** — probed directly (`results/l7-deathturn.txt`:
+  press shape once to `#.#/#.#/###`, then starve through two deaths on a
+  non-pressing oscillation): the glyph resets to `.#./.#./###` at each death and
+  never wears a turned state. The death-turn hypothesis is dead; the turned
+  families in agent runs enter ONLY on lives that reach x54 (the two lives with
+  maxX=54 are exactly the two lives with 90-degree-family states) — the x55
+  patroller's chase press, taken by accident on east excursions.
+- **The step law COMMUTES with rotation, verified 4/4**: the four booked
+  90-degree-family edges are exactly the k=1 conjugates of the four booked ring
+  edges. `_edges` now admits, for every booked shape edge, its three conjugates as
+  PLANNABLE edges (windowed-gated; same epistemic class as `turned()`'s orbit
+  filling — a law verified on overlap, refutable at execution). Two conjugates
+  point INTO the ask. Sweep clean. It cannot alone produce the ask: steps stay
+  within a family, and the panel only changes family via a quarter-turner.
+- **The late quarter-turn mover credit measured INERT** (reverted): a chase press
+  out of view never surfaces as a pure quarter — it composites with the ring
+  steps taken before the display is next read, so `turned(old, new)` never
+  matches and the credit condition cannot fire. Crediting the x55 mover's half
+  from surfaced reports is structurally impossible; the half has to be earned
+  IN VIEW (level 6 earned it because the display sat beside the corridor) or
+  assumed by the learn planner.
+
+**Where the composition stands**: plannable within-family movement (conjugates) +
+open-loop trip tolerance (raw5 trip marks) + fuel weaving + spent-ring hygiene are
+all in place. The single missing primitive is a DELIBERATE quarter: a moving-learn
+trip east that presses the x55 patroller ONCE (chase one tick, side-step to x49
+immediately — the hand solution's own recipe for stopping at a count), timed so
+the panel worn at departure is `##./.##/#.#` (ring, plannable) and two such trips
+bracket a walk to (29,45). Alternatively the x54 squares, if they can ever be
+booked in view. That executor — a chase leg with a press budget — is the one
+piece of machinery the level still lacks.
+
+Two more attempts at the credit, both measured and reverted (2026-08-03): the
+family-delta decomposition (new = rot^k(step^m(old)), order-independent because
+the step law commutes with rotation — book the unique overlapping mover as a
+rotator when k is unique and positive) is implemented-and-proven logic, but it
+fired ZERO times: **the current deterministic trajectory never chases at all** —
+no level-7 family shift happens in it (the 90-degree states in this run's [ug]
+log are all LEVEL 6, same alphabet, x49 positions), and even the (34,20) east
+carry is unlearned in this trajectory (`redirects` = {(34,30),(39,30),(39,20)}).
+The family shifts of earlier runs came from a different trajectory (pre
+bfs-avoid). So the dependency chain for 7/7 is now exact:
+
+    east discovery (fog-poke reaches (34,20) carry)
+    -> x55 track exists (piece sees the patroller)
+    -> mute-patroller learn trip goes east and chases
+    -> family-delta credit books the rotator      [logic written, reverted, in git history]
+    -> route_moving composes ring + two quarters   [conjugates + offline proof in place]
+    -> door matched, (29,45) down.
+
+Every arrow past the first is built or proven; the first is a determinism
+problem — WHICH frontier fog-poke explores, in what order, decides whether the
+east half exists in a given run. That is the next session's single target.
+
+## Three levers measured byte-identical in one night (2026-08-03) — and a probe
+## contradiction that outranks all of them
+
+1. **Stuck-yield** (`exhausted OR tried>=2` on the frontier gate): zero change.
+2. **Six-bounce sessions** and **phase-slip wall-press** in the blind branch:
+   zero change — the block action was always None (`refused` expires on display
+   changes mid-session; `tried`-minus-`sure` has no entry at (19,40) either).
+3. **Family-delta v2** (patroller = >=3 distinct hist boxes): zero fires — the
+   decomposition dead-ends because `#.#/#.#/###` has no step edge, and its whole
+   CONJUGACY CLASS is unbooked (`###/#../###` is its own rotation): the one
+   missing edge blocks every algebraic path that could infer around it.
+
+The contradiction to resolve FIRST next session: `results/l7-hashpress.txt`
+walked the whole ring including `#.# -> .##` with plain 1,2 bounces (changes at
+ticks 9 AND 10 — both parities pressed), while the agent's five consecutive
+bounces at the same square change nothing. Same square, same 2-cycle, same
+spawn-parity (every path (19,15)->(19,40) is 5 lattice steps, odd). Whatever
+separates them is none of: entry-vs-exit, lattice parity, session length. It IS
+one of: the x55 patroller's mod-8 phase (shifted arbitrarily by the agent's
+refusal history — a refused press freezes the patroller), or some panel/level
+state the probe run carried that the agent's mid-run state does not (the probe
+pressed at ink=9; the agent parks at ink=8/12/14 — the hand solution's ring walk
+at ink=8 worked, so ink alone is not it). The decisive experiment is cheap and
+scripted: replay the prefix, take a KNOWN number of refused presses to shift the
+patroller phase k ticks for k=0..7, then bounce at `#.#` and record which k
+press — one probe7 line per k, eight runs, the law falls out.
+
+## The parity law CONFIRMED in-agent, and the quarter-trip executor (2026-08-03)
+
+The law, final form, all measured: **pressing (19,40) from a `#.#`-class state
+fires only on an even patroller phase**; every walked arrival carries odd
+moves-since-death (bipartite lattice, death resets the lap); the flip is a carry
+of odd total displacement — and the stored redirect offset is measured from the
+AIM cell, so total displacement = one step + offset: **an odd carry is one whose
+stored offset is EVEN**, which every confirmed redirect on this board is. The
+parity-walk rung (parked-class trigger: panel value seen-as-TO with no outgoing
+edge; walk into an odd carry, refuel toward one if needed) unlocked it: the ring
+walks FULL CIRCLE in-run for the first time — `#.#` pressed 28 times, chg 52 →
+156, sweep clean.
+
+The quarter-trip executor (panel k quarters from the ask → walk into the x55
+patroller's lap so footprint overlap presses quarters) took eleven measured
+iterations to aim true — each wrong target was a real lesson: piece fragments
+pass a distinct-box filter; death-churned tracks pass a span filter; the piece's
+own column-pacing ghost passes a linearity filter (kill it with `stood`); cells
+across the invisible x19 wall are "un-stood" for the wrong reason; lap targets
+must sit on the PIECE's lattice (x ≡ 4 mod 5 here, not 0); and its bfs needs
+`avoid=refused` like every east-going route. With all six fixed, `gate.lapmem`
+holds exactly the true lap ((55,11),(55,21)) and the trips CLIMB x54 through the
+patroller's track in both directions — but in the last twenty actions of the
+budget: the loop (trip → return west → read panel → re-ring → repeat) never got
+a full cycle. Two known gaps for next session: the RETURN leg is unplanned (a
+death after the trip resets the shape and wastes the quarters — the east-side
+refill ring at (55-57,51-53) is the hand solution's answer), and the trip should
+be admissible earlier in the run (lapmem fills at the first east sighting;
+everything after that is eligible).
+
+Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
+to flip the piece/patroller parity, then re-bounce): the parked-class trigger
+works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`
+merges cell-keyed `redirects` with `(square, action)`-keyed `button`), but with
+cell keys only it never fires again because **every known carry lies on the
+northern loop**: the leg from (19,40) is 15+ actions before the 6-action return,
+over a 21-action life — the affordability guard is unpassable without weaving a
+refill into the trip. The parity-flip walk has to be a STAGE-class plan (legs +
+refills), not a single bfs leg; that executor is the concrete next build, and the
+parity law itself is still the best-supported explanation of the `#.#`-class
+no-op (it explains hashpress-vs-agent, survives the mod-8 and bipartite
+arguments, and nothing has refuted it).
+
+Three more measurements from the same run's tail, for next session:
+
+- The five-press streak at a=1799-1807 walked the 90-degree family `.#./###/#..
+  -> #.#/..#/### -> #.#/.##/##. -> #../###/#.. -> ###/#../###` on consecutive
+  bounces — no no-op — straight THROUGH the ask-minus-one state. Entry into the
+  turned family coincides with deaths (panel `#.#/#.#/###` before a death, a
+  turned state after): if a death turns the panel a quarter, the NEXT death lands
+  in the 180-degree family, where the ask itself lives, one step-walk away.
+- After a=1807 the panel parked on `###/#../###` for the last **193 actions with
+  zero presses**. The bounce-persistence lever (5x + `tried` reset in the blind
+  branch) was measured byte-identical — the branch never runs, because
+  `cycle-on-turn` requires the piece to BE at (19,40) at plan time and it never
+  arrives again: `turn-walk` spent 60 actions walking toward the changer without
+  arriving (plus `wander` 61, `stage2` 45). WHY turn-walk fails to arrive in the
+  endgame is the sharpest open question — trail-blocking, a fuel guard at
+  arrival, or the leg being re-planned every round.
+- A refused press freezes the x55 patroller, so every no-op bounce slips the
+  phase one tick — parity is not a permanent trap; persistence at the changer
+  would sample all phases within a period. The lever is sound; the round
+  ownership to APPLY it is what is missing.
+
+## The endgame park was an INVISIBLE WALL the router could not learn (2026-08-02)
+
+Re-running the plan-drop log in the current equilibrium (the earlier "zero drops"
+claim came from a run before blind-half-first — a stored conclusion expired):
+all 58 endgame drops were `expect: here=(19,15) wanted=(19,20)` — the leg's FIRST
+step, refused by the engine **fifty times in a row** while the frame shows floor
+there. The x19 gap south of the respawn is an unmarked wall: `refused` was being
+fed on every blocked step (compete:1457) and expiring on display changes, but
+**no route ever consumed it** — `bfs` had no notion of it, so every turn-walk leg
+was re-planned straight back through the square that had just refused.
+
+`bfs` now takes `avoid` (a refused square is not walked THROUGH; it may still be
+a GOAL, because a press at a door aims at a square that refuses), and the
+turn-walk leg passes `refused`. Sweep clean. Measured: (19,20)-drops 58 → 6,
+deaths 16, chg 37 → 52, `wander` 109 → 47, and the drop frontier MOVED — the new
+refusals are at (24,15), (19,45), (19,30), (14,30): the router is discovering the
+southern wall map one refusal at a time and walking deeper each life. Still 6/7.
+Extending `avoid` into `routed()` — every walk route — looked like the obvious
+next step and **loses cd82 its only level** (0/6): that level needs routes into
+squares that refused BEFORE any display exists, and with no display the refusal
+never expires, so the avoidance walls the level off — the same measurement that
+killed "remember which target refused and stop walking to it" for m0r0, in a new
+place. Reverted; the sweep restores. The turn-walk leg keeps `avoid` because that
+rung only runs when something is `locked`, which requires a display, which is the
+expiry working. On ls20 the reverted version had measured chg 74 (best ever) and
+136 actions of `cycle-last` bounce sessions — those numbers went WITH the broken
+cd82 and do not survive the revert. The stage-leg extension remains untried and
+must carry the same display-exists guard if it is ever tried.
+
 ## Also measured, not yet explained
 
 - **A carrying cell.** From (34, 20) a single `right` moved the piece to (39, 40) — five

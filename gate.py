@@ -233,6 +233,18 @@ class Gate:
         # learned from a stale reading); two entries are two presses in one report.
         self._arrivals = deque(maxlen=500)
         self._last_at = None
+        # Refill positions already eaten THIS LIFE (windowed boards; caller clears on
+        # death). The rings respawn with the life — turn-fuel picked the same northern
+        # ring up on twenty consecutive lives — but within one they are spent, and a
+        # fuel plan aimed at a spent ring walks for nothing: the late-game thrash was
+        # stage bouncing the piece between two eaten rings until the clock ran out.
+        self.spent = set()
+        # Lap cells of every REAL patroller ever tracked this level (three distinct
+        # boxes = it moves). The track itself dies when the piece walks away — out
+        # of a windowed frame nothing is sighted — but the lap is a property of the
+        # level: the quarter-trip planner needs somewhere to aim long after the
+        # track is gone.
+        self.lapmem = set()
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.
@@ -321,9 +333,19 @@ class Gate:
             if cur is None:
                 return False
             since = self._fresh.get(box, -1)
-            return sum(1 for o, sq in self._arrivals
-                       if o > since and sq == cur) <= 1
+            n = sum(1 for o, sq in self._arrivals if o > since and sq == cur)
+            if n > 1 and os.environ.get("ARC_FDBG"):
+                gap = [sq for o, sq in self._arrivals if o > since]
+                print("[fd] tick=%d cur=%s box=%s arrivals=%d gap=%s %s -> %s"
+                      % (self.ticks, cur, box, n, gap[-8:],
+                         self.icons.get(box), now.get(box)))
+            return n <= 1
         booked = {box for box in changed if box in self._fresh and _foldsafe(box)}
+        if os.environ.get("ARC_FDBG"):
+            for box in changed:
+                if box not in self._fresh:
+                    print("[fd] tick=%d cur=%s box=%s NOT-FRESH-THIS-LIFE %s -> %s"
+                          % (self.ticks, cur, box, self.icons.get(box), now.get(box)))
         moved = {i for box in booked
                  for i, (was, is_) in enumerate(zip(self.icons.get(box, now[box]), now[box]))
                  if was != is_}
@@ -713,6 +735,21 @@ class Gate:
         """
         out = {pos: dict(step) for (pos, h), step in self.cycles.items()
                if h == half and step}
+        # On a windowed board a shape square's step COMMUTES with rotation — verified
+        # on `ls20` level 7, where the four booked 90-degree-family edges are exactly
+        # the k=1 conjugates of the four booked ring edges (4 of 4, independent
+        # measurements: the x55 patroller turns the panel a quarter, and the same
+        # square then steps the turned family the same way). So every booked edge
+        # states its whole conjugacy class, the way a quarter turn states its whole
+        # orbit — plannable, not booked, and refutable at execution like any wrong
+        # edge. Two of the conjugates point INTO the door's ask.
+        if getattr(self, "windowed", False):
+            for pos, table in out.items():
+                for a, b in list(table.items()):
+                    oa, ob = turned(a), turned(b)
+                    if oa and ob:
+                        for k in (1, 2, 3):
+                            table.setdefault(oa[k], ob[k])
         for pos, h in self.rotates:
             if h == half:
                 out.setdefault(pos, {})
@@ -1186,6 +1223,18 @@ class Gate:
             return self.changer
         want, here = min(marks), min(state)
         differ = {i for i, (a, b) in enumerate(zip(want, here)) if a != b}
+        # On a windowed board, when both halves are wrong, go learn the BLIND one
+        # first — the plannable half can be fixed any time, and the blind one is
+        # the level's bottleneck: six deaths a run arrived wearing `#.#` because
+        # the shape errand was always the life's last. Insertion order otherwise
+        # (the ink square is learned first every life, so it used to win here).
+        if getattr(self, "windowed", False) and len(differ) > 1:
+            for h in sorted(differ,
+                            key=lambda h: 0 if self.path_for(o, h) is None
+                            and not self.exhausted(o, h) else 1):
+                for pos, moves in self.changers.items():
+                    if h in moves:
+                        return pos
         for pos, moves in self.changers.items():
             if moves & differ:
                 return pos

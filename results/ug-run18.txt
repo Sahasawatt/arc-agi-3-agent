@@ -1,0 +1,25 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-02 06:53:25 | INFO | Got anonymous API key: aa8422c3-594e-4df8-83ed-66c072a593a2
+2026-08-02 06:53:25 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-02 06:53:26 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-02 06:53:26 | INFO | Created new scorecard: 30e42264-f616-451c-bcc5-2d67d442257e
+2026-08-02 06:53:27 | INFO | Successfully fetched metadata for game ls20
+2026-08-02 06:53:27 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+[fd] tick=154 cur=(54, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (8, '###/#../#.#') -> (12, '.#./##./.##')
+[fd] tick=154 cur=(54, 40) box=(np.int64(1), np.int64(10), np.int64(53), np.int64(62)) NOT-FRESH-THIS-LIFE (8, '###/#../#.#') -> (12, '.#./##./.##')
+[fd] tick=21 cur=(19, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) arrivals=2 gap=[(19, 40), (14, 40), (9, 40), (14, 40), (19, 40)] (14, '#.#/#.#/###') -> (8, '.#./##./.##')
+[fd] tick=87 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (12, '.#./.#./###') -> (9, '.#./.#./###')
+[fd] tick=195 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (8, '.#./.#./###') -> (9, '.#./.#./###')
+[fd] tick=428 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (14, '#.#/#.#/###') -> (9, '.#./.#./###')
+[fd] tick=512 cur=(19, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) arrivals=2 gap=[(19, 25), (14, 25), (9, 25), (9, 30), (9, 35), (9, 40), (14, 40), (19, 40)] (8, '#.#/#.#/###') -> (12, '.#./##./.##')
+[fd] tick=526 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (12, '.#./.#./###') -> (9, '.#./.#./###')
+[fd] tick=620 cur=(14, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (8, '.#./.#./###') -> (12, '.#./.#./###')
+[fd] tick=661 cur=(14, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (12, '#.#/#.#/###') -> (12, '.#./.#./###')
+[fd] tick=740 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (14, '#.#/#.#/###') -> (9, '.#./.#./###')
+[fd] tick=778 cur=(14, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (14, '#.#/#.#/###') -> (12, '.#./.#./###')
+[fd] tick=801 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (12, '.#./.#./###') -> (9, '.#./.#./###')
+[fd] tick=837 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (14, '#.#/#.#/###') -> (9, '.#./.#./###')
+[fd] tick=1002 cur=(9, 40) box=(np.int64(3), np.int64(8), np.int64(55), np.int64(60)) NOT-FRESH-THIS-LIFE (14, '#.#/#.#/###') -> (9, '.#./.#./###')
+ls20   6/7 levels  actions=[23, 45, 99, 178, 292, 209]  score=40.503%
+
+mean over 1 environments: 40.503%

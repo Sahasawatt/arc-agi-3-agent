@@ -1,0 +1,53 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-03 14:56:40 | INFO | Got anonymous API key: e6da3101-32a1-41ec-b451-29049715ace3
+2026-08-03 14:56:40 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-03 14:56:41 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-03 14:56:41 | INFO | Created new scorecard: a15a5d36-dae7-4a6d-a551-2a438237b31e
+2026-08-03 14:56:42 | INFO | Successfully fetched metadata for game ls20
+2026-08-03 14:56:42 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+[pw] at=(39, 50) parked=False left=21 state=["(9, '#.#/..#/###')"] wrongs=[1]
+[pw] at=(49, 45) parked=False left=18 state=["(9, '#.#/#../###')"] wrongs=[1]
+[pw] at=(34, 30) parked=False left=32 state=["(8, '###/..#/#.#')"] wrongs=[0]
+[pw] at=(34, 30) parked=False left=30 state=["(12, '###/..#/#.#')"] wrongs=[0]
+[pw] at=(44, 5) parked=False left=21 state=["(12, '#.#/.##/##.')"] wrongs=[0, 1]
+[pw] at=(34, 25) parked=False left=15 state=["(12, '#.#/.##/##.')"] wrongs=[0, 1]
+[pw] at=(29, 25) parked=False left=14 state=["(9, '#.#/.##/##.')"] wrongs=[0, 1]
+[pw] at=(44, 20) parked=False left=12 state=["(8, '###/..#/#.#')"] wrongs=[1]
+[pw] at=(9, 10) parked=False left=21 state=["(8, '.#./.#./###')"] wrongs=[1]
+[pw] at=(19, 10) parked=False left=19 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 10) parked=False left=17 state=["(8, '.##/#.#/.#.')"] wrongs=[1]
+[pw] at=(19, 10) parked=False left=15 state=["(8, '.#./##./.##')"] wrongs=[1]
+[pw] at=(19, 10) parked=False left=13 state=["(8, '###/..#/#.#')"] wrongs=[1]
+[pw] at=(19, 40) parked=False left=15 state=["(8, '.#./##./.##')"] wrongs=[1]
+[pw] at=(19, 40) parked=True left=13 state=["(8, '###/..#/#.#')"] wrongs=[1]
+[pw] at=(9, 5) parked=True left=21 state=["(8, '##./.##/#.#')"] wrongs=[1]
+[pw] at=(19, 15) parked=False left=21 state=["(12, '.#./.#./###')"] wrongs=[0, 1]
+[pw] at=(9, 40) parked=False left=14 state=["(9, '.#./.#./###')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=True left=7 state=["(14, '#.#/#.#/###')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=False left=5 state=["(14, '.#./##./.##')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=True left=9 state=["(9, '#.#/#.#/###')"] wrongs=[0, 1]
+[pw] at=(9, 40) parked=True left=7 state=["(9, '#.#/#.#/###')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=True left=7 state=["(14, '#.#/#.#/###')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=False left=5 state=["(14, '.#./##./.##')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=False left=11 state=["(8, '.#./##./.##')"] wrongs=[1]
+[pw] at=(14, 15) parked=True left=20 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(14, 15) parked=True left=17 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(14, 10) parked=True left=15 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(9, 5) parked=True left=21 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 25) parked=True left=13 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 15) parked=True left=21 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(9, 40) parked=False left=11 state=["(8, '##./.##/#.#')"] wrongs=[1]
+[pw] at=(19, 40) parked=False left=9 state=["(8, '.#./.#./###')"] wrongs=[1]
+[pw] at=(19, 40) parked=True left=7 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 15) parked=True left=21 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 10) parked=True left=19 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(14, 10) parked=True left=17 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(9, 5) parked=True left=21 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 25) parked=True left=13 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(14, 25) parked=True left=10 state=["(8, '#.#/#.#/###')"] wrongs=[1]
+[pw] at=(19, 40) parked=False left=15 state=["(9, '.#./##./.##')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=False left=9 state=["(9, '.#./.#./###')"] wrongs=[0, 1]
+[pw] at=(19, 40) parked=True left=7 state=["(9, '#.#/#.#/###')"] wrongs=[0, 1]
+ls20   6/7 levels  actions=[23, 45, 99, 178, 292, 209]  score=40.503%
+
+mean over 1 environments: 40.503%

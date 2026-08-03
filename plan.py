@@ -111,8 +111,15 @@ def step_to(model, pos, act, redirects=None):
     return exact if exact is not None else aim
 
 
-def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None):
+def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None,
+        avoid=()):
     """Shortest action list from `start` to any position in `goals`, or None.
+
+    `avoid` is the caller's set of squares the engine has REFUSED — a wall the frame
+    does not show (`ls20` level 7's x19 gap looks like floor and refuses the piece;
+    fifty consecutive turn-walk legs died on their first step there while the route
+    kept being replanned through it). A refused square is not walked THROUGH; it may
+    still be a goal, because a press at a door is aimed at a square that refuses.
 
     The first action may not land on any square in `came_from` — the handful the piece has
     just been on. This refuses to undo the last move and nothing else — no route is removed,
@@ -138,6 +145,8 @@ def bfs(grid, model, start, goals, redirects=None, came_from=None, sure=None):
             if cur == start and came_from and nxt in came_from:
                 continue
             if nxt in seen or not walkable(grid, model, nxt[0], nxt[1]):
+                continue
+            if nxt in avoid and nxt not in goals:
                 continue
             seen[nxt] = (act, cur)
             if nxt in goals:
@@ -175,7 +184,7 @@ def bfs_all(grid, model, start, redirects=None):
     return seen
 
 
-def route_to(frame, model, o, redirects=None, came_from=None, sure=None):
+def route_to(frame, model, o, redirects=None, came_from=None, sure=None, avoid=()):
     """Action list that walks the piece onto object `o`, or None.
 
     A map of redirecting cells can only be as complete as the walking that built it, and an
@@ -197,10 +206,12 @@ def route_to(frame, model, o, redirects=None, came_from=None, sure=None):
     # starving. The plain route stays last and is not part of the comparison: it is shorter
     # precisely because it does not believe in the carries, so walking it costs MORE than its
     # length says — the piece is taken somewhere else and the plan is dropped.
-    believed = [r for r in (bfs(grid, model, here, goals, redirects, came_from, sure),
-                            bfs(grid, model, here, goals, redirects, came_from))
+    believed = [r for r in (bfs(grid, model, here, goals, redirects, came_from, sure,
+                                avoid=avoid),
+                            bfs(grid, model, here, goals, redirects, came_from,
+                                avoid=avoid))
                 if r is not None]
-    return min(believed, key=len) if believed else         bfs(grid, model, here, goals, came_from=came_from)
+    return min(believed, key=len) if believed else         bfs(grid, model, here, goals, came_from=came_from, avoid=avoid)
 
 
 def slides(frame, grid, model, shut=()):

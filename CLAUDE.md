@@ -444,6 +444,81 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   session that persists at the changer, and the fuel rungs (`turn-fuel`/`near-fuel`)
   own those rounds instead. The remaining wall is round-ownership economics, not
   perception.
+- **`refuel()` chose off the rarity shortlist, and a refill is rarely rare — the
+  widening `stage`'s fuel has had all along.** Measured shape: twenty consecutive
+  level-7 lives ran `stage1(4) → near-fuel(10) → turn-fuel(14) → cand(13) →
+  desperate(2) → death`, the whole life walking between the far northern rings that
+  survived `cands`' ranking while the ring three steps from the shape changer was
+  cut — dying at (9,40) with `left=1`, zero presses, every time. Widened to every
+  refill seen (sweep clean, deaths 23 → 20), the loop is gone; what replaces it in
+  the late game is a `stage1`/`wander` single-action thrash — a plan issued and
+  dropped every other action — which is the open thread (`ug-acct12.jsonl` /
+  `l7-gate9.jsonl`, a=1950+). One reading of it was refuted (filtering ring-"doors"
+  out of `locked` = byte-identical, reverted as inert), and the plan-drop log
+  (`ARC_PDBG`) settled it with a zero: the plans were not dropped, they were SHORT —
+  stage aiming fuel hops at rings **already eaten this life**. Rings respawn with
+  the life but are spent within one, and nothing knew that. `gate.spent` (pickup
+  positions per life, cleared on death, windowed-gated) now excludes them from
+  `refuel`'s pool and `stage`'s fuel list — thrash gone, deaths 19, chg 52,
+  `desperate` 93 → 52, `stage2` back. Sweep clean. A fuel TARGET is state that
+  expires with the life, like a phase; the pool it is drawn from is state that
+  survives it, like a period.
+- **The ring's last two edges travel through a channel the fold guard rightly
+  refuses, and the bounce cannot reach them because the lattice is bipartite**
+  (`ARC_FDBG`, 15 refusals in a full run tell the whole story — see l7-model.md).
+  The `#.#/#.#/###` press fires on WALK-THROUGHS (both missing edges consumed in
+  one 2-arrival gap, `.##` worn unread between) and no-ops on bounces: the
+  response is phase-gated, every closed walk on a 4-connected lattice is even, so
+  a bounce session samples only half the phases and one born on the wrong parity
+  no-ops until `cycled` hands off. A CARRY breaks the parity — that is why the
+  walk-through presses. Six of a run's deaths happen wearing `#.#`: shape is the
+  life's last errand. **RESOLVED (2026-08-03): the law is even-phase gating, and
+  parity-walk + quarter-trip are in.** Press-from-`#.#`-class fires only on an
+  even patroller phase; arrivals carry odd moves-since-death (bipartite lattice,
+  death resets the lap); the flip is an odd-displacement carry — and the stored
+  redirect offset is measured from the AIM cell, so odd carry = EVEN offset,
+  which every confirmed redirect is. `parity-walk`/`parity-fuel` (parked-class
+  trigger) unlock the ring full-circle in-run (`#.#` pressed 28x, chg 52 → 156);
+  `quarter-trip`/`quarter-fuel` walk into the x55 lap (gate.lapmem — six target
+  filters were each measured wrong before aiming true: fragments, death-churn,
+  the piece's own column ghost vs `stood`, the invisible-wall unstood trap, the
+  PIECE's lattice offset x≡4 mod 5, and avoid=refused) and now climb x54 through
+  the patroller both directions — in the budget's last twenty actions. Sweep
+  clean throughout. Next: plan the RETURN leg (a death after the trip resets the
+  shape — the east refill (55-57,51-53) is the hand answer) and admit the trip
+  earlier once lapmem fills. Levers ranked in l7-model.md; two more byte-identical
+  hypotheses (ring-doors in `locked`, blind-spot bounce off-squares) are written
+  up there as refuted — check before re-deriving either.
+- **The "six-state closed ring" was sampling HALF the changer's response — the
+  shape graph is the ring x rotation composite, and the ask is IN it** (2026-08-02,
+  sweep clean). `changer_for` now prefers the blind half on windowed boards
+  (shape errands moved to the life's start), and the first run booked 8 shape
+  edges: the ring 4 plus a chain of quarter-TURNED ring states — `.#./###/#..` is
+  the exact CW quarter of `.#./##./.##`, and `#.#/.##/##.` is the ask minus one
+  quarter, the hand solution's act-52 state. Some (19,40) presses STEP the ring,
+  others TURN the glyph, phase-dependent. The ask may be reachable from (19,40)
+  alone — no x55 chase, no (54,*) rotators. Missing: an edge INTO the ask (none
+  booked), edges out of `###/#../###` and `#.#/#.#/###`. Next: let the square
+  rungs keep exploring those two states' presses; the composition machinery is
+  already downstream.
+- **An engine refusal the frame does not show must be CONSUMED by the router, not
+  merely remembered.** Fifty consecutive turn-walk legs died on their first step
+  at (19,15)→(19,20) — the x19 gap is an unmarked wall, `refused` was fed on
+  every blocked step and expired correctly on display changes, and no route ever
+  read it. `bfs(avoid=...)` now exists (a refused square is not walked THROUGH
+  but may be a GOAL — a door press aims at a square that refuses) and the
+  turn-walk leg passes `refused`; sweep clean, (19,20)-drops 58 → 6, deaths 16,
+  the refusal frontier moved south one wall at a time. Extending `avoid` into
+  `routed()` — every walk route — **loses cd82 its only level (0/6)**: that level
+  walks into squares that refused before any display exists, and with no display
+  the refusal never expires — the m0r0 "stop walking to refused targets"
+  measurement again, in a new place. Reverted, sweep restores. The turn-walk
+  `avoid` stays because that rung only runs when something is `locked`, which
+  requires a display, which is the expiry working — any future extension (stage
+  legs) must carry the same display-exists guard. (Also a `verification-layers`
+  case: the "zero drops in the endgame" reading came from a run BEFORE
+  blind-half-first; the stored conclusion expired with the equilibrium it was
+  measured on.)
 - **A patroller nobody has watched is INVISIBLE to the planner, not unknown to it.**
   `route_moving` builds its patroller list from movers with a period **and a known half**;
   one with no half contributes nothing to `presses`, so walking over it is not modelled as

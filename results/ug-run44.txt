@@ -1,0 +1,17 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-03 17:31:37 | INFO | Got anonymous API key: 11d0bc86-4e77-466c-a27e-3802304d2fb5
+2026-08-03 17:31:37 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-03 17:31:38 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-03 17:31:38 | INFO | Created new scorecard: df9326c3-2915-4c07-b4f2-f104b48ed50a
+2026-08-03 17:31:39 | INFO | Successfully fetched metadata for game ls20
+2026-08-03 17:31:39 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+[qt] at=(19, 40) ask_q=None left=15 state=["(8, '.#./##./.##')"] lapmem=0
+[qt] at=(14, 45) ask_q=None left=21 state=["(12, '.#./.#./###')"] lapmem=0
+[qt] at=(9, 40) ask_q=None left=19 state=["(9, '.#./.#./###')"] lapmem=0
+[qt] at=(19, 15) ask_q=None left=21 state=["(12, '.#./.#./###')"] lapmem=0
+[qt] at=(19, 15) ask_q=None left=21 state=["(9, '###/..#/#.#')"] lapmem=0
+[qt] at=(19, 15) ask_q=None left=20 state=["(14, '###/..#/#.#')"] lapmem=0
+[qt] at=(19, 15) ask_q=None left=21 state=["(9, '###/..#/#.#')"] lapmem=0
+ls20   6/7 levels  actions=[23, 45, 99, 178, 292, 209]  score=40.503%
+
+mean over 1 environments: 40.503%

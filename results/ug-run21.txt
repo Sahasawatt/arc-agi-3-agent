@@ -1,0 +1,265 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-02 18:16:44 | INFO | Got anonymous API key: aa9a6daf-101d-4965-960a-4ef3d8412de1
+2026-08-02 18:16:44 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-02 18:16:45 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-02 18:16:45 | INFO | Created new scorecard: 2b2fcd71-631a-4715-b302-cff8e7570d77
+2026-08-02 18:16:46 | INFO | Successfully fetched metadata for game ls20
+2026-08-02 18:16:46 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+[pd] i=76 src=cand reason=slid now=(34, 5) left=12
+[pd] i=89 src=desperate reason=slid now=(9, 45) left=1
+[pd] i=97 src=stage1 reason=slid now=(34, 5) left=4
+[pd] i=123 src=desperate reason=slid now=(9, 45) left=8
+[pd] i=131 src=stage1 reason=slid now=(34, 5) left=35
+[pd] i=165 src=stage1 reason=slid now=(54, 45) left=1
+[pd] i=174 src=cand reason=slid now=(54, 20) left=2
+[pd] i=176 src=cand reason=slid now=(44, 45) left=4
+[pd] i=177 src=cand reason=slid now=(34, 40) left=6
+[pd] i=195 src=cand reason=slid now=(39, 5) left=2
+[pd] i=199 src=cand reason=slid now=(39, 5) left=2
+[pd] i=211 src=cand reason=slid now=(54, 20) left=2
+[pd] i=213 src=cand reason=slid now=(44, 45) left=4
+[pd] i=214 src=cand reason=slid now=(34, 40) left=6
+[pd] i=216 src=cand reason=slid now=(34, 40) left=6
+[pd] i=218 src=cand reason=slid now=(34, 40) left=6
+[pd] i=222 src=cand reason=slid now=(9, 40) left=14
+[pd] i=223 src=cand reason=slid now=(24, 35) left=12
+[pd] i=224 src=cand reason=slid now=(9, 40) left=12
+[pd] i=225 src=cand reason=slid now=(24, 35) left=12
+[pd] i=226 src=cand reason=slid now=(9, 40) left=12
+[pd] i=227 src=cand reason=slid now=(24, 35) left=12
+[pd] i=228 src=cand reason=slid now=(9, 40) left=12
+[pd] i=229 src=cand reason=slid now=(24, 35) left=12
+[pd] i=230 src=cand reason=slid now=(9, 40) left=12
+[pd] i=231 src=cand reason=slid now=(24, 35) left=12
+[pd] i=232 src=cand reason=slid now=(9, 40) left=12
+[pd] i=233 src=cand reason=slid now=(24, 35) left=12
+[pd] i=234 src=cand reason=slid now=(9, 40) left=12
+[pd] i=235 src=cand reason=slid now=(24, 35) left=12
+[pd] i=236 src=cand reason=slid now=(9, 40) left=12
+[pd] i=237 src=cand reason=slid now=(24, 35) left=12
+[pd] i=238 src=cand reason=slid now=(19, 45) left=6
+[pd] i=246 src=cand reason=slid now=(34, 40) left=6
+[pd] i=248 src=cand reason=slid now=(34, 40) left=6
+[pd] i=252 src=cand reason=slid now=(9, 40) left=14
+[pd] i=253 src=cand reason=slid now=(24, 35) left=12
+[pd] i=254 src=cand reason=slid now=(9, 40) left=12
+[pd] i=255 src=cand reason=slid now=(24, 35) left=12
+[pd] i=256 src=cand reason=slid now=(9, 40) left=12
+[pd] i=257 src=cand reason=slid now=(24, 35) left=12
+[pd] i=258 src=cand reason=slid now=(9, 40) left=12
+[pd] i=259 src=cand reason=slid now=(24, 35) left=12
+[pd] i=260 src=cand reason=slid now=(9, 40) left=12
+[pd] i=261 src=cand reason=slid now=(24, 35) left=12
+[pd] i=262 src=cand reason=slid now=(9, 40) left=12
+[pd] i=263 src=cand reason=slid now=(24, 35) left=12
+[pd] i=264 src=cand reason=slid now=(9, 40) left=12
+[pd] i=265 src=cand reason=slid now=(24, 35) left=12
+[pd] i=266 src=cand reason=slid now=(9, 40) left=12
+[pd] i=267 src=cand reason=slid now=(24, 35) left=12
+[pd] i=268 src=cand reason=slid now=(9, 40) left=12
+[pd] i=269 src=cand reason=slid now=(24, 35) left=12
+[pd] i=270 src=cand reason=slid now=(9, 40) left=12
+[pd] i=271 src=cand reason=slid now=(24, 35) left=12
+[pd] i=272 src=cand reason=slid now=(9, 40) left=12
+[pd] i=275 src=cand reason=slid now=(24, 35) left=1
+[pd] i=278 src=desperate reason=slid now=(9, 40) left=12
+[pd] i=281 src=cand reason=slid now=(24, 35) left=1
+[pd] i=292 src=probe reason=slid now=(54, 20) left=5
+[pd] i=298 src=stage1 reason=slid now=(54, 20) left=9
+[pd] i=300 src=stage1 reason=slid now=(44, 45) left=7
+[pd] i=301 src=stage1 reason=slid now=(34, 40) left=6
+[pd] i=305 src=stage1 reason=slid now=(9, 40) left=2
+[pd] i=306 src=stage1 reason=slid now=(24, 35) left=1
+[pd] i=309 src=cand reason=slid now=(9, 40) left=17
+[pd] i=320 src=cand reason=slid now=(54, 20) left=6
+[pd] i=325 src=cand reason=slid now=(34, 25) left=1
+[pd] i=334 src=door reason=slid now=(39, 5) left=10
+[pd] i=346 src=cand reason=slid now=(49, 40) left=5
+[pd] i=351 src=cand reason=slid now=(39, 5) left=2
+[pd] i=355 src=cand reason=slid now=(44, 20) left=2
+[pd] i=357 src=cand reason=slid now=(39, 5) left=2
+[pd] i=361 src=cand reason=slid now=(39, 5) left=2
+[pd] i=367 src=cand reason=slid now=(39, 5) left=2
+[pd] i=368 src=cand reason=slid now=(34, 25) left=5
+[pd] i=371 src=probe reason=slid now=(44, 20) left=8
+[pd] i=379 src=cand reason=slid now=(39, 5) left=2
+[pd] i=380 src=cand reason=slid now=(34, 25) left=1
+[pd] i=383 src=desperate reason=slid now=(44, 20) left=9
+[pd] i=384 src=desperate reason=slid now=(49, 40) left=8
+[pd] i=417 src=probe reason=slid now=(44, 30) left=4
+[pd] i=419 src=probe reason=slid now=(54, 40) left=2
+[pd] i=424 src=desperate reason=slid now=(49, 40) left=4
+[pd] i=429 src=stage1 reason=slid now=(39, 5) left=2
+[pd] i=430 src=stage1 reason=slid now=(34, 25) left=1
+[pd] i=433 src=stage1 reason=slid now=(39, 5) left=1
+[pd] i=434 src=stage1 reason=slid now=(34, 25) left=1
+[pd] i=437 src=stage1 reason=slid now=(39, 5) left=1
+[pd] i=438 src=stage1 reason=slid now=(34, 25) left=1
+[pd] i=441 src=near-fuel reason=slid now=(44, 20) left=3
+[pd] i=443 src=near-fuel reason=slid now=(39, 5) left=1
+[pd] i=446 src=cand reason=slid now=(34, 25) left=1
+[pd] i=447 src=probe reason=slid now=(39, 5) left=2
+[pd] i=467 src=probe reason=slid now=(9, 25) left=1
+[pd] i=491 src=probe reason=slid now=(54, 10) left=1
+[pd] i=496 src=desperate reason=slid now=(44, 30) left=4
+[pd] i=498 src=desperate reason=slid now=(39, 5) left=2
+[pd] i=502 src=probe reason=slid now=(54, 10) left=1
+[pd] i=507 src=stage1 reason=slid now=(44, 30) left=11
+[pd] i=516 src=stage1 reason=display left=2
+[pd] i=523 src=stage1 reason=slid now=(9, 25) left=37
+[pd] i=530 src=stage1 reason=display left=30
+[pd] i=543 src=stage1 reason=slid now=(39, 5) left=17
+[pd] i=549 src=turn-walk reason=slid now=(39, 5) left=2
+[pd] i=550 src=cand reason=slid now=(34, 25) left=1
+[pd] i=558 src=cand reason=slid now=(39, 5) left=2
+[pd] i=561 src=cand reason=slid now=(34, 25) left=1
+[pd] i=564 src=desperate reason=slid now=(44, 20) left=7
+[pd] i=566 src=desperate reason=slid now=(49, 40) left=2
+[pd] i=578 src=stage1 reason=display left=46
+[pd] i=584 src=stage1 reason=slid now=(34, 25) left=46
+[pd] i=585 src=near-fuel reason=slid now=(39, 5) left=1
+[pd] i=588 src=stage1 reason=slid now=(34, 25) left=42
+[pd] i=595 src=stage1 reason=slid now=(44, 20) left=35
+[pd] i=604 src=moving reason=display left=22
+[pd] i=655 src=probe reason=slid now=(39, 20) left=2
+[pd] i=687 src=moving-learn reason=display left=7
+[pd] i=688 src=moving-learn reason=display left=6
+[pd] i=716 src=moving-learn reason=display left=11
+[pd] i=717 src=moving-learn reason=display left=10
+[pd] i=733 src=moving-learn reason=display left=5
+[pd] i=734 src=moving-learn reason=display left=4
+[pd] i=735 src=moving-learn reason=display left=3
+[pd] i=736 src=moving-learn reason=display left=2
+[pd] i=737 src=moving-learn reason=display left=1
+[pd] i=739 src=moving-learn reason=display left=5
+[pd] i=740 src=moving-learn reason=display left=4
+[pd] i=741 src=moving-learn reason=display left=3
+[pd] i=742 src=moving-learn reason=display left=2
+[pd] i=743 src=moving-learn reason=display left=1
+[pd] i=751 src=desperate reason=slid now=(24, 50) left=11
+[pd] i=753 src=stage1 reason=display left=51
+[pd] i=856 src=cand reason=expect here=(9, 40) wanted=(9, 45) left=3
+[pd] i=910 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=914 src=fuel-int reason=slid now=(34, 10) left=10
+[pd] i=926 src=desperate reason=slid now=(19, 15) left=14
+[pd] i=949 src=near-fuel reason=slid now=(29, 30) left=9
+[pd] i=950 src=turn-fuel reason=slid now=(34, 10) left=3
+[pd] i=956 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=964 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=988 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1000 src=desperate reason=slid now=(19, 15) left=18
+[pd] i=1014 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1020 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1028 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1054 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1058 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1078 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1086 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1102 src=desperate reason=slid now=(19, 15) left=18
+[pd] i=1116 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1122 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1130 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1156 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1160 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1168 src=desperate reason=expect here=(19, 15) wanted=(14, 15) left=19
+[pd] i=1178 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1212 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1216 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1238 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1244 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1252 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1264 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1268 src=desperate reason=slid now=(19, 15) left=10
+[pd] i=1282 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1288 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1296 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1322 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1326 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1334 src=desperate reason=expect here=(19, 15) wanted=(14, 15) left=19
+[pd] i=1344 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1378 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1418 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1422 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1446 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1458 src=desperate reason=slid now=(19, 15) left=18
+[pd] i=1472 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1478 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1486 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1512 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1516 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1524 src=desperate reason=expect here=(19, 15) wanted=(14, 15) left=19
+[pd] i=1534 src=turn-fuel reason=slid now=(34, 10) left=10
+[pd] i=1554 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1588 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1592 src=desperate reason=slid now=(34, 10) left=10
+[pd] i=1614 src=near-fuel reason=slid now=(34, 10) left=10
+[pd] i=1620 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1627 src=turn-fuel reason=slid now=(39, 40) left=11
+[pd] i=1651 src=cand reason=slid now=(29, 30) left=8
+[pd] i=1695 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1702 src=moving-learn reason=slid now=(39, 40) left=5
+[pd] i=1714 src=moving-learn reason=slid now=(29, 30) left=8
+[pd] i=1758 src=turn-fuel reason=slid now=(34, 10) left=2
+[pd] i=1767 src=moving-learn reason=slid now=(39, 40) left=5
+[pd] i=1779 src=moving-learn reason=slid now=(29, 30) left=3
+[pd] i=1815 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1818 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1820 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1823 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1825 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1830 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1832 src=near-fuel reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1835 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1838 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1840 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1843 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1846 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1848 src=stage2 reason=expect here=(19, 15) wanted=(24, 15) left=2
+[pd] i=1853 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1857 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1860 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1863 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1866 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1868 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1873 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1876 src=near-fuel reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1880 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1883 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1885 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1888 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1891 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1893 src=stage2 reason=expect here=(19, 15) wanted=(24, 15) left=2
+[pd] i=1902 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1905 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1908 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1910 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1912 src=stage2 reason=expect here=(19, 10) wanted=(24, 10) left=3
+[pd] i=1916 src=near-fuel reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1920 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1923 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1926 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1929 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1931 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1936 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1939 src=near-fuel reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1942 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1945 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1947 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1950 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1953 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1955 src=stage2 reason=expect here=(19, 15) wanted=(24, 15) left=2
+[pd] i=1960 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1966 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1969 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1972 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1975 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1977 src=stage2 reason=expect here=(19, 15) wanted=(24, 15) left=2
+[pd] i=1982 src=stage2 reason=expect here=(29, 5) wanted=(34, 5) left=1
+[pd] i=1986 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1989 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1992 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1995 src=turn-walk reason=expect here=(19, 15) wanted=(19, 20) left=4
+[pd] i=1997 src=stage2 reason=expect here=(19, 15) wanted=(19, 20) left=4
+ls20   6/7 levels  actions=[23, 45, 99, 178, 292, 209]  score=40.503%
+
+mean over 1 environments: 40.503%

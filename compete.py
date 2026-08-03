@@ -25,7 +25,7 @@ from arcengine import GameState
 
 from discover import (Model, body_box, choose_next, classify_colours, infer_body, infer_dirs,
                       infer_player, infer_step, locate, see, terrain_samples, walkable, _shifts)
-from gate import Gate, cycle
+from gate import Gate, cycle, turned
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -810,10 +810,22 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         the glyph-changer and one 18 away, and a life is 21 against a 9-action walk from
         the changer to the door. Taking the first one that happens to be reachable strands
         the piece at the changer with three actions left, every time.
+
+        Over every refill SEEN, not the rarity shortlist — the same widening `stage`'s
+        fuel already has, for the same reason ("a refill is rarely rare"): on level 7
+        the ring three steps from the shape changer was cut from `cands`, so
+        `turn-fuel` refuelled at whichever far ring survived the ranking and walked
+        the piece between the northern rings for the whole life — twenty consecutive
+        lives ended fuel-walk -> cand -> desperate -> death without one press.
         """
+        def _spent(f):
+            return any(f["x"][0] <= sx + 4 and f["x"][1] >= sx
+                       and f["y"][0] <= sy + 4 and f["y"][1] >= sy
+                       for sx, sy in getattr(gate, "spent", ()))
+
         best = None
-        for f in cands:
-            if f["colour"] not in tank:
+        for f in seen:
+            if f["colour"] not in tank or _spent(f):
                 continue
             leg = routed(f)
             if not leg or (left is not None and len(leg) > left):
@@ -857,6 +869,95 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             gate.rung = "near-fuel"
             return routed(o), o
 
+    # QUARTER-TRIP: the panel's shape is k quarter-turns from the door's ask.
+    # The ring cannot turn it — steps stay within a rotation family — only the
+    # patroller can, and its lap is remembered (`gate.lapmem`) long after the track
+    # died. Walk into the lap: each footprint overlap after a move presses one
+    # quarter; the ring press (drivable at any parity now) re-sets the shape if the
+    # count overshoots, and the loop converges mod 4. The ink half is deliberately
+    # not required: the patroller turns only the shape.
+    if (at is not None and not doors and locked and left is not None
+            and getattr(gate, "windowed", False) and gate.state()):
+        marks2 = gate._marks(locked[0])
+        cur2 = min(gate.state())
+        ask_q = None
+        if marks2:
+            want2 = min(marks2)
+            for hh2, (wv, cv) in enumerate(zip(want2, cur2)):
+                if isinstance(wv, str) and isinstance(cv, str) and wv != cv:
+                    orb2 = turned(cv)
+                    if orb2 and wv in orb2:
+                        ask_q = orb2.index(wv)
+        if os.environ.get("ARC_QTDBG"):
+            print("[qt] at=%s ask_q=%s left=%s state=%s lapmem=%d" % (
+                tuple(at[:2]), ask_q, left,
+                sorted(map(str, gate.state()))[:1], len(gate.lapmem)))
+        if ask_q:
+            here_q = (at[0], at[1])
+            def _lappy(info2):
+                boxes = {bb for _, bb in info2.get("hist") or []}
+                if len(boxes) < 3:
+                    return False
+                xs = [b[0] for b in boxes]; ys = [b[1] for b in boxes]
+                # a real lap is a LINE — one axis pinned, the other spanning the
+                # board. Fragment junk clusters 2D near the piece, and a track that
+                # churned across a death-teleport scatters 2D across the board.
+                sx, sy = max(xs) - min(xs), max(ys) - min(ys)
+                return (sx <= 5 and sy >= 15) or (sy <= 5 and sx >= 15)
+            lap = [b for k2, info2 in gate.movers.items()
+                   for _, b in (info2.get("hist") or [])[-16:]
+                   if _lappy(info2)]
+            newlap = {(int(b[0]), int(b[1]), int(b[2]), int(b[3])) for b in lap}
+            if os.environ.get("ARC_QTDBG") and newlap - gate.lapmem:
+                print("[lap] add=%s" % sorted(newlap - gate.lapmem))
+            gate.lapmem |= newlap
+            # The lap itself is void — the patroller floats where the piece cannot
+            # stand. The press is footprint OVERLAP, so aim at every walkable
+            # lattice position whose 5x5 footprint reaches a lap box.
+            cells = set()
+            for bx, by, bw, bh in gate.lapmem:
+                # candidate stand-positions live on the PIECE's lattice, which is
+                # offset from the raw grid (x = 4, 9, ... on this board, not 0, 5)
+                px0 = bx - ((bx - at[0]) % 5)
+                py0 = by - ((by - at[1]) % 5)
+                for dx in (-5, 0, 5):
+                    for dy in (-5, 0, 5):
+                        px = px0 + dx
+                        py = py0 + dy
+                        if (px < bx + bw and px + 5 > bx
+                                and py < by + bh and py + 5 > by
+                                and walkable(grid, model, px, py)
+                                and (stood is None or (px, py) not in stood)):
+                            # the piece's own column-pacing ghost passes every
+                            # geometry filter; the real lap is somewhere the
+                            # piece has never stood
+                            cells.add((px, py))
+            # The lap itself can sit beyond the composite's walkable map at plan
+            # time (fog) — a route often exists only as far as a known carry's
+            # LANDING. Take the stone: once east, the next round replans with
+            # local sight and the lap is a short hop.
+            stones = {(int(a[0] + o[0]), int(a[1] + o[1]))
+                      for a, o in redirects.items() if isinstance(a[0], int)}
+            stones = {c for c in stones if walkable(grid, model, c[0], c[1])}
+            goals2 = cells
+            leg3 = bfs(grid, model, here_q, cells, redirects,
+                       avoid=refused) if cells else None
+            if leg3 is None and stones:
+                goals2 = stones
+                leg3 = bfs(grid, model, here_q, stones, redirects, avoid=refused)
+            if os.environ.get("ARC_QTDBG"):
+                print("[qt2] cells=%d stones=%d leg=%s left=%s tank=%s" % (
+                    len(cells), len(stones),
+                    None if leg3 is None else len(leg3), left, sorted(tank)))
+            if goals2:
+                if leg3 and len(leg3) + 8 <= left:
+                    gate.rung = "quarter-trip"
+                    return leg3 + [leg3[-1]] * 2, None
+                top3, f3 = refuel(goals2)
+                if top3:
+                    gate.rung = "quarter-fuel"
+                    return top3, f3
+
     # With more than one half wrong the question is an ORDER, and the rung below cannot
     # ask it: it walks to a changer for whichever wrong half its dict happens to name first.
     # On `ls20` level 5 that is always the cross, so the ink cluster is entered twice in six
@@ -866,9 +967,14 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     if (at and not doors and locked and full and left is not None
             and len(gate.wrong_halves(locked[0])) > 1):
         here = (at[0], at[1])
-        fuel = [o for o in cands if o["colour"] in tank]
+        def _spent_o(o):
+            return any(o["x"][0] <= sx + 4 and o["x"][1] >= sx
+                       and o["y"][0] <= sy + 4 and o["y"][1] >= sy
+                       for sx, sy in getattr(gate, "spent", ()))
+
+        fuel = [o for o in cands if o["colour"] in tank and not _spent_o(o)]
         if not fuel and tank:
-            fuel = sorted((o for o in seen if o["colour"] in tank),
+            fuel = sorted((o for o in seen if o["colour"] in tank and not _spent_o(o)),
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
         staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
@@ -880,7 +986,8 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
 
     if at and not doors and locked and (turn := gate.changer_for(locked[0])):
         here = (at[0], at[1])
-        leg = [] if here == turn else bfs(grid, model, here, {turn})
+        leg = [] if here == turn else bfs(grid, model, here, {turn},
+                                          avoid=refused)
         # One more turn of the display, and then somewhere this life can still get to:
         # the door it is opening, or a refill. Demanding the DOOR is too strict — it is 20
         # actions away on `ls20` level 2 and a life is 21, which is what the refills are
@@ -892,6 +999,47 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 default=None)
         if leg is not None and rest is not None \
                 and (left is None or len(leg) + 2 + rest <= left):
+            parked = False
+            if getattr(gate, "windowed", False) and gate.state():
+                cur_state = min(gate.state())
+                for hh in gate.wrong_halves(locked[0]):
+                    if not isinstance(cur_state[hh], str):
+                        continue
+                    tables = gate._edges(hh)
+                    if (cur_state[hh] not in {a for t in tables.values() for a in t}
+                            and cur_state[hh] in {b for t in tables.values()
+                                                  for b in t.values()}):
+                        parked = True
+            if os.environ.get("ARC_PWDBG") and gate.state():
+                print("[pw] at=%s parked=%s left=%s state=%s wrongs=%s" % (
+                    at[:2] if at is not None else None, parked, left,
+                    sorted(map(str, gate.state()))[:1],
+                    sorted(gate.wrong_halves(locked[0]))))
+            if parked and left is not None:
+                # The panel wears a value no press has ever moved (seen as a TO,
+                # no outgoing edge). Measured law: this press fires only on an
+                # EVEN patroller phase; every walked arrival here has ODD
+                # moves-since-death (the lattice is bipartite, and a death resets
+                # the patroller's lap); the only parity-flipper is a carry of ODD
+                # length. Walk into one — or refuel toward one — and come back.
+                # The stored offset is measured from the AIM cell, one step past
+                # the square the piece stood on — total displacement is one step
+                # PLUS the offset, so an odd carry is one whose offset is EVEN.
+                odd_cells = [c for src2 in (redirects, once or {})
+                             for c, off in src2.items()
+                             if isinstance(c[0], int)
+                             and ((abs(off[0]) + abs(off[1])) // 5) % 2 == 0]
+                for cell in sorted(set(odd_cells),
+                                   key=lambda c: abs(c[0] - at[0]) + abs(c[1] - at[1])):
+                    leg2 = bfs(grid, model, (at[0], at[1]), {cell}, redirects)
+                    if leg2 and len(leg2) + 8 <= left:
+                        gate.rung = "parity-walk"
+                        return leg2, None
+                if odd_cells:
+                    top2, f2 = refuel(set(odd_cells))
+                    if top2:
+                        gate.rung = "parity-fuel"
+                        return top2, f2
             if here == turn:
                 # The changer this rung PICKED, not the last one seen to pay out. With one
                 # changer they are the same square; with three — `ls20` level 5 has a cross,
@@ -942,9 +1090,14 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         # instead costs levels 3 and 4, at four refills and at two — so widen only where it
         # would otherwise search with none, and take the nearest, because the search
         # enumerates their orders and that is factorial in how many it is given.
-        fuel = [o for o in cands if o["colour"] in tank]
+        def _spent_o(o):
+            return any(o["x"][0] <= sx + 4 and o["x"][1] >= sx
+                       and o["y"][0] <= sy + 4 and o["y"][1] >= sy
+                       for sx, sy in getattr(gate, "spent", ()))
+
+        fuel = [o for o in cands if o["colour"] in tank and not _spent_o(o)]
         if not fuel and tank:
-            fuel = sorted((o for o in seen if o["colour"] in tank),
+            fuel = sorted((o for o in seen if o["colour"] in tank and not _spent_o(o)),
                           key=lambda o: abs(o["x"][0] - here[0])
                           + abs(o["y"][0] - here[1]))[:3]
         staged = stage(grid, model, gate, here, left, full, locked[0], fuel,
@@ -1184,6 +1337,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if plan and model and expect and gate.displays:
             here = locate(obs.frame, model)
             if here is not None and (here[0], here[1]) != expect[0]:
+                if os.environ.get("ARC_PDBG"):
+                    print("[pd] i=%d src=%s reason=expect here=%s wanted=%s left=%d"
+                          % (i, psrc, (here[0], here[1]), expect[0], len(plan)))
                 plan, expect, trip = [], [], []
         here_now = locate(obs.frame, model) if model else None
         if here_now is not None:
@@ -1333,6 +1489,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             gate._laps.clear()
             gate.opened.clear()
             gate._fresh.clear()    # a kept reading from before the reset spans it
+            gate.spent.clear()     # the rings respawn with the life
             gate.reset = gate.ticks
             continue
 
@@ -1540,6 +1697,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                             seen_disp = False
                             break
                 if mark is not None and changed != mark and seen_disp:
+                    if os.environ.get("ARC_PDBG"):
+                        print("[pd] i=%d src=%s reason=display left=%d" % (i, psrc, len(plan)))
                     plan, expect, trip = [], [], []
 
             last = value if shifts.get(model.player) == model.dirs.get(value) else None
@@ -1556,6 +1715,14 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # piece standing still keeps the plan; the piece being carried does not.
         if model:
             was, now = locate(before.frame, model), locate(obs.frame, model)
+            # A refill eaten is spent for the rest of this LIFE (they respawn with the
+            # next one). The clock rising on an ordinary walked step is a pickup —
+            # rising on a teleport is a death, which the slid branch below handles.
+            if getattr(gate, "windowed", False) and log and log[-1].get("walked")                     and now is not None:
+                _falls = set(drain(log[-CLOCK_WINDOW:]))
+                if any(hud(obs.frame).get(k, 0) > hud(before.frame).get(k, 0)
+                       for k in _falls):
+                    gate.spent.add((now[0], now[1]))
             if slid(model, was, now, value):
                 # Learn the cell that did it, keyed on the square the press aimed at. Losing
                 # a life also moves the piece somewhere it did not ask for and refills the
@@ -1592,6 +1759,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                     # a death on a blocked action leaves `ticks` flat, so a tick
                     # comparison cannot see it).
                     gate._fresh.clear()
+                    gate.spent.clear()
                 if not clock_rose:
                     off = (now[0] - aim[0], now[1] - aim[1])
                     # Twice, or not at all. A cell that sends every piece the same way is a
@@ -1612,6 +1780,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # the staged chains were tuned around.
                 if not (psrc == "moving" and trip and expect
                         and (now[0], now[1]) == expect[0]):
+                    if os.environ.get("ARC_PDBG") and plan:
+                        print("[pd] i=%d src=%s reason=slid now=%s left=%d"
+                              % (i, psrc, (now[0], now[1]), len(plan)))
                     plan, expect, trip = [], [], []
 
         # Two ways of reacting to a move that did not happen were built here and both were
@@ -1634,6 +1805,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # to be comparable across scales, and that is a hypothesis — the engine settles it.
         if door is not None and log and not log[-1]["walked"] and model                 and locate(before.frame, model) == locate(obs.frame, model):
             gate.reject(door)
+            if os.environ.get("ARC_PDBG") and plan:
+                print("[pd] i=%d src=%s reason=refused left=%d" % (i, psrc, len(plan)))
             plan, door, expect, trip = [], None, [], []
 
         # Warm up until the CONTROLS are known, not for a fixed count. The 24-action wait

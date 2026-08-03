@@ -1,0 +1,47 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-03 14:25:14 | INFO | Got anonymous API key: 4bd47d98-c735-4f9c-865d-322dc54a3b56
+2026-08-03 14:25:14 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-03 14:25:15 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-03 14:25:15 | INFO | Created new scorecard: e96d6c69-9f68-4077-9981-f7a6a5c18a91
+2026-08-03 14:25:16 | INFO | Successfully fetched metadata for game ls20
+2026-08-03 14:25:16 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+   glyph ..##../..##../..##../..##../######/######
+start     lvl=6 piece=(np.int64(19), np.int64(15)) floor=606 x9-40 y5-36  c1=2 c11=16 c4=527 c5=2650 pat=[] hud={5: 154, 8: 12, 11: 84, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  1 act3  lvl=6 piece=(np.int64(14), np.int64(15)) floor=500 x9-35 y5-36  c1=0 c11=16 c4=497 c5=2788 pat=[] hud={3: 4, 5: 154, 8: 12, 11: 80, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  2 act3  lvl=6 piece=(np.int64(9), np.int64(15)) floor=389 x9-30 y5-36  c1=0 c11=8 c4=444 c5=2960 pat=[] hud={3: 8, 5: 154, 8: 12, 11: 76, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  3 act2  lvl=6 piece=(np.int64(9), np.int64(20)) floor=443 x9-30 y5-41  c1=0 c11=11 c4=424 c5=2920 pat=[] hud={3: 12, 5: 154, 8: 12, 11: 72, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  4 act2  lvl=6 piece=(np.int64(9), np.int64(25)) floor=456 x9-30 y7-46  c1=0 c11=6 c4=406 c5=2920 pat=[] hud={3: 16, 5: 154, 8: 12, 11: 68, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  5 act2  lvl=6 piece=(np.int64(9), np.int64(30)) floor=404 x9-30 y12-49  c1=0 c11=8 c4=456 c5=2920 pat=[] hud={3: 20, 5: 154, 8: 12, 11: 64, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  6 act2  lvl=6 piece=(np.int64(9), np.int64(35)) floor=328 x9-30 y17-49  c1=0 c11=8 c4=512 c5=2940 pat=[] hud={3: 24, 5: 154, 8: 12, 11: 60, 12: 6}
+   glyph ..##../..##../..##../..##../######/######
+  7 act2  lvl=6 piece=(np.int64(9), np.int64(40)) floor=286 x9-30 y22-52  c1=0 c11=8 c4=517 c5=2986 pat=[] hud={3: 28, 4: 2, 5: 152, 8: 12, 9: 6, 11: 56}
+   glyph ..##../..##../..##../..##../######/######
+  8 act1  lvl=6 piece=(np.int64(9), np.int64(35)) floor=328 x9-30 y17-49  c1=0 c11=8 c4=512 c5=2940 pat=[] hud={3: 32, 5: 154, 8: 12, 9: 6, 11: 52}
+   glyph ..##../..##../..##../..##../######/######
+  9 act2  lvl=6 piece=(np.int64(9), np.int64(40)) floor=286 x9-30 y22-52  c1=0 c11=8 c4=517 c5=2986 pat=[] hud={3: 36, 4: 2, 5: 152, 8: 12, 11: 48, 14: 6}
+   glyph ..##../..##../..##../..##../######/######
+ 10 act1  lvl=6 piece=(np.int64(9), np.int64(35)) floor=328 x9-30 y17-49  c1=0 c11=8 c4=512 c5=2940 pat=[] hud={3: 40, 5: 154, 8: 12, 11: 44, 14: 6}
+   glyph ..##../..##../..##../..##../######/######
+ 11 act2  lvl=6 piece=(np.int64(9), np.int64(40)) floor=286 x9-30 y22-52  c1=0 c11=8 c4=517 c5=2986 pat=[] hud={3: 44, 4: 2, 5: 152, 8: 18, 11: 40}
+   glyph ..##../..##../..##../..##../######/######
+ 12 act4  lvl=6 piece=(np.int64(14), np.int64(40)) floor=376 x9-34 y22-56  c1=1 c11=8 c4=560 c5=2838 pat=[] hud={3: 48, 4: 1, 5: 153, 8: 18, 11: 36}
+   glyph ##..##/##..##/##..##/##..##/######/######
+ 13 act4  lvl=6 piece=(np.int64(19), np.int64(40)) floor=453 x9-40 y23-56  c1=5 c11=8 c4=622 c5=2690 pat=[] hud={3: 52, 5: 154, 8: 18, 11: 32}
+   glyph ##..##/##..##/##..##/##..##/######/######
+ 14 act1  lvl=6 piece=(np.int64(19), np.int64(35)) floor=534 x9-40 y17-55  c1=5 c11=16 c4=591 c5=2629 pat=[] hud={3: 56, 5: 154, 8: 18, 11: 28}
+   glyph ..####/..####/##..##/##..##/..##../..##..
+ 15 act2  lvl=6 piece=(np.int64(19), np.int64(40)) floor=453 x9-40 y23-56  c1=5 c11=8 c4=622 c5=2694 pat=[] hud={3: 60, 5: 158, 8: 14, 11: 24}
+   glyph ..####/..####/##..##/##..##/..##../..##..
+ 16 act1  lvl=6 piece=(np.int64(19), np.int64(35)) floor=534 x9-40 y17-55  c1=5 c11=16 c4=591 c5=2633 pat=[] hud={3: 64, 5: 158, 8: 14, 11: 20}
+   glyph ..##../..##../####../####../..####/..####
+ 17 act2  lvl=6 piece=(np.int64(19), np.int64(40)) floor=453 x9-40 y23-56  c1=5 c11=8 c4=622 c5=2696 pat=[] hud={3: 68, 5: 156, 8: 16, 11: 16}
+   glyph ..##../..##../####../####../..####/..####
+ 18 act1  lvl=6 piece=(np.int64(19), np.int64(35)) floor=534 x9-40 y17-55  c1=5 c11=16 c4=591 c5=2635 pat=[] hud={3: 72, 5: 156, 8: 16, 11: 12}
+   glyph ######/######/....##/....##/##..##/##..##
+ 19 act2  lvl=6 piece=(np.int64(19), np.int64(40)) floor=453 x9-40 y23-56  c1=5 c11=8 c4=622 c5=2692 pat=[] hud={3: 76, 5: 156, 8: 16, 11: 8}
