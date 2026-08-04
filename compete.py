@@ -1227,6 +1227,10 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         rest = None if leg is None else \
             min((len(r) for o in outs if (r := onward(turn, o)) is not None),
                 default=None)
+        if os.environ.get("ARC_TWDBG"):
+            print("[tw] at=%s turn=%s leg=%s rest=%s left=%s outs=%d wrong=%s" % (
+                (at[0], at[1]), turn, None if leg is None else len(leg), rest, left,
+                len(outs), sorted(gate.wrong_halves(locked[0]))))
         if leg is not None and rest is not None \
                 and (left is None or len(leg) + 2 + rest <= left):
             parked = False

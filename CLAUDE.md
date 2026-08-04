@@ -527,6 +527,31 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   code); iterate under ONE fixed env set, never compare across sets. Levers ranked in l7-model.md; two more byte-identical
   hypotheses (ring-doors in `locked`, blind-spot bounce off-squares) are written
   up there as refuted — check before re-deriving either.
+- **`ls20` level 7 FALLS (7/7, 43.629%) once the shape errand stops being routed to
+  the INK square — and the bug was in the tie-break, not in any of the machinery.**
+  Everything the level needs had been built and measured working on its own; what it
+  waited on was a half nothing was pressing. `gate.changers` read
+  `{(9,40): {0,1}, (19,40): {1}}` in **452 of 507 planning rounds** — a stale reading
+  folded onto one of the ink square's entries credits it with the SHAPE half as well
+  (the fold family, landing in `changers`, where `_foldsafe` does not reach) — and
+  `changer_for` sorts the HALVES blind-first correctly but then takes the first square
+  in **insertion order** claiming the winner. The ink square is learned first every
+  life, so the phantom won every time: (9,40) arrived at **126 times to (19,40)'s 10**,
+  120 of 127 display changes ink, `wander` spending all 90 of its rounds standing on
+  it, 66 of 123 refusals there, and `changer_for` answering (9,40) in **424 of ~470**
+  decisions — 68 of them with the SHAPE as the only wrong half (`ARC_TWDBG`). The
+  shape ring therefore stalls at three edges, which is also the whole reason the
+  X-sequencing latch measured inert: replayed offline against the run's own gate
+  dumps the scan is correct, and `None` was the right answer for a table that cannot
+  reach the ask. `Gate._square_for(h)` now picks, **on windowed boards only**, the
+  square with the most WATCHED EDGES for that half — a phantom carries one, a real
+  changer carries its cycle; ties keep insertion order and non-windowed boards are
+  unchanged, so levels 1-6 and cd82/m0r0/ar25 come back identical to the digit while
+  level 7 completes in 526 of its 2,000 actions. Two lessons worth more than the code:
+  a claim about reachability EXPIRES with the equilibrium it was measured in (the
+  "step-chain reaches `##./.##/#.#`" premise came from an 8-edge run and was false of
+  the 3-edge one), and **a gate dump is a replayable oracle** — the scan was cleared
+  of suspicion offline, in seconds, without spending a single live run.
 - **The "six-state closed ring" was sampling HALF the changer's response — the
   shape graph is the ring x rotation composite, and the ask is IN it** (2026-08-02,
   sweep clean). `changer_for` now prefers the blind half on windowed boards

@@ -1,7 +1,43 @@
 [
   {
+    "game": "ar25",
+    "levels": 1,
+    "of": 8,
+    "actions": [
+      173
+    ],
+    "baseline": [
+      32
+    ],
+    "environment_score": 0.095
+  },
+  {
+    "game": "cn04",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "dc22",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "ka59",
+    "levels": 0,
+    "of": 7,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
     "game": "ls20",
-    "levels": 6,
+    "levels": 7,
     "of": 7,
     "actions": [
       23,
@@ -9,7 +45,8 @@
       99,
       178,
       292,
-      209
+      209,
+      526
     ],
     "baseline": [
       22,
@@ -17,21 +54,10 @@
       73,
       84,
       96,
-      192
+      192,
+      186
     ],
-    "environment_score": 40.503
-  },
-  {
-    "game": "cd82",
-    "levels": 1,
-    "of": 6,
-    "actions": [
-      1213
-    ],
-    "baseline": [
-      55
-    ],
-    "environment_score": 0.01
+    "environment_score": 43.629
   },
   {
     "game": "m0r0",
@@ -46,15 +72,95 @@
     "environment_score": 1.526
   },
   {
-    "game": "ar25",
-    "levels": 1,
+    "game": "re86",
+    "levels": 0,
     "of": 8,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "sc25",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "sp80",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "bp35",
+    "levels": 0,
+    "of": 9,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "g50t",
+    "levels": 0,
+    "of": 7,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "sk48",
+    "levels": 0,
+    "of": 8,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "tr87",
+    "levels": 0,
+    "of": 6,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "tu93",
+    "levels": 0,
+    "of": 9,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "wa30",
+    "levels": 0,
+    "of": 9,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
+  },
+  {
+    "game": "cd82",
+    "levels": 1,
+    "of": 6,
     "actions": [
-      173
+      1213
     ],
     "baseline": [
-      32
+      55
     ],
-    "environment_score": 0.095
+    "environment_score": 0.01
+  },
+  {
+    "game": "sb26",
+    "levels": 0,
+    "of": 8,
+    "actions": [],
+    "baseline": [],
+    "environment_score": 0.0
   }
 ]

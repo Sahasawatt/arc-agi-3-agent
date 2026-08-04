@@ -1247,6 +1247,27 @@ class Gate:
             marks.append(changed)
         return acts, marks, gates_opened
 
+    def _square_for(self, h):
+        """The square best evidenced to move half `h`, or None.
+
+        Insertion order is the wrong tie-break on a windowed board. The ink square is
+        learned first every life, and one stale reading folded onto one of its entries
+        credits it with the SHAPE half as well — after which every shape errand routes
+        to it and the shape changer is never entered. Measured on `ls20` level 7:
+        `changers` reads `{(9,40): {0,1}, (19,40): {1}}` in 452 of 507 planning rounds,
+        the ink square is arrived at 126 times against the shape square's 10, and 120 of
+        the run's 127 display changes are ink — so the shape ring stops at 3 edges, and
+        every downstream plan that needs a turned panel (the quarter trip, the door)
+        waits on a half nothing is pressing. Count the WATCHED EDGES instead: a phantom
+        credit carries one, a real changer carries its cycle. Ties keep insertion order.
+        """
+        cand = [pos for pos, moves in self.changers.items() if h in moves]
+        if not cand:
+            return None
+        if not getattr(self, "windowed", False):
+            return cand[0]
+        return max(cand, key=lambda p: len(self.cycles.get((p, h), {})))
+
     def changer_for(self, o):
         """The square that moves the half of the display this target disagrees on.
 
@@ -1268,9 +1289,14 @@ class Gate:
             for h in sorted(differ,
                             key=lambda h: 0 if self.path_for(o, h) is None
                             and not self.exhausted(o, h) else 1):
-                for pos, moves in self.changers.items():
-                    if h in moves:
-                        return pos
+                pos = self._square_for(h)
+                if pos is not None:
+                    return pos
+        if getattr(self, "windowed", False):
+            for h in sorted(differ):
+                pos = self._square_for(h)
+                if pos is not None:
+                    return pos
         for pos, moves in self.changers.items():
             if moves & differ:
                 return pos

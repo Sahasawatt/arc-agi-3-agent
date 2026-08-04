@@ -922,6 +922,63 @@ edges), watch per-action for the panel touching X, drop the plan, and the
 quarter block fires the trip in rhythm. Fresh-context debugging of the scan is
 the single next task, with lapmem=1 runs (deaths 8, lap pure) as the baseline.
 
+## SOLVED IN-AGENT: ls20 7/7 — the shape errand was routed to the INK square (2026-08-04)
+
+The scan was never the bug. Replayed offline against the run's own gate dumps
+(no live run needed — `l7-gate*.jsonl` carries `cycles`/`rotates`/`state`/`marked`
+per planning round), the latch design works exactly as written: on the 8-edge
+shape table of an earlier session (`l7-gate13.jsonl`) it returns
+`X = ##./.##/#.#` from `.#./##./.##`, and on the record run's table
+(`l7-gate71.jsonl`) it returns None **correctly** — that run never booked more
+than three shape edges, and from `.#./##./.##` the only outgoing edge leads to
+`###/..#/#.#`, whose orbit does not contain the ask. The premise above ("whose
+step-chain reaches `##./.##/#.#`") was measured on the older, hotter run and
+expired with the equilibrium it was taken in — the same trap as the endgame
+plan-drop reading below.
+
+Why the ring stayed at three edges, measured on the same dump: the INK square
+(9,40) was arrived at **126 times** and the SHAPE square (19,40) **10 times**;
+120 of the run's 127 display changes are ink, `wander` spends all 90 of its
+rounds standing on (9,40), and 66 of the run's 123 refusals are there. Traced
+live (`ARC_TWDBG`, new): `changer_for` answered **(9,40) in 424 of ~470
+decisions, including 68 where the only wrong half was the SHAPE**.
+
+The cause is one word of `changer_for`. `gate.changers` reads
+`{(9,40): {0,1}, (19,40): {1}}` in **452 of 507 planning rounds** — a stale
+reading folded onto one of the ink square's many entries credits it with the
+shape half too (the fold family again, landing in `changers` rather than in
+`cycles`, where `_foldsafe` guards). The blind-first rule then sorts the HALVES
+correctly and picks the first square in **insertion order** that claims the
+winning half — and the ink square is learned first every life, so the phantom
+wins every time. Every shape errand walked to the square that cannot move the
+shape.
+
+Fix: `Gate._square_for(h)` picks, on windowed boards only, the square with the
+most WATCHED EDGES for that half — a phantom credit carries one, a real changer
+carries its cycle; ties keep insertion order, and off a windowed board the
+choice is unchanged, so levels 1-6 and every other game are identical by
+construction. Two `changer_for` call sites use it (the both-wrong blind-first
+branch and a windowed pass ahead of the general fallback).
+
+Measured, one change, sweep clean:
+
+    before  ls20 6/7 [23, 45, 99, 178, 292, 209]        40.503%
+    after   ls20 7/7 [23, 45, 99, 178, 292, 209, 526]   43.629%
+    cd82 1/6 [1213], m0r0 1/6 [53], ar25 1/8 [173] — identical to the digit
+    mean over the four scoring games 10.534% -> 11.315%
+    (`results/sweep-sqfor.log`)
+
+The full 17-game sweep then reproduced it on an independent run — same seven action
+counts to the digit, every other game unmoved, no game losing a level, mean over 17
+**2.662%** (`results/sweep-sqfor-full.log`). Two runs, one trajectory: the completion
+is not a coincidence of timing.
+
+Level 7 falls in **526 of its 2,000 actions**. Everything the previous sessions
+built — ink ring, shape ring, lapmem, the interceptor, the quarter trip, the
+return leg, the door walk — was working; what it was all waiting on was a shape
+half that nothing was pressing. X-sequencing is not needed for the level and
+stays unbuilt.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

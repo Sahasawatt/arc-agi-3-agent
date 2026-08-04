@@ -224,6 +224,42 @@ def test_the_changer_chosen_is_the_one_that_moves_the_half_that_is_wrong():
     assert gate.changer_for(obj(13, 19, 39, 45)) == (49, 10)
 
 
+def _phantom_credit_gate(shape_wrong_only):
+    """`ls20` level 7's measured shape: the ink square is learned first and one folded
+    reading credits it with the SHAPE half too, so it claims both and comes first."""
+    gate = Gate()
+    gate.windowed = True
+    gate.icons = {(13, 19, 39, 45): (8, WANTED),
+                  (1, 10, 53, 62): (8 if shape_wrong_only else 9, INDICATOR)}
+    gate.displays = {(1, 10, 53, 62)}
+    gate.changers = {(29, 45): {0, 1}, (49, 10): {1}}    # ink square claims both
+    gate.changer = (29, 45)
+    # neither square's shape table reaches WANTED — the half is BLIND, which is what
+    # sorts it ahead of the ink half on a windowed board
+    gate.cycles = {((29, 45), 0): {9: 14, 14: 8, 8: 12, 12: 9},   # its real half: a cycle
+                   ((29, 45), 1): {INDICATOR: "#.#/#.#/###"},     # the phantom: one edge
+                   ((49, 10), 1): {INDICATOR: "#.#/#.#/###",
+                                   "#.#/#.#/###": ".#./.#./###"}}
+    return gate
+
+
+def test_a_phantom_shape_credit_does_not_win_the_shape_errand():
+    """Insertion order sent every shape errand to the ink square, which was entered 126
+    times to the shape square's 10 while 120 of 127 display changes were ink. The square
+    with the most WATCHED edges for the half wins instead — windowed boards only."""
+    for shape_wrong_only in (True, False):
+        gate = _phantom_credit_gate(shape_wrong_only)
+        assert gate.changer_for(obj(13, 19, 39, 45)) == (49, 10)
+
+
+def test_off_a_windowed_board_the_changer_choice_is_unchanged():
+    """Levels 1-6 and every other game keep insertion order: the evidence tie-break is
+    scoped to the board whose fold produced the phantom."""
+    gate = _phantom_credit_gate(True)
+    gate.windowed = False
+    assert gate.changer_for(obj(13, 19, 39, 45)) == (29, 45)
+
+
 def test_no_known_changer_for_the_wrong_half_means_no_answer():
     """Re-entering the square that moves the other half is the cheapest way never to finish;
     saying nothing lets ordinary exploration go and find the one that helps."""

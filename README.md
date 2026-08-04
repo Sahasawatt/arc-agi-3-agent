@@ -1073,6 +1073,51 @@ agent: refill colours latch for the level on windowed boards, and the square run
 the round before the learn trip there — presses 31 → 68 per run, probe 516 → 73, every
 other game and level unchanged to the digit.
 
+### Level 7 falls: the shape errand had been walking to the ink square
+
+The integration above was, in the end, already built. Every piece the hand solution needs
+landed across the sessions that followed — the ink ring, the shape ring, the remembered lap,
+the interceptor that pays the patroller's quarters, the return leg, the door walk — and each
+was measured working on its own while the level stayed at 6/7. What they were all waiting on
+was a half that nothing was pressing.
+
+`ls20` level 7 has two changer squares: (9,40) writes the ink, (19,40) writes the shape.
+Over one full run the ink square was arrived at **126 times and the shape square 10**; 120
+of the run's 127 display changes were ink; `wander` spent all 90 of its rounds standing on
+(9,40), and 66 of the run's 123 engine refusals happened there. `changer_for` — the method
+whose whole job is to answer *which square moves the half that is wrong* — answered (9,40)
+in **424 of ~470 decisions, 68 of them with the shape as the only wrong half**.
+
+The cause is one word. A display's two halves are credited to the square the piece was
+standing on when they moved, and on this board one stale reading folded onto one of the ink
+square's many entries credits it with the SHAPE half as well: `gate.changers` reads
+`{(9,40): {0,1}, (19,40): {1}}` in **452 of 507 planning rounds**. The rule that picks
+between them sorts the *halves* correctly — blind half first, a fix from an earlier session —
+and then takes the first square in **insertion order** that claims the winning half. The ink
+square is learned first every life, so the phantom credit won every time, and every shape
+errand walked to the one square that cannot move the shape.
+
+The square with the most **watched edges** for a half wins instead (`Gate._square_for`): a
+phantom credit carries a single folded edge, a real changer carries its cycle. Ties keep
+insertion order, and off a windowed board — every level of every other game — the choice is
+unchanged, so the rest of the sweep is identical by construction rather than by luck.
+
+    ls20  [23, 45, 99, 178, 292, 209, 526]  43.629%   7/7      was [.. 209] 40.503%, 6/7
+    cd82 [1213], m0r0 [53], ar25 [173]                         identical to the digit
+
+Level 7 completes in **526 of its 2,000 actions**. The full seventeen-game sweep reproduced
+it on an independent run — the same seven counts to the digit, no game losing a level, mean
+over 17 environments **2.662%** (`results/sweep-sqfor.log`, `results/sweep-sqfor-full.log`). Two things are worth more here than the
+code. The first: a claim about what the agent can reach **expires with the equilibrium it was
+measured in**. The session before this one wrote down that the panel state `.#./##./.##`
+"reaches `##./.##/#.#`", and built a whole latch to exploit it; that was true of an earlier
+run which booked eight shape edges and false of the calm one, which books three — so the
+latch measured inert and was blamed for a bug it did not have. The second: the per-round
+`gate` dump the agent already writes is a **replayable oracle**. Loading it back and running
+the suspect scan offline cleared it in seconds, against the very run that was said to
+disprove it, and pointed at the real question — why the ring stopped growing — without
+spending a live run on the wrong hypothesis.
+
 ### Five bugs, each of which was invisible until the run was traced
 <!-- five in the list, plus the track-id one below that only level 3 could show -->
 
