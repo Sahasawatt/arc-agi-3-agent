@@ -897,6 +897,19 @@ zero-width window and reject every fresh track. Next single edit: when
 the track's own velocity — then the chase, the pay, the home-read and the door
 run on the clean lap from a=900 with eleven hundred actions to spare.
 
+The wide-span edit for the single-box lap then measured byte-identical
+(reverted): the chase block never runs in the new calm trajectory at all,
+because its live-validated demand needs the panel at a `##./.##/#.#`-class
+state WHILE the piece is east with the track fresh — and the early-bootstrap
+trips go east at any shape-wrong moment, when the panel is usually elsewhere.
+The final composition step, for a fresh session: **sequence the trip** — drive
+the ring to the state whose orbit contains the ask (`X`: scan `step^m(cv)`
+through the conjugate table for the state with `ask in turned(X)`) BEFORE
+departing east; the ask_q-gated trips already encode this implicitly but fire
+only on chance coincidences of panel, fuel and affordability. Wire `X` as the
+ring target ahead of the trip leg and every piece of the machine — bootstrap,
+lap, chase, pay, home-read, door — is already measured working on its own.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`
