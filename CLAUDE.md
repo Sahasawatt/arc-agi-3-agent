@@ -496,10 +496,23 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   machinery that weaves multiple refills — owns the choreography (stage1 285 →
   368); and the trip tail CHASES along the lap axis away from home, which is
   what first sights the east refill ring into `seen`/tank. All sweep clean.
-  **The one remaining wall: deaths mid-trip (25/run) erase the quarters before
-  any read** — the east ring is in the tank now but stage does not yet weave it
-  into the eastward legs; finding where its costing drops the east refill is the
-  next session's single question. Levers ranked in l7-model.md; two more byte-identical
+  The deaths-mid-trip theory then measured FALSE — all seventeen deaths are
+  west, during ring work. The real chain (2026-08-04): rotator squares were
+  invisible to `route_moving`'s press set (they lived in `rotates` alone) —
+  folding them in dropped 1,680 "bfs exhausted" refusals to live plans, the
+  `moving` rung went 0 → 188 actions, and the agent now walks to (29,45) twelve
+  times a run wearing an unturned panel. The quarters themselves still never
+  fire: the x54 entries are phase-dependent, the phase is UNKNOWABLE from the
+  west within a life, so pressing must be counted reactively at execution — the
+  chase rung + live overlap counter exist, x55 tracks now carry halves and
+  measured periods (p=10), lapmem is line-clean, and the chase's TRIGGER is the
+  one wrong piece: it keys on `qt_out` (set only by quarter-trip) while the
+  east traversals belong to `moving`. Next session, one sentence: make the
+  chase an INTERCEPTOR — on the lap line AND fresh lap track AND shape wrong,
+  regardless of which rung brought the piece there; same condition for the
+  overlap counter. ⚠️ New trap, measured: THE TRAJECTORY IS ENV-DEPENDENT —
+  a run with ARC_RMDBG+ARC_L6 diverges from one without (chase 10 vs 0 on the
+  same code); iterate under ONE fixed env set, never compare across sets. Levers ranked in l7-model.md; two more byte-identical
   hypotheses (ring-doors in `locked`, blind-spot bounce off-squares) are written
   up there as refuted — check before re-deriving either.
 - **The "six-state closed ring" was sampling HALF the changer's response — the

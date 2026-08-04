@@ -822,6 +822,36 @@ walls left, in order:
 
 Everything else — fuel, walls, return, reading, composition — is in place.
 
+## The chase saga (2026-08-04) — reactive interception is RIGHT, its trigger is wrong
+
+Assembled this arc, each step measured: trip-time mover seeding (halves + one
+quarter edge on tracks overlapping the lap — west-side seeding is inert because
+the track only lives east), rotator squares folded into `route_moving`'s press
+set (the x54 virtuals lived in `rotates` alone; 1,680 "bfs exhausted" refusals
+fell to plans — the `moving` rung went 0 → 188 actions and the agent reached
+(29,45) twelve times a run, always wearing an unturned panel), the fuel-long
+axis-chase tail, lapmem line-hygiene (the largest collinear cluster only — the
+chase was measured following a ring flicker at (50,6) west while the patroller
+paced x55), and a REACTIVE CHASE rung with live overlap counting in the play
+loop (`qt_need`/`qt_hits` — the phase is unknowable from the west within a
+life, so the press must be counted at execution, not planned).
+
+Where it stands: x55-region tracks now carry halves and some carry PERIODS
+(p=10 measured live); `moving` plans traverse (54,25)→(54,35) four times a run;
+the chase steps correctly along Y once its inputs are clean — and its TRIGGER
+is wired to `gate.qt_out`, which only the quarter-trip rung sets, while the
+actual east traversals belong to the `moving` rung: [ch] fired 11 times chasing
+junk, then 0 after the on-line gate. The redesign for a fresh session, one
+sentence: **the chase is an INTERCEPTOR — it should key on (piece on the lap
+line) AND (fresh lap track) AND (shape half wrong), regardless of which rung
+brought the piece there, and the overlap counter should run under the same
+condition.** Everything upstream of that trigger — plans that reach the column,
+fuel to survive there, the lap's identity, the press law, the return leg, the
+door walk — is measured working. Also note for the trap list: the TRAJECTORY IS
+ENV-DEPENDENT — a run with ARC_RMDBG+ARC_L6 diverges from one without (run69 vs
+run70: chase 10 vs 0) — so iterate with ONE fixed env set and never compare
+across sets.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

@@ -964,6 +964,23 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             if os.environ.get("ARC_QTDBG") and newlap - gate.lapmem:
                 print("[lap] add=%s" % sorted(newlap - gate.lapmem))
             gate.lapmem |= newlap
+            # hygiene: a lap is ONE line — keep only the largest collinear
+            # cluster (fixed axis within +-2 of its median); junk that slipped
+            # in through a linear-looking track elsewhere poisons the chase,
+            # which was measured following a ring flicker at (50,6) west
+            # while the patroller paced x55.
+            if len(gate.lapmem) >= 3:
+                import statistics as _st
+                xs_l = sorted(b[0] for b in gate.lapmem)
+                ys_l = sorted(b[1] for b in gate.lapmem)
+                spread_x = xs_l[-1] - xs_l[0]
+                spread_y = ys_l[-1] - ys_l[0]
+                if spread_x <= spread_y:
+                    mx = _st.median(xs_l)
+                    gate.lapmem = {b for b in gate.lapmem if abs(b[0] - mx) <= 2}
+                else:
+                    my = _st.median(ys_l)
+                    gate.lapmem = {b for b in gate.lapmem if abs(b[1] - my) <= 2}
             # The lap itself is void — the patroller floats where the piece cannot
             # stand. The press is footprint OVERLAP, so aim at every walkable
             # lattice position whose 5x5 footprint reaches a lap box.
@@ -1017,6 +1034,7 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                     # outbound flag — home would walk for nothing and the retry
                     # would wait a whole lap
                     gate.qt_out = len(leg3) >= 5
+                    gate.qt_need, gate.qt_hits = ask_q, 0
                     # Arrived at the lap, CHASE along its axis away from home:
                     # following the patroller's own line is what overlaps every
                     # tick (the hand solution's recipe), and the walk past the
@@ -1037,12 +1055,55 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                         a_ax = next((a2 for a2, st2 in model.dirs.items()
                                      if tuple(st2) == want), None)
                         if a_ax is not None:
-                            ext = [a_ax] * 3
+                            # patrol the column as long as the tank affords: the
+                            # longer the piece stays in sight of the lap, the more
+                            # sightings the track banks toward a PERIOD, and every
+                            # step is another y-alignment chance at a press
+                            n_ax = max(3, min(8, left - len(leg3) - 5))
+                            ext = [a_ax] * n_ax
                     return leg3 + ext, None
                 top3, f3 = refuel(goals2)
                 if top3:
                     gate.rung = "quarter-fuel"
                     return top3, f3
+
+    # REACTIVE CHASE: east, outbound, the lap's track in sight THIS tick. The
+    # phase cannot be planned from the west (it is unknowable there within a
+    # life), so the chase is closed-loop at execution: step along the lap toward
+    # the patroller's live position; the play loop counts footprint overlaps —
+    # the measured press law — and `qt_need` pays down without ever reading the
+    # display. When paid, fall through: quarter-home walks back to read.
+    if (at is not None and getattr(gate, "windowed", False)
+            and getattr(gate, "qt_out", False) and gate.qt_need > gate.qt_hits
+            and gate.lapmem):
+        fresh_tracks = [(k9, info9["hist"][-1][1]) for k9, info9 in gate.movers.items()
+                        if info9.get("hist") and info9["hist"][-1][0] >= gate.ticks - 1
+                        and any(info9["hist"][-1][1][0] < L[0] + L[2]
+                                and info9["hist"][-1][1][0] + info9["hist"][-1][1][2] > L[0]
+                                and abs(info9["hist"][-1][1][1] - L[1]) <= 25
+                                for L in gate.lapmem)]
+        if fresh_tracks:
+            k9, b9 = fresh_tracks[0]
+            xs9 = [L[0] for L in gate.lapmem]; ys9 = [L[1] for L in gate.lapmem]
+            vert9 = (max(ys9) - min(ys9)) >= (max(xs9) - min(xs9))
+            # chase only FROM the lap's own line — starting it early, a home-
+            # carry yanked the piece west mid-chase and it died pressing a wall
+            lap_axis = (sum(xs9) / len(xs9)) if vert9 else (sum(ys9) / len(ys9))
+            on_line = abs((at[0] if vert9 else at[1]) + 2 - lap_axis) <= 7
+            if not on_line:
+                fresh_tracks = []
+        if fresh_tracks:
+            dy9 = (b9[1] + b9[3] // 2) - (at[1] + 2) if vert9 else                   (b9[0] + b9[2] // 2) - (at[0] + 2)
+            want9 = ((0, 5 if dy9 > 0 else -5) if vert9
+                     else (5 if dy9 > 0 else -5, 0))
+            a9 = next((aa for aa, st9 in model.dirs.items()
+                       if tuple(st9) == want9), None)
+            if a9 is not None:
+                gate.rung = "chase"
+                if os.environ.get("ARC_QTDBG"):
+                    print("[ch] step at=%s target=%s hits=%d/%d"
+                          % (tuple(at[:2]), b9, gate.qt_hits, gate.qt_need))
+                return [a9], None
 
     # QUARTER-HOME: the piece is beyond every display's reading range — the
     # quarters a trip just pressed are INVISIBLE until the panel is read from the
@@ -1714,6 +1775,23 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # them (measured, `ls20` level 6) — so their positions are recorded on
                 # exactly those ticks and nothing else.
                 gate.track(cur, model.body, moved, here_after)
+                # pay down the chase: a footprint overlap with the lap's track after a
+                # move IS a press (the measured law); counted live, no display needed
+                if getattr(gate, "qt_out", False) and gate.qt_need > gate.qt_hits                         and here_after is not None:
+                    for _k, _info in gate.movers.items():
+                        _h = _info.get("hist") or []
+                        if _h and _h[-1][0] == gate.ticks:
+                            _b = _h[-1][1]
+                            if (here_after[0] < _b[0] + _b[2] and here_after[0] + 5 > _b[0]
+                                    and here_after[1] < _b[1] + _b[3] and here_after[1] + 5 > _b[1]
+                                    and any(_b[0] < L[0] + L[2] and _b[0] + _b[2] > L[0]
+                                            for L in getattr(gate, "lapmem", ()))):
+                                gate.qt_hits += 1
+                                if os.environ.get("ARC_QTDBG"):
+                                    print("[ch] HIT a=%d at=%s box=%s hits=%d/%d"
+                                          % (i, here_after[:2], _b,
+                                             gate.qt_hits, gate.qt_need))
+                                break
                 # What this button did from THIS square. The cell map says "anything aiming
                 # at that square ends up there", which is what `ls20` level 4 measured and
                 # is the right rule for a floor that carries. It cannot say "this button

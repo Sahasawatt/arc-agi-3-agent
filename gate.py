@@ -246,6 +246,8 @@ class Gate:
         # track is gone.
         self.lapmem = set()
         self.qt_out = False   # a quarter-trip is outbound: come home to read
+        self.qt_need = 0      # quarters this trip still owes (counted by overlap)
+        self.qt_hits = 0
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.
@@ -503,6 +505,29 @@ class Gate:
             hist = self.movers.setdefault(k, {"hist": []})["hist"]
             hist.append((self.ticks, (int(b[0]), int(b[1]), int(b[2]), int(b[3]))))
             del hist[:-48]                    # period detection needs 2 cycles, not a run
+        # AT TRIP TIME, while the lap's track is ALIVE: a track whose recent boxes
+        # overlap the remembered lap gets the virtual rotator law (halves + one
+        # quarter edge — `_mover_step` extrapolates the rest), which is what
+        # `route_moving`'s phase-counting BFS needs to TIME a chase press instead
+        # of sampling phases blind. Seeding this from the west, at planning time,
+        # measured inert: the track only lives while the piece is east.
+        if getattr(self, "windowed", False) and getattr(self, "lapmem", None):
+            h_sh = next((h for (p9, h), st9 in self.cycles.items()
+                         if any(isinstance(a9, str) for a9 in st9)), None)
+            if h_sh is not None:
+                for k9, info9 in self.movers.items():
+                    if self.mover_edges.get((k9, h_sh)):
+                        continue
+                    recent9 = [b9 for _, b9 in (info9.get("hist") or [])[-8:]]
+                    if any(b9[0] < L[0] + L[2] and b9[0] + b9[2] > L[0]
+                           and b9[1] < L[1] + L[3] and b9[1] + b9[3] > L[1]
+                           for b9 in recent9 for L in self.lapmem):
+                        info9.setdefault("halves", set()).add(h_sh)
+                        cv9 = next((v9[h_sh] for v9 in
+                                    (self.icons.get(bb) for bb in self.displays)
+                                    if v9 and isinstance(v9[h_sh], str)), None)
+                        if cv9 and turned(cv9):
+                            self.mover_edges.setdefault((k9, h_sh), {})[cv9] =                                 turned(cv9)[1]
 
     def mover_period(self, k, cap=16):
         """Shortest cycle the object's recent positions are CONSISTENT with, or None.
@@ -1090,7 +1115,14 @@ class Gate:
         # the quarter turns and the refills — the composition level 7's ask demands,
         # which neither machinery could plan alone. Windowed only: everywhere else the
         # square rungs own these squares and this rung is silent by the movers guard.
-        squares = self.changers if getattr(self, "windowed", False) else {}
+        squares = dict(self.changers) if getattr(self, "windowed", False) else {}
+        if squares:
+            # rotator squares carry presses too — `_step` extrapolates them to any
+            # value, but only squares in THIS set are ever pressed by the search:
+            # the x54 virtual rotators lived in `rotates` alone and the ask sat
+            # unreachable behind 1,680 "bfs exhausted" refusals.
+            for pos_r, h_r in self.rotates:
+                squares.setdefault(pos_r, set()).add(h_r)
         sq_edges = {h: self._edges(h) for hs in squares.values() for h in hs}
 
         fuel0 = left if left is not None else (full or 10 ** 6)
