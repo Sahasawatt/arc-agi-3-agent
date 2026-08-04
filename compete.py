@@ -895,8 +895,8 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             if ask_q:
                 break
         if os.environ.get("ARC_QTDBG"):
-            print("[qt] at=%s ask_q=%s left=%s state=%s lapmem=%d" % (
-                tuple(at[:2]), ask_q, left,
+            print("[qt] at=%s ask_q=%s x=%s left=%s state=%s lapmem=%d" % (
+                tuple(at[:2]), ask_q, getattr(gate, "x_target", None), left,
                 sorted(map(str, gate.state()))[:1], len(gate.lapmem)))
         if ask_q:
             # Seed the lap-overlap squares as VIRTUAL ROTATORS: entering one turns

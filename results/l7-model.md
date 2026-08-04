@@ -910,6 +910,18 @@ only on chance coincidences of panel, fuel and affordability. Wire `X` as the
 ring target ahead of the trip leg and every piece of the machine — bootstrap,
 lap, chase, pay, home-read, door — is already measured working on its own.
 
+X-sequencing round one (2026-08-04, evening): the latch+watcher pair was built
+and measured INERT — `x_target` stayed None across all 356 rounds even at the
+19 rounds where the panel sat at `.#./##./.##` (whose step-chain reaches
+`##./.##/#.#`, whose orbit contains the ask), so a mechanical bug sits in the
+latch scan (candidate suspects: `locked` ordering with the ring plate's
+symmetric donut mark shadowing the door, or the marks/orbit test). Reverted per
+the inert rule; the DESIGN stands: latch X = the state in the current family
+whose orbit contains the ask (walk `step^m(cv)` through booked+conjugate
+edges), watch per-action for the panel touching X, drop the plan, and the
+quarter block fires the trip in rhythm. Fresh-context debugging of the scan is
+the single next task, with lapmem=1 runs (deaths 8, lap pure) as the baseline.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`
