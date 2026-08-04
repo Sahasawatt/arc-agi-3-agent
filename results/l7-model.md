@@ -979,6 +979,24 @@ return leg, the door walk — was working; what it was all waiting on was a shap
 half that nothing was pressing. X-sequencing is not needed for the level and
 stays unbuilt.
 
+## Tuning pass over the 526 (2026-08-05) — the failed door trips are load-bearing
+
+The 526 splits (gate dump `l7-gate74.jsonl`, run identical to the digit): the agent
+walks to the door at (29,45) FOUR times — a=1114 wearing `#.#/#.#/###`, a=1184 and
+a=1223 wearing `##./.##/#.#` (two quarters short), a=1291 wearing `12,#.#/#.#/###` —
+three refusals and a walk back west each time, ~60-70 actions a cycle, every failed
+visit delivered by the `heading` rung riding a stale stage destination. The winning
+sequence (a=1355-1370) is a `moving` composite that presses two x54 quarters FIRST
+and enters the door in the same plan. Reading ~150-190 actions of waste off that
+table was wrong: gating `heading` off locked-unmatched targets (windowed-only,
+box+4, `gate.matched`) **loses the level outright** — 6/7 40.503%, suite green
+(`ug-run92.txt`, reverted, restore confirmed). The trajectory that assembles the
+winning composition runs THROUGH the failed door visits; drop them and the state
+route_moving needs is never reached. Same family as the cd82 avoid-extension and
+the m0r0 refused-target lesson: a walk that looks like waste in the accounting can
+be the walk that builds the equilibrium. Any future door-gating must show the
+composite still assembles — the accounting table alone cannot license it.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

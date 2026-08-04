@@ -89,3 +89,75 @@ contain no success. And the cheapest possible generator — uniform random play,
 So the transferable idea from Schema is the loop, not the model: **generate cheaply offline,
 verify exactly, keep only what verified.** The generator does not have to be smart if
 verification is free — and the engine makes it free.
+
+# Loop 2026-08-05: reducing actions structurally (post 7/7)
+
+Context: ls20 7/7 43.629% [23,45,99,178,292,209,526]. Session audit measured every
+remaining accounting-visible fat as LOAD-BEARING (L5 sweep = the discovery that finds
+4 changers; L6 has 0 waste; L7's failed door trips are part of the winning trajectory
+— gating them loses the level, `ug-run92.txt`). Local edits are exhausted; this loop
+hunts structural levers.
+
+## CLAIMS
+- C1 — H — SOTA action efficiency on ARC-AGI-3 (OPINE-World: 78.4% efficiency, 20/25
+  games, no per-game training) comes from programmatic/ontological world modeling with
+  exploration prioritized by MODEL ERROR — actions chosen to maximally constrain the
+  world model, not to cover ground. Source: arxiv.org/pdf/2607.01531.
+- C2 — H — The RL/CNN preview winner (StochasticGoose, 12.58%) is self-described
+  non-viable as games harden against brute force. Source: Dries Smit's Medium writeup.
+- C3 — H — Pure graph/frontier exploration collapses on large state spaces — failed
+  ls20 L3+ outright (our symbolic agent exceeds it there). Source: arxiv 2512.24156.
+- C4 — H — Our blind sweep is coverage-driven (nearest never-stood), not uncertainty-
+  driven; L5's sweep found the 4 shape changers by geography, not by aim. Source:
+  `l5-gate2.jsonl` this session.
+- C5 — H — The changer-signature READING is accurate (multi-colour block = changer,
+  reads most changers from one frame) but all three cheap wirings measured inert or
+  level-costing: (1) drive walks with it → costs L4, (2) offer as guessed changer →
+  costs L3+L4, (3) reorder cand discovery → inert. Source: CLAUDE.md measured log.
+- C6 — H — An accounting table alone cannot license a cut: the heading-gate experiment
+  (drop stale headings at unmatched doors) read as ~150-190 saved actions and measured
+  as LOSING level 7 (6/7). The wasteful-looking walks build the equilibrium the
+  winning composition needs. Source: `ug-run92.txt` + l7-model.md §Tuning pass.
+
+## OPEN QUESTIONS
+- O1: Wiring #4 for the signature — re-rank the BLIND SWEEP's never-stood candidates
+  (confirm()'s fresh list) by proximity to multi-colour blocks. A different call site
+  than the three measured wirings. Risk profile: L4 barely uses the sweep (probe 12 of
+  178); L5 is where it pays; L7 exploration is fog-explore, untouched. C6 applies:
+  the sweep order IS L5's trajectory — full sweep or nothing.
+- O2: A unified uncertainty queue (once{} unconfirmed carries + halves with no
+  outgoing edge + mute movers) replacing the rung ladder's implicit priorities —
+  the OPINE direction proper. Big refactor, high trajectory risk, park until O1 reads.
+- O3: L7's 5 deaths ≈ 110 actions — is any death avoidable without touching round
+  ownership? (C6 says: probably entangled.)
+- O4: exact per-level baselines for ls20 (scoring.py) → true per-level caps, so gains
+  are priced before they are attempted.
+
+## WORKING ANSWER (iteration 1)
+The structural direction with SOTA evidence behind it: move exploration from
+coverage-first to uncertainty-first (C1). The smallest testable instance in this
+codebase is O1 — signature-guided sweep ordering, wiring #4, at a call site the three
+refuted wirings never touched. Everything else (O2) waits on how that measures.
+
+## Iteration 2 result: wiring #4 REFUTED (2026-08-05)
+Signature-ordered blind sweep (changer_blocks() ≥3 non-bg colours in a piece-sized
+window, preferring never-stood squares whose footprint reaches one): suite green,
+7/7 kept, but L5 292 → 350 (+58), L6 +1, score 43.629% → 42.871% (`ug-run94.txt`).
+The geographic nearest-first sweep beats the signed ordering on the very board the
+signature was supposed to help — the sweep's order IS the trajectory (C6 again, from
+the winning side this time). Reverted. All FOUR cheap wirings of the sound signature
+reading are now measured dead: drive-walks (costs L4), guessed-changer (costs L3+L4),
+cand reorder (inert), sweep reorder (costs L5).
+
+## WORKING ANSWER (final for this loop)
+Uncertainty-first exploration remains the SOTA direction (C1) but retrofitting it
+into this rung ladder one ordering at a time keeps measuring negative — the ladder's
+trajectories are chaotically sensitive to ordering (heading-gate: loses L7;
+sig-sweep: +58 on L5). The honest options, priced:
+(a) O2 full uncertainty-queue refactor — the OPINE shape, weeks-scale, high risk,
+    uncapped upside on deep levels;
+(b) STOP tuning ls20 (43.6% ≈ plateau of this architecture) and spend the same
+    effort on BREADTH: 13 of 17 games sit at 0/n and ls20 already contributes ~96%
+    of the 17-game mean (2.662%). One additional game at even 20% ≈ doubles the
+    competition mean; no ls20 tuning can.
+Recommendation: (b) first, (a) only if a specific game's shape demands it.

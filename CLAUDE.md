@@ -129,8 +129,14 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   Driving the walk with it costs level 4 (3 of 7), offering it as a guessed changer costs
   levels 3 and 4 (2 of 7), and a third wiring — reordering the discovery candidates so the
   many-coloured blocks go first, before any display has moved — is measured exactly inert
-  (every per-level count identical), so none of it is in the code. The reading is sound;
-  the wiring is still the open problem, and the cheap wirings are now exhausted.
+  (every per-level count identical), so none of it is in the code. A fourth wiring
+  (2026-08-05) — ordering the blind never-stood sweep to prefer squares whose footprint
+  reaches a many-coloured block, which only reorders a walk already being taken — costs
+  level 5 fifty-eight actions (292 → 350, 43.629% → 42.871%, `ug-run94.txt`): the
+  geographic nearest-first order beat the signed order on the exact board the signature
+  names, because the sweep's order is part of the trajectory that finds everything else
+  too. The reading is sound; all four cheap wirings are now measured dead, and any fifth
+  attempt has to price in that ORDERING ITSELF is load-bearing on these boards.
 - **A press executed inside a committed plan books nothing.** The standing-on-the-changer
   rungs call `gate.cycled()` per entry, and that counter is what forgets a changer that has
   stopped paying — the loop-breaker on a board with a wrong guess in the table. Baking the
