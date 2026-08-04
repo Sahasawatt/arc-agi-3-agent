@@ -507,12 +507,24 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   chase rung + live overlap counter exist, x55 tracks now carry halves and
   measured periods (p=10), lapmem is line-clean, and the chase's TRIGGER is the
   one wrong piece: it keys on `qt_out` (set only by quarter-trip) while the
-  east traversals belong to `moving`. Next session, one sentence: make the
-  chase an INTERCEPTOR — on the lap line AND fresh lap track AND shape wrong,
-  regardless of which rung brought the piece there; same condition for the
-  overlap counter. ⚠️ New trap, measured: THE TRAJECTORY IS ENV-DEPENDENT —
-  a run with ARC_RMDBG+ARC_L6 diverges from one without (chase 10 vs 0 on the
-  same code); iterate under ONE fixed env set, never compare across sets. Levers ranked in l7-model.md; two more byte-identical
+  east traversals belong to `moving`. The interceptor then landed and CLOSED
+  THE LOOP (2026-08-04, all swept clean): play-loop plan-drop so the chase gets
+  rounds, lap-span filters (it once chased the east ring's flicker — same
+  column, wrong end), column-first steering (a whole chase ridden at x49, one
+  column short of overlap), LEAD-the-target (equal speeds never close; aim two
+  ticks ahead — the hand recipe), the occlusion-aware hit counter (the overlap
+  that IS the press is the sighting perception loses — project forward), and
+  live-validated demand (a standing demand paid itself at the wrong panel). One
+  run's tail now executes the ENTIRE hand choreography: (8, ##./.##/#.#) rides
+  the (34,20) carry at a=1925, two hits pay at a=1935/1942, the piece walks to
+  (29,45)... and `down` refuses with the budget dying at 2,000. Last two walls:
+  hit-count FIDELITY (a projected-box overlap is a count, not a confirmed
+  press — read the panel between chase and door) and the CLOCK (the sequence
+  first aligns at a~1900/2000 — fire the far-stone bootstrap in the first half;
+  the ring is drivable from ~a900 and lapmem only needs one east sighting).
+  ⚠️ Trap, measured: THE TRAJECTORY IS ENV-DEPENDENT — a run with
+  ARC_RMDBG+ARC_L6 diverges from one without (chase 10 vs 0 on identical
+  code); iterate under ONE fixed env set, never compare across sets. Levers ranked in l7-model.md; two more byte-identical
   hypotheses (ring-doors in `locked`, blind-spot bounce off-squares) are written
   up there as refuted — check before re-deriving either.
 - **The "six-state closed ring" was sampling HALF the changer's response — the

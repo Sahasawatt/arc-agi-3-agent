@@ -852,6 +852,36 @@ ENV-DEPENDENT — a run with ARC_RMDBG+ARC_L6 diverges from one without (run69 v
 run70: chase 10 vs 0) — so iterate with ONE fixed env set and never compare
 across sets.
 
+## The interceptor closes the loop — and the BUDGET becomes the last wall (2026-08-04)
+
+The chase saga's ending, each step measured in one afternoon: the play-loop
+INTERCEPTOR (unpaid quarters + on the lap line + live track drops the running
+plan, so the chase rung gets rounds a multi-action plan used to hold), lap-SPAN
+filters (the chase was measured following the east refill ring's flicker at
+(55,51) — same column, wrong end), column-first steering (a whole chase ridden
+at x49 against a lap at x55-57 — the footprint spans +4, overlap needs x54),
+LEAD-the-target (at equal speeds a follow never closes; aim two ticks ahead
+along the patroller's own velocity — the hand recipe), the occlusion-aware hit
+counter (an overlap COVERS the patroller, so the sighting that would prove the
+hit is exactly the one perception loses — project the last sighting forward),
+and LIVE validation of the demand (a standing quarter-demand paid itself at the
+wrong panel — rot^2 of `#.#/#.#/###` instead of the ask's own family).
+
+The result, in one run's tail: panel `(8, ##./.##/#.#)` — the ask minus two
+quarters, ink right — rides the (34,20) carry east at a=1925, the chase pays
+two overlap-hits at a=1935/1942 following the live patroller down x54, the
+piece walks home and presses the door at (29,45)... and `down` is REFUSED,
+twice, at a=1959 and a=1994 — with the budget dying at 2,000 before any west
+read could tell whether the two counted hits were two real quarters. The whole
+hand choreography now EXECUTES; what is not yet true is (a) the hit counter's
+fidelity (a projected-box overlap is a count, not a confirmed press — the door
+judged the ENGINE's panel and said no) and (b) the CLOCK: the full sequence
+first aligns around a=1900 of 2,000. Next session, two targets in order:
+**start the loop earlier** (the ring is drivable from ~a900; lapmem needs one
+east sighting — make the far-stone bootstrap trip fire in the first half), and
+**verify the press count by reading between chase and door** (route the home
+leg through a panel-readable cell before allowing the door walk).
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

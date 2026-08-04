@@ -1034,7 +1034,6 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                     # outbound flag — home would walk for nothing and the retry
                     # would wait a whole lap
                     gate.qt_out = len(leg3) >= 5
-                    gate.qt_need, gate.qt_hits = ask_q, 0
                     # Arrived at the lap, CHASE along its axis away from home:
                     # following the patroller's own line is what overlaps every
                     # tick (the hand solution's recipe), and the walk past the
@@ -1073,17 +1072,52 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     # the patroller's live position; the play loop counts footprint overlaps —
     # the measured press law — and `qt_need` pays down without ever reading the
     # display. When paid, fall through: quarter-home walks back to read.
+    chase_need = 0
+    if (at is not None and getattr(gate, "windowed", False) and gate.lapmem
+            and locked and gate.state()):
+        cur_c = min(gate.state())
+        for o_c in locked:
+            m_c = gate._marks(o_c)
+            if not m_c:
+                continue
+            w_c = min(m_c)
+            for hh_c, (wv_c, cv_c) in enumerate(zip(w_c, cur_c)):
+                if isinstance(wv_c, str) and isinstance(cv_c, str) and wv_c != cv_c:
+                    orb_c = turned(cv_c)
+                    if orb_c and wv_c in orb_c:
+                        chase_need = orb_c.index(wv_c)
+            if chase_need:
+                break
+        # validated LIVE against the kept panel: a standing demand set at an
+        # earlier panel paid itself at the wrong state — the chase turned
+        # rot^2 of `#.#/#.#/###` instead of rot^2 of the ask's own family
+        if chase_need != gate.qt_need:
+            gate.qt_need, gate.qt_hits = chase_need, 0
     if (at is not None and getattr(gate, "windowed", False)
-            and getattr(gate, "qt_out", False) and gate.qt_need > gate.qt_hits
+            and gate.qt_need > gate.qt_hits
             and gate.lapmem):
+        ys_l = [L[1] for L in gate.lapmem]; xs_l = [L[0] for L in gate.lapmem]
+        vert_l = (max(ys_l) - min(ys_l)) >= (max(xs_l) - min(xs_l))
+        lo_l = (min(ys_l) if vert_l else min(xs_l)) - 5
+        hi_l = (max(ys_l) if vert_l else max(xs_l)) + 8
         fresh_tracks = [(k9, info9["hist"][-1][1]) for k9, info9 in gate.movers.items()
                         if info9.get("hist") and info9["hist"][-1][0] >= gate.ticks - 1
                         and any(info9["hist"][-1][1][0] < L[0] + L[2]
                                 and info9["hist"][-1][1][0] + info9["hist"][-1][1][2] > L[0]
-                                and abs(info9["hist"][-1][1][1] - L[1]) <= 25
-                                for L in gate.lapmem)]
+                                for L in gate.lapmem)
+                        and lo_l <= (info9["hist"][-1][1][1] if vert_l
+                                     else info9["hist"][-1][1][0]) <= hi_l]
         if fresh_tracks:
             k9, b9 = fresh_tracks[0]
+            # LEAD the target: at equal speeds a follow never closes — the hand
+            # chase put the piece where the patroller was GOING and let it walk
+            # into the footprint. Aim two ticks ahead along its own velocity.
+            h9 = gate.movers[k9].get("hist") or []
+            if len(h9) >= 2:
+                pb = h9[-2][1]
+                dvx, dvy = b9[0] - pb[0], b9[1] - pb[1]
+                if abs(dvx) <= 5 and abs(dvy) <= 5 and (dvx or dvy):
+                    b9 = (b9[0] + 2 * dvx, b9[1] + 2 * dvy, b9[2], b9[3])
             xs9 = [L[0] for L in gate.lapmem]; ys9 = [L[1] for L in gate.lapmem]
             vert9 = (max(ys9) - min(ys9)) >= (max(xs9) - min(xs9))
             # chase only FROM the lap's own line — starting it early, a home-
@@ -1093,9 +1127,18 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             if not on_line:
                 fresh_tracks = []
         if fresh_tracks:
-            dy9 = (b9[1] + b9[3] // 2) - (at[1] + 2) if vert9 else                   (b9[0] + b9[2] // 2) - (at[0] + 2)
-            want9 = ((0, 5 if dy9 > 0 else -5) if vert9
-                     else (5 if dy9 > 0 else -5, 0))
+            # overlap needs the piece ON the adjacent column (footprint spans
+            # +4): from one column further out it tracks the patroller forever
+            # and never touches it — measured, a whole chase ridden at x49
+            # against a lap at x55-57
+            off_ax = (b9[0] - 1 - (at[0] + 2)) if vert9 else (b9[1] - 1 - (at[1] + 2))
+            if abs(off_ax) > 3:
+                want9 = ((5 if off_ax > 0 else -5, 0) if vert9
+                         else (0, 5 if off_ax > 0 else -5))
+            else:
+                dy9 = (b9[1] + b9[3] // 2) - (at[1] + 2) if vert9 else                       (b9[0] + b9[2] // 2) - (at[0] + 2)
+                want9 = ((0, 5 if dy9 > 0 else -5) if vert9
+                         else (5 if dy9 > 0 else -5, 0))
             a9 = next((aa for aa, st9 in model.dirs.items()
                        if tuple(st9) == want9), None)
             if a9 is not None:
@@ -1777,16 +1820,64 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 gate.track(cur, model.body, moved, here_after)
                 # pay down the chase: a footprint overlap with the lap's track after a
                 # move IS a press (the measured law); counted live, no display needed
-                if getattr(gate, "qt_out", False) and gate.qt_need > gate.qt_hits                         and here_after is not None:
+                # INTERCEPT: unpaid quarters, on the lap line, live track in
+                # sight — drop whatever plan is running so the chase rung gets
+                # the round; a multi-action plan otherwise holds the executor
+                # through the whole traversal and the chase can never steer.
+                if (gate.qt_need > gate.qt_hits and here_after is not None
+                        and getattr(gate, "lapmem", None) and plan):
+                    xs_i = [L[0] for L in gate.lapmem]
+                    ys_i = [L[1] for L in gate.lapmem]
+                    vert_i = (max(ys_i) - min(ys_i)) >= (max(xs_i) - min(xs_i))
+                    ax_i = (sum(xs_i) / len(xs_i)) if vert_i else (sum(ys_i) / len(ys_i))
+                    on_i = abs((here_after[0] if vert_i else here_after[1]) + 2 - ax_i) <= 7
+                    _lo3 = (min(ys_i) if vert_i else min(xs_i)) - 5
+                    _hi3 = (max(ys_i) if vert_i else max(xs_i)) + 8
+                    if on_i and any(
+                            _inf.get("hist") and _inf["hist"][-1][0] >= gate.ticks - 1
+                            and any(_inf["hist"][-1][1][0] < L[0] + L[2]
+                                    and _inf["hist"][-1][1][0] + _inf["hist"][-1][1][2] > L[0]
+                                    for L in gate.lapmem)
+                            and _lo3 <= (_inf["hist"][-1][1][1] if vert_i
+                                         else _inf["hist"][-1][1][0]) <= _hi3
+                            for _inf in gate.movers.values()):
+                        plan, expect, trip = [], [], []
+                if gate.qt_need > gate.qt_hits and here_after is not None:
                     for _k, _info in gate.movers.items():
                         _h = _info.get("hist") or []
-                        if _h and _h[-1][0] == gate.ticks:
+                        # an overlap COVERS the patroller, so the sighting that
+                        # would prove the hit is exactly the one perception
+                        # loses — project the last sighting forward by its own
+                        # velocity instead of demanding one this tick
+                        if _h and _h[-1][0] >= gate.ticks - 2:
                             _b = _h[-1][1]
-                            if (here_after[0] < _b[0] + _b[2] and here_after[0] + 5 > _b[0]
+                            _age = gate.ticks - _h[-1][0]
+                            if _age and len(_h) >= 2:
+                                _pb = _h[-2][1]
+                                _dx, _dy = _b[0] - _pb[0], _b[1] - _pb[1]
+                                if abs(_dx) <= 5 and abs(_dy) <= 5:
+                                    _b = (_b[0] + _age * _dx, _b[1] + _age * _dy,
+                                          _b[2], _b[3])
+                            _ls = getattr(gate, "lapmem", ())
+                            _ok_span = False
+                            if _ls:
+                                _ys = [L[1] for L in _ls]; _xs = [L[0] for L in _ls]
+                                _v = (max(_ys) - min(_ys)) >= (max(_xs) - min(_xs))
+                                _lo = (min(_ys) if _v else min(_xs)) - 5
+                                _hi = (max(_ys) if _v else max(_xs)) + 8
+                                _ok_span = _lo <= (_b[1] if _v else _b[0]) <= _hi
+                            if (_ok_span
+                                    and here_after[0] < _b[0] + _b[2] and here_after[0] + 5 > _b[0]
                                     and here_after[1] < _b[1] + _b[3] and here_after[1] + 5 > _b[1]
                                     and any(_b[0] < L[0] + L[2] and _b[0] + _b[2] > L[0]
-                                            for L in getattr(gate, "lapmem", ()))):
+                                            for L in _ls)):
                                 gate.qt_hits += 1
+                                if gate.qt_hits >= gate.qt_need:
+                                    # paid — go HOME and READ before trusting
+                                    # it: a projected-box hit is a count, not a
+                                    # confirmed press, and the door judges the
+                                    # ENGINE's panel, not ours
+                                    gate.qt_out = True
                                 if os.environ.get("ARC_QTDBG"):
                                     print("[ch] HIT a=%d at=%s box=%s hits=%d/%d"
                                           % (i, here_after[:2], _b,
