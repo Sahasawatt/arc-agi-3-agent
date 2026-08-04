@@ -882,6 +882,21 @@ east sighting — make the far-stone bootstrap trip fire in the first half), and
 **verify the press count by reading between chase and door** (route the home
 leg through a panel-readable cell before allowing the door walk).
 
+## Early bootstrap + colour truth (2026-08-04, later) — the record run
+
+Two changes, swept clean, and the run transformed: the bootstrap sighting trip
+fires on any shape-wrong round while the lap is unknown (first trip a=1894 →
+**a=857**), and tracks now carry their COLOUR (`gate.track` stores it; the lap
+filter rejects tank colours — ring flickers — and the piece's own body colours
+— fragments). `lapmem` came out PURE for the first time: exactly (55,17), the
+patroller and nothing else. Deaths **25 → 8** (2 silent + 6 game-overs), chg
+127, the calmest level-7 run ever recorded. The chase went silent again for a
+knowable reason: with ONE box in lapmem the span filters collapse to a
+zero-width window and reject every fresh track. Next single edit: when
+`len(lapmem) < 3`, widen the span window to box ±15 along the axis implied by
+the track's own velocity — then the chase, the pay, the home-read and the door
+run on the clean lap from a=900 with eleven hundred actions to spare.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

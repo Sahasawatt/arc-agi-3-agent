@@ -939,7 +939,15 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                                     and py < by + bh and py + 5 > by
                                     and walkable(grid, model, px, py)):
                                 gate.rotates.add(((px, py), h_sh))
-        if ask_q and not getattr(gate, "qt_out", False):
+        # the bootstrap trip's purpose is SIGHTING, not quarters — with no lap
+        # known yet it should fire on any shape-wrong round, not wait for the
+        # panel to reach an ask-orbit state (that wait is why the whole
+        # choreography first aligned at a~1900 of 2,000)
+        shape_wrong = any(
+            isinstance(wv3, str) and isinstance(cv3, str) and wv3 != cv3
+            for o3 in locked for m3 in [gate._marks(o3)] if m3
+            for wv3, cv3 in zip(min(m3), min(gate.state())))
+        if (ask_q or (shape_wrong and not gate.lapmem))                 and not getattr(gate, "qt_out", False):
             here_q = (at[0], at[1])
             # `refused` expires on display changes; what persists is tried-minus-
             # sure — every press that never landed where it aimed. Self-healing:
@@ -947,7 +955,12 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             walls_q = {(sq[0] + model.dirs[a][0], sq[1] + model.dirs[a][1])
                        for (sq, a) in tried
                        if (sq, a) not in sure and a in model.dirs} | set(refused)
+            body_c = set(getattr(model, "colours", ()) or ()) | {
+                c for c in (getattr(model, "player", None),) if c is not None}
             def _lappy(info2):
+                c2 = info2.get("c")
+                if c2 is not None and (c2 in tank or c2 in body_c):
+                    return False   # a ring's flicker or the piece's own fragment
                 boxes = {bb for _, bb in info2.get("hist") or []}
                 if len(boxes) < 3:
                     return False
@@ -1817,7 +1830,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 # Changers that MOVE tick on the piece moving — a refused press freezes
                 # them (measured, `ls20` level 6) — so their positions are recorded on
                 # exactly those ticks and nothing else.
-                gate.track(cur, model.body, moved, here_after)
+                gate.track(cur, model.body, moved, here_after, colours)
                 # pay down the chase: a footprint overlap with the lap's track after a
                 # move IS a press (the measured law); counted live, no display needed
                 # INTERCEPT: unpaid quarters, on the lap line, live track in

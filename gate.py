@@ -502,7 +502,10 @@ class Gate:
             if at is not None and (at[0] < b[0] + b[2] and at[0] + w > b[0]
                                    and at[1] < b[1] + b[3] and at[1] + h > b[1]):
                 continue
-            hist = self.movers.setdefault(k, {"hist": []})["hist"]
+            info_t = self.movers.setdefault(k, {"hist": []})
+            if colours is not None and k in colours and "c" not in info_t:
+                info_t["c"] = colours[k]
+            hist = info_t["hist"]
             hist.append((self.ticks, (int(b[0]), int(b[1]), int(b[2]), int(b[3]))))
             del hist[:-48]                    # period detection needs 2 cycles, not a run
         # AT TRIP TIME, while the lap's track is ALIVE: a track whose recent boxes
