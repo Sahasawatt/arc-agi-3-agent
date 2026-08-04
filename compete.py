@@ -878,22 +878,75 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
     # not required: the patroller turns only the shape.
     if (at is not None and not doors and locked and left is not None
             and getattr(gate, "windowed", False) and gate.state()):
-        marks2 = gate._marks(locked[0])
         cur2 = min(gate.state())
         ask_q = None
-        if marks2:
+        # against EVERY locked target — locked[0] is often the refill-ring plate,
+        # not the door (the lesson ARC_YDBG already taught the exhausted-yield)
+        for o2 in locked:
+            marks2 = gate._marks(o2)
+            if not marks2:
+                continue
             want2 = min(marks2)
             for hh2, (wv, cv) in enumerate(zip(want2, cur2)):
                 if isinstance(wv, str) and isinstance(cv, str) and wv != cv:
                     orb2 = turned(cv)
                     if orb2 and wv in orb2:
                         ask_q = orb2.index(wv)
+            if ask_q:
+                break
         if os.environ.get("ARC_QTDBG"):
             print("[qt] at=%s ask_q=%s left=%s state=%s lapmem=%d" % (
                 tuple(at[:2]), ask_q, left,
                 sorted(map(str, gate.state()))[:1], len(gate.lapmem)))
         if ask_q:
+            # Seed the lap-overlap squares as VIRTUAL ROTATORS: entering one turns
+            # the shape a quarter (the x55 patroller's measured act), so `path_for`
+            # can compose ring presses + quarter turns into one plan and the STAGE
+            # search — the only machinery that weaves multiple refills into a
+            # multi-leg trip — owns the choreography. Wrong squares refute at
+            # execution like any wrong edge.
+            h_sh = next((h for (p, h) in gate.cycles
+                         if any(isinstance(a, str) for a in gate.cycles[(p, h)])),
+                        None)
+            if h_sh is not None:
+                # ...and the LIVE track matching the lap gets the same virtual law
+                # as the squares: halves + one quarter edge make it a ROTATOR for
+                # `_mover_step`, and `route_moving`'s phase-counting BFS — level
+                # 6's measured machinery — can finally time a chase press instead
+                # of sampling phases blind. Refutable at execution like the rest.
+                for k9, info9 in gate.movers.items():
+                    hist9 = info9.get("hist") or []
+                    boxes9 = {b for _, b in hist9}
+                    if len(boxes9) < 3:
+                        continue
+                    xs9 = [b[0] for b in boxes9]; ys9 = [b[1] for b in boxes9]
+                    sx9, sy9 = max(xs9) - min(xs9), max(ys9) - min(ys9)
+                    if not ((sx9 <= 5 and sy9 >= 15) or (sy9 <= 5 and sx9 >= 15)):
+                        continue
+                    info9.setdefault("halves", set()).add(h_sh)
+                    step9 = gate.mover_edges.setdefault((k9, h_sh), {})
+                    if not step9:
+                        cv9 = min(gate.state())[h_sh]
+                        if isinstance(cv9, str) and turned(cv9):
+                            step9[cv9] = turned(cv9)[1]
+                for bx, by, bw, bh in gate.lapmem:
+                    px0 = bx - ((bx - at[0]) % 5)
+                    py0 = by - ((by - at[1]) % 5)
+                    for dx in (-5, 0, 5):
+                        for dy in (-5, 0, 5):
+                            px, py = px0 + dx, py0 + dy
+                            if (px < bx + bw and px + 5 > bx
+                                    and py < by + bh and py + 5 > by
+                                    and walkable(grid, model, px, py)):
+                                gate.rotates.add(((px, py), h_sh))
+        if ask_q and not getattr(gate, "qt_out", False):
             here_q = (at[0], at[1])
+            # `refused` expires on display changes; what persists is tried-minus-
+            # sure — every press that never landed where it aimed. Self-healing:
+            # a door that later opens records a success and leaves the set.
+            walls_q = {(sq[0] + model.dirs[a][0], sq[1] + model.dirs[a][1])
+                       for (sq, a) in tried
+                       if (sq, a) not in sure and a in model.dirs} | set(refused)
             def _lappy(info2):
                 boxes = {bb for _, bb in info2.get("hist") or []}
                 if len(boxes) < 3:
@@ -941,10 +994,18 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             stones = {c for c in stones if walkable(grid, model, c[0], c[1])}
             goals2 = cells
             leg3 = bfs(grid, model, here_q, cells, redirects,
-                       avoid=refused) if cells else None
+                       avoid=walls_q) if cells else None
             if leg3 is None and stones:
-                goals2 = stones
-                leg3 = bfs(grid, model, here_q, stones, redirects, avoid=refused)
+                # No lap known yet (or unroutable): BOOTSTRAP — ride to the carry
+                # landing FARTHEST from the changers, which is the unexplored side
+                # the patroller lives on; the window sees the lap from there and
+                # the next trip aims true. Nearest-stone goes north and learns
+                # nothing.
+                cx = sum(p[0] for p in gate.changers) / max(1, len(gate.changers))
+                cy = sum(p[1] for p in gate.changers) / max(1, len(gate.changers))
+                far = max(stones, key=lambda c: abs(c[0] - cx) + abs(c[1] - cy))
+                goals2 = {far}
+                leg3 = bfs(grid, model, here_q, {far}, redirects, avoid=walls_q)
             if os.environ.get("ARC_QTDBG"):
                 print("[qt2] cells=%d stones=%d leg=%s left=%s tank=%s" % (
                     len(cells), len(stones),
@@ -952,11 +1013,63 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             if goals2:
                 if leg3 and len(leg3) + 8 <= left:
                     gate.rung = "quarter-trip"
-                    return leg3 + [leg3[-1]] * 2, None
+                    # a 1-step "trip" that a wall refuses should not latch the
+                    # outbound flag — home would walk for nothing and the retry
+                    # would wait a whole lap
+                    gate.qt_out = len(leg3) >= 5
+                    # Arrived at the lap, CHASE along its axis away from home:
+                    # following the patroller's own line is what overlaps every
+                    # tick (the hand solution's recipe), and the walk past the
+                    # lap's far end is what first SIGHTS the east refill ring —
+                    # without it in `seen`, stage can never weave east fuel and
+                    # every trip dies out here with its quarters.
+                    ext = [leg3[-1]] * 2
+                    if gate.lapmem:
+                        xs = [b[0] for b in gate.lapmem]
+                        ys = [b[1] for b in gate.lapmem]
+                        cx2 = sum(p[0] for p in gate.changers) / max(1, len(gate.changers))
+                        cy2 = sum(p[1] for p in gate.changers) / max(1, len(gate.changers))
+                        vert = (max(ys) - min(ys)) >= (max(xs) - min(xs))
+                        mid = (sum(ys) / len(ys)) if vert else (sum(xs) / len(xs))
+                        home_c = cy2 if vert else cx2
+                        away = 5 if mid >= home_c else -5
+                        want = (0, away) if vert else (away, 0)
+                        a_ax = next((a2 for a2, st2 in model.dirs.items()
+                                     if tuple(st2) == want), None)
+                        if a_ax is not None:
+                            ext = [a_ax] * 3
+                    return leg3 + ext, None
                 top3, f3 = refuel(goals2)
                 if top3:
                     gate.rung = "quarter-fuel"
                     return top3, f3
+
+    # QUARTER-HOME: the piece is beyond every display's reading range — the
+    # quarters a trip just pressed are INVISIBLE until the panel is read from the
+    # west, and a death out here resets the shape and wastes them. Head home to
+    # the changer squares (the panel comes into view on the way); refuel first if
+    # the walk does not fit — the east ring is the only fuel on this side.
+    if (at is not None and left is not None and getattr(gate, "windowed", False)
+            and getattr(gate, "qt_out", False)
+            and gate.displays and gate.changers and locked):
+        if any(b[0] >= at[0] - 18 and b[1] <= at[0] + 21
+               and b[2] >= at[1] - 18 and b[3] <= at[1] + 21
+               for b in gate.displays):
+            gate.qt_out = False    # home: the panel is in view again
+        else:
+            homes = {p for p in gate.changers if isinstance(p[0], int)}
+            walls_h = {(sq[0] + model.dirs[a][0], sq[1] + model.dirs[a][1])
+                       for (sq, a) in tried
+                       if (sq, a) not in sure and a in model.dirs} | set(refused)
+            leg_h = bfs(grid, model, (at[0], at[1]), homes, redirects,
+                        avoid=walls_h)
+            if leg_h and len(leg_h) <= left:
+                gate.rung = "quarter-home"
+                return leg_h, None
+            top_h, f_h = refuel(homes)
+            if top_h:
+                gate.rung = "quarter-home-fuel"
+                return top_h, f_h
 
     # With more than one half wrong the question is an ORDER, and the rung below cannot
     # ask it: it walks to a changer for whichever wrong half its dict happens to name first.

@@ -245,6 +245,7 @@ class Gate:
         # level: the quarter-trip planner needs somewhere to aim long after the
         # track is gone.
         self.lapmem = set()
+        self.qt_out = False   # a quarter-trip is outbound: come home to read
 
     def observe(self, frame, at, walked):
         """Look at the plates. Returns True if any display changed since the last look.

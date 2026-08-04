@@ -792,6 +792,36 @@ refill ring at (55-57,51-53) is the hand solution's answer), and the trip should
 be admissible earlier in the run (lapmem fills at the first east sighting;
 everything after that is eligible).
 
+## The quarter loop, assembled end to end (2026-08-04) — and the last two walls
+
+Built and swept clean this arc: `quarter-trip` (panel k quarters from the ask →
+walk into the lap; bootstrap to the FARTHEST carry landing when lapmem is empty;
+persistent walls from tried-minus-sure in its routes), `quarter-home` (gated on
+`gate.qt_out`, latched only by a real outbound leg, cleared when a display is
+readable again), `ask_q` over EVERY locked target, VIRTUAL ROTATORS (the x54
+lap-overlap squares seeded into `gate.rotates` — `path_for` composes ring +
+quarters, stage1 285 → 368 and STAGE owns the fuel weaving), and the axis-chase
+trip tail that first SIGHTS the east refill ring into the tank.
+
+Measured state: round trips run, all 17 deaths are WEST (ring work) — trips do
+not die east — and the read panel has still never worn a turned state. The two
+walls left, in order:
+
+1. **Phase at the lap.** Entries at (54,y) press only when the patroller
+   overlaps after the move; stage plans entry counts, not timings, and blind
+   phase-sampling across 1-2 trips a run hits nothing. The machinery that can
+   time it exists — route_moving's phase-counting BFS — and needs the mover's
+   halves; seeding them via the same virtual law (this session's last edit) did
+   not execute because the x55 track is only ALIVE during a trip and the seeding
+   runs west at ask_q time. Seed at TRIP TIME (when the track is live), or
+   persist the track's phase map the way lapmem persists its boxes.
+2. **Trip cadence.** One or two trips a run cannot sample eight phases. The
+   ask_q trigger fires only on ask-orbit panel states; with ring+rotator
+   composition any panel state is reachable, so the trigger can widen to
+   "shape wrong AND lapmem known AND affordable" once the phase timing exists.
+
+Everything else — fuel, walls, return, reading, composition — is in place.
+
 Fourth lever, same night, same verdict — **parity-walk** (walk into a known carry
 to flip the piece/patroller parity, then re-bounce): the parked-class trigger
 works (it fired — and crashed on `rules`' mixed key shapes, since fixed: `rules`

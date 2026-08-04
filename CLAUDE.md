@@ -484,9 +484,22 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   the piece's own column ghost vs `stood`, the invisible-wall unstood trap, the
   PIECE's lattice offset x≡4 mod 5, and avoid=refused) and now climb x54 through
   the patroller both directions — in the budget's last twenty actions. Sweep
-  clean throughout. Next: plan the RETURN leg (a death after the trip resets the
-  shape — the east refill (55-57,51-53) is the hand answer) and admit the trip
-  earlier once lapmem fills. Levers ranked in l7-model.md; two more byte-identical
+  clean throughout. The RETURN leg is built (same day): `quarter-home` walks back
+  to the changers when every display is unreadable, gated on `gate.qt_out` (set
+  only by a real outbound leg — a 1-step wall-refused "trip" must not latch it);
+  `ask_q` scans EVERY locked target (locked[0] is usually the ring plate, the
+  ARC_YDBG lesson again); a lapmem-empty trip bootstraps to the carry landing
+  FARTHEST from the changers (nearest goes north and learns nothing); trip
+  routes carry persistent walls (tried minus sure — `refused` expires on display
+  changes); the x54 lap-overlap squares are seeded as VIRTUAL ROTATORS in
+  `gate.rotates` so `path_for` composes ring + quarters and STAGE — the only
+  machinery that weaves multiple refills — owns the choreography (stage1 285 →
+  368); and the trip tail CHASES along the lap axis away from home, which is
+  what first sights the east refill ring into `seen`/tank. All sweep clean.
+  **The one remaining wall: deaths mid-trip (25/run) erase the quarters before
+  any read** — the east ring is in the tank now but stage does not yet weave it
+  into the eastward legs; finding where its costing drops the east refill is the
+  next session's single question. Levers ranked in l7-model.md; two more byte-identical
   hypotheses (ring-doors in `locked`, blind-spot bounce off-squares) are written
   up there as refuted — check before re-deriving either.
 - **The "six-state closed ring" was sampling HALF the changer's response — the
