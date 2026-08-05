@@ -741,6 +741,30 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   and the trace row stays (the clock ticked). dc22 itself still needs click SEQUENCES —
   63 single clicks all eventually answer zero changed cells.
 
+- **cn04 falls to the DOCK rung (1/6, 131 actions) — and every one of its nine measured
+  iterations was a repo trap wearing a new coat.** The game: a crane claw with two red
+  pads, a socket with the matching pair, and action 5 a quarter-turn rotator. A rotator
+  is detectable because its "displacement" SCATTERS ((3,0)x2, (-3,3)x2, (0,-3)x1 over
+  six presses) where a real direction repeats one vector — `infer_dirs` most_common
+  hands it a duplicate of a real direction, so test consistency, not the model's word
+  (`extras` in the play loop). The rung: identify the piece's marker blobs by MOTION
+  (press the rotator once; what moved is yours), record the target constellation ONCE,
+  then rotate until the tip pattern (offsets from centroid, sorted) matches and walk
+  the single remaining vector. What each failed iteration taught, in order: greedy
+  sum-of-nearest parks at a wrong local minimum (231 rounds, two tips courting one
+  target); any window anchored on the piece's box lies (the crane's CABLE is the
+  piece's own colour — the box stretches to y=0 after a rotation); a refused step gets
+  chosen forever without `refused`; `model.parts` thins after cn04's 26 game-overs a
+  run, so read the marker colour off the board (4-80 cells, ≥2 blobs); a colour that
+  spins twice around without matching goes dead, or the rung courts terrain forever;
+  independent nearest-blob tip binding collapses both tips onto one blob (bind 1:1,
+  without replacement); and the finale — the piece's own body OCCLUDES a socket pad on
+  the approach (`br-cn04-dk3.txt` line 6), which is the plates trap again, and the fix
+  is the same law: keep the reading taken from off it (`dk["tgts"]`, stored at identify
+  time, never re-read). The identity-starvation hypothesis was REFUTED before any of
+  this was found: ARC_IDDBG measured player-in-shifts at 1,942 of 1,969 rounds, so the
+  gate dump + one instrumented run beat four blind reruns.
+
 ## What the scoring actually rewards
 
 `min((baseline_actions / actions_taken)² × 100, 115)` per level, averaged **weighted by level

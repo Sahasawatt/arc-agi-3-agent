@@ -13,11 +13,15 @@
   },
   {
     "game": "cn04",
-    "levels": 0,
+    "levels": 1,
     "of": 6,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
+    "actions": [
+      131
+    ],
+    "baseline": [
+      29
+    ],
+    "environment_score": 0.233
   },
   {
     "game": "dc22",

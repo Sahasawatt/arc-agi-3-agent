@@ -196,3 +196,22 @@ What survives for the next session: the sim recipe above (rebuild from this
 note), the rotator-scatter discriminator, and the target — fix player-identity
 across game overs FIRST (cheap oracle: `model.player in shifts` rate per run),
 then re-land the dock rung unchanged.
+
+## cn04 FALLS IN-RUN — the dock rung lands on iteration nine (2026-08-05, later)
+
+`cn04 1/6 [131] 0.233%` — the fifth game with a scored level, and the first new
+score the breadth campaign has bought. The final defect was the repo's oldest
+trap in a new coat: the claw's own body OCCLUDES a socket pad on the approach
+(the live blob list dropped to one target against two tips at the exact round
+the match was about to pay — `br-cn04-dk3.txt`), and the fix is `Gate.observe`'s
+own law applied to the rung: record the target constellation once at identify
+time (`dk["tgts"]`) and never re-read it from the frame. Full nine-iteration
+history with every measurement in CLAUDE.md's dock entry. The
+identity-starvation hypothesis from the previous session block is REFUTED
+(ARC_IDDBG: player-in-shifts 1,942/1,969) — strike that prerequisite; the rung
+needed no identity repair, it needed occlusion-proof targets. Canary + 17-game sweep BOTH CLEAN
+(`sweep-dock2.log`): cn04 1/6 [131] confirmed, every level-holder identical to the
+digit (ls20 7/7 43.629%, ar25 [173], m0r0 [53], cd82 [1213]), mean 2.662% →
+**2.676%**. One crash on the way: the dock plan's rotator action has no direction,
+and `trajectory`'s `step_to` KeyError'd on it at game fifteen of the first sweep —
+an action outside `model.dirs` now predicts in place.

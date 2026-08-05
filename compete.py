@@ -17,7 +17,7 @@ forces when it ends — which is legal, and is a level reset by definition.
 import json
 import os
 import sys
-from collections import deque
+from collections import Counter, deque
 from pathlib import Path
 
 import numpy as np
@@ -355,7 +355,10 @@ def trajectory(model, at, route, redirects=None):
     pos, out = (at[0], at[1]), []
     for a in route:
         out.append(pos)
-        pos = step_to(model, pos, a, redirects)
+        # An action the model has no direction for — the dock rung's rotator —
+        # does not displace the piece; predicting through `step_to` on it is a
+        # KeyError that killed a seventeen-game sweep at game fifteen.
+        pos = step_to(model, pos, a, redirects) if a in model.dirs else pos
     return out
 
 
@@ -498,7 +501,7 @@ def tank_colours(log, gate):
 
 
 def choose(frame, model, log, gate, left, full, redirects=None, once=None,
-           came_from=None, stood=None, refused=(), tried=(), sure=None):
+           came_from=None, stood=None, refused=(), tried=(), sure=None, extras=()):
     """Where to walk next, as (actions, the target it is for).
 
     Each rung is here because the one above it was not enough on `ls20` level 2:
@@ -1392,6 +1395,128 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
         gate.rung = "moving-learn"
         return learn6[0], None
 
+    # DOCK: a marker colour appears in several blobs, some of which MOVE with the
+    # piece, and an action exists whose displacement scatters — a rotator. cn04's claw
+    # wears two red tips, its socket two red squares, and action 5 turns the claw a
+    # quarter. The recipe that clears the level (13 actions in the offline sim, one
+    # faster than the hand line): identify the tips by MOTION — press the rotator
+    # once, the blobs that moved are the piece's — then match the tip constellation
+    # (offsets from centroid, sorted) against every same-size subset of the static
+    # blobs, walking the single remaining vector on a match and turning otherwise.
+    # The identity-starvation reading of the earlier silence was REFUTED by ARC_IDDBG
+    # (player-in-shifts 1,942 of 1,969 rounds); what actually silenced v6 was its own
+    # dead-colour kill switch tripping at nine spins, which ARC_DKDBG exists to watch.
+    if model and extras:
+        from itertools import combinations
+        def _blobs(pts):
+            out = []
+            for x, y in sorted(pts):
+                for b in out:
+                    if abs(b[-1][0] - x) <= 3 and abs(b[-1][1] - y) <= 3:
+                        b.append((x, y))
+                        break
+                else:
+                    out.append([(x, y)])
+            return [(sum(p[0] for p in b) / len(b), sum(p[1] for p in b) / len(b))
+                    for b in out]
+        def _pat(pts):
+            cx = sum(p[0] for p in pts) / len(pts)
+            cy = sum(p[1] for p in pts) / len(pts)
+            return sorted((round(p[0] - cx), round(p[1] - cy)) for p in pts), (cx, cy)
+        dead = getattr(gate, "dock_dead", set())
+        cand_c = []
+        for c in range(16):
+            if c in dead or c == model.colour:
+                continue
+            ys_c, xs_c = np.where(grid[:model.rows] == c)
+            if not (4 <= len(xs_c) <= 80):
+                continue
+            cand_c.append((len(xs_c), c, list(zip(xs_c.tolist(), ys_c.tolist()))))
+        part_c = {cc for cc, _, _ in (getattr(model, "parts", ()) or ())}
+        cand_c.sort(key=lambda t: (t[1] not in part_c, t[0]))
+        for _, c, pts in cand_c:
+            bl = _blobs(pts)
+            if len(bl) < 2:
+                continue
+            dk = getattr(gate, "dock", None)
+            if not dk or dk.get("c") != c:
+                gate.dock = {"c": c, "ref": bl}
+                gate.rung = "dock"
+                if os.environ.get("ARC_DKDBG"):
+                    print("[dk] c=%d ref-init blobs=%d" % (c, len(bl)))
+                return [extras[0]], None
+            if "tips" not in dk:
+                moved = [b for b in bl
+                         if not any(abs(b[0] - r[0]) < 1 and abs(b[1] - r[1]) < 1
+                                    for r in dk["ref"])]
+                if not moved or len(moved) >= len(bl):
+                    gate.dock = {"c": c, "ref": bl}
+                    gate.rung = "dock"
+                    if os.environ.get("ARC_DKDBG"):
+                        print("[dk] c=%d re-ref moved=%d of %d" % (c, len(moved), len(bl)))
+                    return [extras[0]], None
+                dk["tips"] = moved
+                # The targets are STATIC, and near the dock the piece's own body
+                # OCCLUDES them — the socket pad at (39,42) vanished from the frame
+                # the round the tips reached (45,42) (`br-cn04-dk3.txt` line 6), the
+                # live `rest` fell to one blob against two tips, and the match died
+                # exactly at the moment it was about to pay. Record the target
+                # constellation ONCE, here, and never re-read it: the same
+                # keep-the-last-reading-from-off-it law `Gate.observe` already
+                # applies to plates.
+                dk["tgts"] = [b for b in bl if b not in moved]
+            # 1:1, without replacement, and never onto a stored target: independent
+            # nearest-blob binding was measured collapsing both tips onto ONE blob
+            # (`br-cn04-dk.txt`), and after a rotation the jumped tips happily bind
+            # to the socket pads themselves.
+            pool = [b for b in bl
+                    if not any(abs(b[0] - g[0]) <= 2 and abs(b[1] - g[1]) <= 2
+                               for g in dk["tgts"])]
+            if len(pool) >= len(dk["tips"]):
+                tips = []
+                for t in dk["tips"]:
+                    b = min(pool, key=lambda p: (p[0] - t[0]) ** 2 + (p[1] - t[1]) ** 2)
+                    tips.append(b)
+                    pool.remove(b)
+                dk["tips"] = tips
+            tips = dk["tips"]           # occluded round: walk on from the last fix
+            tp, tc = _pat(tips)
+            move = None
+            for sub in combinations(dk["tgts"], len(tips)):
+                gp, gc = _pat(list(sub))
+                if all(abs(a[0] - b[0]) <= 1 and abs(a[1] - b[1]) <= 1
+                       for a, b in zip(tp, gp)):
+                    move = (gc[0] - tc[0], gc[1] - tc[1])
+                    break
+            gate.rung = "dock"
+            if os.environ.get("ARC_DKDBG"):
+                print("[dk] c=%d tips=%s move=%s spins=%d blobs=%s" % (
+                    c, [(round(t[0]), round(t[1])) for t in tips],
+                    move, dk.get("spins", 0),
+                    [(round(b[0]), round(b[1])) for b in bl]))
+            if move is None:
+                dk["spins"] = dk.get("spins", 0) + 1
+                if dk["spins"] > 8:
+                    dead.add(c)
+                    gate.dock_dead = dead
+                    gate.dock = None
+                    continue
+                return [extras[0]], None
+            dk["spins"] = 0
+            if abs(move[0]) < 1 and abs(move[1]) < 1:
+                break
+            best = None
+            for a, (dx, dy) in model.dirs.items():
+                if (dx, dy) == (0, 0):
+                    continue
+                after_d = abs(move[0] - dx) + abs(move[1] - dy)
+                if after_d < abs(move[0]) + abs(move[1]) \
+                        and (best is None or after_d < best[0]):
+                    best = (after_d, a)
+            if best is not None:
+                return [best[1]], None
+            return [extras[0]], None
+
     for o in cands:
         if not gate.locked(o) and (r := route(o)):
             gate.rung = "cand"
@@ -1826,6 +1951,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                            max_missed=200 if windowed else 2)
         colours.update(seen_c)
         shifts = _shifts(prev, cur)
+        if os.environ.get("ARC_IDDBG") and model:
+            print("[id] i=%d player=%s in_shifts=%s nshifts=%d ntracks=%d" % (
+                i, model.player, model.player in shifts, len(shifts), len(cur)))
         if value is not None:
             # A click round never enters the movement evidence: a click that happens to
             # move the piece would file its displacement under action None, `infer_dirs`
@@ -2222,8 +2350,26 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 for cell, off in slides(obs.frame, grid, model).items():
                     once.setdefault(cell, off)
                 rules = {**redirects, **button}
+                # A rotation masquerades as a mover: cn04's action 5 shifts the claw's
+                # bounding box a different way each orientation, so `infer_dirs` hands it
+                # a real-looking direction — (3,0)x2, (-3,3)x2, (0,-3)x1 over six presses,
+                # most_common = a duplicate of action 4. A real direction repeats one
+                # vector nearly every press; an action whose displacement SCATTERS is not
+                # a walk, whatever the model says.
+                extras = []
+                if model and coherent(model.dirs):
+                    for v in values:
+                        vshifts = [tuple(r["shifts"][model.player]) for r in records
+                                   if r["action"] == v and model.player in r["shifts"]]
+                        if len(vshifts) >= 3:
+                            top = Counter(vshifts).most_common(1)[0][1]
+                            if top / len(vshifts) < 0.6:
+                                extras.append(v)
+                        elif model.dirs.get(v) in (None, (0, 0)):
+                            extras.append(v)
                 plan, goal = choose(obs.frame, model, log, gate, left, full, rules, once,
-                                    frozenset(list(trail)[:-1]), stood, refused, tried, sure)
+                                    frozenset(list(trail)[:-1]), stood, refused, tried, sure,
+                                    extras)
                 here = locate(obs.frame, model)
                 expect = trajectory(model, here, plan, rules) if (plan and here) else []
                 trip = list(gate.trip) if (plan and gate.trip) else []
