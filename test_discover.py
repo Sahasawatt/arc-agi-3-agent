@@ -42,8 +42,9 @@ def test_no_player_when_nothing_moved():
 def test_metronome_still_outvotes_the_piece():
     """DOCUMENTED DEFECT, kept as the current contract: sc25's faller — (0, 2) on every
     action — outvotes the steered piece and wins the election. The steerability fix is
-    measured but coupled to an exploration-economics change (see infer_player's
-    docstring); when that pair lands, this test flips to expect ("piece", 9)."""
+    measured correct for sc25 and measured to lose ar25, and every downstream repair
+    tried so far is measured dead (see infer_player's docstring). If a working pair ever
+    lands, this test flips to expect ("piece", 9)."""
     records = []
     for a in (1, 2, 3, 4):
         for _ in range(10):

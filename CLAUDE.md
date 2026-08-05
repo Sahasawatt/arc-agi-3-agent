@@ -46,14 +46,19 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 ## Traps that have already cost a session
 
 - **"Responds to the most actions" elects the wrong player on a board with a metronome —
-  and FIXING that alone loses ar25.** sc25's faller ((0,2) under every button) wins the
-  vote and the run wanders 2,000 actions unplanned; but ar25's baseline level DEPENDS on
-  its own metronome winning early — the incoherent model blocks planning, the novelty
-  wander meets the walls, and planning starts later on a map with terrain. Electing the
-  real piece from round 25 pages the cand rung onto a wall-less map: 1,942/2,000 actions
-  pacing two inert candidates, no failed move, no walls, ever. The election fix ships only
-  PAIRED with an arrival-counted walk cap (v1 emission-counted cap broke ls20 7/7→3/7);
-  full account + v2 design in `breadth-recon.md` §night 2. Measured 2026-08-05.
+  and NO landable fix exists yet (three designs measured dead).** sc25's faller wins the
+  vote and the run wanders unplanned; but ar25's baseline level DEPENDS on its own
+  metronome mis-winning early (blocked planning → novelty wander → walls learned), so the
+  election fix alone loses ar25 (1,942/2,000 actions pacing two inert candidates on a
+  wall-less map). Emission-counted walk cap: broke ls20 7/7→3/7. Arrival-counted: broke
+  cd82+cn04 — their WINNING lines revisit one object 22 and 162 times vs ar25's 61, no
+  separating threshold. Board-change discriminator: cd82's productive grind happens on a
+  byte-identical frame — observationally equivalent to sterile pacing. Full account in
+  `breadth-recon.md` §night 2; next lever = walls learned DURING planning. 2026-08-05.
+- **cn04's own `step()` raises `KeyError: 'x'` on its complex action — one click kills
+  the RUN at the engine** (673/2,000 actions died mid-run). Guard in the play loop: a
+  click answered with `obs=None` retires the clicker for the run, level-resets, plays on
+  with the keyboard. Never remove the guard; never "fix" it by re-enabling clicks there.
 - **One scattering action vetoes four clean directions.** re86's action 5 ((2,17), (±11,0)…)
   got a most_common direction anyway; that junk vector killed `coherent` (no inverse) and
   dragged `infer_step`'s gcd 3→1. `infer_dirs` now drops any action with ≥3 samples and no

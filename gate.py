@@ -21,7 +21,7 @@ runs of identical adjacent rows and columns are collapsed before anything is com
 """
 
 import os
-from collections import deque
+from collections import Counter, deque
 from math import gcd as _gcd
 
 import numpy as np
@@ -207,6 +207,13 @@ class Gate:
         # board — each is pressed once; a wall refuses, a carry teaches `redirects` the
         # only entrance to a region no route can otherwise aim at (level 7's east half).
         self.poked = set()
+        # MEASUREMENT ONLY (`ARC_WDBG`): object-walk plans walked to completion per
+        # candidate, keyed (colour, x0, y0). Two walk-cap designs read a version of this
+        # counter and both are measured dead — emission-counted broke ls20 7/7→3/7,
+        # arrival-counted broke cd82+cn04, whose winning lines revisit one object 22 and
+        # 162 times, indistinguishably from ar25's sterile pacing even by board-change
+        # (`breadth-recon.md` §night 2). Nothing in `choose` reads this.
+        self.walked = Counter()
         # Refill colours, LATCHED for the level once earned — windowed boards only. On a
         # board whose frame slides, `refills()`'s with/without ratio decays whenever the
         # piece is far from a ring for a while, and the rounds it goes empty are exactly

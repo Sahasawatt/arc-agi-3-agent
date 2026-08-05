@@ -360,12 +360,38 @@ time — but the sweep broke ls20 7/7→3/7, cn04 →0/6, cd82 →0/6
 (`sweep-walkcap.log`): the v1 cap counted plan EMISSIONS, and a plan that is
 interrupted and re-emitted (redirects, refusals — ls20 level 4's whole
 personality) burns its object's budget without ever proving the object inert.
-Both halves reverted; the pair ships together or not at all. **v2 design,
-written down so the next session does not re-derive it**: count ARRIVALS (plan
-walked to completion at the goal with no gate response), not emissions; keep
-fuel exempt; keep the counter per-level on the Gate. The election fix re-lands
-in the same commit, and `test_discover.py::test_metronome_still_outvotes_the_piece`
-flips to expect the piece.
+
+**v2 (arrival-counted) and v3 (board-change discriminator) are now BOTH
+measured dead too — do not re-derive any of this:**
+
+- v2, arrivals only (final action of an object walk popping; dropped plans cost
+  nothing): ls20 7/7 restored, ar25 [127] — but cd82 lost its level and cn04
+  0/6 even after the click-guard (below). The demand measurement
+  (`ARC_NOCAP`+`ARC_WDBG` on the baseline trajectories, `br-*-wdbg.txt`)
+  explains why no threshold exists: cd82's WINNING line completes 22 walks to
+  one object and cn04's completes 162, while ar25's sterile pacing tops out at
+  61 — the ranges overlap, so every cap either starves a real solve or misses
+  the disease.
+- v3, "did the board change since the last arrival at this object?"
+  (`br-*-wdbg2.txt`): cd82's 21 repeat-arrivals are ALL on a byte-identical
+  full frame — its productive grind is invisible in the pixels — while ar25's
+  arrivals show a static goal-neighborhood but a churning frame (its second
+  metronome falls forever). Productive revisits and sterile pacing are
+  observationally equivalent at the frame level. A scope by "game has a
+  clicker" also fails: ar25 has one too (`br-*-capv2d.txt`).
+- Election reverted with the pair; the defect-contract test
+  (`test_metronome_still_outvotes_the_piece`) stands. The counter survives as a
+  measurement instrument only (`ARC_WDBG`; `Gate.walked`, read by nothing).
+  The next lever worth building is exploration that learns walls DURING
+  planning (a probe budget woven into successful walks), not a better election
+  and not a cand cap.
+
+**Kept from the chase, both net-positive:** (1) the CLICK-DEATH GUARD — cn04's
+own `step()` raises `KeyError: 'x'` on its complex action, so ONE poke-click
+killed the whole run at the engine (673/2,000 actions, `br-cn04-capv2b.txt`);
+a click that comes back `obs=None` now retires the clicker for the run, resets
+the level, and plays on with the keyboard. (2) `ARC_EDBG` — the election-table
+dump that found the second metronome.
 
 **Walls stratum, still open for re86/sp80** — with clean models both games
 still end `block=[]` after 2,000 actions and no goal rung fires. sc25 has a

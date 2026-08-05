@@ -1698,6 +1698,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # it, so ls20 and the other keyboard-only games are identical by construction.
     clicker = next((a for a in env.action_space if a.is_complex()), None)
     poked = {}    # object box -> cells the board changed on its last click
+    wdbg_full, wdbg_near = {}, {}   # ARC_WDBG only: board state at last arrival per goal
     prev_here, frozen = None, 0   # rounds the piece has not moved — the click gate
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
@@ -1824,6 +1825,24 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 mark = trip.pop(0)
             if expect:
                 expect.pop(0)
+            # ARC_WDBG: measurement only — arrivals per goal object (the last action of
+            # an object walk popping) and whether the board changed since the previous
+            # arrival at the same object, full-frame and goal-neighborhood. This is the
+            # instrument that killed both walk-cap designs (`breadth-recon.md` §night 2):
+            # cd82's winning line revisits one object 22 times on a byte-identical board.
+            if os.environ.get("ARC_WDBG") and not plan and cur_goal is not None \
+                    and gate.rung in ("cand", "desperate"):
+                k = (cur_goal["colour"], cur_goal["x"][0], cur_goal["y"][0])
+                gate.walked[k] += 1
+                gx, gy = cur_goal["x"], cur_goal["y"]
+                pw, ph = model.box if model else (0, 0)
+                sub = grid[max(0, gy[0] - ph):gy[1] + 1 + ph,
+                           max(0, gx[0] - pw):gx[1] + 1 + pw].tobytes()
+                print("[wk] i=%d lvl=%d key=%s n=%d full=%s near=%s"
+                      % (i, done, k, gate.walked[k],
+                         wdbg_full.get(k) == state, wdbg_near.get(k) == sub),
+                      flush=True)
+                wdbg_full[k], wdbg_near[k] = state, sub
         else:
             psrc = "wander"
             # Track ids first — they are exact on the board that made them. They die at a
@@ -1879,6 +1898,20 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if acct:
             acct.write(json.dumps({"i": i, "lvl": done, "src": psrc, "v": value}) + chr(10))
         if obs is None:
+            if isinstance(value, tuple):
+                # cn04's own step() raises KeyError('x') on its complex action — ONE
+                # click kills the run at the engine (673 of 2,000 actions, the level
+                # lost with it). A game whose click errors never gets another one: put
+                # the level back and play on with the keyboard. The reset is a LEVEL
+                # reset — real actions were just taken — and the board comes back the
+                # same, so the tracker hands out the same ids (the game-over rule).
+                clicker = None
+                obs = env.reset()
+                if obs is not None and np.array(obs.frame).size != 0:
+                    prev, colours, tracks, next_id = see(obs.frame, [], 0, rows)
+                    last, plan, expect, trip, door = None, [], [], [], None
+                    prev_here, frozen = None, 0
+                    continue
             break
         if isinstance(value, tuple):
             # What the board answered with. Recorded under the object's box: zero retires

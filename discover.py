@@ -170,17 +170,17 @@ def choose_next(grid, at, dirs, known, actions, last, visits, state):
 def infer_player(records):
     """The component that responds to the most actions.
 
-    KNOWN WRONG on sc25, and the fix is measured but NOT LANDED: sc25 has a component
-    that falls (0, 2) on EVERY action (~130 shifts per button), this vote elects it, and
-    the run wanders its whole budget unplanned (`br-sc25-md.txt`). Ranking by "displacement
-    depends on the action" elects the real piece — but electing the right piece EARLY makes
-    the cand rung plan from round 25 on a board with no walls yet, and on ar25 that walk
-    never meets a wall (1,942 of 2,000 actions pacing between two inert candidates,
-    `ar25-acct.jsonl`): ar25's baseline level depends on the WRONG election blocking
-    planning long enough for the novelty wander to find walls. The election fix ships
-    only together with an exploration-economics fix (a walk cap counted on ARRIVALS —
-    the emission-counted v1 broke ls20 7/7→3/7, `sweep-walkcap.log`). See
-    `breadth-recon.md` §night 2.
+    KNOWN WRONG on sc25 and NOT FIXABLE IN ISOLATION: sc25's metronome — (0, 2) on every
+    button — wins this vote and the run wanders unplanned. Electing by steerability
+    (displacement depends on the action) is measured correct for sc25 AND loses ar25,
+    whose baseline level depends on its own metronome mis-winning the early vote so that
+    planning stays blocked while the novelty wander meets the walls. Every repair of the
+    downstream economics was then measured dead: an emission-counted walk cap broke ls20
+    7/7→3/7; arrival-counted broke cd82+cn04 (their winning lines revisit one object 22
+    and 162 times); a board-changed discriminator cannot tell those revisits from ar25's
+    sterile pacing because cd82's productive grind happens on a byte-identical board.
+    Full account: `breadth-recon.md` §night 2. Do not re-derive — the next lever is
+    exploration that learns walls DURING planning, not a better election.
     """
     votes = Counter(k for r in records for k in r["shifts"])
     if not votes:
