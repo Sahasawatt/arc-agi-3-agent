@@ -259,3 +259,28 @@ completion is a jigsaw fit, side x orientation unknown. Next session's first
 experiment: the 4x4 trial matrix (rotate x4 · approach N/S/E/W · bump in) from the
 shim's live state, with game-overs tolerated (a game over is a level reset back to
 the level-2 start, not a loss of the state).
+
+## cn04 level 2: the trial matrices rule out the cheap mates (2026-08-05, later night)
+
+Two live-state matrices through `probe_cn04.py`'s shim, ~500 actions of evidence:
+
+- **cn04 has the 100-action TIMER too** — deaths land at spent=100/200/300/400
+  exactly, the same clock ka59 wears (its level-1 "26 gameovers a run" was the
+  clock all along). Every level-2 attempt is a 100-action window.
+- **Shapes OVERLAP freely** — the piece walks through the green shape's interior
+  from any side; there is no collision. The dock stall at move=(3,-1.5) was
+  therefore never a wall: the .5 components mean the pad lattices are OFF-GRID by
+  a half-step, unreachable by walking — the same half-step the level-1 sim closed
+  with its final two ROTATES.
+- **4 orientations x 4 sides bump matrix: no glue. Rotate-bump weave at 7 contact
+  spots including dead centre: no glue.** White x green with body-level contact is
+  not the completion condition.
+
+What remains for the solver session: measure the tip layout in all four
+orientations relative to the piece centroid (they differ by rotation offsets that
+include the half-steps), then solve orientation x position so the tips land
+EXACTLY on a target pad pair — and if white x green exact-overlap still refuses,
+the pairing itself is wrong (try yellow's and blue's pads as targets; twelve pads
+across four shapes admit many pairings). The machinery to execute any solved
+plan — shim, motion-identify, goto with sidestep, rotate weave — is all in this
+file and `probe_cn04.py`.
