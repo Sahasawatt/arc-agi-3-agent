@@ -238,3 +238,24 @@ digit (ls20 7/7 43.629%, ar25 [173], m0r0 [53], cd82 [1213]), mean 2.662% →
 **2.676%**. One crash on the way: the dock plan's rotator action has no direction,
 and `trajectory`'s `step_to` KeyError'd on it at game fifteen of the first sweep —
 an action outside `model.dirs` now predicts in place.
+
+## The engine is random ACROSS processes, and the shim is the only door to level 2 (2026-08-05, night)
+
+Two facts that reshape all future probing, both measured:
+
+- **Determinism is per-process.** Twin envs in one process diverge zero frames over
+  twin action streams; re-reset is identical. But a 131-action prefix that cleared
+  cn04 level 1 in the process that recorded it does NOT clear it in a fresh process
+  — layouts/dynamics reseed per process. Replay-based probing is dead on arrival;
+  every offline experiment must win its own way to the state it wants to study.
+- **`probe_cn04.py` (committed) is the door**: a pass-through env shim that lets
+  `compete.play` itself win level 1 — the dock rung wins on every layout — and
+  raises out with the LIVE env the moment the level falls. Smoke-tested: hands back
+  a live level-2 state in one command.
+
+Level-2 interlock status: on a second independent layout the dock walk again drives
+the white piece to body CONTACT with the target shape and stalls there — the
+completion is a jigsaw fit, side x orientation unknown. Next session's first
+experiment: the 4x4 trial matrix (rotate x4 · approach N/S/E/W · bump in) from the
+shim's live state, with game-overs tolerated (a game over is a level reset back to
+the level-2 start, not a loss of the state).
