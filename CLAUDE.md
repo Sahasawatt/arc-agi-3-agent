@@ -725,6 +725,22 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   or execute a staged multi-leg plan as a unit instead of committing one leg and rediscovering
   the rest.
 
+- **A wander round on a click game may click — but only once the walk is measured DEAD,
+  and dead means fifty still rounds, not eight.** The `poke-click` rung (slice 1 of click
+  support, `results/breadth-recon.md`) clicks the smallest unprobed object instead of
+  pacing, keeps a box→cells-changed ledger, and re-clicks the loudest responder. Three
+  gates were measured to find the safe one: ungated, ar25 and m0r0 each lose their only
+  level and cd82 pays 593 actions (`sweep-click1.log`) — wander rounds are part of how a
+  walk game's model gets built; frozen-8 still loses m0r0, whose 53-action solve presses
+  into refused squares on purpose; planless-8 still loses it too. The discriminator is
+  DURATION: dc22 parks over a thousand rounds at one square, so fifty consecutive
+  planless still rounds fires there and can never fire inside m0r0's level. Sweep 2
+  (`sweep-click2.log`): all 17 games identical to the digit, mean 2.662%. Two invariants
+  are load-bearing: click rounds never enter `records` (a click that moves the piece
+  would mint a None direction in `infer_dirs` and break every `dirs.get(value)` guard),
+  and the trace row stays (the clock ticked). dc22 itself still needs click SEQUENCES —
+  63 single clicks all eventually answer zero changed cells.
+
 ## What the scoring actually rewards
 
 `min((baseline_actions / actions_taken)² × 100, 115)` per level, averaged **weighted by level

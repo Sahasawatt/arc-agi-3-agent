@@ -1524,6 +1524,18 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         return [], []
     by_value = {a.value: a for a in actions}
     values = sorted(by_value)
+    # The click, where the game has one. Filtered out of the movement model on purpose
+    # — a click is not a displacement — but nine games of the roster are click-DRIVEN
+    # (`results/breadth-recon.md`): dc22's piece is boxed into a nine-square pocket and
+    # 1,861 of its 1,980 actions were refused walks while the game waited for a click.
+    # Slice one is probing, not planning: a wander round — a round `choose` found
+    # nothing to do with — clicks an unprobed object instead of pacing, records how
+    # many cells the board answered with, and re-clicks the loudest responder once
+    # every object has been heard. A game with no complex action never enters any of
+    # it, so ls20 and the other keyboard-only games are identical by construction.
+    clicker = next((a for a in env.action_space if a.is_complex()), None)
+    poked = {}    # object box -> cells the board changed on its last click
+    prev_here, frozen = None, 0   # rounds the piece has not moved — the click gate
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
 
@@ -1632,6 +1644,15 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         psrc = "fuel-int"
         if here_now is not None and (not trail or trail[-1] != (here_now[0], here_now[1])):
             trail.append((here_now[0], here_now[1]))
+        if here_now is not None:
+            # Wander rounds only: m0r0 presses into refused squares ON PURPOSE as part
+            # of its 53-action solve — the piece is still, but a plan is in flight, and
+            # a frozen count that climbs through those rounds fires clicks into the
+            # middle of the level's own choreography (0/6 with the plain gate,
+            # `br-m0r0-f8.txt`). A round with a plan is never evidence the walk is dead.
+            frozen = (frozen + 1 if prev_here == (here_now[0], here_now[1])
+                      and not plan else 0)
+            prev_here = (here_now[0], here_now[1])
         mark = None   # what the staged trip says this action does to the display
         if plan:
             value = plan.pop(0)
@@ -1648,23 +1669,66 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             at = None
             if model and (i >= WARMUP or coherent(model.dirs)):
                 at = body_box(prev, model.body) or locate(obs.frame, model)
-            value = choose_next(grid, at, model.dirs if model else {},
-                                (model.passable | model.blocking) if model else set(),
-                                values, last, visits, state)
-        visits[(state, value)] = visits.get((state, value), 0) + 1
+            value = None
+            # Only once the WALK is measured dead — and dead means DEAD. Ungated,
+            # converting wander rounds to clicks costs ar25 and m0r0 their only level
+            # each (`sweep-click1.log`); at eight still rounds m0r0 still loses, because
+            # a blocked press with no plan is that game's normal model-building, not a
+            # corpse. What separates dc22 is duration: its piece parks for over a
+            # thousand rounds at one square, while m0r0's whole level is 53 actions.
+            # Fifty planless still rounds is a quarter of m0r0's budget and a rounding
+            # error against dc22's paralysis.
+            if clicker is not None and model and frozen >= 50:
+                objs = [o for o in targets(obs.frame, model) if o["y"][0] < rows]
+                fresh_o = [o for o in objs
+                           if (o["x"][0], o["y"][0], o["x"][1], o["y"][1]) not in poked]
+                pick = None
+                if fresh_o:
+                    # smallest first — a small object is rare, and rare is where this
+                    # game family draws its controls
+                    pick = min(fresh_o, key=lambda o: (o["x"][1] - o["x"][0] + 1)
+                               * (o["y"][1] - o["y"][0] + 1))
+                else:
+                    loud = [(ch, b) for b, ch in poked.items() if ch > 0]
+                    if loud:
+                        b = max(loud)[1]
+                        pick = {"x": (b[0], b[2]), "y": (b[1], b[3])}
+                if pick is not None:
+                    value = ("click", (pick["x"][0] + pick["x"][1]) // 2,
+                             (pick["y"][0] + pick["y"][1]) // 2,
+                             (pick["x"][0], pick["y"][0], pick["x"][1], pick["y"][1]))
+                    psrc = "poke-click"
+            if value is None:
+                value = choose_next(grid, at, model.dirs if model else {},
+                                    (model.passable | model.blocking) if model else set(),
+                                    values, last, visits, state)
+        visits[(state, value if not isinstance(value, tuple) else value[:3])] = \
+            visits.get((state, value if not isinstance(value, tuple) else value[:3]), 0) + 1
 
         before = obs
-        obs = env.step(by_value[value])
+        if isinstance(value, tuple):
+            clicker.set_data({"x": value[1], "y": value[2]})
+            obs = env.step(clicker)
+        else:
+            obs = env.step(by_value[value])
         spent_at_level += 1
         if acct:
             acct.write(json.dumps({"i": i, "lvl": done, "src": psrc, "v": value}) + chr(10))
         if obs is None:
             break
+        if isinstance(value, tuple):
+            # What the board answered with. Recorded under the object's box: zero retires
+            # it from the re-click pool on its own, so a one-shot control is pressed once
+            # and a stateful one keeps paying until it stops.
+            poked[value[3]] = int((np.array(before.frame)[-1]
+                                   != np.array(obs.frame)[-1]).sum())
+            value = None   # a click is not a displacement; nothing below may read one
 
         if obs.levels_completed > done:
             per_level.append(spent_at_level)
             done, spent_at_level, plan, door = obs.levels_completed, 0, [], None
             expect, trip = [], []
+            poked, prev_here, frozen = {}, None, 0    # new board, new controls
             # The mechanic carries across a level boundary; the plates and the square that
             # changes them are drawn somewhere else on the new board, so they do not — but
             # the game's ink alphabet does (see Gate.legacy).
@@ -1762,8 +1826,13 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                                            max_missed=200 if windowed else 2)
         colours.update(seen_c)
         shifts = _shifts(prev, cur)
-        records.append({"action": value, "shifts": shifts, "grid": grid,
-                        "boxes": prev, "after": set(cur)})
+        if value is not None:
+            # A click round never enters the movement evidence: a click that happens to
+            # move the piece would file its displacement under action None, `infer_dirs`
+            # would mint a None direction, and every `dirs.get(value)` guard downstream
+            # reads that as a real move. The trace row still goes in — the clock ticked.
+            records.append({"action": value, "shifts": shifts, "grid": grid,
+                            "boxes": prev, "after": set(cur)})
         if model:
             log.append(trace_step(before, obs, value, model))
             # On a windowed board, an object whose square is FOG now did not vanish — it
