@@ -284,3 +284,29 @@ the pairing itself is wrong (try yellow's and blue's pads as targets; twelve pad
 across four shapes admit many pairings). The machinery to execute any solved
 plan — shim, motion-identify, goto with sidestep, rotate weave — is all in this
 file and `probe_cn04.py`.
+
+## cn04 level 2, the night's last eliminations: EXACT overlap and click-select (2026-08-05, close)
+
+The orientation-layout solver worked end to end: staged in an empty pocket, tips
+motion-identified clean, all four orientation layouts measured exact (two tips,
+rotation offsets carrying the half-steps), ten targets, and the lattice-parity
+solve found exactly TWO reachable placements — both landing the white tips
+PRECISELY on the yellow shape's pad pair. Both executed to the exact cell
+(goto=ok, piece at P to the decimal) — **no completion**. Exact tip-on-pad
+overlap is now eliminated along with adjacency, body contact, all orientations,
+and rotate weaves.
+
+Click-select eliminated too: clicking a shape then pressing a key still moves
+WHITE (blue trial explicit). One anomaly worth chasing: cn04's own game code
+raised `KeyError: 'x'` inside `perform_action` on some clicks — its complex
+action may want a different data schema than dc22's `{"x","y"}`; read the
+arcengine action contract before the next click experiment.
+
+Remaining hypothesis space for the solver session: the white x green pairing
+(off-lattice for walking — but every shape's lattice offset differs, and the
+half-step lives in ROTATION offsets: rotate-at-P sequences can reach positions
+walking cannot); pads may pair by SHAPE-piece identity (white's pads to green's,
+yellow's to blue's — an assembly ORDER); or the mover changes after a correct
+first mate. The full toolkit to test any of these is committed: `probe_cn04.py`
+shim, motion-identify, orientation-layout measurement, the lattice-parity
+solver, goto with sidestep.
