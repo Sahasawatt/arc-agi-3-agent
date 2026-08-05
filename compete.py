@@ -1429,7 +1429,11 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
             if c in dead or c == model.colour:
                 continue
             ys_c, xs_c = np.where(grid[:model.rows] == c)
-            if not (4 <= len(xs_c) <= 80):
+            # 200, not 80: cn04's level 2 is an assembly of FOUR shapes wearing
+            # twelve 3x3 pads — 108 cells of marker colour that the tighter cap
+            # excluded outright, leaving the rung with no candidate at all. Terrain
+            # colours run to the thousands; the cap only has to fence those.
+            if not (4 <= len(xs_c) <= 200):
                 continue
             cand_c.append((len(xs_c), c, list(zip(xs_c.tolist(), ys_c.tolist()))))
         part_c = {cc for cc, _, _ in (getattr(model, "parts", ()) or ())}
@@ -1495,12 +1499,32 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                 dk["tips"] = tips
             tips = dk["tips"]           # occluded round: walk on from the last fix
             tp, tc = _pat(tips)
+            # A matched pair the walk cannot reach is a WRONG pair: cn04 level 2
+            # has nine static pads across three shapes, several pairs share the
+            # tips' constellation, and the first geometric match sat behind a
+            # collision — the piece pressed the same refused step for 1,600 rounds
+            # (`br-cn04-l2d.txt`, move frozen at (3,-1.5)). Five stalled rounds
+            # veto the pair; the next match gets its turn; a cleared veto list
+            # plus no match left falls through to the rotate below.
+            if dk.get("prev") == [tuple(t) for t in tips]:
+                dk["stall"] = dk.get("stall", 0) + 1
+            else:
+                dk["stall"] = 0
+            dk["prev"] = [tuple(t) for t in tips]
+            veto = dk.setdefault("veto", [])
             move = None
             for sub in combinations(dk["tgts"], len(tips)):
                 gp, gc = _pat(list(sub))
+                if (round(gc[0]), round(gc[1])) in veto:
+                    continue
                 if all(abs(a[0] - b[0]) <= 1 and abs(a[1] - b[1]) <= 1
                        for a, b in zip(tp, gp)):
                     move = (gc[0] - tc[0], gc[1] - tc[1])
+                    if dk["stall"] > 4:
+                        veto.append((round(gc[0]), round(gc[1])))
+                        dk["stall"] = 0
+                        move = None
+                        continue
                     break
             gate.rung = "dock"
             if os.environ.get("ARC_DKDBG"):
@@ -1869,6 +1893,8 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             done, spent_at_level, plan, door = obs.levels_completed, 0, [], None
             expect, trip = [], []
             poked, prev_here, frozen = {}, None, 0    # new board, new controls
+            if os.environ.get("ARC_FRAMED"):  # first frame of each new board, raw
+                np.save(str(OUT / ("frame-l%d.npy" % done)), np.array(obs.frame)[-1])
             # The mechanic carries across a level boundary; the plates and the square that
             # changes them are drawn somewhere else on the new board, so they do not — but
             # the game's ink alphabet does (see Gate.legacy).

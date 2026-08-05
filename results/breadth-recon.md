@@ -162,6 +162,29 @@ them. ka59 and dc22 both turned out goal-opaque WITH inert clicks — the next
 recon targets are **cn04, re86, sc25, sp80** (MAZE_LIKE, walls-not-found class:
 discovery's blocked-move sampling starves, a perception-side fix, not a puzzle).
 
+## cn04 level 2 is a JIGSAW — the dock rung's overlap model runs out (2026-08-05, late)
+
+Board (`frames/cn04/L2-real.png`, captured in-run via the new `ARC_FRAMED` dump —
+offline sims DESYNC on the empty frames the engine returns mid-run, so recon
+boards this way): four shapes on orange — white hook, green L, yellow blob, blue
+U — each wearing 3x3 red pads, twelve pads in all. Three rung defects were found
+and fixed against live dumps, each measured: the 80-cell marker cap excluded the
+only marker colour (108 cells of red — now 200); a colour whose blobs never move
+under the rotator re-ref'd forever (1,858 rounds on three static marks — three
+silent identify-presses now kill it); and a geometrically matched pad pair the
+walk cannot REACH stalled the piece on one refused step for 1,600 rounds (five
+stalled rounds now veto the pair and the next match gets its turn).
+
+With all three in, the rung does everything its model allows: identifies the
+white piece's two pads by motion, walks the board (move 33 → 3), arrives
+ADJACENT to the green shape's matching pair — and stops, because the level is
+not pad-overlap, it is shape INTERLOCK: the pads mark where bodies join, the
+completion condition is the jigsaw fit, and |move|<1 never becomes true for two
+solid shapes. The next mechanic to build is boundary-interlock matching (shape
+complementarity + the offset that mates them), reusing the same rotator +
+motion-identify + veto machinery. cn04 stays 1/6 [131] throughout — the L2 work
+freed 1,800 wasted rounds but cannot finish the level under the overlap model.
+
 ## Rules-legal note
 
 All of tonight's probes ran offline against the local engine (`capture.py`, direct

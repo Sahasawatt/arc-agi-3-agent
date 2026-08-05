@@ -771,11 +771,19 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   same law as `Gate.legacy`. And a colour whose blobs never move under the rotator is
   scenery — level 2 spent 1,858 rounds re-ref'ing colour 9's three static marks, a
   livelock the spins dead-switch could never reach (it only counts once tips exist);
-  three silent identify-presses now kill the colour. Level 2 itself is still open —
-  after colour 9 dies no colour qualifies (4-80 cells, ≥2 blobs), and the board census
-  from a desynced offline sim is unreliable: recon it through an in-run dump, not
-  offline replay (the engine hands back EMPTY frames mid-run that a sim must skip
-  without desyncing its action stream).
+  three silent identify-presses now kill the colour. Level 2 (recon'd through the
+  in-run `ARC_FRAMED` frame dump — offline sims DESYNC on the empty frames the engine
+  returns mid-run) is a JIGSAW of four pad-wearing shapes, and it taught two more
+  measured rules: the marker cap is 200 cells, not 80 (twelve 3x3 pads = 108 cells,
+  and the tighter cap left the rung with no candidate at all), and a matched pad pair
+  the walk cannot REACH is a WRONG pair — the piece pressed one refused step for
+  1,600 rounds (`br-cn04-l2d.txt`, move frozen at (3,-1.5)); five stalled rounds now
+  veto the pair and the next match gets its turn. With all of it in, the rung walks
+  the white piece clean across the board to ADJACENT — where the overlap model runs
+  out: the level completes on shape INTERLOCK, not pad overlap, and |move|<1 never
+  comes true for two solid shapes. Boundary-interlock matching is the next mechanic;
+  the rotator + motion-identify + veto machinery all reuses. cn04 stays 1/6 [131]
+  through every level-2 change (`br-cn04-l2c/d/e.txt`).
 
 ## What the scoring actually rewards
 
