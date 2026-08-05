@@ -763,7 +763,19 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   is the same law: keep the reading taken from off it (`dk["tgts"]`, stored at identify
   time, never re-read). The identity-starvation hypothesis was REFUTED before any of
   this was found: ARC_IDDBG measured player-in-shifts at 1,942 of 1,969 rounds, so the
-  gate dump + one instrumented run beat four blind reruns.
+  gate dump + one instrumented run beat four blind reruns. Two follow-ups from level 2,
+  both measured (`sweep-spun.log` clean, every game identical, mean 2.676%): a rotator
+  is a property of the GAME — `records` resets at the level boundary and took the
+  scatter evidence with it, so the dock rung measured ZERO rounds on level 2 while its
+  level-1 recipe sat ready; `spun` latches the verdict for the game's lifetime, the
+  same law as `Gate.legacy`. And a colour whose blobs never move under the rotator is
+  scenery — level 2 spent 1,858 rounds re-ref'ing colour 9's three static marks, a
+  livelock the spins dead-switch could never reach (it only counts once tips exist);
+  three silent identify-presses now kill the colour. Level 2 itself is still open —
+  after colour 9 dies no colour qualifies (4-80 cells, ≥2 blobs), and the board census
+  from a desynced offline sim is unreliable: recon it through an in-run dump, not
+  offline replay (the engine hands back EMPTY frames mid-run that a sim must skip
+  without desyncing its action stream).
 
 ## What the scoring actually rewards
 

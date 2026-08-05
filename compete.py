@@ -1450,10 +1450,24 @@ def choose(frame, model, log, gate, left, full, redirects=None, once=None,
                          if not any(abs(b[0] - r[0]) < 1 and abs(b[1] - r[1]) < 1
                                     for r in dk["ref"])]
                 if not moved or len(moved) >= len(bl):
-                    gate.dock = {"c": c, "ref": bl}
+                    # A colour whose blobs never move under the rotator has no tips
+                    # in it — three consecutive silent identify-presses and it is
+                    # scenery. Without this the rung re-refs FOREVER: cn04 level 2
+                    # spent 1,858 rounds courting colour 9's three static marks
+                    # (`br-cn04-l2b.txt`), the whole level's budget on one colour
+                    # the dead-switch could never reach (spins only count after
+                    # tips exist).
+                    rr = dk.get("reref", 0) + 1
+                    if rr > 3:
+                        dead.add(c)
+                        gate.dock_dead = dead
+                        gate.dock = None
+                        continue
+                    gate.dock = {"c": c, "ref": bl, "reref": rr}
                     gate.rung = "dock"
                     if os.environ.get("ARC_DKDBG"):
-                        print("[dk] c=%d re-ref moved=%d of %d" % (c, len(moved), len(bl)))
+                        print("[dk] c=%d re-ref moved=%d of %d rr=%d" % (
+                            c, len(moved), len(bl), rr))
                     return [extras[0]], None
                 dk["tips"] = moved
                 # The targets are STATIC, and near the dock the piece's own body
@@ -1661,6 +1675,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     clicker = next((a for a in env.action_space if a.is_complex()), None)
     poked = {}    # object box -> cells the board changed on its last click
     prev_here, frozen = None, 0   # rounds the piece has not moved — the click gate
+    spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
 
@@ -2364,9 +2379,17 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         if len(vshifts) >= 3:
                             top = Counter(vshifts).most_common(1)[0][1]
                             if top / len(vshifts) < 0.6:
-                                extras.append(v)
+                                # A rotator is a property of the GAME: `records`
+                                # resets at the level boundary, the evidence goes
+                                # with it, and the dock rung measured ZERO rounds
+                                # on cn04's level 2 while its level-1 recipe sat
+                                # ready — nothing was left to say action 5 spins.
+                                # Same law as Gate.legacy and tank_colours: latch
+                                # what the game teaches, not the level.
+                                spun.add(v)
                         elif model.dirs.get(v) in (None, (0, 0)):
                             extras.append(v)
+                    extras = sorted(spun) + [v for v in extras if v not in spun]
                 plan, goal = choose(obs.frame, model, log, gate, left, full, rules, once,
                                     frozenset(list(trail)[:-1]), stood, refused, tried, sure,
                                     extras)
