@@ -119,11 +119,48 @@ level-ups in 3,000.
 
 Position census from the competition run (56 distinct positions, 2,000 actions):
 the piece has **never been right of the purple bar** (colour 15, x33-38 y21-41).
-The level's shape: two rooms with dark square slots, twin rings (piece's black dot
-in one, a grey dot in the other), conveyor floor (491 carried steps), and the bar
-between the halves. Working hypothesis: reach/deliver something across the bar
-within one 100-action life. Next probe: what opens or passes the bar — the grey
-dot's ring, a floor switch, or a carry chain.
+
+The full offline dissection (2026-08-05, all rules-legal, probe scripts deleted
+after use — rebuild from this note):
+
+- **The map, read off the colour matrix** (rows 20-43): left room x9-23, right
+  room x39-53. Between them a colour-2 wall block (x24-32) AND the colour-15 bar
+  (x33-38), both full height — EXCEPT a 3-row corridor at y30-32 through the
+  colour-2 wall. The grey dot (colour 5) sits in a ring at (27-29,30-32) INSIDE
+  that corridor; the piece's own identical ring is at (18-20,30-32). Hollow
+  colour-4 square slots: left (10-14,32-36), right (44-48,26-30).
+- **Kick mechanic**: walking into the grey dot FLINGS it east down the corridor,
+  over the bar, landing at **(43,31) — invariant** across every approach angle and
+  row tried. It lands outside the right slot (interior 45-47,27-29) and nothing
+  can reach it there. The corridor is the only access to the grey, and it runs
+  west→east, so east is the only kick the geometry allows.
+- **Clicks are inert on this level too**: a 440-point full-grid click sweep
+  changed zero cells. (Second game in a row — dc22 the same. The click counter at
+  row 63 there is the timer bar here; both games' HUD rows must be masked.)
+- **The keyboard state space is TINY and winless**: BFS with frame-dedup (HUD row
+  masked) exhausts at **74 reachable states, no level-up**, 296 expansions.
+  Salient-click augmentation adds zero new states.
+- **Timer facts**: death at exactly step 100 regardless of position; parking
+  inside the left slot, either ring, or at the bar face until expiry all die.
+- Piece movement: step 3 with jump-cells (22→28 in one press through the ring) —
+  the `slid` events of the competition run.
+
+Open hypotheses, in order: (a) the win needs BOTH dots slotted and the grey's
+fixed landing means some OTHER actor must move it the last 3 cells — is there a
+second kickable thing, or does the RIGHT room have its own corridor the stitched
+map has not seen? (b) a state counter invisible in the frame (bump-repeat probe
+was clean at 4 spots but false-positived at 2 — redo with a piece-trail mask);
+(c) the 74-state graph is level-1-complete and the win is time-EXTENDED (survive
+several timers?) — refutable by replaying the 74 states across two timer cycles.
+
+## The campaign frame (new goal 2026-08-05: clear a level in EVERY game)
+
+Standing: ls20 7/7 · ar25 1/8 · m0r0 1/6 · cd82 1/6 · **13 games at 0/n**.
+Ordering by evidence: games whose level 1 the machinery can already act on
+(MAZE_LIKE with walls found) first; click-driven and goal-opaque games behind
+them. ka59 and dc22 both turned out goal-opaque WITH inert clicks — the next
+recon targets are **cn04, re86, sc25, sp80** (MAZE_LIKE, walls-not-found class:
+discovery's blocked-move sampling starves, a perception-side fix, not a puzzle).
 
 ## Rules-legal note
 
