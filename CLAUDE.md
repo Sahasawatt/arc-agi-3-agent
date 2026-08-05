@@ -45,6 +45,20 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
+- **"Responds to the most actions" elects the wrong player on a board with a metronome —
+  and FIXING that alone loses ar25.** sc25's faller ((0,2) under every button) wins the
+  vote and the run wanders 2,000 actions unplanned; but ar25's baseline level DEPENDS on
+  its own metronome winning early — the incoherent model blocks planning, the novelty
+  wander meets the walls, and planning starts later on a map with terrain. Electing the
+  real piece from round 25 pages the cand rung onto a wall-less map: 1,942/2,000 actions
+  pacing two inert candidates, no failed move, no walls, ever. The election fix ships only
+  PAIRED with an arrival-counted walk cap (v1 emission-counted cap broke ls20 7/7→3/7);
+  full account + v2 design in `breadth-recon.md` §night 2. Measured 2026-08-05.
+- **One scattering action vetoes four clean directions.** re86's action 5 ((2,17), (±11,0)…)
+  got a most_common direction anyway; that junk vector killed `coherent` (no inverse) and
+  dragged `infer_step`'s gcd 3→1. `infer_dirs` now drops any action with ≥3 samples and no
+  dominant vector (<0.6, the cn04 rotator-scatter law moved upstream); it lands in the
+  extras/rotator path instead. Both fixes: canary cn04 [131] + ls20 7/7 intact.
 - **`env.reset()` with zero actions taken since the last transition performs a full GAME
   reset**, back to level 1 — it only scopes to the current level once a real action has been
   taken. Probes that reset immediately are measuring level 1 while reporting level 4.

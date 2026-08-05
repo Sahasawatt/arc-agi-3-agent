@@ -46,3 +46,17 @@ Objects used to be keyed on `(colour, cell_count)` and looked up in a dict. Two 
 `cn04`, `re86`, `sc25` and `sp80` still end with no wall colour. It is not an absence of walls — committing to one direction gets the piece blocked within 1 to 15 moves on all nine games — and it is not the amount of evidence: `sc25` collects 119 blocked observations and learns nothing from them, because its inferred directions still disagree with each other. Their pieces are still being mis-identified, just less often than before.
 
 Three earlier versions of this file were wrong about the cause: over-segmented footprints, then open boards, then too little exploration. Each was a guess and each was disproved by measuring.
+
+**Update 2026-08-05: the "mis-identified" diagnosis resolved into two measured defects**
+(details + run evidence in `breadth-recon.md` §walls-not-found class): `infer_player`
+voting by count elects sc25's metronome faller over the steered piece — measured, fix
+built, but NOT LANDED: ar25's baseline level depends on its own metronome winning the
+early vote (the incoherent model blocks planning, the wander meets the walls), so the
+election fix ships only paired with an arrival-counted walk cap (see breadth-recon).
+And `infer_dirs` handing a scattering action its most_common let one junk vector veto
+`coherent` and wreck the step gcd — re86's "step=1" in the table above was this bug, not
+the game — FIXED: no dominant vector (<0.6 over ≥3 samples), no direction. With it,
+re86/sp80 reach coherent with clean dirs and correct steps in live runs. The next
+stratum for this class: walls still never classify (`block=[]` after 2,000 actions) and
+no goal rung fires; sc25 is additionally a SLIDER (per-press magnitude varies), which
+the fixed-vector model cannot express yet.

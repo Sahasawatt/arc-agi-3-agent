@@ -2416,6 +2416,26 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                         elif model.dirs.get(v) in (None, (0, 0)):
                             extras.append(v)
                     extras = sorted(spun) + [v for v in extras if v not in spun]
+                if os.environ.get("ARC_MDBG") and i % 25 == 0:
+                    sh = Counter((r["action"], tuple(r["shifts"][model.player]))
+                                 for r in records if model.player in r["shifts"])
+                    print("[md] i=%d c=%d coh=%s dirs=%s step=%s block=%s "
+                          "shifts=%s" % (i, model.colour, coherent(model.dirs),
+                                         model.dirs, model.step,
+                                         sorted(model.blocking), dict(sh)), flush=True)
+                if os.environ.get("ARC_EDBG") and i % 100 == 0:
+                    votes = Counter(k for r in records for k in r["shifts"])
+                    per = {}
+                    for r in records:
+                        for k, dd in r["shifts"].items():
+                            per.setdefault(k, {}).setdefault(r["action"], []).append(dd)
+                    tops = sorted(votes.items(), key=lambda kv: -kv[1])[:4]
+                    print("[el] i=%d " % i + " | ".join(
+                        "id=%s c=%s v=%d m=%d" % (
+                            k, colours.get(k), v,
+                            len({Counter(ds).most_common(1)[0][0]
+                                 for ds in per[k].values()}))
+                        for k, v in tops), flush=True)
                 plan, goal = choose(obs.frame, model, log, gate, left, full, rules, once,
                                     frozenset(list(trail)[:-1]), stood, refused, tried, sure,
                                     extras)

@@ -39,6 +39,38 @@ def test_no_player_when_nothing_moved():
     assert infer_player([{"action": 1, "shifts": {}}]) is None
 
 
+def test_metronome_still_outvotes_the_piece():
+    """DOCUMENTED DEFECT, kept as the current contract: sc25's faller — (0, 2) on every
+    action — outvotes the steered piece and wins the election. The steerability fix is
+    measured but coupled to an exploration-economics change (see infer_player's
+    docstring); when that pair lands, this test flips to expect ("piece", 9)."""
+    records = []
+    for a in (1, 2, 3, 4):
+        for _ in range(10):
+            records.append({"action": a, "shifts": {("faller", 14): (0, 2)}})
+    records.append({"action": 1, "shifts": {("piece", 9): (0, -2), ("faller", 14): (0, 2)}})
+    records.append({"action": 2, "shifts": {("piece", 9): (0, 2), ("faller", 14): (0, 2)}})
+    assert infer_player(records) == ("faller", 14)
+
+
+def test_scattering_action_gets_no_direction():
+    """re86's action 5: displacements all over the map. Its most_common is noise, and one
+    noise direction vetoes four clean ones in coherent() and wrecks the step gcd — so a
+    scattering action gets no entry at all."""
+    records = [{"action": 1, "shifts": {("p", 9): (0, -3)}} for _ in range(4)]
+    for d in [(2, 17), (-11, 0), (11, 0), (-2, -17)]:
+        records.append({"action": 5, "shifts": {("p", 9): d}})
+    dirs = infer_dirs(records, ("p", 9))
+    assert dirs == {1: (0, -3)}
+
+
+def test_two_samples_keep_their_mode():
+    """Under three samples the mode stands — early warmup readings build the first model."""
+    records = [{"action": 2, "shifts": {("p", 9): (0, 3)}},
+               {"action": 2, "shifts": {("p", 9): (1, 1)}}]
+    assert infer_dirs(records, ("p", 9)) == {2: (0, 3)}
+
+
 # --- choose_action -----------------------------------------------------------------
 # Cycling the actions in order is worse than useless on a grid game: up, down, left,
 # right returns the piece to where it started, so 48 actions produced 47 successful

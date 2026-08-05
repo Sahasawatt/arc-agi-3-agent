@@ -168,7 +168,20 @@ def choose_next(grid, at, dirs, known, actions, last, visits, state):
 
 
 def infer_player(records):
-    """The component that responds to the most actions."""
+    """The component that responds to the most actions.
+
+    KNOWN WRONG on sc25, and the fix is measured but NOT LANDED: sc25 has a component
+    that falls (0, 2) on EVERY action (~130 shifts per button), this vote elects it, and
+    the run wanders its whole budget unplanned (`br-sc25-md.txt`). Ranking by "displacement
+    depends on the action" elects the real piece — but electing the right piece EARLY makes
+    the cand rung plan from round 25 on a board with no walls yet, and on ar25 that walk
+    never meets a wall (1,942 of 2,000 actions pacing between two inert candidates,
+    `ar25-acct.jsonl`): ar25's baseline level depends on the WRONG election blocking
+    planning long enough for the novelty wander to find walls. The election fix ships
+    only together with an exploration-economics fix (a walk cap counted on ARRIVALS —
+    the emission-counted v1 broke ls20 7/7→3/7, `sweep-walkcap.log`). See
+    `breadth-recon.md` §night 2.
+    """
     votes = Counter(k for r in records for k in r["shifts"])
     if not votes:
         return None
@@ -217,13 +230,32 @@ def body_box(boxes, body):
     return x0, y0, x1 - x0, y1 - y0
 
 
+SCATTER = 0.6  # a direction must dominate an action's displacements; below this it is noise
+
+
 def infer_dirs(records, player):
-    """Per action, the displacement it usually causes. Blocked attempts contribute nothing."""
+    """Per action, the displacement it usually causes. Blocked attempts contribute nothing.
+
+    An action whose displacement SCATTERS is not a walk — cn04's rotator shifts the claw's
+    bounding box a different way each orientation, and `re86`'s action 5 shows (2,17),
+    (-11,0), (11,0) across thirteen presses. Handing such an action its most_common anyway
+    poisons everything downstream: one junk (-11,0) vetoes four clean directions in
+    `coherent` (the model never plans), and drags `infer_step`'s gcd from 3 to 1. With
+    three or more samples and no dominant vector, the action gets no direction at all —
+    the play loop's extras/rotator path picks it up instead. Under three samples the mode
+    stands as before: early warmup readings are how a model gets built at all.
+    """
     seen = {}
     for r in records:
         if player in r["shifts"]:
             seen.setdefault(r["action"], []).append(r["shifts"][player])
-    return {a: Counter(d).most_common(1)[0][0] for a, d in seen.items()}
+    out = {}
+    for a, d in seen.items():
+        top, n = Counter(d).most_common(1)[0]
+        if len(d) >= 3 and n / len(d) < SCATTER:
+            continue
+        out[a] = top
+    return out
 
 
 def infer_step(dirs):

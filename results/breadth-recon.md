@@ -310,3 +310,66 @@ yellow's to blue's — an assembly ORDER); or the mover changes after a correct
 first mate. The full toolkit to test any of these is committed: `probe_cn04.py`
 shim, motion-identify, orientation-layout measurement, the lattice-parity
 solver, goto with sidestep.
+
+## The walls-not-found class opens: two perception fixes, measured (2026-08-05, night 2)
+
+Build-order item 3 (re86/sc25/sp80) turned out to be TWO defects stacked at the
+very front of the pipeline, each caught by instrumenting a live run (`ARC_MDBG`
+prints the model every 25 planning rounds — committed, opt-in):
+
+1. **Player election votes for a metronome** (`br-sc25-md.txt`): sc25 has a
+   component that falls (0,2) on EVERY action — all four buttons, ~130 shifts
+   each. `infer_player` voted by shift count alone, elected the faller, its four
+   identical "directions" can never pass `coherent`, and the run wandered its
+   whole 2,000-action budget unplanned while the real piece (colour 9) lost the
+   election. Fix: a steerable piece's displacement DEPENDS on the action — rank
+   by (has ≥2 distinct modal vectors, votes). Single-mode candidates still rank
+   by votes among themselves, so early warmup behaves exactly as before.
+2. **One scattering action vetoes four clean directions** (`br-re86-fix.txt`):
+   re86's actions 1-4 read a clean (0,±3)/(±3,0) — but action 5 scatters
+   ((2,17), (-11,0), (11,0), ...), `infer_dirs` handed it most_common anyway,
+   and that one junk vector both vetoed `coherent` (no inverse exists) and
+   dragged `infer_step`'s gcd from 3 to 1 — the discovery table's "re86 step=1"
+   was this bug, not the game. Fix: cn04's rotator-scatter law moved UPSTREAM
+   into `infer_dirs` — ≥3 samples with no dominant vector (<0.6) = no direction
+   at all; the action lands in the extras/rotator path instead.
+
+After both (`br-sc25-fix.txt`, `br-re86-sc.txt`, `br-sp80-fix.txt`): sc25
+elects the real piece; re86 reaches coherent with clean dirs and step 3; sp80
+is coherent the whole run with step 4. Canaries hold: cn04 1/6 [131], ls20 7/7
+43.629% — the scatter law's original home still works fed from upstream.
+
+**Only the scatter fix LANDED.** The 17-game sweep caught the election fix
+costing ar25 its level (0/8; bisect: pre-fix code reproduces [173], player-fix
+alone reproduces the loss — `br-ar25-bisectA/B.txt`), and the reason is a
+lesson bigger than the fix: **ar25's baseline level depends on electing the
+WRONG player early.** The election table (`br-ar25-el.txt`, `ARC_EDBG`) shows a
+second metronome — c=11, one mode, most votes until ~i=900 — whose incoherent
+model BLOCKS planning, which forces the novelty wander, which is what meets
+walls ([10]) — so that when the real piece finally outvotes it, planning starts
+on a map that has terrain. Elect the right piece from round 25 and the cand
+rung plans immediately on a wall-less map: `ar25-acct.jsonl` shows 1,942 of
+2,000 actions pacing between two inert candidates, every move succeeding, and a
+terrain model that never sees a failed move learns no walls, ever.
+
+A walk cap was built to close that hole (two cand/desperate plans per object
+per level, fuel exempt, counter on the Gate so it dies at the boundary) and it
+proved BOTH claims: with election-fix + cap, ar25 went **2/8 [127, 1375]** —
+faster on level 1 than the metronome accident and through level 2 for the first
+time — but the sweep broke ls20 7/7→3/7, cn04 →0/6, cd82 →0/6
+(`sweep-walkcap.log`): the v1 cap counted plan EMISSIONS, and a plan that is
+interrupted and re-emitted (redirects, refusals — ls20 level 4's whole
+personality) burns its object's budget without ever proving the object inert.
+Both halves reverted; the pair ships together or not at all. **v2 design,
+written down so the next session does not re-derive it**: count ARRIVALS (plan
+walked to completion at the goal with no gate response), not emissions; keep
+fuel exempt; keep the counter per-level on the Gate. The election fix re-lands
+in the same commit, and `test_discover.py::test_metronome_still_outvotes_the_piece`
+flips to expect the piece.
+
+**Walls stratum, still open for re86/sp80** — with clean models both games
+still end `block=[]` after 2,000 actions and no goal rung fires. sc25 has a
+third disease of its own: it is a SLIDER — displacement magnitude varies per
+press ((-2,0), (-4,0), (6,0) under one action), so even the true piece's modal
+vector is unstable. Slide mechanics (press-until-stop, wall detection by
+terminal cell) are a different model shape, parked behind the walls stratum.

@@ -152,12 +152,12 @@
     "levels": 1,
     "of": 6,
     "actions": [
-      1213
+      1306
     ],
     "baseline": [
       55
     ],
-    "environment_score": 0.01
+    "environment_score": 0.008
   },
   {
     "game": "sb26",
