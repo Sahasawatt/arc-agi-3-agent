@@ -166,3 +166,33 @@ discovery's blocked-move sampling starves, a perception-side fix, not a puzzle).
 
 All of tonight's probes ran offline against the local engine (`capture.py`, direct
 `env.step`) — no scorecard consequence. `environment_files/` was never read.
+
+## cn04 level 1: MECHANIC CRACKED by hand — the in-run wiring is blocked on identity (2026-08-05)
+
+The game read off one frame + four probes: a white crane claw (its CABLE is the
+piece's own colour — any bounding box stretches to y=0 after a rotation) wearing
+two red pads, a socket wearing two red squares, **action 5 = rotate a quarter**
+(4-cycle verified; its "displacement" scatters — (3,0)x2, (-3,3)x2, (0,-3)x1 over
+six presses — which is how `infer_dirs` hands a rotator a real-looking direction,
+a duplicate of action 4's). **Level 1 falls in 13-14 actions**: rotate until the
+tip constellation (offsets from centroid, sorted) matches the target pattern,
+then walk the single remaining vector; the offline sim
+(motion-identified tips: press the rotator once, the blobs that moved are yours)
+cleared it at 13, one faster than the hand line.
+
+The in-run `dock` rung was built and measured through SIX iterations, each fixing
+a real defect (greedy sum-of-nearest parks at a wrong minimum 231 rounds;
+box-anchored tip scans lose the tips in half the orientations; refused steps get
+chosen forever; `model.parts` thins after game-overs; rotate-loops need a
+dead-colour kill switch) — and still fires only 83-104 of 2,000 rounds, because
+**track identity does not survive cn04's 26 game-overs a run**: every reset
+reissues track ids, `model.player` goes stale, `shifts` stop matching it, and
+both the rotator-scatter test and the parts trigger starve. That identity repair
+is the real prerequisite, it is a perception-layer change with blast radius over
+every game, and the rung was REVERTED rather than shipped inert (repo rule: a
+change that buys nothing measurable does not stay).
+
+What survives for the next session: the sim recipe above (rebuild from this
+note), the rotator-scatter discriminator, and the target — fix player-identity
+across game overs FIRST (cheap oracle: `model.player in shifts` rate per run),
+then re-land the dock rung unchanged.
