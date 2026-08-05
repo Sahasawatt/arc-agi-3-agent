@@ -82,6 +82,49 @@ what genre a level is faster than any accounting).
 3. Only then the remaining MAZE_LIKE 0/n (re86, sc25, sp80 — walls never found:
    discovery's blocked-move sampling starves; see discovery.md §why no walls).
 
+## dc22 level 1, hand-probed to a wall (2026-08-05, slice-2 recon)
+
+Every cheap hypothesis about dc22's level 1 is now measured dead, offline:
+
+- **Clicks are INERT on this level** — 6 floor/panel spots, all 20 object centers,
+  double-clicks on 8 targets, and click-piece-then-click-destination pairs: zero
+  play-area cells changed, ever. The "1 cell changed" the poke-click ledger recorded
+  is a **HUD tick at row y=63** that advances one pixel every second action of any
+  kind — the board never answered anything. (Slice 1's re-click policy was chasing
+  that tick; harmless, but the ledger must exclude the HUD row.)
+- **The keyboard works fine** — up/down/left/right move the 2x2 colour-14 piece by
+  its step of 2 — but the piece's room is **sealed**: all nine positions of the 3x3
+  room probed in all four directions, no exit. Pressing into the checkered wall
+  eight times: nothing. A full snake tour of all nine cells: zero cells outside the
+  room changed.
+- Board reading (frame `frames/dc22/000.png`): left side is four machine-boxes
+  (blue block, yellow-dot box, red bar, checkered pad, green piece box), right
+  panel displays a red cap above a blue cap. The genre still looks like
+  build-the-target, but the lever that starts it is none of: walking out, clicking
+  anything once or twice, or dragging.
+
+Open: what a human actually does first on this level. `play.py` (keyboard-only
+sweeps) was set on it as the next probe; if its rewind search also finds nothing,
+the level's first move is something no current probe can express, and dc22 goes to
+the back of the queue behind ka59 goal discovery.
+
+## ka59 level 1: the gameover is a TIMER, and the level is the purple bar (2026-08-05)
+
+Per-death ledger over 4,000 random offline actions: deaths land at steps **99, 199,
+299, 399, 499 — every 100 actions exactly**, wherever the piece stands. ka59's
+gameover is a countdown, not a hazard — row y=63 is the bar (its colour-0 fill is
+also why a naive "find the colour-0 piece" scan returns the whole bottom row; mask
+row 63 before locating). A life is 100 actions; random play scores 30 deaths and 0
+level-ups in 3,000.
+
+Position census from the competition run (56 distinct positions, 2,000 actions):
+the piece has **never been right of the purple bar** (colour 15, x33-38 y21-41).
+The level's shape: two rooms with dark square slots, twin rings (piece's black dot
+in one, a grey dot in the other), conveyor floor (491 carried steps), and the bar
+between the halves. Working hypothesis: reach/deliver something across the bar
+within one 100-action life. Next probe: what opens or passes the bar — the grey
+dot's ring, a floor switch, or a carry chain.
+
 ## Rules-legal note
 
 All of tonight's probes ran offline against the local engine (`capture.py`, direct
