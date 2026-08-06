@@ -1,0 +1,19 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:34:57 | INFO | Got anonymous API key: db397035-83c5-43b3-8f9a-aacca22d40ee
+2026-08-06 23:34:57 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:34:58 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:34:58 | INFO | Created new scorecard: a886f202-bd4c-482a-9740-d0e8f2370a89
+2026-08-06 23:34:59 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:34:59 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  (20,24) 3 ups (baseline legal): transfer=True (after 4 actions)
+  (20,24) down+4ups (5 moves): transfer=True (after 6 actions)
+  (20,24) R,L,3ups (5 moves): transfer=True (after 6 actions)
+  (20,24) 9 wasted then 3 ups: transfer=True (after 14 actions)
+  (16,28) L,2ups (baseline illegal): transfer=False (after 4 actions)
+  (16,28) 2ups,L (y-first): transfer=False (after 4 actions)
+  (16,28) with 6 wasted moves: transfer=False (after 10 actions)
+  (16,28) via top: 5U,L,2D: arrival check failed
+  (24,20) baseline legal: transfer=True (after 6 actions)
+  (24,20) via ceiling: 5U,R,1D: transfer=True (after 8 actions)
+  (28,20) baseline illegal: transfer=False (after 7 actions)
+  (28,20) via ceiling: 5U,2R,1D: transfer=False (after 9 actions)

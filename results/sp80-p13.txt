@@ -1,0 +1,25 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:29:16 | INFO | Got anonymous API key: f629965e-03e7-44a1-b14f-e6b6c28de2b4
+2026-08-06 23:29:16 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:29:17 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:29:17 | INFO | Created new scorecard: a4c8f5fc-d87a-40b0-bb74-8bc2f0ffa4e9
+2026-08-06 23:29:18 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:29:18 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+block-2-active transfer map ('P'=to 80-body, '1'=to block-1, 'W'=win):
+        x:  0  4  8 12 16 20 24 28 32 36 40 44 48 52 56 60
+  y= 0   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y= 4   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y= 8   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y=12   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y=16   P  P  P  P  P  P  P  P  P  P  P  P  P  P  .  .
+  y=20   P  P  P  P  P  P  P  P  P  -  -  -  -  -  .  .
+  y=24   P  P  P  P  P  P  P  -  -  -  -  -  -  -  .  .
+  y=28   P  P  P  P  P  P  -  -  -  -  -  -  -  -  .  .
+  y=32   P  P  P  P  P  -  -  -  -  -  -  -  -  -  .  .
+  y=36   P  P  P  P  -  -  -  -  -  -  -  -  -  -  .  .
+  y=40   P  P  P  P  -  -  -  -  -  -  -  -  -  -  .  .
+  y=44   P  P  P  -  -  -  -  -  -  -  -  -  -  -  .  .
+  y=48   P  P  P  -  -  -  -  -  -  -  -  -  -  -  .  .
+  y=52   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y=56   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+  y=60   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .

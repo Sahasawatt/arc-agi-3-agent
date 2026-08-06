@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:36:31 | INFO | Got anonymous API key: 3c033b5b-c9ce-41e0-8161-fdd52a8bff0d
+2026-08-06 23:36:31 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:36:32 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:36:32 | INFO | Created new scorecard: f397d69e-4933-4d7c-857c-689481e6f8b1
+2026-08-06 23:36:33 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:36:33 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  done: 80 at (28,44) floor
+  done: 80 at (28,16) ceiling
+  done: 80 at (40,44) floor
+  done: b2 at (40,44) floor
+  done: b2 at (28,48) floor
+  done: b2 at (40,16) ceiling
+clock-gate wins: NONE

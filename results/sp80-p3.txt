@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:51:48 | INFO | Got anonymous API key: 878161a8-4c5d-4f96-be19-4f1c66aa27e4
+2026-08-06 22:51:48 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:51:49 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:51:49 | INFO | Created new scorecard: eea8e2a6-73e4-4962-bca5-d2695fddbdb5
+2026-08-06 22:51:50 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:51:50 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== fire from every x alignment (home row y16-19) ==
+  right x0 (x-left=12): block=(12, 31, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x1 (x-left=16): block=(16, 35, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x2 (x-left=20): block=(20, 39, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x3 (x-left=24): block=(24, 43, 16, 19) diff(non-bar)=1104 [(0, 1, 12, 1), (1, 1, 12, 1), (2, 1, 12, 1), (3, 1, 12, 1), (4, 1, 12, 1), (5, 1, 12, 1), (6, 1, 12, 1), (7, 1, 12, 1), (8, 1, 12, 1), (9, 1, 12, 1)] state=GameState.NOT_FINISHED lvl=1
+  right x4 (x-left=28): block=(28, 47, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x5 (x-left=32): block=(32, 51, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x6 (x-left=36): block=(36, 55, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x7 (x-left=40): block=(40, 59, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  right x8 (x-left=44): block=(44, 63, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  left x1 (x-left=8): block=(8, 27, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  left x2 (x-left=4): block=(4, 23, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  left x3 (x-left=0): block=(0, 19, 16, 19) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+
+== fire from the ceiling (y12) at stack alignment ==
+  up1 right6 (x36-55, y12-15): block=(36, 55, 12, 15) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  up1 (x12-31, y12-15): block=(12, 31, 12, 15) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+
+== fire from the floor (y44) ==
+  down7 (x12-31, y44-47): block=(12, 31, 44, 47) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0
+  down7 right2 (x20-39, y44-47): block=(20, 39, 44, 47) diff(non-bar)=0 [] state=GameState.NOT_FINISHED lvl=0

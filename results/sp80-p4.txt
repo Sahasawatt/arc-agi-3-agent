@@ -1,0 +1,145 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:54:02 | INFO | Got anonymous API key: e4b4d207-dee5-4d90-97d2-a8047cd3a413
+2026-08-06 22:54:02 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:54:03 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:54:03 | INFO | Created new scorecard: fdf57d20-ccf5-4835-a992-a79fac88ebdc
+2026-08-06 22:54:05 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:54:05 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+-- board: level index 0 --
+  census: {1: 256, 4: 12, 6: 16, 9: 80, 11: 160, 12: 3508, 14: 64}
+  y= 0 eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+  y= 1 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 2 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 3 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 4 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 5 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 6 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 7 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 8 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y= 9 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=10 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=11 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=12 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=13 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=14 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=15 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=16 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=17 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=18 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=19 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=20 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=21 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=22 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=23 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=24 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=25 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=26 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=27 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=28 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=29 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=30 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=31 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=32 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=33 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=34 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=35 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=36 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=37 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=38 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=39 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=40 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=41 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=42 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=43 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=44 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=45 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=46 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=47 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=48 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=49 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=50 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=51 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=52 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=53 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=54 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=55 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=56 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=57 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=58 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=59 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=60 1111111111111111111111111111111111111111111111111111111111111111
+  y=61 1111111111111111111111111111111111111111111111111111111111111111
+  y=62 1111111111111111111111111111111111111111111111111111111111111111
+  y=63 1111111111111111111111111111111111111111111111111111111111111111
+  block start: (12, 16)
+  LEVEL CLEARED from block=(24,16) with 1 shot(s), 3 moves, state=NOT_FINISHED lvl=1
+-- board: level index 1 --
+  census: {1: 256, 4: 12, 6: 16, 8: 96, 9: 80, 11: 240, 12: 3332, 14: 64}
+  y= 0 1111111111111111111111111111111111111111111111111111111111111111
+  y= 1 1111111111111111111111111111111111111111111111111111111111111111
+  y= 2 1111111111111111111111111111111111111111111111111111111111111111
+  y= 3 1111111111111111111111111111111111111111111111111111111111111111
+  y= 4 ccccccccccccbbbbbbbbbbbbccccbbbbbbbbbbbbccccbbbbbbbbbbbbcccccccc
+  y= 5 ccccccccccccbbbbbbbbbbbbccccbbbbbbbbbbbbccccbbbbbbbbbbbbcccccccc
+  y= 6 ccccccccccccbbbbbbbbbbbbccccbbbbbbbbbbbbccccbbbbbbbbbbbbcccccccc
+  y= 7 ccccccccccccbbbbbbbbbbbbccccbbbbbbbbbbbbccccbbbbbbbbbbbbcccccccc
+  y= 8 ccccccccccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbcccccccc
+  y= 9 ccccccccccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbcccccccc
+  y=10 ccccccccccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbcccccccc
+  y=11 ccccccccccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbccccbbbbcccccccc
+  y=12 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=13 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=14 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=15 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=16 cccccccc888888888888cccccccccccccccccccccccccccccccccccccccccccc
+  y=17 cccccccc888888888888cccccccccccccccccccccccccccccccccccccccccccc
+  y=18 cccccccc888888888888cccccccccccccccccccccccccccccccccccccccccccc
+  y=19 cccccccc888888888888cccccccccccccccccccccccccccccccccccccccccccc
+  y=20 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=21 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=22 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=23 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=24 cccccccccccccccccccccccccccc888888888888cccccccccccccccccccccccc
+  y=25 cccccccccccccccccccccccccccc888888888888cccccccccccccccccccccccc
+  y=26 cccccccccccccccccccccccccccc888888888888cccccccccccccccccccccccc
+  y=27 cccccccccccccccccccccccccccc888888888888cccccccccccccccccccccccc
+  y=28 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=29 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=30 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=31 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=32 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=33 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=34 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=35 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=36 cccccccccccccccccccc99999999999999999999cccccccccccccccccccccccc
+  y=37 cccccccccccccccccccc99999999999999999999cccccccccccccccccccccccc
+  y=38 cccccccccccccccccccc99999999999999999999cccccccccccccccccccccccc
+  y=39 cccccccccccccccccccc99999999999999999999cccccccccccccccccccccccc
+  y=40 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=41 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=42 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=43 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=44 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=45 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=46 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=47 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=48 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=49 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=50 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=51 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=52 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=53 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=54 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=55 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=56 cccccccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccc
+  y=57 cccccccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccc
+  y=58 cccccccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccc
+  y=59 cccccccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccc
+  y=60 cccccccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccc
+  y=61 cccccccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccc
+  y=62 cccccccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccc
+  y=63 eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+  block start: (20, 36)
+  SWEEP EXHAUSTED at level index 1: 108 positions fired, 148 unreachable -- no single-position win
+
+final: state=NOT_FINISHED levels_completed=1

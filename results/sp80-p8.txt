@@ -1,0 +1,31 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:01:21 | INFO | Got anonymous API key: 6a9590db-081a-488c-8a52-2eb5b7a537c0
+2026-08-06 23:01:21 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:01:21 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:01:21 | INFO | Created new scorecard: 55c8f12f-d9fb-4c73-9320-da674be847c8
+2026-08-06 23:01:22 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:01:22 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== S1: walk to (0,28), fire, then press RIGHT twice -- who moves? ==
+  at (0,28) pre-fire: 9=[(0, 28, 19, 31, 80)] 8=[(8, 16, 19, 19, 48), (28, 24, 39, 27, 48)]
+  post-fire: 9=[(28, 24, 39, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  after RIGHT 1: 9=[(32, 24, 43, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  after RIGHT 2: 9=[(36, 24, 47, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  after fire 2: 9=[(36, 24, 47, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  after RIGHT 3: 9=[(40, 24, 51, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  state=NOT_FINISHED lvl=1
+
+== S2: boundary pairs -- fire at (24,20) vs (28,20), (20,24) vs (24,24) ==
+  (24,20) pre: 9=[(24, 20, 43, 23, 80)] 8=[(8, 16, 19, 19, 48), (28, 24, 39, 27, 48)]
+  (24,20) post (diff=128): 9=[(28, 24, 39, 27, 48)] 8=[(8, 16, 19, 19, 48), (24, 20, 43, 23, 80)]
+  (28,20) pre: 9=[(28, 20, 47, 23, 80)] 8=[(8, 16, 19, 19, 48), (28, 24, 39, 27, 48)]
+  (28,20) post (diff=0): 9=[(28, 20, 47, 23, 80)] 8=[(8, 16, 19, 19, 48), (28, 24, 39, 27, 48)]
+  (20,24) pre: 9=[(20, 24, 39, 27, 80)] 8=[(8, 16, 19, 19, 48)]
+  (20,24) post (diff=32): 9=[(28, 24, 39, 27, 48)] 8=[(8, 16, 19, 19, 48), (20, 24, 27, 27, 32)]
+  (24,24) pre: 9=[(24, 24, 43, 27, 80)] 8=[(8, 16, 19, 19, 48)]
+  (24,24) post (diff=0): 9=[(24, 24, 43, 27, 80)] 8=[(8, 16, 19, 19, 48)]
+
+== S3: double fire at one spot -- does it swap back? ==
+  fire 1: 9=[(28, 24, 39, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  fire 2: 9=[(28, 24, 39, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  fire 3: 9=[(28, 24, 39, 27, 48)] 8=[(0, 28, 19, 31, 80), (8, 16, 19, 19, 48)]
+  state=NOT_FINISHED

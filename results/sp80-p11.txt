@@ -1,0 +1,15 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:24:55 | INFO | Got anonymous API key: a09086ee-d7a6-405a-8325-5adae2e31262
+2026-08-06 23:24:55 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:24:56 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:24:56 | INFO | Created new scorecard: efdb991a-f5f8-488b-a53e-c3750af4f1ed
+2026-08-06 23:24:57 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:24:57 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  expanded=5000 frontier=2501 states=7501 depth~11 t=75s
+  expanded=10000 frontier=3393 states=13393 depth~13 t=150s
+  expanded=15000 frontier=3706 states=18706 depth~15 t=226s
+  expanded=20000 frontier=3553 states=23553 depth~16 t=300s
+  expanded=25000 frontier=3042 states=28042 depth~18 t=376s
+  expanded=30000 frontier=2280 states=32280 depth~19 t=451s
+  expanded=35000 frontier=985 states=35985 depth~22 t=524s
+NO WIN: expanded=39328 states=39328 frontier=0 t=586s

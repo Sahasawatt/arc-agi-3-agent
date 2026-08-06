@@ -1,0 +1,80 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:46:15 | INFO | Got anonymous API key: 39498873-0d2c-46cf-a8f9-528e0c544f32
+2026-08-06 22:46:15 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:46:16 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:46:16 | INFO | Created new scorecard: f837489f-09d8-4413-aefb-097fbba32fd1
+2026-08-06 22:46:17 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:46:17 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+actions: [1, 2, 3, 4, 5, 6]
+frame shape: (1, 64, 64)
+colour census: {1: 256, 4: 12, 6: 16, 9: 80, 11: 160, 12: 3508, 14: 64}
+background colour: 12
+board dump (hex chars, bg='c'):
+  y= 0 eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+  y= 1 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 2 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 3 cccccccccccccccccccccccccccccccccccc4444cccccccccccccccccccccccc
+  y= 4 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 5 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 6 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 7 cccccccccccccccccccccccccccccccccccc6666cccccccccccccccccccccccc
+  y= 8 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y= 9 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=10 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=11 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=12 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=13 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=14 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=15 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=16 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=17 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=18 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=19 cccccccccccc99999999999999999999cccccccccccccccccccccccccccccccc
+  y=20 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=21 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=22 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=23 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=24 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=25 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=26 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=27 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=28 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=29 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=30 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=31 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=32 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=33 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=34 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=35 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=36 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=37 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=38 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=39 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=40 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=41 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=42 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=43 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=44 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=45 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=46 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=47 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=48 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=49 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=50 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=51 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  y=52 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=53 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=54 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=55 ccccccccccccccccbbbbccccbbbbccccccccccccbbbbccccbbbbcccccccccccc
+  y=56 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=57 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=58 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=59 ccccccccccccccccbbbbbbbbbbbbccccccccccccbbbbbbbbbbbbcccccccccccc
+  y=60 1111111111111111111111111111111111111111111111111111111111111111
+  y=61 1111111111111111111111111111111111111111111111111111111111111111
+  y=62 1111111111111111111111111111111111111111111111111111111111111111
+  y=63 1111111111111111111111111111111111111111111111111111111111111111
+replay identical: True
+step rate: 80469/s  (0.00s for 300)
+2026-08-06 22:46:17 | INFO | Successfully fetched metadata for game sp80
+second env same start: True

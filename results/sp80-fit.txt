@@ -1,0 +1,4 @@
+234 labelled cells
+single half-plane fits: 0
+trying cones...
+cone fits: 0

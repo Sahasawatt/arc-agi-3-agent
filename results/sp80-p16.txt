@@ -1,0 +1,13 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:37:14 | INFO | Got anonymous API key: f25c7dc5-865e-4eda-989f-97ff62b1ed7c
+2026-08-06 23:37:14 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:37:16 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:37:16 | INFO | Created new scorecard: 6801a29f-5b22-4f91-9433-3b5b70181be9
+2026-08-06 23:37:17 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:37:17 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  fast (24,16): L2 masked hash e203ae3db30da48312dcc59f1bc8daec
+2026-08-06 23:37:17 | INFO | Successfully fetched metadata for game sp80
+  ceiling (24,12): L2 masked hash e203ae3db30da48312dcc59f1bc8daec
+2026-08-06 23:37:18 | INFO | Successfully fetched metadata for game sp80
+  floor (24,44): L2 masked hash e203ae3db30da48312dcc59f1bc8daec
+all identical: True

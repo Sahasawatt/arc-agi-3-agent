@@ -1,0 +1,68 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:48:33 | INFO | Got anonymous API key: b420f5d5-51b8-400b-95e1-fc7d6faec7c3
+2026-08-06 22:48:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:48:34 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:48:34 | INFO | Created new scorecard: 92f96917-1a46-4af8-935f-f1ccb0d7cc12
+2026-08-06 22:48:35 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:48:35 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+action 1: complex=False
+action 2: complex=False
+action 3: complex=False
+action 4: complex=False
+action 5: complex=False
+action 6: complex=True
+
+== A: ACTION5 once, then ACTION1 x4 ==
+  after 5: 2 cells x[62-63] y[0-0]
+    14->0: 2 cells  e.g. [(62, 0), (63, 0)]
+    state=GameState.NOT_FINISHED lvl=0
+  after 1 (#0): 162 cells x[12-61] y[0-19]
+    9->12: 80 cells  e.g. [(12, 16), (13, 16), (14, 16), (15, 16), (16, 16), (17, 16)]
+    12->9: 80 cells  e.g. [(12, 12), (13, 12), (14, 12), (15, 12), (16, 12), (17, 12)]
+    14->0: 2 cells  e.g. [(60, 0), (61, 0)]
+    state=GameState.NOT_FINISHED
+  after 1 (#1): 2 cells x[58-59] y[0-0]
+    14->0: 2 cells  e.g. [(58, 0), (59, 0)]
+    state=GameState.NOT_FINISHED
+  after 1 (#2): 3 cells x[55-57] y[0-0]
+    14->0: 3 cells  e.g. [(55, 0), (56, 0), (57, 0)]
+    state=GameState.NOT_FINISHED
+  after 1 (#3): 2 cells x[53-54] y[0-0]
+    14->0: 2 cells  e.g. [(53, 0), (54, 0)]
+    state=GameState.NOT_FINISHED
+
+== B: ACTION5 x5 from reset ==
+  press 0: 2 cells x[62-63] y[0-0]
+    14->0: 2 cells  e.g. [(62, 0), (63, 0)]
+    state=GameState.NOT_FINISHED lvl=0
+  press 1: 2 cells x[60-61] y[0-0]
+    14->0: 2 cells  e.g. [(60, 0), (61, 0)]
+    state=GameState.NOT_FINISHED lvl=0
+  press 2: 2 cells x[58-59] y[0-0]
+    14->0: 2 cells  e.g. [(58, 0), (59, 0)]
+    state=GameState.NOT_FINISHED lvl=0
+  press 3: 3 cells x[55-57] y[0-0]
+    14->0: 3 cells  e.g. [(55, 0), (56, 0), (57, 0)]
+    state=GameState.NOT_FINISHED lvl=0
+  press 4: 2 cells x[53-54] y[0-0]
+    14->0: 2 cells  e.g. [(53, 0), (54, 0)]
+    state=GameState.GAME_OVER lvl=0
+    GAME_OVER hit at press 4
+
+== C: ACTION6 ==
+  6 at (32,32): 2 cells x[62-63] y[0-0]
+    14->0: 2 cells  e.g. [(62, 0), (63, 0)]
+    state=GameState.NOT_FINISHED
+  6 at (20,17) on the 9-block: 2 cells x[60-61] y[0-0]
+    14->0: 2 cells  e.g. [(60, 0), (61, 0)]
+    state=GameState.NOT_FINISHED
+
+== D: bar budget -- alternate 3/4 until GAME_OVER (cap 200) ==
+  bar at reset: 64 cells of colour 14
+  action 1: bar=62 state=GameState.NOT_FINISHED
+  action 2: bar=60 state=GameState.NOT_FINISHED
+  action 3: bar=58 state=GameState.NOT_FINISHED
+  action 10: bar=43 state=GameState.NOT_FINISHED
+  action 20: bar=21 state=GameState.NOT_FINISHED
+  action 30: bar=0 state=GameState.GAME_OVER
+  total actions to terminal: 30

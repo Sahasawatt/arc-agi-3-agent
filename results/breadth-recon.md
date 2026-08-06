@@ -663,3 +663,101 @@ may need to happen with the clock/some other state in a particular phase, or
 the level may want a sequence of docks the piece geometry cannot express with
 its two pads -- in which case the next lever is reading how the 8-pads respond
 to a dock over TIME (frames during dock showed no drift in one 4-tick hold).
+
+## sp80 OPENS -- level 1 falls in one sitting; ACTION5 is a control TRANSFER, not a gun (2026-08-06, session 3)
+
+The re86 playbook applied verbatim (determinism first, census + per-action
+diffs, then hypothesis probes), and it paid out on the second hypothesis.
+Everything below is offline; no scorecard touched.
+
+**Foundation** (`sp80-det.txt`): replay-from-reset is byte-identical in-process
+and a second `arc.make` starts identically; **80,469 steps/s** (19x re86). The
+board: colour-14 bar across y0 (the budget clock), a 4x4-column stack of
+colour-4 (3 rows) over colour-6 (4 rows) at x36-39 y1-7, the movable colour-9
+block 20x4 at (12,16), two colour-11 castle shapes at y52-59 (4x4 towers on a
+12x4 base, 4-wide gap between towers), and a colour-1 band y60-63.
+
+**Measured mechanics, run files named:**
+
+- Movement: 1=up 2=down 3=left 4=right, step 4, clean clamp walls (the brief's
+  "movement model CLEAN" holds). 80-cell body: x0-44, y16-44 as x-left/y-top
+  (`sp80-p2.txt` wall map). A blocked move burns budget and does not move.
+- **Budget: bar burns ~2.13 cells/action; level 1 = 30 actions, level 2 = 45**
+  (`sp80-p1.txt` test D, `sp80-p10.txt`). GAME_OVER at bar 0. The bar row
+  flips to y63 on level 2 (the whole board flips vertically).
+- **ACTION5 is the level's verb and a 5-shot magazine: the 5th press in one
+  life = GAME_OVER, counted per-life TOTAL, not consecutive, position-blind**
+  (`sp80-p1.txt` B, `sp80-p2.txt` A/A2: 5,5,5,5,1,5 dies on the 6th press;
+  interleaving does not reset the count).
+- ACTION6 (the complex/click action) is a no-op everywhere tried, on every
+  object (`sp80-p2.txt` C). probe.py crashed on sp80's GAME_OVER empty frame
+  before ever reaching ACTION6 -- the grid_of guard matters here too.
+- **Level 1 win: fire with the block at x-left=24, ANY y -- the full win map is
+  exactly the 9-position column** (`sp80-p6.txt`, all 108 reachable positions
+  fired). Recipe: `[4,4,4,5]`, 4 actions of a 30-action budget.
+- **What ACTION5 actually does (level 2 shows it): control TRANSFER between
+  bodies.** Firing from a transfer-legal position moves colour 9 (= "you") onto
+  the colour-8 target body; the old body parks as colour 8, keeps its own
+  shape/size, and the arrows then move the NEW body (`sp80-p8.txt` S1: the
+  48-cell block walks after takeover). Level 1's "win column" is presumably a
+  transfer INTO the goal stack reading as level-complete -- unproven, needs the
+  L1 diff read again with transfer eyes.
+- Level 2 board: 3 castles hanging from the top, bar at y63, stack at x40-43
+  bottom, and TWO 12x4 colour-8 bodies at (8,16) and (28,24). Bodies do NOT
+  collide -- the active body walks through them; a body under another is
+  OCCLUDED, not consumed (the repo's oldest trap, confirmed again
+  `sp80-p5.txt`).
+- **Transfer legality is positional and NOT yet explained** (`sp80-p12.txt`,
+  `sp80-p13.txt`: full maps, 80-body-active and 48-body-active). Shape: a
+  no-transfer wedge opens down-right of the target body; pressed against the
+  LEFT wall (x0) or the CEILING (y16) transfer is legal from ANY x/y; the
+  boundary is neither Manhattan, Chebyshev, Euclidean, sum-diagonal, nor any
+  45-degree corner ray tried (all fitted and refuted against the maps).
+- **The transfer chain on L2 is a fixed toggle: 80-body <-> block-2. Block-1 at
+  (8,16) is NEVER a target** -- not even when the active body fully overlaps
+  it (`sp80-p12/13.txt`, zero '1' entries in both maps). Block-1's role is
+  open, and is probably the level's actual puzzle.
+- Firing at a transfer-illegal position changes nothing but the clock -- a
+  wasted charge from the 5-magazine.
+- The reset-after-transition trap is a TOOL here: reset with zero actions after
+  a level-up game-resets to level 1, which is how the L1 win map got 9 samples
+  in one process (`sp80-p6.txt`).
+
+**Instrument notes:** deepcopy(env) works, is faithful, ~2-3ms (`sp80-p10.txt`
+B) -- BFS over the real engine at O(1) per node instead of replay-per-child.
+`env.reset()` costs ~10ms and dominates naive sweeps; the p9 BFS null was an
+instrument artifact TWICE (depth cap 29 on a 45-action budget, and fires-used
+missing from the visited key -- ammo is real hidden state).
+
+**Open, in order:** (1) p11 BFS (depth 44, ammo-keyed, deepcopy nodes) over L2
+-- running at write time; (2) the transfer-legality rule; (3) block-1's role;
+(4) whether L2's win is a transfer into the stack and from where.
+
+**sp80 CLOSED for this session -- L1 solved, L2 is a measured wall (2026-08-06, session 3 tail):**
+
+- **BFS over the real engine, exhaustive: level 2 has NO winning line within one
+  life** (`sp80-p11.txt`: 39,328 states, frontier emptied, depth cap 44 on the
+  45-action budget, fires-used in the visited key, deepcopy nodes). The p9 null
+  was the instrument; the p11 null is the level.
+- Transfer legality is **position-pure**: same position fired at different
+  clocks and via different routes always answers the same (`sp80-p14.txt`).
+  This licenses the BFS clock-masking for transfers -- and the win itself is
+  not clock-gated either at the natural candidates: stack-aligned columns,
+  both bodies, floor/ceiling rows, every affordable delay (`sp80-p15.txt`,
+  zero wins).
+- The L2 board is byte-identical (clock masked) for three different L1 exit
+  recipes -- ceiling/home/floor fires (`sp80-p16.txt`); no cross-level state.
+- Nothing measurable persists across lives: bodies reset, the bar refills, the
+  magazine is per-life. Level 2's missing trigger is therefore OUTSIDE
+  everything enumerated here -- the same verdict class as cn04-L2's dock.
+  Untried levers, for whoever returns: interactions that need the ACTIVE body
+  parked ON a specific object while a DIFFERENT condition holds (the maps only
+  vary one body at a time); ACTION6 clicks landing on lattice cells NOT probed
+  (only object centres were clicked); and reading the L1 win as "transfer into
+  the stack" to derive what L2's stack expects geometrically.
+
+**Campaign note: sp80's level 1 is now a KNOWN CLEAR** -- `[4,4,4,5]` from
+reset, 4 actions, and the whole win column (24,y) is legal so a legal agent
+has 9 targets to find. Wiring a discovery rung into compete.py (fire-sweep
+under the 5-shot/30-action budgets) is a CODE change: full 17-game sweep +
+no-level-lost gate applies. sp80 would be game #7 with a level.

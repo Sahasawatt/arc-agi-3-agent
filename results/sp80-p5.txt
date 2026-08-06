@@ -1,0 +1,27 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:55:54 | INFO | Got anonymous API key: dccb3e8f-0d14-46ba-9aa7-10900c425244
+2026-08-06 22:55:54 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:55:55 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:55:55 | INFO | Created new scorecard: 3dfc0163-129a-4f5f-9eee-b12da2e51cdc
+2026-08-06 22:55:56 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:55:56 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== A: walk UP into the (28,24) 8-block (player x20-39 overlaps x28-39) ==
+  up#0: player=[(20, 32, 39, 35)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  up#1: player=[(20, 28, 39, 31)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  up#2: player=[(20, 24, 39, 27)] eights=[(8, 16, 19, 19)] state=NOT_FINISHED
+  up#3: player=[(20, 20, 39, 23)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  up#4: player=[(20, 16, 39, 19)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  up#5: player=[(20, 16, 39, 19)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+
+== B: walk LEFT into the (8,16) 8-block after climbing beside it ==
+  after climb: player=[(20, 16, 39, 19)] eights=[(8, 16, 19, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  left#0: player=[(16, 16, 35, 19)] eights=[(8, 16, 15, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  left#1: player=[(12, 16, 31, 19)] eights=[(8, 16, 11, 19), (28, 24, 39, 27)] state=NOT_FINISHED
+  left#2: player=[(8, 16, 27, 19)] eights=[(28, 24, 39, 27)] state=NOT_FINISHED
+  left#3: player=[(4, 16, 23, 19)] eights=[(28, 24, 39, 27)] state=NOT_FINISHED
+
+== C: level-2 wall map from start (20,36) ==
+  up: stops at [(20, 16, 39, 19)] after 5 moves
+  down: stops at [(20, 48, 39, 51)] after 3 moves
+  left: stops at [(0, 36, 19, 39)] after 5 moves
+  right: stops at [(44, 36, 63, 39)] after 6 moves

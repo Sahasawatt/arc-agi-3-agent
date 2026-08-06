@@ -1,0 +1,45 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:50:35 | INFO | Got anonymous API key: b4f74cea-778c-4b2d-8cc1-0886f616be1f
+2026-08-06 22:50:35 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:50:36 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:50:36 | INFO | Created new scorecard: 71b353f0-4de3-40a8-95b9-687083bc0bef
+2026-08-06 22:50:37 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 22:50:37 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== A: is the ACTION5 death counter consecutive or per-life total? ==
+  press 0 (action 5): state=GameState.NOT_FINISHED
+  press 1 (action 5): state=GameState.NOT_FINISHED
+  press 2 (action 5): state=GameState.NOT_FINISHED
+  press 3 (action 5): state=GameState.NOT_FINISHED
+  press 4 (action 1): state=GameState.NOT_FINISHED
+  press 5 (action 5): state=GameState.GAME_OVER
+
+== A2: 5x5 with the block moved first (position-dependent?) ==
+  died at press 4 (state=GameState.GAME_OVER)
+
+== B: does ACTION5 modify the NEXT action? [5,d] vs [d] displacement ==
+  d=1: start=(12, 31, 16, 19) plain=(12, 31, 12, 15) after5=(12, 31, 12, 15) same=True
+  d=2: start=(12, 31, 16, 19) plain=(12, 31, 20, 23) after5=(12, 31, 20, 23) same=True
+  d=3: start=(12, 31, 16, 19) plain=(8, 27, 16, 19) after5=(8, 27, 16, 19) same=True
+  d=4: start=(12, 31, 16, 19) plain=(16, 35, 16, 19) after5=(16, 35, 16, 19) same=True
+
+== C: ACTION6 clicks on each object ==
+  4-block (38,2): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  6-block (38,5): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  tower L1 (18,53): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  gap L1 (21,53): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  base L1 (21,57): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  bottom band (32,61): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  bar (10,0): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  tower R1 (42,53): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+  gap R2 (45,53): 2 cells changed, non-bar: []  state=GameState.NOT_FINISHED
+
+== D: wall map -- how far does the block go each way? ==
+  up: stops at (12, 31, 12, 15) after 1 moves (2 presses)
+  down: stops at (12, 31, 44, 47) after 7 moves (8 presses)
+  left: stops at (0, 19, 16, 19) after 3 moves (4 presses)
+  right: stops at (44, 63, 16, 19) after 8 moves (9 presses)
+
+== E: park ON the castle top and on the gap column -- consumption? ==
+  parked at (12, 31, 44, 47) state=GameState.NOT_FINISHED
+  census delta: [(0, 15), (14, -15)]
+  after 3 more downs: state=GameState.NOT_FINISHED census delta vs parked: [(0, 6), (14, -6)]

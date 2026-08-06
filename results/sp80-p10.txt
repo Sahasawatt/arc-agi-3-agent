@@ -1,0 +1,17 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 23:13:40 | INFO | Got anonymous API key: 0bf0c55f-bb66-4fc1-9bff-d20e0d7fa4be
+2026-08-06 23:13:40 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 23:13:41 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 23:13:41 | INFO | Created new scorecard: f4d8b1dc-6d1c-4dc9-b98b-a3ab5397d8fc
+2026-08-06 23:13:42 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 23:13:42 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== A: level-2 budget ==
+  L2 clock rows: y0 colours [1] y63 colours [14]
+  colour-14 cells at L2 start: 64
+  actions to terminal on L2: 45 (state=GAME_OVER)
+
+== B: deepcopy the env -- legal? faithful? fast? ==
+  deepcopy ok in 3.0 ms
+  same next frame after copy: True
+  copy advanced independently: True
+  100 deepcopies: 0.20s
