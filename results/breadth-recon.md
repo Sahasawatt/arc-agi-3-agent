@@ -434,3 +434,37 @@ Next session's L1 attempt, in order: (1) collect all four B-boxes tracking the
 P-cross and its four P-boxes; (3) the win is then likely both crosses' box
 sets cleared. The competition-run blocker stays the election (colour 11 wins
 the vote) — same parked family as sc25/sp80.
+
+## re86: ACTION 5 IS A CONTROL TOGGLE — the mechanic set is complete (2026-08-06)
+
+Live-probed additions to the cross-collect model (`re86-tog.txt`, `re86-defl*.txt`,
+`re86-l1a.txt`):
+
+- **Action 5 toggles which cross the arrows drive** (B → P → B, verified both
+  ways). This finally explains the competition run's colour-11 election (half
+  the warmup's arrows land on the P-cross) AND its scattered action-5
+  "displacement".
+- **Crosses and frames are transparent to the WALK**: pressing through box
+  rows, frame walls, and straight through the other cross's body produces
+  clean -3/+3 steps — no collision, no death, in a fresh run. The earlier
+  "stuck at x54/x48" readings were an INSTRUMENT ARTIFACT: the modal-column
+  centre of colour 9 drifts once arms lose cells or clip the board edge —
+  track the @ (the board's only colour-0 cell, riding the B-cross centre).
+- **Collection appears to be ARM-sweep, not centre-landing**: the confirmed
+  collect (inner B at (40,24) consumed, frame -4 cells, B-cross -2) happened
+  with the centre at (42,24), the arm covering the inner cell. One GAME_OVER
+  was also logged with the vertical arm crossing box (48,16) on a different
+  visit — collect-vs-death conditions are NOT yet separated (suspect: which
+  cross is under control, or frame-cell overlap vs inner-cell overlap).
+- **Parity table (step 3)**: from spawn, the B-cross's lattice reaches NONE of
+  the four B-box inners exactly ((48,16),(40,24),(53,24),(48,35) — each off by
+  1-2 on one axis); the P-cross reaches three of four P-inners ((15,3),(6,9),
+  (24,9) on-lattice; (15,17) off). If collect is arm-sweep, parity stops
+  mattering — the arm is 6 wide either side. The next session's first probe:
+  sweep an arm across each inner cell deliberately (control the right cross!)
+  and log collect vs death per overlap type; then chain all eight.
+
+Board coordinates this night (fresh reset): B-cross centre @ (36,45), P-cross
+centre (21,27); B-boxes (48,16),(40,24),(53,24),(48,35); P-boxes (15,3),(6,9),
+(24,9),(15,17). Box inners detected by "9/11 cell wearing a colour-4 ring"
+(`boxes()` in `re86-l1a.txt`'s script — rebuild from there).
