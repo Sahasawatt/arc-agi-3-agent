@@ -1,0 +1,16 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:36:17 | INFO | Got anonymous API key: 6c653b15-a04d-498f-8bdd-d1fb7955f908
+2026-08-06 22:36:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:36:18 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:36:18 | INFO | Created new scorecard: dcf63bae-98e6-4813-b701-4a37c2b99863
+2026-08-06 22:36:19 | INFO | Successfully fetched metadata for game cn04
+2026-08-06 22:36:19 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+docked: 8s 72 b (17, 35, 31, 52) lvl 1
+after 5: 8s 108 b (17, 35, 31, 52) 0 (11, 0, 28, 37) lvl 1 GameState.NOT_FINISHED
+after 5x4: 8s 72 b (17, 35, 31, 52) lvl 1 GameState.NOT_FINISHED
+act3: b=(17, 35, 31, 52) 8s=108 lvl=1 GameState.NOT_FINISHED
+act1: b=(17, 35, 31, 52) 8s=108 lvl=1 GameState.NOT_FINISHED
+hammer down 0: b=(17, 35, 31, 52) 8s=99 lvl=1 GameState.NOT_FINISHED
+hammer down 1: b=(17, 35, 31, 52) 8s=99 lvl=1 GameState.NOT_FINISHED
+hammer down 2: b=(20, 35, 31, 52) 8s=99 lvl=1 GameState.NOT_FINISHED
+hammer down 3: b=(20, 35, 31, 52) 8s=108 lvl=1 GameState.NOT_FINISHED

@@ -620,3 +620,46 @@ no swatch on the board. The colour-1 ring is the only unexplained object.
 Level 6's budget is also tighter: the bar reaches 64 in well under 100 actions,
 so hypothesis probes there are one-shot per replay (~450 actions to reach L6
 offline, deterministic).
+
+## cn04 L2: the dock EXISTS and registers visually -- the completion trigger is still not found (2026-08-06, session 2 tail)
+
+Live-shim recon (`cn04_l2*.py` -> `results/cn04-l2*.txt`; all offline, one live
+env per process via `probe_cn04.live_at_level`). The L2 board IS stable across
+processes (censuses and dumps byte-match), so cross-run geometry holds even
+though trajectories are process-random.
+
+Measured facts, several overturning the earlier session's model:
+
+- **The white piece passes THROUGH every shape** -- the trial matrix (4
+  rotations x 7 alignments, pushed right) sailed to the board edge every time
+  (`cn04-l2c2.txt`). The historical "refused step held for 1,600 rounds" was a
+  board-edge refusal, not shape collision: bodies do not collide on this level.
+- **The board's pads pair by CONSTELLATION exactly once**: the piece's pad pair
+  vector is (-3,+6), and of every pad pair on the board (12 pads: piece 2,
+  e-shape 4, b-shape 4, 9-square 2) the ONLY match, at any of the four
+  rotations, is the b-shape's ((18,39),(15,45)). Geometry singles out one dock.
+- **The dock registers**: with the piece translated (0,+18) both pad pairs
+  coincide, the bodies mesh with ZERO overlap (a true jigsaw fit), and all four
+  involved pads VANISH from the frame (8-census 108 -> 72, back on undock,
+  reproducible; `cn04-l2f.txt`). The engine sees the dock. The level does not
+  fall.
+- Measured inert at/around the dock: adjacency above/coincide/below
+  (`cn04-l2d2.txt`), rotator pressed at dock x1 and x4 (`cn04-l2h.txt`), moving
+  after docking (b never follows -- no carry/merge), hammering THROUGH b to the
+  board bottom (`cn04-l2i.txt` -- and the "b lost its left column" reading en
+  route was bbox-through-occlusion, the repo's oldest trap, again), a
+  single-pad tour coinciding piece-pad-1 with every other pad on the board
+  (`cn04-l2g.txt`), and pushing up into the top strip at four offsets
+  (`cn04-l2j.txt`).
+- **The colour-4 strip (x16-47, row 0) is a CLOCK, not a door**: it burns ~1
+  cell per 3-4 actions, monotonically, and the loss persists across level
+  resets (32 -> 27 across one probe battery). Long probe batteries on this
+  level are spending a real budget; whatever completes the level must fit it.
+- `env.reset()` after >=1 real action re-deals the same L2 board in-process --
+  the retry loop every probe above leans on.
+
+Open: what the dock is FOR. The one un-probed structural idea: the dock event
+may need to happen with the clock/some other state in a particular phase, or
+the level may want a sequence of docks the piece geometry cannot express with
+its two pads -- in which case the next lever is reading how the 8-pads respond
+to a dock over TIME (frames during dock showed no drift in one 4-tick hold).

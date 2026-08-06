@@ -1,0 +1,15 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:30:07 | INFO | Got anonymous API key: 8965de86-9ac4-4e57-a66d-8a978e5a4ea8
+2026-08-06 22:30:07 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:30:08 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:30:08 | INFO | Created new scorecard: 7d97779e-c766-4e70-b6f8-86e69e714e66
+2026-08-06 22:30:09 | INFO | Successfully fetched metadata for game cn04
+2026-08-06 22:30:09 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+keyboard actions: [1, 2, 3, 4, 5]
+piece bbox: (11, 11, 19, 28)
+after act1: (11, 8, 19, 25) GameState.NOT_FINISHED lvl 1
+after act2: (11, 0, 19, 28) GameState.NOT_FINISHED
+after act3: (8, 0, 16, 28) GameState.NOT_FINISHED
+after act4: (11, 0, 19, 28) GameState.NOT_FINISHED
+after act5: (11, 0, 28, 19) cells 0: 92 was 91 (11, 0, 19, 28)
+after act5 x2: (11, 0, 19, 28) cells 0: 92

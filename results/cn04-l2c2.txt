@@ -1,0 +1,36 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 22:31:12 | INFO | Got anonymous API key: df612d30-4232-4239-84de-8f4e032a9c6c
+2026-08-06 22:31:12 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 22:31:13 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 22:31:13 | INFO | Created new scorecard: 01d5c272-f031-4f81-81f4-ee0bc380392a
+2026-08-06 22:31:14 | INFO | Successfully fetched metadata for game cn04
+2026-08-06 22:31:14 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+baseline lvl 1
+rot=0 ud=-3: ('depth', (16, 0, 61, 19), 1)
+rot=0 ud=-2: ('depth', (16, 0, 61, 22), 1)
+rot=0 ud=-1: ('depth', (16, 0, 61, 25), 1)
+rot=0 ud=+0: ('depth', (16, 0, 61, 28), 1)
+rot=0 ud=+1: ('depth', (16, 0, 61, 31), 1)
+rot=0 ud=+2: ('depth', (16, 0, 61, 34), 1)
+rot=0 ud=+3: ('depth', (16, 0, 61, 37), 1)
+rot=1 ud=-3: ('depth', (16, 0, 61, 10), 1)
+rot=1 ud=-2: ('depth', (16, 0, 61, 13), 1)
+rot=1 ud=-1: ('depth', (16, 0, 61, 16), 1)
+rot=1 ud=+0: ('depth', (16, 0, 61, 19), 1)
+rot=1 ud=+1: ('depth', (16, 0, 61, 22), 1)
+rot=1 ud=+2: ('depth', (16, 0, 61, 25), 1)
+rot=1 ud=+3: ('depth', (16, 0, 61, 28), 1)
+rot=2 ud=-3: ('depth', (16, 0, 61, 19), 1)
+rot=2 ud=-2: ('depth', (16, 0, 61, 22), 1)
+rot=2 ud=-1: ('depth', (16, 0, 61, 25), 1)
+rot=2 ud=+0: ('depth', (16, 0, 61, 28), 1)
+rot=2 ud=+1: ('depth', (16, 0, 61, 31), 1)
+rot=2 ud=+2: ('depth', (16, 0, 61, 34), 1)
+rot=2 ud=+3: ('depth', (16, 0, 61, 37), 1)
+rot=3 ud=-3: ('depth', (16, 0, 61, 10), 1)
+rot=3 ud=-2: ('depth', (16, 0, 61, 13), 1)
+rot=3 ud=-1: ('depth', (16, 0, 61, 16), 1)
+rot=3 ud=+0: ('depth', (16, 0, 61, 19), 1)
+rot=3 ud=+1: ('depth', (16, 0, 61, 22), 1)
+rot=3 ud=+2: ('depth', (16, 0, 61, 25), 1)
+rot=3 ud=+3: ('depth', (16, 0, 61, 28), 1)
