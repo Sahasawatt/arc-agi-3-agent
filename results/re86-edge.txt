@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 07:14:50 | INFO | Got anonymous API key: 502a5939-edb0-47c8-978f-d209b5871ef2
+2026-08-06 07:14:50 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 07:14:51 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 07:14:51 | INFO | Created new scorecard: 1ec38710-4fc1-4c63-abfc-af39076b3d3b
+2026-08-06 07:14:52 | INFO | Successfully fetched metadata for game re86
+2026-08-06 07:14:53 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+== direction map ==
+  action 1: (36, 45) -> (36, 42)  d=(0, -3)
+  action 2: (36, 45) -> (36, 48)  d=(0, 3)
+  action 3: (36, 45) -> (33, 45)  d=(-3, 0)
+  action 4: (36, 45) -> (39, 45)  d=(3, 0)
+
+== edge behaviour (B-cross, 30 presses each way) ==
+  action 1: last6=[(36, 0), (36, 0), (36, 0), (36, 0), (36, 0), (36, 0)] dead=None
+           census@end={0: 1, 1: 19, 4: 64, 5: 3875, 9: 43, 11: 49, 15: 45}
+  action 2: last6=[None, None, None, None, None, None] dead=None
+           census@end={1: 19, 4: 64, 5: 3902, 9: 17, 11: 49, 15: 45}
+  action 3: last6=[(0, 45), (0, 45), (0, 45), (0, 45), (0, 45), (0, 45)] dead=None
+           census@end={0: 1, 1: 19, 4: 64, 5: 3875, 9: 43, 11: 49, 15: 45}
+  action 4: last6=[(63, 45), (63, 45), (63, 45), (63, 45), (63, 45), (63, 45)] dead=None
+           census@end={0: 1, 1: 19, 4: 64, 5: 3875, 9: 43, 11: 49, 15: 45}
+
+== parity after an edge push ==
+  after 30x action3: (0, 45) state GameState.NOT_FINISHED
+  x%3 = 0  y%3 = 0 (spawn was 36%3=0, 45%3=0)
+  B-box inners reachable now: []
+  P-box inners reachable now: [(15, 3), (6, 9), (24, 9)]

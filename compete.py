@@ -26,6 +26,7 @@ from arcengine import GameState
 from discover import (Model, body_box, choose_next, classify_colours, infer_body, infer_dirs,
                       infer_player, infer_step, locate, see, terrain_samples, walkable, _shifts)
 from gate import Gate, cycle, turned
+from cover import Cover, signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1700,6 +1701,7 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     poked = {}    # object box -> cells the board changed on its last click
     wdbg_full, wdbg_near = {}, {}   # ARC_WDBG only: board state at last arrival per goal
     prev_here, frozen = None, 0   # rounds the piece has not moved — the click gate
+    cover = Cover(values) if signature(np.array(obs.frame)[-1]) else None
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1819,7 +1821,14 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                       and not plan else 0)
             prev_here = (here_now[0], here_now[1])
         mark = None   # what the staged trip says this action does to the display
-        if plan:
+        # The framed-box family (`cover.py`). Its signature — a cell ringed by eight
+        # identical cells — is re86 alone of the seventeen at reset, so every other
+        # game is identical by construction; it answers None the moment it runs out
+        # of ideas and the rungs below take the level back.
+        cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed) if cover else None
+        if cv is not None:
+            psrc, value, plan, expect, trip = "cover", cv, [], [], []
+        elif plan:
             value = plan.pop(0)
             if trip:
                 mark = trip.pop(0)

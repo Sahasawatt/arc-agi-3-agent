@@ -64,6 +64,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   dragged `infer_step`'s gcd 3→1. `infer_dirs` now drops any action with ≥3 samples and no
   dominant vector (<0.6, the cn04 rotator-scatter law moved upstream); it lands in the
   extras/rotator path instead. Both fixes: canary cn04 [131] + ls20 7/7 intact.
+- **re86's bottom row is a 100-ACTION-PER-LEVEL BUDGET, and a shape's own cells cannot be
+  read off its colour.** The colour-15 row fills at `round(0.64 n)` of 64 cells and the game
+  ends at 64; it refills on level-up, and a blocked move and the toggle both cost. Two
+  unexplained deaths in an earlier session were this and a centre standing on a frame cell.
+  Reading the shape: probe ONE DIRECTION PER AXIS and take what MOVES (a shape shifted along
+  an arm hides that arm in its own trail -- one axis read a 52-cell plus as 32), never a
+  colour mask (level 3 gives three shapes one colour, level 4 pairs a shape colour with a
+  different box colour), and symmetrise, because an arm hanging off the board edge is
+  measured SHORT. `cover.py`, `results/re86-*.txt`.
 - **`env.reset()` with zero actions taken since the last transition performs a full GAME
   reset**, back to level 1 — it only scopes to the current level once a real action has been
   taken. Probes that reset immediately are measuring level 1 while reporting level 4.
@@ -823,7 +832,9 @@ sources, including a retraction of the "5× human median" action cap that is not
 `perception` (frame → objects, HUD, glyph bitmaps) → `identity` (cross-frame tracking) →
 `discover` (movement model by acting) → `plan` (BFS routing) / `gate` (locks and the squares
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
-loop). `play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
+loop). `cover` hangs off the play loop as a whole-game driver for the framed-box
+family (re86): asked first every round, gated on a signature no other public game shows at
+reset, and answering None the moment it runs out of ideas so the rungs take the level back. `play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
 upper bounds from a dev mode the competition does not offer.
 
 ## Git

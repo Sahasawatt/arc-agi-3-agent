@@ -487,3 +487,78 @@ watching `levels_completed` — with the frame-lava constraint pruning, the
 reachable state space per parity class is small. Alternatively read
 `frames/re86` renders for a display/indicator that names the goal (the
 colour-15 row is one full HUD row; nothing else unexplained on the board).
+
+## re86 FALLS — it is a cover puzzle, and the win condition was a HUD row nobody read (2026-08-06)
+
+Three levels in the competition loop (`re86 3/8 levels actions=[32, 56, 66]
+score=14.542%`, `results/re86-compete.txt`), from 0. Sweep clean
+(`results/sweep-cover.log`): every canary identical to the digit — ls20 7/7
+43.629%, ar25 [173], cn04 [131], m0r0 [53], cd82 [1306] — mean **2.676% ->
+3.531%**, and the roster goes **5/17 -> 6/17 games with a level**. The rung is `cover.py`; the
+whole mechanic came out of four offline probes in one sitting, and the two
+readings that unlocked it are both instrument lessons rather than game lessons.
+
+**1. The engine IS replayable in-process** (`re86-det.txt`). `reset()` plus a
+fixed 20-action sequence returns byte-identical frames on the second pass, at
+**4,307 steps/s** — so the BFS/DFS plan in the previous session's note was
+affordable. It was never needed: the answer fell out of geometry first.
+
+**2. The bottom row is a 100-ACTION BUDGET, and reading it is what explains the
+deaths** (`re86-bar.txt`). Colour 15 fills one full row (64 cells) and turns to
+colour 1 at `round(0.64 n)` — the bar reaches 64 at exactly the 100th action of a
+level and the state goes `GAME_OVER`. It refills on level-up (measured: bar 8 →
+0 across the level-1 boundary). Every action costs, including the toggle and
+including a move that changes nothing. The previous session's "one GAME_OVER with
+the vertical arm crossing a box" was a centre standing on a frame cell, and the
+tour that survived was simply under 100 — two different deaths that looked like
+one unexplained condition.
+
+**3. The lattice never shifts** (`re86-edge.txt`). Both shapes spawn on
+`x%3==0, y%3==0`, arrows are `±3` axis-aligned (1=up, 2=down, 3=left, 4=right)
+and the board CLAMPS at 0 and 63 — both of which are on the lattice, so no edge
+push can change parity. Pushing down parks the centre on row 63 UNDER the HUD,
+where the `@` is invisible: `at()` returning None is a position, not an error.
+
+**4. The win condition: every shape centred so that all of its boxes lie on its
+own cells.** Level 1's four B-boxes are `(48,16),(48,35)` sharing x=48 and
+`(40,24),(53,24)` sharing y=24 — the plus's arms are 13 long, so ONE centre at
+the intersection `(48,24)` covers all four at once; the same for P at `(15,9)`.
+Both parked = level up, **20 actions** (`re86-cross.txt`). The previous session's
+"collection is an occlusion artifact" was right about the arm sweep and wrong
+about the conclusion: a group IS consumed, but only when ONE shape covers ALL of
+it, which no partial tour ever did.
+
+What each level added, and what it forced into the solver:
+
+| lvl | shapes | boxes | forced |
+|---|---|---|---|
+| 1 | two 13-arm pluses | 4 + 4, by colour | intersection |
+| 2 | plus + two hollow DIAMOND rings | 4/3/3 | read the shape as an offset SET off the board, never assume a form |
+| 3 | three shapes, ALL colour 8 | 8, all colour 8 | box colour cannot name the owner → geometric partition search; and the shape must be read from what MOVES (a colour mask is the union of all three) |
+| 4 | plus + X, colours 6/10 | 3 colour-12 + 3 colour-14 | shape colour ≠ box colour at all → try the plans in rank order |
+
+Two probe-design traps inside that, both measured:
+
+- **A shape shifted ALONG an arm hides that arm in its own trail.** Probing with
+  one direction read level 1's 52-cell plus as 32 cells. One probe per AXIS
+  (up-or-down *and* left-or-right) recovers it exactly.
+- **An arm hanging off the board edge is measured SHORT.** Level 4's plus reads
+  `right=9` against `left=13` because its spawn at (54,36) puts the tip past
+  x=63, and the missing four cells are exactly what made the level look
+  uncoverable. Every shape seen so far is point-symmetric, so the offset set is
+  symmetrised.
+
+**Level 4 is open and is NOT a coverage problem.** All six boxes are consumed —
+the plus at (15,30) takes the three colour-12s (census `12: 19 → 16`) and the X
+at (39,30) takes the three colour-14s (`14: 19 → 16`), both verified to persist —
+and the level still does not fall (`re86-l4both.txt`). What level 4 adds and
+nothing else has: six 6x6 boxes in colour-2 frames at the top and bottom of the
+board, paired by column — `(10,11)`, `(12,6)`, `(13,14)`. `boxes()` sees them
+(the ring test is colour-agnostic) but the covering rule for a 4x4 inner is
+unmeasured, and a shape has been observed to RECOLOUR (10 → 12) in one run and
+not another. Next session starts there, with the budget bar in hand: a level-4
+attempt costs 100 actions and the replay from reset to level 4 is under a second.
+
+Two facts for whoever picks it up: a satisfied shape LOSES its `@` (the marker
+does not just move — the colour-0 count goes to zero while that shape is active),
+and the engine returns empty frames mid-level, so every read is guarded.

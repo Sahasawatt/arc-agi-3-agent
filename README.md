@@ -1460,3 +1460,38 @@ as `Pytest: No tests collected` with **exit code 0**. Redirect to a file and rea
 ## License
 
 MIT-0. See `LICENSE`.
+
+## re86: the framed-box family (2026-08-06)
+
+`re86` is a COVER puzzle, not a maze and not a collection game. Every level draws
+some shapes — 13-arm pluses, hollow diamond rings, X's, a 44-wide bar — and a set
+of boxes, each a cell (or block) ringed by a single frame colour. Action 5 cycles
+which shape the arrows drive, the board's only colour-0 cell rides the ACTIVE
+shape's centre, arrows move it +/-3 on one axis clamped to the board, and every
+shape and frame is transparent to the walk. **A group of boxes is consumed the
+moment one shape covers ALL of it**; the level falls when every group is covered.
+Level 1's four boxes share an x in pairs and a y in pairs, so ONE centre at the
+intersection covers all four — 20 actions.
+
+Two things had to be measured before any of that was visible, and both were
+instrument problems:
+
+- **The bottom row is a 100-action-per-level BUDGET**, filling at `round(0.64 n)`
+  of 64 cells and ending the game at 64. It refills on level-up. Every action
+  costs, including the toggle and a move that changes nothing. Two unexplained
+  deaths in the previous session were this and a centre standing on a frame cell.
+- **The modal centre of a shape's colour DRIFTS** once an arm clips the board
+  edge or another shape overlaps it — track the colour-0 cell instead. And a
+  shape's own cells must be read from what MOVES under a probe, one probe per
+  AXIS (a shape shifted along an arm hides that arm in its own trail), because
+  level 3 gives three shapes one colour and level 4 pairs a shape colour with a
+  different box colour. An arm hanging off the board edge reads SHORT and is
+  recovered by symmetry.
+
+The rung is `cover.py`, gated on a signature that is re86 alone of the seventeen
+at reset (a cell ringed by eight identical cells: `results/re86-sig.txt`), so
+every other game is identical by construction. It answers None when it runs out
+of ideas and the normal rungs take the level back. **3/8 levels, 14.542%**, sweep
+clean. Level 4 is open: all six of its boxes ARE consumed and the level still
+does not fall — what it adds is six 6x6 boxes in colour-2 frames whose covering
+rule is unmeasured (`results/breadth-recon.md` §re86 FALLS).

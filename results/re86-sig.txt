@@ -1,0 +1,56 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 07:36:21 | INFO | Got anonymous API key: cf85b4b0-0147-4d73-bd2e-b97bc64678ab
+2026-08-06 07:36:21 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 07:36:22 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 07:36:22 | INFO | Created new scorecard: 86e9a879-1f34-4994-bcfc-df65a3764a05
+2026-08-06 07:36:23 | INFO | Successfully fetched metadata for game ar25
+2026-08-06 07:36:23 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+ar25: boxes=0 colours={0: 5, 4: 45, 5: 103, 9: 3645, 10: 189, 11: 109}
+2026-08-06 07:36:24 | INFO | Successfully fetched metadata for game cn04
+2026-08-06 07:36:24 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+cn04: boxes=0 colours={0: 135, 4: 32, 8: 36, 10: 3749, 14: 144}
+2026-08-06 07:36:25 | INFO | Successfully fetched metadata for game dc22
+2026-08-06 07:36:25 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22: boxes=0 colours={0: 188, 2: 80, 3: 1216, 4: 1256, 5: 1190, 8: 71, 9: 71, 11: 4, 13: 16, 14: 4}
+2026-08-06 07:36:26 | INFO | Successfully fetched metadata for game ka59
+2026-08-06 07:36:26 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+ka59: boxes=0 colours={0: 1, 1: 607, 2: 3249, 4: 96, 5: 1, 14: 16, 15: 126}
+2026-08-06 07:36:27 | INFO | Successfully fetched metadata for game ls20
+2026-08-06 07:36:27 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+ls20: boxes=0 colours={0: 3, 1: 2, 3: 892, 4: 2609, 5: 439, 8: 12, 9: 45, 11: 84, 12: 10}
+2026-08-06 07:36:28 | INFO | Successfully fetched metadata for game m0r0
+2026-08-06 07:36:28 | INFO | Successfully loaded game class M0r0 from environment_files\m0r0\492f87ba\m0r0.py
+m0r0: boxes=0 colours={5: 1453, 10: 50, 11: 1294, 12: 1299}
+2026-08-06 07:36:29 | INFO | Successfully fetched metadata for game re86
+2026-08-06 07:36:29 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+re86: boxes=8 colours={0: 1, 4: 64, 5: 3862, 9: 56, 11: 49, 15: 64}
+2026-08-06 07:36:30 | INFO | Successfully fetched metadata for game sc25
+2026-08-06 07:36:30 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+sc25: boxes=0 colours={0: 36, 2: 169, 3: 244, 5: 3457, 9: 22, 10: 24, 14: 128, 15: 16}
+2026-08-06 07:36:31 | INFO | Successfully fetched metadata for game sp80
+2026-08-06 07:36:31 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+sp80: boxes=0 colours={1: 256, 4: 12, 6: 16, 9: 80, 11: 160, 12: 3508, 14: 64}
+2026-08-06 07:36:32 | INFO | Successfully fetched metadata for game bp35
+2026-08-06 07:36:32 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+bp35: boxes=0 colours={0: 64, 3: 178, 5: 1894, 9: 6, 10: 1805, 11: 2, 14: 147}
+2026-08-06 07:36:33 | INFO | Successfully fetched metadata for game g50t
+2026-08-06 07:36:33 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+g50t: boxes=0 colours={0: 3006, 1: 9, 5: 880, 8: 82, 9: 119}
+2026-08-06 07:36:34 | INFO | Successfully fetched metadata for game sk48
+2026-08-06 07:36:34 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+sk48: boxes=0 colours={0: 24, 1: 16, 2: 92, 3: 28, 4: 1384, 5: 2412, 6: 44, 8: 32, 9: 32, 14: 32}
+2026-08-06 07:36:35 | INFO | Successfully fetched metadata for game tr87
+2026-08-06 07:36:35 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+tr87: boxes=0 colours={0: 14, 1: 64, 2: 1570, 3: 1370, 5: 320, 7: 364, 10: 394}
+2026-08-06 07:36:35 | INFO | Successfully fetched metadata for game tu93
+2026-08-06 07:36:35 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+tu93: boxes=0 colours={0: 261, 2: 288, 4: 1, 5: 3465, 6: 64, 9: 8, 14: 9}
+2026-08-06 07:36:36 | INFO | Successfully fetched metadata for game wa30
+2026-08-06 07:36:36 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+wa30: boxes=0 colours={0: 4, 1: 3920, 2: 20, 4: 36, 7: 64, 9: 40, 14: 12}
+2026-08-06 07:36:37 | INFO | Successfully fetched metadata for game cd82
+2026-08-06 07:36:37 | INFO | Successfully loaded game class Cd82 from environment_files\cd82\fb555c5d\cd82.py
+cd82: boxes=0 colours={0: 164, 2: 30, 3: 359, 4: 164, 5: 3236, 15: 143}
+2026-08-06 07:36:38 | INFO | Successfully fetched metadata for game sb26
+2026-08-06 07:36:38 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+sb26: boxes=0 colours={0: 20, 2: 80, 4: 3628, 5: 152, 8: 72, 9: 36, 11: 36, 14: 36, 15: 36}
