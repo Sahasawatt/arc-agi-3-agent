@@ -562,3 +562,61 @@ attempt costs 100 actions and the replay from reset to level 4 is under a second
 Two facts for whoever picks it up: a satisfied shape LOSES its `@` (the marker
 does not just move — the colour-0 count goes to zero while that shape is active),
 and the engine returns empty frames mid-level, so every read is guarded.
+
+## re86 3/8 -> 5/8: the colour clause, swatches, waves, and the L5 overlap trap (2026-08-06, session 2)
+
+The win condition has a clause the first three levels could not show: **a group is
+all the boxes of one COLOUR, and it consumes only under shapes WEARING that
+colour**. Levels 1-3 pair every shape with its own colour from spawn, so pure
+geometry passed them; level 4's shapes (6, 10) match neither box colour (12, 14)
+and covering both groups on the correct centres with the wrong coats is inert
+(`re86-l4p1.txt`).
+
+What level 4 adds is SWATCHES — 4x4 blocks ringed in a non-frame colour — and
+**standing on one recolours the active shape to its colour, for keeps**
+(`re86-l4p2.txt`: X on the 13-swatch goes 10 -> 13, persistent). Recolour each
+shape to its group's colour, cover, level falls (`re86-l4p4.txt`). The "legend
+pairs" reading of the first session was a red herring — the pairing columns mean
+nothing; the blocks are just paint pots.
+
+Three more measured rules from levels 5-6, each of which broke the solver in
+turn:
+
+1. **The recolour trigger is CELL OVERLAP, not the centre** (`re86-l5p6.txt`):
+   driving the L5 X toward the 9-swatch flipped it at (9,54) — an arm entering
+   the RING — three cells before the inner. A route that only keeps the centre
+   off swatches scrambles the coat in passing (the L5 stall: a shape sent to
+   wear 9 arrived wearing 11, `re86-l5p5.txt`). Routes now avoid every swatch
+   DILATED by the shape's own offsets, except the swatch of the colour being
+   worn or fetched — touching your own colour is a no-op.
+2. **A box whose ring is under an arm is INVISIBLE to the ring detector** — L5's
+   "two 8-boxes becoming four" was two more sitting under the spawned cross's
+   arms all along. The box set accumulates across frames now, and a box only
+   leaves it when its whole 3x3 reads background (consumed), which a 1-wide arm
+   over a ring cannot fake. Corollary: the naked centre marker on open floor
+   reads as a box ringed by background — the c=0 "boxes" in the wave logs;
+   harmless (no shape wears colour 0) but they pollute the accumulator's
+   signature, which is why the wave loop keys on progress, not equality.
+3. **Consumption is per-group and immediate; a level can need several WAVES**:
+   the planner replans until the box set stops changing.
+
+`cover.py` now: 5/8 levels, `[31, 56, 66, 80, 188]`, 41.477% single-game
+(`re86-compete2.txt`). Sweep clean (`sweep-cover2.log`): every canary identical
+to the digit, mean **3.531% -> 5.116%**.
+
+**Level 6 is open and is a NEW mechanic.** The board (`re86-l6p1.txt`): a
+13-arm-class plus wearing 9, a 19x19 hollow SQUARE wearing 11, four 9-boxes,
+four 11-boxes, **no swatches**, and an 8x8 colour-1 ring enclosing an empty
+hole. Measured dead so far, one probe each (`re86-l6p2..7.txt`): colour-1 cells
+are WALLS (a move whose arm would overlap one is refused — the first refusals
+this game has shown); the hole is geometrically SEALED (any edge threading it
+must cross the ring, both shapes); covering a same-colour PAIR does not consume
+it; covering a whole quad with mixed coats (plus-9 + square-11) does not
+consume; the centre CAN stand on a box inner (step 3 jumps the ring; the ring
+kills only what the centre lands on) and nothing happens. Geometry says
+plus@(12,9)+square@(21,18) covers the 9-quad and plus@(48,30)+square@(48,48)
+covers the 11-quad — everything is in place except a way to change a coat with
+no swatch on the board. The colour-1 ring is the only unexplained object.
+Level 6's budget is also tighter: the bar reaches 64 in well under 100 actions,
+so hypothesis probes there are one-shot per replay (~450 actions to reach L6
+offline, deterministic).

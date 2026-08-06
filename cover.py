@@ -1,6 +1,6 @@
 """The framed-box family: park every shape so its boxes lie on its own cells.
 
-`re86` is the whole family on the public roster, and the signature is exact — at
+`re86` is the whole family on the public roster, and the signature is exact -- at
 reset it is the only one of the seventeen playable games with a cell ringed by
 eight identical cells (`results/re86-sig.txt`), so the rung is silent everywhere
 else by construction.
@@ -12,12 +12,14 @@ Mechanics, all measured offline (`results/re86-*.txt`):
     clamped to the board, and every shape and frame is TRANSPARENT to the walk.
   * the centre standing on a frame cell is GAME_OVER.
   * the bottom row is a 100-action-per-level budget bar, refilled on level-up.
-  * a group of boxes is consumed the moment one shape covers ALL of it, and the
-    level falls when every group is covered. Level 1 is two 13-arm pluses,
-    level 2 adds hollow diamond rings, level 3 gives three shapes ONE colour
-    (so box colour cannot name the owner) and level 4 pairs a shape colour with
-    a box colour that differs — hence: read the shape off the board as an offset
-    set, search the assignment geometrically, and try the plans in turn.
+  * **a group of boxes -- all the boxes of one colour -- is consumed the moment
+    shapes WEARING THAT COLOUR cover all of it at once** (`re86-l4p*.txt`: both
+    groups covered by the wrong wearers is inert; the same centres with the
+    right coats end the level). Levels 1-3 hide the colour clause because every
+    shape spawns wearing its own group's colour; level 4 breaks the match and
+    supplies SWATCHES -- blocks ringed in a non-frame colour -- and standing a
+    shape's CENTRE on one recolours the shape to the swatch's colour, for keeps.
+    Arms sweeping a swatch do nothing; it is the centre that counts.
 
 Two readings that cost a session each are baked in as comments below: the modal
 centre of a shape's colour DRIFTS (track the `@`), and a shape's arms are
@@ -35,7 +37,7 @@ TOGGLE, MARK = 5, 0
 
 
 def grid_of(obs):
-    """The full frame, or None — the engine hands back empty ones mid-level."""
+    """The full frame, or None -- the engine hands back empty ones mid-level."""
     if obs is None:
         return None
     f = np.array(obs.frame)
@@ -57,6 +59,35 @@ def boxes(g):
             f = int(ring[0])
             if f != int(g[y, x]) and (ring == f).all():
                 out[(x, y)] = int(g[y, x])
+    return out
+
+
+def swatches(g, bg):
+    """Recolour stations: a uniform block (2x2 or larger) ringed by ONE colour
+    that is neither the block's nor the background -> {inner colour: inner rect}.
+
+    The background exclusion is what keeps a solid piece of a shape from
+    reading as a station; the block-size floor is what keeps the 1x1 framed
+    boxes out."""
+    out, H, W = {}, g.shape[0], g.shape[1]
+    for y0 in range(1, H - 2):
+        for x0 in range(1, W - 2):
+            c = int(g[y0, x0])
+            if c == bg or int(g[y0 - 1, x0]) == c or int(g[y0, x0 - 1]) == c:
+                continue
+            x1 = x0
+            while x1 + 1 < W - 1 and int(g[y0, x1 + 1]) == c:
+                x1 += 1
+            y1 = y0
+            while y1 + 1 < H - 1 and (g[y1 + 1, x0:x1 + 1] == c).all():
+                y1 += 1
+            if x1 - x0 < 1 or y1 - y0 < 1:
+                continue
+            ring = np.concatenate([g[y0 - 1, x0 - 1:x1 + 2], g[y1 + 1, x0 - 1:x1 + 2],
+                                   g[y0:y1 + 1, x0 - 1], g[y0:y1 + 1, x1 + 1]])
+            r = int(ring[0])
+            if r != c and r != bg and (ring == r).all():
+                out[c] = (x0, y0, x1, y1)
     return out
 
 
@@ -96,39 +127,60 @@ def candidates(shape, bxs, lava):
     return sorted(out.items(), key=lambda t: -len(t[0]))
 
 
-def plans(shapes, bxs, limit=8):
-    """Assignments of one centre per shape that between them cover every box.
+def swatch_zone(offs, rects):
+    """Centre positions from which ANY shape cell touches a swatch block.
 
-    Ordered by colour agreement, which holds on levels 1-3 and does not on level
-    4 — so it ranks the plans and never filters them.
-    """
-    out = []
+    The recolour trigger is overlap, not the centre: driving the L5 X toward
+    the 9-swatch flipped it at (9, 54) -- an arm cell entering the RING -- three
+    cells before the inner (`re86-l5p6.txt`). A route that only keeps the
+    centre out therefore scrambles the coat on the way past; the avoid set has
+    to be the swatch dilated by the shape's own cells."""
+    bad = set()
+    for (x0, y0, x1, y1) in rects:
+        for cy in range(y0 - 1, y1 + 2):
+            for cx in range(x0 - 1, x1 + 2):
+                for ox, oy in offs:
+                    bad.add((cx - ox, cy - oy))
+    return bad
 
-    def rec(k, chosen, done):
-        if len(out) >= limit:
-            return
-        if k == len(shapes):
-            if not (set(bxs) - done):
-                out.append(list(chosen))
-            return
-        reach = sum(max((len(c) for c, _ in s["cands"]), default=0) for s in shapes[k:])
-        if reach < len(set(bxs) - done):
-            return
-        for cov, c in shapes[k]["cands"]:
-            rec(k + 1, chosen + [(c, cov)], done | cov)
-        rec(k + 1, chosen + [(shapes[k]["pos"], frozenset())], done)
 
-    rec(0, [], set())
-    out.sort(key=lambda p: (-sum(1 for s, (_, cov) in zip(shapes, p)
-                                 if cov and all(bxs[b] == s["colour"] for b in cov)),
-                            sum(len(cov) for _, cov in p)))
-    return [[c for c, _ in p] for p in out]
+def group_plan(shapes, gb, lava):
+    """The cheapest way to lay shapes over ONE colour group all at once.
+
+    Returns [(index into shapes, centre)] covering every box in `gb`, fewest
+    shapes first and shortest total walk within that, or None. The walk cost is
+    manhattan distance -- an estimate, since the true routes dodge frames."""
+    # a shape PARKED with a cell on a swatch changes coat right there, so a
+    # centre inside the shape's dilated swatch zone is no cover at all
+    per = [(i, candidates(s, gb, lava | s.get("zone", frozenset())))
+           for i, s in enumerate(shapes)]
+    best = None
+
+    def rec(k, plan, done, cost):
+        nonlocal best
+        if not (set(gb) - done):
+            if best is None or (len(plan), cost) < (len(best[1]), best[0]):
+                best = (cost, list(plan))
+            return
+        if k == len(per):
+            return
+        if best is not None and len(plan) + 1 > len(best[1]):
+            return
+        i, cands = per[k]
+        for cov, c in cands[:12]:
+            if cov - done:
+                d = abs(c[0] - shapes[i]["pos"][0]) + abs(c[1] - shapes[i]["pos"][1])
+                rec(k + 1, plan + [(i, c)], done | cov, cost + d)
+        rec(k + 1, plan, done, cost)
+
+    rec(0, [], set(), 0)
+    return best[1] if best else None
 
 
 class Cover:
     """Drives one game. `act(grid, level)` returns the next action value or None.
 
-    None means "not my board" or "out of ideas" — the caller falls back to its
+    None means "not my board" or "out of ideas" -- the caller falls back to its
     own machinery, so a wrong reading costs actions and never the run.
     """
 
@@ -152,10 +204,17 @@ class Cover:
             return None
 
     def _level(self, g):
+        bg = self._bg(g)
         lava = {(int(x), int(y)) for y, x in zip(*np.nonzero(g == self._frame(g)))}
         bxs = boxes(g)
         if not bxs:
             return
+        sw = swatches(g, bg)
+        # a centre PASSING THROUGH a swatch recolours the shape mid-walk, so
+        # every route treats swatch interiors as lava unless one is the goal
+        swcells = {(x, y) for (x0, y0, x1, y1) in sw.values()
+                   for y in range(y0, y1 + 1) for x in range(x0, x1 + 1)}
+
         shapes, seen = [], set()
         while len(shapes) < 6:
             p = at(g)
@@ -167,12 +226,13 @@ class Cover:
             seen.add(p)
             offs, colour = set(), None
             safe = [a for a, (dx, dy) in DIRS.items()
-                    if (min(63, max(0, p[0] + dx)), min(63, max(0, p[1] + dy))) not in lava]
+                    if (min(63, max(0, p[0] + dx)), min(63, max(0, p[1] + dy)))
+                    not in lava | swcells]
             # One probe per AXIS: a shape shifted along an arm hides that arm in
             # its own trail, and a colour mask cannot be used instead because
             # level 3 gives three shapes the same colour.
             for probe in [a for a in safe if a in (1, 2)][:1] + [a for a in safe if a in (3, 4)][:1]:
-                before, bg = g, self._bg(g)
+                before = g
                 g = yield probe
                 if g is None:
                     return
@@ -194,26 +254,77 @@ class Cover:
             if g is None:
                 return
 
-        for s in shapes:
-            s["cands"] = candidates(s, bxs, lava)
-        for plan in plans(shapes, bxs):
-            for s, goal in zip(shapes, plan):
-                if s["pos"] == goal:
+        # A box whose ring is under a shape's arm is INVISIBLE to boxes() -- level
+        # 5's "two 8-boxes becoming four" was two more hiding under a cross's arms
+        # the whole time. So the set is accumulated across frames, and a box only
+        # leaves it CONSUMED: its whole 3x3 reads background, which an arm over it
+        # (1 cell wide against 6 visible ring cells) can never fake.
+        known, prev_sig = dict(bxs), None
+        for wave in range(8):
+            if g is None:
+                return
+            known.update(boxes(g))
+            for b in list(known):
+                x, y = b
+                if 1 <= x < 63 and 1 <= y < 63 and (g[y - 1:y + 2, x - 1:x + 2] == bg).all():
+                    del known[b]
+            sig = frozenset(known)
+            if not known or sig == prev_sig:
+                return
+            prev_sig = sig
+            groups = {}
+            for b, c in known.items():
+                groups.setdefault(c, {})[b] = c
+            # groups someone already wears go first; recolour work is saved for last
+            order = sorted(groups, key=lambda c: (not any(s["colour"] == c for s in shapes),
+                                                  len(groups[c])))
+            for c in order:
+                elig = [s for s in shapes if s["colour"] == c or c in sw]
+                for s in elig:
+                    # parked wearing c, touching c's own swatch is a no-op --
+                    # every OTHER swatch would swap the coat where it stands
+                    s["zone"] = swatch_zone(s["offs"],
+                                            [r for col, r in sw.items() if col != c])
+                plan = group_plan(elig, groups[c], lava | swcells)
+                if plan is None:
                     continue
-                for _ in range(len(shapes) + 1):
-                    if at(g) == s["pos"]:
-                        break
-                    g = yield TOGGLE
-                    if g is None:
-                        return
-                path = route(at(g), goal, lava) if at(g) else None
-                if path is None:
-                    continue
-                for a in path:
-                    g = yield a
-                    if g is None:
-                        return
-                s["pos"] = goal
+                for i, centre in plan:
+                    s = elig[i]
+                    found = False
+                    for _ in range(2 * len(shapes) + 2):
+                        if g is not None and at(g) == s["pos"]:
+                            found = True
+                            break
+                        g = yield TOGGLE
+                    if not found:
+                        continue
+                    legs = []
+                    if s["colour"] != c:
+                        x0, y0, x1, y1 = sw[c]
+                        cells = sorted(((x, y) for y in range(y0, y1 + 1)
+                                        for x in range(x0, x1 + 1)
+                                        if not (x - s["pos"][0]) % 3 and not (y - s["pos"][1]) % 3),
+                                       key=lambda t: abs(t[0] - s["pos"][0]) + abs(t[1] - s["pos"][1]))
+                        if not cells:
+                            continue
+                        legs.append(cells[0])
+                    legs.append(centre)
+                    for goal in legs:
+                        # swatches of the colour worn NOW and the colour this
+                        # errand ends in are no-ops to touch; the rest swap the
+                        # coat mid-walk and are avoided at arm's reach
+                        zone = swatch_zone(s["offs"],
+                                           [r for col, r in sw.items()
+                                            if col not in (s["colour"], c)])
+                        path = route(s["pos"], goal, (lava | zone) - {goal})
+                        if path is None:
+                            break
+                        for a in path:
+                            g = yield a
+                            if g is None:
+                                return
+                        s["pos"] = goal
+                        s["colour"] = c
 
     @staticmethod
     def _bg(g):

@@ -1,0 +1,13 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 20:30:41 | INFO | Got anonymous API key: c6ddd2a0-2c02-4b42-8d9e-7439d06ee700
+2026-08-06 20:30:41 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 20:30:42 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 20:30:42 | INFO | Created new scorecard: f4c0c665-ee83-4173-9dbf-6debda6507ab
+2026-08-06 20:30:44 | INFO | Successfully fetched metadata for game re86
+2026-08-06 20:30:44 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+sq->(21,18) parked {0: 1, 1: 44, 4: 60, 9: 51, 11: 76} lvl 5
+plus->(12,9) parked {1: 49, 4: 56, 9: 21, 11: 76} lvl 5
+9-quad covered: 5 GameState.NOT_FINISHED
+plus->(48,30) parked {0: 1, 1: 57, 4: 56, 9: 50, 11: 74} lvl 5
+sq->(48,48) parked {0: 1, 1: 63, 4: 56, 9: 52, 11: 72} lvl 5
+11-quad covered: 5 GameState.NOT_FINISHED bar 63

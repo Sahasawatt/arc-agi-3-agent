@@ -1491,7 +1491,20 @@ instrument problems:
 The rung is `cover.py`, gated on a signature that is re86 alone of the seventeen
 at reset (a cell ringed by eight identical cells: `results/re86-sig.txt`), so
 every other game is identical by construction. It answers None when it runs out
-of ideas and the normal rungs take the level back. **3/8 levels, 14.542%**, sweep
-clean. Level 4 is open: all six of its boxes ARE consumed and the level still
-does not fall — what it adds is six 6x6 boxes in colour-2 frames whose covering
-rule is unmeasured (`results/breadth-recon.md` §re86 FALLS).
+of ideas and the normal rungs take the level back.
+
+Session 2 found the win condition's missing clause: a group is all the boxes of
+one COLOUR, and it consumes only under shapes WEARING that colour — levels 1-3
+hide this because every shape spawns in its group's colour. Level 4's 6x6
+"legend" blocks are SWATCHES: paint pots that recolour the active shape on
+contact, and the contact that counts is any CELL of the shape touching the
+block, not the centre — a route that only steers the centre scrambles the coat
+in passing, so every walk avoids each swatch dilated by the shape's own
+offsets, except the colour it wears or is fetching. Two more measured rules:
+a box whose ring is under an arm is invisible to the detector (the set is
+accumulated across frames, removed only when its whole 3x3 reads background),
+and a level can consume in WAVES (replan until the box set holds still).
+**5/8 levels, [31, 56, 66, 80, 188], 41.477%** single-game, sweep clean.
+Level 6 is a new mechanic — colour-1 WALLS (the game's first refusals), no
+swatches, a sealed ring-with-hole as the only unexplained object; six
+hypotheses measured dead in `results/breadth-recon.md` §session 2.

@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from cover import at, boxes, candidates, plans, route, signature
+from cover import at, boxes, candidates, group_plan, route, signature, swatch_zone, swatches
 
 BG = 5
 
@@ -73,20 +73,36 @@ def test_candidates_respects_the_shapes_own_lattice():
     assert all(c != (48, 24) for _, c in cands)
 
 
-def test_plans_partitions_boxes_between_two_shapes():
-    bxs = {(48, 16): 9, (40, 24): 9, (53, 24): 9, (48, 35): 9,
-           (20, 20): 9, (40, 20): 9, (20, 40): 9, (40, 40): 9}
+def test_group_plan_partitions_boxes_between_two_shapes():
+    gb = {(48, 16): 9, (40, 24): 9, (53, 24): 9, (48, 35): 9,
+          (20, 20): 9, (40, 20): 9, (20, 40): 9, (40, 40): 9}
     shapes = [{"pos": (36, 45), "colour": 9, "offs": PLUS},
               {"pos": (21, 27), "colour": 9, "offs": DIAG}]
-    for s in shapes:
-        s["cands"] = candidates(s, bxs, set())
-    got = plans(shapes, bxs)
-    assert got and got[0][0] == (48, 24)      # the plus takes its own intersection
-    assert got[0][1] == (30, 30)              # the diagonal takes the diamond four
+    got = group_plan(shapes, gb, set())
+    assert got is not None
+    centres = dict(got)
+    assert centres[0] == (48, 24)             # the plus takes its own intersection
+    assert centres[1] == (30, 30)             # the diagonal takes the diamond four
 
 
-def test_plans_is_empty_when_the_boxes_cannot_all_be_covered():
-    bxs = {(48, 16): 9, (40, 24): 9, (53, 24): 9, (48, 35): 9, (1, 1): 9}
+def test_group_plan_none_when_the_boxes_cannot_all_be_covered():
+    gb = {(48, 16): 9, (40, 24): 9, (53, 24): 9, (48, 35): 9, (1, 1): 9}
     shapes = [{"pos": (36, 45), "colour": 9, "offs": PLUS}]
-    shapes[0]["cands"] = candidates(shapes[0], bxs, set())
-    assert plans(shapes, bxs) == []
+    assert group_plan(shapes, gb, set()) is None
+
+
+def test_swatches_reads_inner_rect_and_skips_plain_blocks():
+    g = np.full((64, 64), BG, dtype=int)
+    g[4:10, 4:10] = 2                # ring
+    g[5:9, 5:9] = 12                 # inner 4x4
+    g[20:24, 20:24] = 7              # solid block on bare background: no station
+    assert swatches(g, BG) == {12: (5, 5, 8, 8)}
+
+
+def test_swatch_zone_is_the_block_dilated_by_the_shape():
+    # a 1-cell "shape" keeps only the block and its ring out
+    zone = swatch_zone({(0, 0)}, [(5, 5, 8, 8)])
+    assert (4, 4) in zone and (9, 9) in zone and (10, 5) not in zone
+    # an arm reaching +3 keeps centres 3 left of the block out too
+    zone = swatch_zone({(0, 0), (3, 0)}, [(5, 5, 8, 8)])
+    assert (1, 5) in zone

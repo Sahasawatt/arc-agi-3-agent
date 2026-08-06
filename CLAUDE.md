@@ -72,7 +72,11 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   an arm hides that arm in its own trail -- one axis read a 52-cell plus as 32), never a
   colour mask (level 3 gives three shapes one colour, level 4 pairs a shape colour with a
   different box colour), and symmetrise, because an arm hanging off the board edge is
-  measured SHORT. `cover.py`, `results/re86-*.txt`.
+  measured SHORT. A group = all boxes of one COLOUR and consumes only under shapes WEARING
+  it; swatches recolour on ANY CELL contact (not the centre -- routes must dodge each swatch
+  dilated by the shape's own offsets, own-colour exempt); a box whose ring is under an arm
+  is INVISIBLE to the ring detector (accumulate across frames, drop only on all-background);
+  levels consume in WAVES. `cover.py`, `results/re86-*.txt`.
 - **`env.reset()` with zero actions taken since the last transition performs a full GAME
   reset**, back to level 1 — it only scopes to the current level once a real action has been
   taken. Probes that reset immediately are measuring level 1 while reporting level 4.

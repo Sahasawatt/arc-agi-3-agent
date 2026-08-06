@@ -77,19 +77,23 @@
   },
   {
     "game": "re86",
-    "levels": 3,
+    "levels": 5,
     "of": 8,
     "actions": [
-      32,
+      31,
       56,
-      66
+      66,
+      80,
+      188
     ],
     "baseline": [
       26,
       42,
-      86
+      86,
+      108,
+      189
     ],
-    "environment_score": 14.542
+    "environment_score": 41.477
   },
   {
     "game": "sc25",

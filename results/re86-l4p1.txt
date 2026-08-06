@@ -1,0 +1,19 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 20:05:24 | INFO | Got anonymous API key: ce4d863c-c710-4fd3-aa21-12ad089d0a32
+2026-08-06 20:05:24 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 20:05:25 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 20:05:25 | INFO | Created new scorecard: 49de6578-944c-4511-afcd-8f933b86e884
+2026-08-06 20:05:26 | INFO | Successfully fetched metadata for game re86
+2026-08-06 20:05:26 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+L4 @ (54, 36) {0: 1, 2: 120, 4: 48, 6: 64, 10: 57, 11: 16, 12: 19, 13: 16, 14: 19}
+plus parked: {2: 120, 4: 43, 6: 68, 10: 57, 11: 16, 12: 16, 13: 16, 14: 19}
+toggled to (24, 21)
+  act2 @=(24, 24) 10=56 12=16 14=19 6=67 lvl=3
+  act2 @=(24, 27) 10=56 12=16 14=19 6=65 lvl=3
+  act2 @=(24, 30) 10=56 12=16 14=19 6=66 lvl=3
+  act4 @=(27, 30) 10=56 12=16 14=18 6=68 lvl=3
+  act4 @=(30, 30) 10=56 12=16 14=19 6=69 lvl=3
+  act4 @=(33, 30) 10=56 12=16 14=19 6=69 lvl=3
+  act4 @=(36, 30) 10=56 12=16 14=19 6=69 lvl=3
+  act4 @=(39, 30) 10=56 12=16 14=16 6=69 lvl=3
+final {0: 1, 2: 120, 4: 37, 6: 69, 10: 56, 11: 16, 12: 16, 13: 16, 14: 16} GameState.NOT_FINISHED lvl 3

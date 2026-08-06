@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 20:29:42 | INFO | Got anonymous API key: fda26b2a-6835-4568-81ac-9ad47ddaee5c
+2026-08-06 20:29:42 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 20:29:43 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 20:29:43 | INFO | Created new scorecard: ec492c0a-b776-4da8-999d-55dd59a4bab4
+2026-08-06 20:29:44 | INFO | Successfully fetched metadata for game re86
+2026-08-06 20:29:44 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+square cells: 72
+dx range: -9 9 dy range: -9 9
+  dy= -9: dx [-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  dy= -8: dx [-9, 9]
+  dy= -7: dx [-9, 9]
+  dy= -6: dx [-9, 9]
+  dy= -5: dx [-9, 9]
+  dy= -4: dx [-9, 9]
+  dy= -3: dx [-9, 9]
+  dy= -2: dx [-9, 9]
+  dy= -1: dx [-9, 9]
+  dy=  0: dx [-9, 9]
+  dy=  1: dx [-9, 9]
+  dy=  2: dx [-9, 9]
+  dy=  3: dx [-9, 9]
+  dy=  4: dx [-9, 9]
+  dy=  5: dx [-9, 9]
+  dy=  6: dx [-9, 9]
+  dy=  7: dx [-9, 9]
+  dy=  8: dx [-9, 9]
+  dy=  9: dx [-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

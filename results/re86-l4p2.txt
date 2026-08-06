@@ -1,0 +1,22 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-06 20:06:15 | INFO | Got anonymous API key: 0d2ac472-3a19-4536-85be-c4c6faf8ea97
+2026-08-06 20:06:15 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-06 20:06:16 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-06 20:06:16 | INFO | Created new scorecard: e7fe637c-94cd-4b7c-9a44-904b5e79a0cd
+2026-08-06 20:06:17 | INFO | Successfully fetched metadata for game re86
+2026-08-06 20:06:17 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+E1 X->13swatch: (24, 21) -> (54, 6) (15 moves)
+  arrived (54, 6) {0: 1, 2: 116, 4: 48, 6: 65, 10: 16, 11: 16, 12: 19, 13: 41, 14: 19} GameState.NOT_FINISHED lvl 3
+  off/back {0: 1, 2: 116, 4: 48, 6: 65, 10: 16, 11: 16, 12: 19, 13: 41, 14: 19}
+2026-08-06 20:06:18 | INFO | Successfully fetched metadata for game re86
+E2 X->own 10swatch: (24, 21) -> (6, 6) (11 moves)
+  arrived (6, 6) {0: 1, 2: 116, 4: 48, 6: 65, 10: 38, 11: 16, 12: 19, 13: 16, 14: 19} GameState.NOT_FINISHED lvl 3
+  off/back {0: 1, 2: 116, 4: 48, 6: 65, 10: 38, 11: 16, 12: 19, 13: 16, 14: 19}
+2026-08-06 20:06:19 | INFO | Successfully fetched metadata for game re86
+E3 plus->6swatch: (54, 36) -> (30, 57) (15 moves)
+  arrived (30, 57) {0: 1, 2: 116, 4: 48, 6: 53, 10: 57, 11: 16, 12: 19, 13: 16, 14: 19} GameState.NOT_FINISHED lvl 3
+  off/back {0: 1, 2: 116, 4: 48, 6: 53, 10: 57, 11: 16, 12: 19, 13: 16, 14: 19}
+2026-08-06 20:06:21 | INFO | Successfully fetched metadata for game re86
+E4 plus->12swatch: (54, 36) -> (30, 6) (18 moves)
+  arrived (30, 6) {0: 1, 2: 116, 4: 48, 6: 16, 10: 57, 11: 16, 12: 56, 13: 16, 14: 19} GameState.NOT_FINISHED lvl 3
+  off/back {0: 1, 2: 116, 4: 48, 6: 16, 10: 57, 11: 16, 12: 56, 13: 16, 14: 19}
