@@ -399,3 +399,38 @@ third disease of its own: it is a SLIDER — displacement magnitude varies per
 press ((-2,0), (-4,0), (6,0) under one action), so even the true piece's modal
 vector is unstable. Slide mechanics (press-until-stop, wall detection by
 terminal cell) are a different model shape, parked behind the walls stratum.
+
+## re86 is not a maze — it is TWO CROSSES collecting marked boxes (2026-08-06)
+
+Read off the live board (`re86-board2.txt`, probes 1-7 in `br-re86-probe*.txt` /
+`results/re86-probe*.txt`, all offline):
+
+- Two giant plus-shapes: the P-cross (colour 11, arms 13 wide/tall) and the
+  B-cross (colour 9) whose CENTER wears the board's only colour-0 cell (`@`).
+  Eight 3x3 colour-4 frames, four holding a P cell, four holding a B cell —
+  8 frames x 8 cells = the board's entire colour-4 census (64), so the frames
+  ARE the "walls" the discovery table said were missing. There is no maze.
+- **The arrow keys drive the B-cross** (step 3) — matching the old offline
+  discovery's player=colour-9 reading; the competition run elects colour 11
+  instead (agreement via overlap), which is a THIRD variant of the
+  metronome-election family. Action 5's scattered displacement is unexplained
+  (suspect: toggles control to the P-cross).
+- **Walking the @ onto a B-box's centre COLLECTS it**: the box's inner B cell
+  is consumed, the colour-4 frame loses 4 cells (opens), the B-cross itself
+  loses cells as it collects (56 → 54 → 51). No level-up after one box.
+- **Frames collide with the ARMS, not the centre**: approaches stall exactly
+  where an arm tip meets a frame wall (centre x48 + 6-wide arm = wall at x55).
+  The still-closed frames are the terrain; the cross must thread its whole
+  footprint. Refusal points MOVE with the approach line — that is why
+  `classify_colours` sees colour 9 as both passable (arms overlap freely) and
+  blocking (frame contact), and why `block=[]` is CORRECT here.
+- The engine returns EMPTY frames intermittently during collection (events);
+  `np.array(obs.frame)[-1]` must be guarded, and the modal-column centre of
+  colour 9 drifts when an arm clips the board edge — track the @ cell instead.
+
+Next session's L1 attempt, in order: (1) collect all four B-boxes tracking the
+@ (guarded frames, arm-aware approach: prefer the axis whose arm is clear);
+(2) if no level-up, press action 5 and see whether control moves to the
+P-cross and its four P-boxes; (3) the win is then likely both crosses' box
+sets cleared. The competition-run blocker stays the election (colour 11 wins
+the vote) — same parked family as sc25/sp80.

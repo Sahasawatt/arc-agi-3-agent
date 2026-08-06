@@ -2452,10 +2452,18 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
                 if os.environ.get("ARC_MDBG") and i % 25 == 0:
                     sh = Counter((r["action"], tuple(r["shifts"][model.player]))
                                  for r in records if model.player in r["shifts"])
+                    ts = terrain_samples(records, model.player, model.body,
+                                         model.dirs, colours)
+                    blocked_sets = Counter(tuple(sorted(cs))
+                                           for cs, m in ts if not m)
                     print("[md] i=%d c=%d coh=%s dirs=%s step=%s block=%s "
-                          "shifts=%s" % (i, model.colour, coherent(model.dirs),
-                                         model.dirs, model.step,
-                                         sorted(model.blocking), dict(sh)), flush=True)
+                          "walked=%d blocked=%d bsets=%s pass=%s parts=%s shifts=%s"
+                          % (i, model.colour, coherent(model.dirs), model.dirs,
+                             model.step, sorted(model.blocking),
+                             sum(1 for _, m in ts if m),
+                             sum(1 for _, m in ts if not m),
+                             blocked_sets.most_common(4), sorted(model.passable),
+                             model.parts, dict(sh)), flush=True)
                 if os.environ.get("ARC_EDBG") and i % 100 == 0:
                     votes = Counter(k for r in records for k in r["shifts"])
                     per = {}
