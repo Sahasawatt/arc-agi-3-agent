@@ -468,3 +468,22 @@ Board coordinates this night (fresh reset): B-cross centre @ (36,45), P-cross
 centre (21,27); B-boxes (48,16),(40,24),(53,24),(48,35); P-boxes (15,3),(6,9),
 (24,9),(15,17). Box inners detected by "9/11 cell wearing a colour-4 ring"
 (`boxes()` in `re86-l1a.txt`'s script — rebuild from there).
+
+## re86: the "collection" was an occlusion artifact — win condition still open (2026-08-06, last)
+
+The full both-cross tour (`re86-l1b.txt`: arm-cover all four B-boxes, then
+toggle and land EXACTLY on three P-box inners) produced **no level-up and no
+persistent board change**: every B/P/colour-4 count that dropped during the
+tour bounced back once the cross moved away. The earlier "collect" (inner
+consumed, frame opened) was the active cross's own arms occluding cells at
+render time. Two facts survive as real: **the @ cell rides whichever cross is
+ACTIVE** (it jumps at toggle — the control indicator), and **the centre
+standing on a frame cell is the GAME_OVER** (the one death; the no-death tour
+never put the centre on a frame). Exhausted cheap hypotheses: exact-landing
+(P side, 3 boxes), arm-sweep (both sides), centre-on-centre, pass-through
+effects. Next session needs SEARCH, not probes: the engine is deterministic
+per process, so DFS/BFS by replay-from-reset over (B centre, P centre, active)
+watching `levels_completed` — with the frame-lava constraint pruning, the
+reachable state space per parity class is small. Alternatively read
+`frames/re86` renders for a display/indicator that names the goal (the
+colour-15 row is one full HUD row; nothing else unexplained on the board).
