@@ -1,0 +1,19 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 05:32:24 | INFO | Got anonymous API key: 625ba1cd-ae6a-4f99-a6a9-42c6f1a5ae89
+2026-08-08 05:32:24 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 05:32:26 | INFO | Successfully fetched 25 environment(s) from API
+== do two routes to the same board share a future? ==
+2026-08-08 05:32:26 | INFO | Created new scorecard: 1c97f3b3-8ace-4fc6-80df-34b568c09f40
+2026-08-08 05:32:27 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 05:32:27 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+  R1 right/left: route ok, 14 frames recorded, final lvl=0
+2026-08-08 05:32:28 | INFO | Successfully fetched metadata for game g50t
+  R2 down/up: route ok, 14 frames recorded, final lvl=0
+2026-08-08 05:32:29 | INFO | Successfully fetched metadata for game g50t
+  R3 control: route ok, 14 frames recorded, final lvl=0
+
+  R1 vs R2 (same board): 0 of 14 frames differ
+  R1 vs R3 (CONTROL): 4 of 14 frames differ  first at step 0 (48 cells)
+  control ok: the comparison CAN see a difference
+
+VERDICT: no hidden state along these routes -- the key is complete

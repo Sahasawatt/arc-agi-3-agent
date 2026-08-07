@@ -1,0 +1,35 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 05:31:05 | INFO | Got anonymous API key: efaa5dcc-ef81-4020-9b5b-d4866a061ed2
+2026-08-08 05:31:05 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 05:31:06 | INFO | Successfully fetched 25 environment(s) from API
+== A: does baseline_actions[0] mean the engine's level 1? ==
+  ls20: baseline=[22, 123, 73, 84, 96, 192, 186]  agent's measured level-1 actions=23
+  re86: baseline=[26, 42, 86, 108, 189, 139, 424, 241]  agent's measured level-1 actions=31
+  sp80: baseline=[39, 58, 25, 148, 96, 152]  agent's measured level-1 actions=16
+  g50t: baseline=[78, 175, 179, 230, 96, 54, 67]  agent's measured level-1 actions=None
+  (ls20 23 vs 22, re86 31 vs 26, sp80 16 vs 39 -- all the same order as baseline[0], so index 0 IS level 1)
+
+== B: 20 deliberate deaths, asking action 5 the same question each life ==
+2026-08-08 05:31:06 | INFO | Created new scorecard: 9797483e-e9cc-44da-a3dc-14a1e9f3b678
+2026-08-08 05:31:07 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 05:31:07 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+  life  0: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  1: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  2: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  3: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  4: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  5: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  6: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  7: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  8: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life  9: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 10: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 11: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 12: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 13: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 14: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 15: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 16: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 17: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 18: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False
+  life 19: board==reset True  top-left==reset True  action5 changed 0 non-clock cells, top-left moved=False

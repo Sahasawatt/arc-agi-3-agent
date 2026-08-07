@@ -957,3 +957,75 @@ in `blocking` -- which `classify_colours` earned honestly, because the move into
 (14,38) IS refused 25 times over and 8 is the only unexplained colour there
 (`discover.py` classify_colours, `bsets=[((0,), 89), ((5, 8), 25)]`). A colour that
 blocks except while its head is held is a mechanic the wall model has no shape for.
+
+**g50t, three more probes, all inert — the contradiction survives (2026-08-08).**
+
+- **Nothing accumulates across a death.** Twenty deliberate lives: the board is
+  byte-identical to reset every time, the top-left objects are identical, and
+  action 5 answers with the same zero-cell change on every one
+  (`results/g50t-p9.txt`). So the live run's `±4` shift under action 5 at i=1825
+  (`g50t-run1.txt`) is a tracker artefact, not a mechanic a death unlocks.
+- **`baseline_actions[0]` is the engine's level 1.** ls20 baseline 22 against the
+  agent's measured 23, re86 26 against 31, sp80 39 against 16 — the same order in
+  every case (`g50t-p9.txt` A). The 78 is level 1's.
+- **No state hides outside the frame, along the routes tested.** Two different
+  20-action routes that end on the same board, given the same 13-action
+  continuation, produce byte-identical frames at every step; the control route
+  that ends elsewhere differs at 4 of 14 (`results/g50t-p10.txt`). An incomplete
+  visited key was the sp80 null's cause and is not this one's.
+- **The BFS harness clears a MAZE, not just a four-action puzzle.** Pointed at ls20
+  level 1 it returns a **13-action** win — shorter than the human baseline of 22
+  and than the agent's own 23 (`results/bfs-control-ls20.txt`). A shallow control
+  is weak evidence for a null found at depth 130; this one is not.
+
+So the search stands and the contradiction is unexplained: a 12-position box that
+a human is credited with taking 78 actions to clear. The one structural thing
+noticed and NOT yet exploited: **the piece is a ring, not a block** — its centre
+cell is background, so the footprint that must be clear is 24 cells with a hole,
+and every hand-rolled reachability in this file (including `g50t-p2.txt`) treated
+it as a solid 5x5. The engine BFS is unaffected (it asks the engine), but any
+router built for this game must not inherit that assumption.
+
+Not rules-legal, but worth recording: an engine BFS with `deepcopy` nodes is a
+SOLVER, not only an analysis tool — 13 actions on a level the agent plays in 23.
+`play.py` is the repo's existing note that rewinding searches are out of
+competition; this is the same class, and the same upper-bound use.
+
+## wa30: opened, and the piece has a HEADING (2026-08-08)
+
+Next in the queue after g50t, same shape (`acts=[1,2,3,4,5]`, no complex action,
+a full-width bar row). Replay-deterministic in-process, **6,064 steps/s**, second
+env identical, baseline `[71, 119, 183, 98, 368, 68, 79, 442, 415]` -- nine levels
+(`results/wa30-found.txt`).
+
+The board is nearly empty: background colour 1 (3,920 cells) with a handful of
+objects. A **piece 4x4 at (32,48)** stepping 4; three 4x4 boxes with a colour-4
+ring and colour-9 inner at (44,24), (16,28), (32,36); one 12x4 colour-9 ring with a
+colour-2 inner at (28,28); a colour-7 clock filling y63 that burns 1 cell per **3**
+actions, so a life is ~192 actions.
+
+Two things measured, and both correct a first reading:
+
+- **The piece is not a solid block: it carries a one-row colour-0 EDGE that names
+  its heading, and the edge MOVES to the side it walks toward.** At reset it reads
+  `0000 / eeee / eeee / eeee` at y48-51; after a leftward walk the 0s are on the
+  left. Any reader that finds the piece by its colour-14 cells alone therefore
+  reports a position that shifts by one whenever the heading changes -- which is
+  what made the first drive look like it was walking off the step-4 lattice
+  (`results/wa30-p1.txt`, the (29,40) and (16,37) rows). The piece is the union of
+  its 14 and 0 cells.
+- **A box's ring turning colour 4 -> 3 is PROXIMITY, not state.** Standing under
+  the box at (32,36) turns its ring to 3; stepping away turns it straight back
+  (`wa30-p1.txt` steps 1 and 3, and again at 10 and 15). The same shape as g50t's
+  hold-to-open gate, and the same trap: a reading taken while the piece is next to
+  the thing is not a reading of the thing.
+
+Searching it is not cheap the way sp80 was: the engine BFS reaches 27,953 states at
+depth 12 after ten minutes and the level-1 baseline is 71 actions, so the tree is
+far too wide to exhaust (`results/wa30-bfs.txt`). Where sp80's whole level lived
+inside four actions, wa30 needs a mechanic read, not a search.
+
+Open, in order: what a box's ring being 3 is FOR (nothing yet made it stick); what
+the 12x4 colour-9 ring with the colour-2 inner is; and whether the heading is an
+input the game reads (the piece rotates for free while walking, so a level that
+cares about facing would be turned by the route).

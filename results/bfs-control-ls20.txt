@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 05:33:28 | INFO | Got anonymous API key: c92374f8-e40e-4c5a-8d54-2fbaaf4243d6
+2026-08-08 05:33:28 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 05:33:29 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 05:33:29 | INFO | Created new scorecard: bb8912aa-4e69-4f3f-8186-250e3f8704c0
+2026-08-08 05:33:30 | INFO | Successfully fetched metadata for game ls20
+2026-08-08 05:33:30 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+
+ls20 L1: win=[3, 3, 3, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1] len=13 expanded=527 states=683 t=48s
+VERDICT: harness clears a MAZE level too -- the g50t null stands
