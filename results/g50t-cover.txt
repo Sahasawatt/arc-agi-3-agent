@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:26:43 | INFO | Got anonymous API key: 45f0d6da-52a5-4749-baa5-51103d78b361
+2026-08-08 02:26:43 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:26:44 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:26:44 | INFO | Created new scorecard: ce833197-dfd6-4905-a064-69aea187e553
+2026-08-08 02:26:45 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:26:45 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+signature: False
+i=6 out of ideas at level 1
+levels completed: 0

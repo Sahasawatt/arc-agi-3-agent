@@ -882,3 +882,78 @@ its only death there is a magazine death, whose last action is FIRE and never ta
 the arrows anything. Against the standing baseline it is the same verdict: 16 of 17
 identical to the digit, `sp80: 0/6 [] 0.0% -> 1/6 [16] 4.762%`, mean 5.116% ->
 5.396%, no game loses a level.
+
+## g50t: the mechanic is measured, level 1 is not solved, and the search says it cannot be (2026-08-08)
+
+Next target after sp80, chosen for shape: `acts=[1,2,3,4,5]` with no complex
+action -- exactly re86's and sp80's -- plus a full-width bar row. Everything below
+is offline; no scorecard touched.
+
+**Not the framed-box family.** g50t reads 3 framed boxes at reset against cover's
+threshold of 4 (`results/sp80-sig.txt`), which was worth one probe: driven anyway,
+`cover.py g50t 12` gives up at i=6 (`results/g50t-cover.txt`). The 3 are ring
+artefacts.
+
+**Foundation** (`results/g50t-found.txt`, `probe_found.py` -- a parameterised
+replacement for copying `probe_re86.py` per game): replay-deterministic in-process,
+**2,153 steps/s**, second env identical, baseline `[78, 175, 179, 230, 96, 54, 67]`.
+The board is a maze: floor 5, void 0, a 24-cell piece (5x5 with the centre out) at
+(14,8), a goal-box ring of colour 9 at (43-49, 49-55) with a marker inside, an
+82-cell colour-8 snake, an indicator top-left, and a colour-9 bar filling y63.
+
+**Measured mechanics** (`g50t-acts.txt`, `g50t-p1.txt`, `g50t-p7.txt`, `g50t-p8.txt`):
+
+- arrows step **6**; the clock burns 1 cell per 2 actions, so a life is **128
+  actions** against a level-1 baseline of 78.
+- **only actions 2 and 4 move anything at reset** -- the piece starts in the
+  maze's top-left corner, so up and left read as immovable. The repo's own
+  generalisation-probe caveat, live.
+- **action 5 RECALLS the piece to x=14**, measured directly (`g50t-p8.txt`: piece
+  x-left 38 -> 14 on one press). `probe_acts` reported it as a no-op for eight
+  presses because from reset the piece is ALREADY at x=14 -- the same shape of
+  miss as "a piece that starts against a wall reads as immovable", one level up.
+- **the colour-8 snake's head is a HOLD-TO-OPEN gate, not a collectible.**
+  Standing on it at (38,8) retracts 25 of the snake's cells -- including the whole
+  of x14-18 y38-42, the square that had refused the piece -- and opens 24 void
+  cells into floor around a new segment at x20-25 y37-43. Step off, or press the
+  recall, and **every one of those cells comes straight back** (`g50t-p7.txt`
+  step 4: total8 66 -> 82 on leaving; `g50t-p8.txt`: 66 -> 82 on the recall). The
+  first reading of this as a consumption was wrong in the repo's oldest way -- a
+  state read while the piece is standing on the thing.
+- a death restores the board **exactly**: census delta {} against the reset frame
+  (`g50t-p4.txt` B). Nothing carries between lives.
+
+**The level is unwinnable from reset, and the search that says so is controlled.**
+BFS over real engine states with `copy.deepcopy` nodes: 25 distinct boards, 12
+reachable piece positions, the goal box among none of them, no win
+(`g50t-p3.txt`). Re-run with the CLOCK back in the visited key -- the exact shape
+of the sp80 null, where the missing key was the magazine -- 3,162 states, 125
+deaths, same answer (`g50t-p5.txt`). Two controls were then run rather than
+assumed:
+
+- **`deepcopy` is a true fork here.** The control run for sp80 asked "same next
+  frame" and "advances independently", and BOTH are true even of a copy that
+  SHARES its parent's state. The discriminating question is whether the PARENT
+  moved after the copy stepped; it does not, on either game, against a positive
+  control that proves the comparison can answer False (`results/deepcopy-check.txt`).
+- **the harness finds a win it is known to have**: pointed at sp80 level 1 it
+  returns `[4, 4, 4, 5]` in 38 expansions (`results/bfs-control.txt`).
+
+**So the open contradiction is the finding.** A controlled exhaustive search says
+no sequence of <=130 actions from the reset board completes level 1, the clock
+allows 128, a death changes nothing, and the human baseline for that level is 78.
+One of those is false and it is not the search. Candidates, none yet measured:
+the recall may do more than move x (its y behaviour was never read); the top-left
+indicator was seen shifting +/-4 under action 5 in a live run (`g50t-run1.txt`
+i=1825) which no probe from reset reproduces, so something enables it; or the
+hold-to-open gate has a second holder the board has not been asked about.
+
+**Why the agent scores 0 today** is separately clear and does not depend on any of
+that: discovery learns `block=[0, 8]` (`g50t-run1.txt`), and colour 8 is the gate.
+Offline reachability on the reset frame with 8 as wall gives 11 positions and the
+goal box unreachable; with 8 as floor it gives 20 and the goal box reachable at
+(44,50) (`g50t-p2.txt`). The router is sealed out of its own level by one colour
+in `blocking` -- which `classify_colours` earned honestly, because the move into
+(14,38) IS refused 25 times over and 8 is the only unexplained colour there
+(`discover.py` classify_colours, `bsets=[((0,), 89), ((5, 8), 25)]`). A colour that
+blocks except while its head is held is a mechanic the wall model has no shape for.

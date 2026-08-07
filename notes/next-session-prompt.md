@@ -46,33 +46,44 @@ record; this brief only points.
 
 ## FIRST TASK
 
-**Apply the sp80 playbook to `g50t`** (a 0/7 game), in this order — each step is cheap and
-the first one may end the task early:
+**Resolve g50t's open contradiction** ← results/breadth-recon.md §g50t (read it first; the
+mechanic, the search and its two controls are all written up there).
 
-1. **Check whether g50t is the framed-box family with a threshold one short.** It reads
-   **3 framed boxes at reset** and `cover.signature` demands >= 4 ← results/sp80-sig.txt.
-   Either that is a coincidence or `cover.py` already knows how to play it. Cheapest probe:
-   `python -c` a `cover.Cover` against a live g50t offline the way `cover.py`'s `__main__`
-   does (`./.venv/Scripts/python.exe cover.py g50t 12`) and read what it does. If it plays,
-   the change is a threshold and the gate applies. UNKNOWN — whether those 3 boxes are real
-   framed boxes or ring artefacts; the dump answers it.
-2. **Otherwise run the foundation probe**: copy `probe_sp80.py`, point it at g50t. It
-   answers determinism-under-replay, step rate, census, and dumps the board.
-   UNKNOWN — whether g50t is replay-deterministic in-process (re86 and sp80 both are, at
-   4,307 and 80,469 steps/s ← results/re86-det.txt, sp80-det.txt); verify before building
-   anything replay-based.
-3. Then `probe.py g50t 8` for per-action diffs, then hypothesis probes.
+The state: a controlled exhaustive engine-BFS says **no sequence of ≤130 actions from the
+reset board completes level 1**, the clock allows 128, a death restores the board exactly
+(census delta {}), and the human baseline for that level is **78**. One of those is false
+and it is **not the search** — the harness returns sp80's known `[4,4,4,5]` in 38
+expansions ← results/bfs-control.txt, and `deepcopy` is a true fork on both games with a
+positive control ← results/deepcopy-check.txt.
 
-**Why g50t and not another 0-level game:** it is the closest analogue of the two games that
-have fallen. `acts=[1,2,3,4,5]` with NO complex action — exactly re86's and sp80's shape —
-plus a single-colour full-width row at y63, which on both of those was a per-level action
-budget ← results/sp80-sig.txt. `wa30` is the same shape (`acts=[1,2,3,4,5]`, bar at y63,
-0 boxes) and is the natural second. Every other 0-level game is a different problem: dc22 /
-sc25 / ka59 / sk48 / bp35 are click-driven, tr87 / tu93 have only the four arrows, and sb26
-has `acts=[5,6,7]` — no directions at all.
+Three candidates, none measured yet — each is one probe:
 
-Queue after it (do not start a second before the first is written up): `wa30` · re86 L6 ·
-cn04 L2 trigger · walls-during-planning (ar25) — all have dead lists below.
+1. **The recall's y behaviour was never read.** Action 5 moves the piece to x=14
+   (measured, `results/g50t-p8.txt`); nobody asked what it does to y, or whether it
+   ignores walls. A teleport that ignores walls is a routing primitive the BFS already
+   explored, but its own model of it may be wrong.
+2. **Something enables the top-left indicator.** A live run shows it shifting ±4 under
+   action 5 at i=1825 (`results/g50t-run1.txt`) and no probe from reset reproduces it.
+   Find what turns it on — that is a state the BFS's visited key does not contain, which
+   is exactly the shape of the sp80 null (there the missing key was the magazine).
+3. **The hold-to-open gate may have a second holder.** Standing on the snake's head opens
+   the maze and stepping off closes it; a single piece cannot hold and pass. Ask the board
+   what else can sit on it.
+
+UNKNOWN — whether `baseline_actions[0]` for g50t indexes the level the engine calls level 1.
+Cheap check: compare another game's baseline against a level whose action count is known
+(sp80 L1 baseline 39 vs the measured 16-action clear; ls20 L1 baseline 22 vs 23).
+
+**Do not spend the session on the router fix until that is settled** — but note it is
+already diagnosed and independent: discovery learns `block=[0, 8]` and colour 8 IS the gate;
+with 8 as wall the goal box is unreachable (11 positions), with 8 as floor it is reachable
+(20 positions, (44,50)) ← results/g50t-p2.txt. `classify_colours` earned that label honestly
+— the move into (14,38) really is refused, 25 times, with 8 the only unexplained colour —
+so the fix is not "drop 8", it is a shape for **a colour that blocks except while its head
+is held**. Any change there is a `discover.py` change and the full gate applies.
+
+Queue after it (do not start a second before the first is written up): `wa30` (same shape as
+g50t and sp80) · re86 L6 · cn04 L2 trigger · walls-during-planning (ar25).
 
 ## DEAD LIST — measured refuted, do not re-derive:
 

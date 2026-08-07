@@ -1,0 +1,43 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:44:36 | INFO | Got anonymous API key: fcf63afd-d6fd-4c70-9d01-c80eae297b89
+2026-08-08 02:44:36 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:44:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:44:37 | INFO | Created new scorecard: d3b03297-340b-4754-9e56-d4b37043475d
+2026-08-08 02:44:38 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:44:38 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+reset: piece=(14, 8) 8s in x14-18 y38-42 = 23
+   0 right: piece=(20, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   1 right: piece=(26, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   2 right: piece=(32, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   3 right: piece=(38, 8) MOVED  8s@x14-18y38-42=0  total8=66  state=NOT_FINISHED lvl=0
+   4 left : piece=(32, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   5 left : piece=(26, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   6 left : piece=(20, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   7 left : piece=(14, 8) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   8 down : piece=(14, 14) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+   9 down : piece=(14, 20) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+  10 down : piece=(14, 26) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+  11 down : piece=(14, 32) MOVED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+  12 down : piece=(14, 32) REFUSED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+  13 down : piece=(14, 32) REFUSED  8s@x14-18y38-42=23  total8=82  state=NOT_FINISHED lvl=0
+
+board around the gate now (x10-30, y30-48):
+  y=30 000555555500000000000
+  y=31 000555555500000000000
+  y=32 000599999500000000000
+  y=33 000599999500000000000
+  y=34 000599599500000000000
+  y=35 000599999500000000000
+  y=36 000599999500000000000
+  y=37 000555555500000000000
+  y=38 000588888500000000000
+  y=39 000558888555555555555
+  y=40 000588888888888888888
+  y=41 000558888555555555555
+  y=42 000588888500000000000
+  y=43 000555555500000000000
+  y=44 000555555500000000000
+  y=45 000555555500000000000
+  y=46 000555555500000000000
+  y=47 000555555500000000000
+  y=48 000555555500000000000

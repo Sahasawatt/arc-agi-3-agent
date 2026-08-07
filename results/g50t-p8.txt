@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:45:18 | INFO | Got anonymous API key: e42ed66e-d6b1-4efb-90c3-a85bad9dd140
+2026-08-08 02:45:18 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:45:19 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:45:19 | INFO | Created new scorecard: 2b288dc0-c9dd-4cf5-b040-7dac44b6741e
+2026-08-08 02:45:20 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:45:20 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+on the head: total8=66  gate8=0
+  press 0 (action 4): piece-left=38 total8=66 gate8=0
+  press 1 (action 5): piece-left=14 total8=82 gate8=23
+  press 2 (action 4): piece-left=20 total8=82 gate8=23
+  press 3 (action 5): piece-left=14 total8=82 gate8=23
+  press 4 (action 4): piece-left=20 total8=82 gate8=23
+VERDICT: reverted while still standing on it -- a one-shot toggle

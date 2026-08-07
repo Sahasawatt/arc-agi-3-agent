@@ -1,0 +1,23 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:40:17 | INFO | Got anonymous API key: a66f1be7-ffb6-450f-b797-7f92b18f2953
+2026-08-08 02:40:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:40:18 | INFO | Successfully fetched 25 environment(s) from API
+
+===== g50t =====
+2026-08-08 02:40:18 | INFO | Created new scorecard: 53ae1fad-4ce0-4d7c-bb4c-91e2b5e3b88c
+2026-08-08 02:40:19 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:40:19 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+  parent frame after one step: piece-bearing: True
+  (no readable frame attribute on the env -- falling back to a step probe)
+2026-08-08 02:40:21 | INFO | Successfully fetched metadata for game g50t
+  parent's next frame matches an untouched replica: True   <- False means the twin's steps LEAKED into the parent
+  control (a genuinely different frame compares False): True
+
+===== sp80 =====
+2026-08-08 02:40:22 | INFO | Successfully fetched metadata for game sp80
+2026-08-08 02:40:22 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  parent frame after one step: piece-bearing: True
+  (no readable frame attribute on the env -- falling back to a step probe)
+2026-08-08 02:40:23 | INFO | Successfully fetched metadata for game sp80
+  parent's next frame matches an untouched replica: True   <- False means the twin's steps LEAKED into the parent
+  control (a genuinely different frame compares False): True

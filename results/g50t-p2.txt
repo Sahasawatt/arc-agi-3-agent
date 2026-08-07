@@ -1,0 +1,23 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:31:58 | INFO | Got anonymous API key: ec79cff7-0e42-476a-b74d-67778da291ad
+2026-08-08 02:31:58 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:31:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:31:59 | INFO | Created new scorecard: 48e03c04-b0ce-49c3-89c1-6ad5101c1122
+2026-08-08 02:32:00 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:32:00 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+colour-8 blobs (the keys):
+   (14, 9, 41, 42, 82)
+colour-9 blobs off the clock row (piece + goal box + indicator):
+   (1, 1, 3, 3, 8)
+   (1, 5, 3, 5, 3)
+   (14, 8, 18, 12, 24)
+   (43, 49, 49, 55, 19)
+   (46, 52, 46, 52, 1)
+
+8 is WALL (what the model believes): 11 reachable positions
+  positions whose footprint touches the goal box: 0 []
+  positions whose footprint covers a colour-8 cell: 0 []
+
+8 is FLOOR (what probe 1 measured): 20 reachable positions
+  positions whose footprint touches the goal box: 1 [(44, 50)]
+  positions whose footprint covers a colour-8 cell: 2 [(14, 38), (38, 8)]

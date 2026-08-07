@@ -1,0 +1,20 @@
+== CONTROL: sp80 level 1, whose answer [4,4,4,5] is measured ==
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:41:36 | INFO | Got anonymous API key: 4d54e670-1fe8-4c35-af01-652d27df938d
+2026-08-08 02:41:36 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:41:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:41:37 | INFO | Created new scorecard: 4c8bfd0f-3dbc-451f-a84a-0e386a16d1a0
+2026-08-08 02:41:38 | INFO | Successfully fetched metadata for game sp80
+2026-08-08 02:41:38 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+  win=[4, 4, 4, 5] expanded=38 states=69 t=1s
+  VERDICT: harness finds a known win -- it is sound
+
+== the same harness on g50t level 1, shallow ==
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:41:40 | INFO | Got anonymous API key: 9a635f47-c1d3-4045-9f01-82ac9510ecd3
+2026-08-08 02:41:40 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:41:41 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:41:41 | INFO | Created new scorecard: b0b0bdcf-7af7-49df-8e6d-b27126012d1b
+2026-08-08 02:41:42 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:41:42 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+  win=None expanded=412 states=437 t=20s

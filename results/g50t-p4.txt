@@ -1,0 +1,21 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:35:38 | INFO | Got anonymous API key: 205e0cb6-81a2-4f1b-886e-0e808e188b54
+2026-08-08 02:35:38 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:35:39 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:35:39 | INFO | Created new scorecard: 9bc9099a-33df-40cd-8b5b-7219043ac319
+2026-08-08 02:35:40 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:35:40 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+== A: deepcopy control, on THIS game ==
+  same next frame: True
+  copy advances independently: True
+  parent unaffected by the copy's step: False
+  parent piece (26, 8) twin piece (26, 14)
+
+== B: do the opened walls survive a death? ==
+2026-08-08 02:35:41 | INFO | Successfully fetched metadata for game g50t
+  after opening: piece=(38, 8)
+  census delta vs reset: {0: -24, 1: 2, 5: 40, 8: -16, 9: -2}
+  died after 126 further actions, state=GAME_OVER
+  after the reset: piece=(14, 8)
+  census delta vs RESET BOARD: {}
+  board was put back: colour0 3006 -> 3006, colour8 82 -> 82

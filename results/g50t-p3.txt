@@ -1,0 +1,13 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:34:23 | INFO | Got anonymous API key: 62c97437-9bf4-4b6f-bcac-6062c57081ea
+2026-08-08 02:34:23 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:34:24 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:34:24 | INFO | Created new scorecard: fdf23427-fe73-4d40-9016-2a98ef08a62a
+2026-08-08 02:34:25 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:34:26 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+
+expanded=25 states=25 deaths=0 t=1s
+distinct piece positions reachable: 12
+[(14, 8), (14, 14), (14, 20), (14, 26), (14, 32), (20, 8), (20, 20), (26, 8), (26, 14), (26, 20), (32, 8), (38, 8)]
+positions whose footprint touches the goal box (43, 49, 49, 55): []
+NO WIN within the search

@@ -1,0 +1,57 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 02:28:11 | INFO | Got anonymous API key: c5df632c-90f7-4277-9e83-54a26930ecd6
+2026-08-08 02:28:11 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 02:28:12 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 02:28:12 | INFO | Created new scorecard: 1f14518a-515e-4bcd-9cdf-603ace5f9093
+2026-08-08 02:28:13 | INFO | Successfully fetched metadata for game g50t
+2026-08-08 02:28:13 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+
+== ACTION1 (complex=False) ==
+  0: no change  state=NOT_FINISHED lvl=0
+  1:    1 cells  x[63-63] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  2: no change  state=NOT_FINISHED lvl=0
+  3:    1 cells  x[62-62] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[61-61] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[60-60] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+
+== ACTION2 (complex=False) ==
+  0:   48 cells  x[14-18] y[8-18]  9->5:24 5->9:24  state=NOT_FINISHED lvl=0
+  1:   49 cells  x[14-63] y[14-63]  9->5:24 5->9:24 9->1:1  state=NOT_FINISHED lvl=0
+  2:   48 cells  x[14-18] y[20-30]  9->5:24 5->9:24  state=NOT_FINISHED lvl=0
+  3:   49 cells  x[14-62] y[26-63]  9->5:24 5->9:24 9->1:1  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[61-61] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[60-60] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+
+== ACTION3 (complex=False) ==
+  0: no change  state=NOT_FINISHED lvl=0
+  1:    1 cells  x[63-63] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  2: no change  state=NOT_FINISHED lvl=0
+  3:    1 cells  x[62-62] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[61-61] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[60-60] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+
+== ACTION4 (complex=False) ==
+  0:   48 cells  x[14-24] y[8-12]  9->5:24 5->9:24  state=NOT_FINISHED lvl=0
+  1:   49 cells  x[20-63] y[8-63]  9->5:24 5->9:24 9->1:1  state=NOT_FINISHED lvl=0
+  2:   48 cells  x[26-36] y[8-12]  9->5:24 5->9:24  state=NOT_FINISHED lvl=0
+  3:  106 cells  x[14-62] y[8-63]  8->5:25 9->5:24 5->9:15 0->5:14 0->8:10  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[61-61] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[60-60] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+
+== ACTION5 (complex=False) ==
+  0: no change  state=NOT_FINISHED lvl=0
+  1:    1 cells  x[63-63] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  2: no change  state=NOT_FINISHED lvl=0
+  3:    1 cells  x[62-62] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[61-61] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[60-60] y[63-63]  9->1:1  state=NOT_FINISHED lvl=0
