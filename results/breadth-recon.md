@@ -761,3 +761,124 @@ reset, 4 actions, and the whole win column (24,y) is legal so a legal agent
 has 9 targets to find. Wiring a discovery rung into compete.py (fire-sweep
 under the 5-shot/30-action budgets) is a CODE change: full 17-game sweep +
 no-level-lost gate applies. sp80 would be game #7 with a level.
+
+## sp80 LANDS IN THE AGENT — a control-transfer rung, level 1 in 16 actions (2026-08-07)
+
+`swap.py`, wired the way `cover.py` is: constructed once if a reset-frame
+signature matches, asked first every round, answering None the moment it runs
+out of ideas so the rungs take the level back (compete.py:1704-1710, 1834-1840).
+
+**The signature was chosen from a measurement, not proposed and then defended**
+(`results/sp80-sig.txt`, all seventeen playable games at reset): a single-colour
+band on BOTH screen edges, plus a solid rectangle of >=60 cells that does not
+span the width. sp80 is the only game of the seventeen that satisfies it —
+dc22 is the only other with two edge bands and its largest non-full-width solid
+block is 24 cells. Disjoint from cover's by measurement too: sp80 reads ZERO
+framed boxes, re86 has no top band, so the two drivers are never both live.
+
+**What the rung does.** It sweeps: fire from where you stand if that position
+has not been tested, otherwise walk to the nearest untested one. It keeps no
+plan — every round is decided from the frame in front of it, which is what makes
+a death harmless (the block reappears at the level start and the rung reads
+where it is). The arrow mapping is not assumed but read off the block's own
+displacement (`ar25` answers ACTION3 with right, CLAUDE.md §Traps), and the
+driven colour is learned the same way: the one body that TRANSLATES as a rigid
+set between two frames.
+
+**The magazine is the whole design, and it came from one measurement.** The
+fifth fire of a life is a GAME_OVER and it MASKS a win: the same position that
+levels up on a fresh magazine dies silently as shot five (`sp80-p18.txt` A vs
+B — B is the control, same walk, fresh magazine, level up). A sweep that marks
+every fired position tested therefore books a FALSE NEGATIVE at exactly the
+position that answers the level, and can never find it again. So shots are
+counted, the magazine size is LEARNED from the first death rather than assumed
+(`mag = shots - 1`), the last shot of a life is spent deliberately as a one-action
+reset, and the position it was spent on is put back on the list.
+
+Two facts make that reset cheap enough to be a tool rather than a cost:
+GAME_OVER is terminal at the engine unless someone calls `reset()`
+(`sp80-p17.txt` A, B: the engine stays GAME_OVER and hands back empty frames
+forever), and `compete.play` calls it and carries on, charging the death exactly
+the one action that caused it (compete.py:1965-1972).
+
+**One bug worth keeping.** The life detector first re-read the band structure
+every round — and the clock is a full-width BAND only while it is FULL, so one
+burnt cell makes its row mixed and the colour drops out of the reading on the
+very first action. The refill is then never seen, `mag` stays None for the whole
+run, and the rung goes on firing the masked fifth shot as a test
+(`results/sp80-swap1.txt`: `mag=None`, 76 positions "tested"). The colours are
+latched from the level's first frame and counted whole thereafter
+(`sp80-swap2.txt`: `mag=4`). A signature function and a per-round tracker are
+not the same instrument even when they read the same feature.
+
+**Measured.** Offline harness: level 1 in 16 actions, then 113 positions swept
+on level 2 with 84 targets correctly ruled unreachable — which is exactly the
+number of lattice positions outside level 2's measured wall box (192 generated,
+108 reachable) — then None at i=978, handing ~1,000 actions back to the rungs
+(`sp80-swap2.txt`). Through `compete.py`: **sp80 0/6 -> 1/6 levels,
+actions=[16], score 0% -> 4.762%** (`results/sp80-compete1.txt`); level 1's
+baseline is 39 actions, so 16 is inside the scoring cap. pytest 219 -> 238
+(`results/pytest-swap-full.txt`), the 19 new ones in `test_swap.py`, two of
+which were proved to have teeth by putting each fix back and watching them go
+red (`results/teeth-mut1.txt`, `teeth-mut2.txt`).
+
+**Known narrowness, not measured as a problem here:** `_targets` reads the
+lattice stride from actions 4/3 (x) and 2/1 (y) specifically, so a game whose
+horizontal step lives only on some other action would sweep one column; and
+`_here` takes the bounding box of the driven colour, which would span two bodies
+if a board ever showed two of them at once (sp80 never does — a transfer repaints
+the old body, so the driven colour is always exactly one blob).
+
+**Sweep verdict and one more defect (2026-08-07, same session).**
+
+Sweep 1 (`results/sweep-swap.log`, compared per game by `sweep_diff.py`, which
+parses in python because `diff` is rewritten on this machine): **16 of 17 games
+identical to the digit** — ar25 bp35 cd82 cn04 dc22 g50t ka59 ls20 m0r0 re86 sb26
+sc25 sk48 tr87 tu93 wa30 — and the only change is
+`sp80: 0/6 [] 0.0% -> 1/6 [16] 4.762%`. Mean **5.116% -> 5.396%**, roster
+**6/17 -> 7/17 games with a level**. No game lost a level.
+
+That sweep is also the strongest evidence the signature is exclusive, stronger
+than the feature table it was chosen from: the driver acts on ANY board it is
+handed, so if it had been constructed for any other game that game's trace would
+have moved. Sixteen unchanged traces mean sixteen games never built one.
+
+**D1, found by self-review and then measured** (`results/sp80-d1.txt`): the rung
+read the arrow mapping from `moved(self.prev, g)` BEFORE asking whether a life had
+just ended. When the life ends on the CLOCK the last action was a direction, so the
+pair straddles the engine's reset — and the block coming back to the level's start
+IS a rigid translation of the driven colour. Measured: the arrow just pressed had
+its vector overwritten with a SIGN FLIP, `(0, 4) -> (0, -4)`, against an
+honest-answer control on the same setup that stayed clean; a corrupt stride
+collapses the sweep's target set from 192 positions to 32. Not reachable on level 1
+(the rung wins at action 16 and its only death there is a magazine death, whose last
+action is FIRE), reachable on level 2 where the sweep spends ~978 actions.
+
+The first probe written for it answered "mapping intact" — and was measuring
+nothing, because the driver FIRED that round instead of walking. Its own first line
+said so (`emitted 5`). A positive control inside the same invocation (assert the
+round emitted a direction) is what made the second run trustworthy, and the first
+control was worthless besides: its assertion carried an `or` escape hatch that
+accepted the very corruption it was written to rule out.
+
+Fixed by asking `_fresh_life` first and skipping the learning step when the board
+was just put back. Two tests, `test_a_death_teaches_the_arrows_nothing` (red before
+the fix, `results/pytest-d1-red.txt`) and its partner
+`test_an_honest_answer_still_teaches_the_arrows` (green before AND after, so the
+guard cannot pass by simply deafening the learner). pytest 238 -> 240.
+Sweep 2 is the acceptance run for the fixed bytes (`results/sweep-swap2.log`).
+
+An adversarial review of the rung and its wiring — four lenses (signature safety,
+sweep control flow, magazine bookkeeping, driver contract), every finding then
+handed to an independent refuter — raised five findings and **none survived**; the
+refutations are evidenced against the run files (for example: colour-8 bodies are
+byte-identical across three consecutive RIGHT presses in `sp80-p8.txt`, which kills
+the "moved() could attach to the wrong body" claim). D1 was not among what it found.
+
+Sweep 2 (`results/sweep-swap2.log`, the acceptance run for the fixed bytes) is
+**byte-identical to sweep 1 across all seventeen games** — so the D1 guard changes
+no measured trajectory, which is the expected shape: level 1 wins at action 16 and
+its only death there is a magazine death, whose last action is FIRE and never taught
+the arrows anything. Against the standing baseline it is the same verdict: 16 of 17
+identical to the digit, `sp80: 0/6 [] 0.0% -> 1/6 [16] 4.762%`, mean 5.116% ->
+5.396%, no game loses a level.

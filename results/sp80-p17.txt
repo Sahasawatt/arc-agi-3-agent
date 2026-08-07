@@ -1,0 +1,47 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-07 21:38:45 | INFO | Got anonymous API key: d027b566-48e1-4b6d-b17a-9f6eeb72ed7c
+2026-08-07 21:38:45 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-07 21:38:46 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-07 21:38:46 | INFO | Created new scorecard: 567a4c14-3ed2-4075-9077-7182d183d5ef
+2026-08-07 21:38:47 | INFO | Successfully fetched metadata for game sp80
+2026-08-07 21:38:47 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+== A: die by MAGAZINE (5 fires), then keep stepping, never reset ==
+  after 5 fires: state=GAME_OVER lvl=0 grid=ok
+  step 0 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 1 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 2 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 3 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 4 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 5 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 6 (right): state=GAME_OVER lvl=0 blk=None bar=None
+  step 7 (right): state=GAME_OVER lvl=0 blk=None bar=None
+
+== B: die by BAR (30 actions), then keep stepping ==
+2026-08-07 21:38:48 | INFO | Successfully fetched metadata for game sp80
+  died at action 30: state=GAME_OVER
+  step 0: state=GAME_OVER lvl=0 blk=None bar=None
+  step 1: state=GAME_OVER lvl=0 blk=None bar=None
+  step 2: state=GAME_OVER lvl=0 blk=None bar=None
+  step 3: state=GAME_OVER lvl=0 blk=None bar=None
+  step 4: state=GAME_OVER lvl=0 blk=None bar=None
+  step 5: state=GAME_OVER lvl=0 blk=None bar=None
+
+== C: does reset() AFTER a GAME_OVER restore level 1 and the start block? ==
+2026-08-07 21:38:49 | INFO | Successfully fetched metadata for game sp80
+  post-magazine: GAME_OVER
+  after reset: state=NOT_FINISHED lvl=0 blk=(12, 16, 80) bar=64
+
+== D: how many fires can a life afford WITHOUT dying? ==
+2026-08-07 21:38:50 | INFO | Successfully fetched metadata for game sp80
+  fire 1: state=NOT_FINISHED bar=62
+  fire 2: state=NOT_FINISHED bar=60
+  fire 3: state=NOT_FINISHED bar=58
+  fire 4: state=NOT_FINISHED bar=55
+  4 fires survived: True
+2026-08-07 21:38:52 | INFO | Successfully fetched metadata for game sp80
+  after winning L1: lvl=1 state=NOT_FINISHED
+  L2 fire 1: state=NOT_FINISHED lvl=1
+  L2 fire 2: state=NOT_FINISHED lvl=1
+  L2 fire 3: state=NOT_FINISHED lvl=1
+  L2 fire 4: state=NOT_FINISHED lvl=1
+  L2 fire 5: state=GAME_OVER lvl=1

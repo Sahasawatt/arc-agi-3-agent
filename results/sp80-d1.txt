@@ -1,0 +1,12 @@
+== the mapping before and after a CLOCK death (last action = a direction) ==
+  walk round emitted 2, dirs now {1: (0, -4), 2: (0, 4), 3: (-4, 0), 4: (4, 0)}
+  after the post-death frame: {1: (0, -4), 2: (np.int64(0), np.int64(-4)), 3: (-4, 0), 4: (4, 0)}
+  CORRUPTED entries: {2: ((0, 4), (np.int64(0), np.int64(-4)))}
+
+== control: the SAME walk answered honestly (no death, clock keeps burning) ==
+  emitted 2; dirs {1: (0, -4), 2: (0, 4), 3: (-4, 0), 4: (4, 0)} -> {1: (0, -4), 2: (0, 4), 3: (-4, 0), 4: (4, 0)}
+  control clean: True
+
+== what a corrupt entry does to the sweep's lattice ==
+  targets with a clean stride: 192
+  targets with the corrupt stride: 32

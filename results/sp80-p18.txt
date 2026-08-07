@@ -1,0 +1,29 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-07 21:42:25 | INFO | Got anonymous API key: a51f379b-682e-4d3f-ae72-dce1a45b7dae
+2026-08-07 21:42:25 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-07 21:42:26 | INFO | Successfully fetched 25 environment(s) from API
+sp80 baseline_actions: [39, 58, 25, 148, 96, 152]
+  (ls20 baseline for scale: [22, 123, 73, 84, 96, 192, 186] )
+  (re86 baseline for scale: [26, 42, 86, 108, 189, 139, 424, 241] )
+  (cn04 baseline for scale: [29, 54, 85, 300, 208, 113] )
+2026-08-07 21:42:26 | INFO | Created new scorecard: 8c80bede-afa4-402a-be72-b74d0d3677b5
+2026-08-07 21:42:27 | INFO | Successfully fetched metadata for game sp80
+2026-08-07 21:42:27 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+
+== A: 4 dud fires, then the 5th ON the winning column (x-left 24) ==
+  after 4 duds: state=NOT_FINISHED
+  block at x-left=24 state=NOT_FINISHED
+  SHOT 5 on the win column -> state=GAME_OVER lvl=0
+  VERDICT: magazine death MASKS the win
+
+== B: control -- the same walk with a fresh magazine wins ==
+2026-08-07 21:42:28 | INFO | Successfully fetched metadata for game sp80
+  fresh magazine, same position: state=NOT_FINISHED lvl=1
+
+== C: how many fires does one life really allow? (fire only, no moves) ==
+2026-08-07 21:42:29 | INFO | Successfully fetched metadata for game sp80
+  died on fire #5 (state=GAME_OVER)
+
+== D: does a MOVE-only life also cap fires? interleave move+fire ==
+2026-08-07 21:42:31 | INFO | Successfully fetched metadata for game sp80
+  died after 10 actions with 5 fires (state=GAME_OVER lvl=0)

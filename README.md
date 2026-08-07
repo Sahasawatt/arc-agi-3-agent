@@ -1205,6 +1205,8 @@ minimal action sequences — what a planner produces and a language model does n
 | `signals.py` | finds the game's counters anywhere on the frame, tells a clock from a consequence, and reads how many actions a life has left |
 | `trace.py` | frame-by-frame record of what each action did — what vanished, what the status bar did, when a level fell |
 | `compete.py` | plays under the real competition rules — one make(), no rewinding, forward only |
+| `cover.py` | whole-game driver for the framed-box family (`re86`): park every shape so its own boxes lie under it |
+| `swap.py` | whole-game driver for the control-transfer family (`sp80`): sweep the board firing the action that hands the arrows to another body |
 | `play.py` | the autonomous loop — discover, search object sequences, tour a kind, sweep every reachable square, keep what clears a level |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
 | `agent.py` | play loop with a swappable policy (`random`, two LLM policies) |
@@ -1508,3 +1510,56 @@ and a level can consume in WAVES (replan until the box set holds still).
 Level 6 is a new mechanic — colour-1 WALLS (the game's first refusals), no
 swatches, a sealed ring-with-hole as the only unexplained object; six
 hypotheses measured dead in `results/breadth-recon.md` §session 2.
+
+## sp80: the control-transfer family (2026-08-07)
+
+`sp80` hands the arrows to a **different body** when you press action 5. From most
+places it does nothing at all; level 1 ends from one column of them. Sweeping every
+one of the 108 reachable positions with a fire, the nine wins are exactly the ones
+with the driven block's left edge at x=24 (`results/sp80-p6.txt`), which is the
+column that centres it on the pair of castles at the bottom of the board.
+
+The rung is `swap.py`, and it is a SWEEP: fire from where you stand if that position
+has not been tested, otherwise walk to the nearest untested one. It keeps no plan —
+every round is read off the frame in front of it, which is what makes a death
+harmless, because the block simply reappears at the level's start and the rung reads
+where it is. The arrow mapping is not assumed (`ar25` answers ACTION3 with right) but
+measured from the block's own displacement, and the driven colour is learned the same
+way: the one body that translates as a rigid set between two frames.
+
+**The magazine is the whole design.** The fifth press of action 5 in one life is a
+GAME_OVER — and it MASKS a win: the identical position that levels up on a fresh
+magazine dies silently as shot five (`results/sp80-p18.txt`, A against its own
+control B). A sweep that marks every fired position tested therefore crosses off the
+one position that answers the level and can never come back to it. So shots are
+counted, the magazine size is LEARNED from the first death rather than assumed, the
+last shot of a life is spent deliberately as a one-action reset, and the position it
+was spent on goes back on the list. That reset is cheap because the play loop answers
+a GAME_OVER with a level reset and carries on — the engine itself does not: without
+that call it stays GAME_OVER and returns empty frames forever (`sp80-p17.txt`).
+
+Two bugs are worth more than the code that fixed them:
+
+- **A signature function and a per-round tracker are not the same instrument even
+  when they read the same feature.** The life detector re-read the band structure
+  every round to notice the clock refilling. The clock is a full-width BAND only
+  while it is FULL — one burnt cell makes its row mixed, the colour drops out of the
+  reading on the very first action, the refill is never seen, and the magazine stays
+  unlearned for the whole run (`sp80-swap1.txt`, `mag=None`). Latch the colours from
+  the level's first frame and count them whole thereafter.
+- **A death is a rigid translation, so a frame pair that straddles one teaches the
+  arrows a lie.** The block coming back to the level's start looks exactly like a
+  move, and the arrow that had just been pressed had its vector overwritten —
+  measured as a sign flip, `(0, 4)` → `(0, -4)`, against an honest-answer control
+  that stayed clean (`results/sp80-d1.txt`). Ask whether the board was just put back
+  BEFORE reading anything off the pair.
+
+**sp80 0/6 → 1/6 levels, [16] actions, 0% → 4.762%**, sweep clean; the roster goes
+6/17 → 7/17 games with a level. Level 2 is a measured wall rather than an unsearched
+one: exhaustive BFS over the real engine — 39,328 states, `(board, ammo)` as the
+visited key, depth 44 against the 45-action budget — finds no win within one life
+(`sp80-p11.txt`), transfer legality is position-pure (`sp80-p14.txt`), the win is not
+clock-gated at the natural candidates (`sp80-p15.txt`), and the level-2 board is
+byte-identical for three different level-1 exits (`sp80-p16.txt`). An earlier null
+from that same search was the INSTRUMENT twice over — a depth cap below the budget,
+and fires-used missing from the visited key, because ammo is real hidden state.

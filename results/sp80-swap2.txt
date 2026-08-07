@@ -1,0 +1,12 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-07 21:45:58 | INFO | Got anonymous API key: 0e5f3080-bbbf-4380-a1bd-1612cd1049a9
+2026-08-07 21:45:58 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-07 21:45:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-07 21:45:59 | INFO | Created new scorecard: 5d486770-cddc-41c8-95b3-7bfa1a7ffd4d
+2026-08-07 21:46:00 | INFO | Successfully fetched metadata for game sp80
+2026-08-07 21:46:00 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+signature: True
+  level 1 cleared, actions=16 (i=15)
+i=978 out of ideas at level 2
+levels completed: 1 [16]
+counters: {'shots': 0, 'mag': 4, 'dirs': {1: (np.int64(0), np.int64(-4)), 2: (np.int64(0), np.int64(4)), 3: (np.int64(-4), np.int64(0)), 4: (np.int64(4), np.int64(0))}, 'mine': 9, 'fired': 113, 'dead': 84}

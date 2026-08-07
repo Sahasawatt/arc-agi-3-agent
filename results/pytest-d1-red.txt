@@ -1,0 +1,29 @@
+...........F.........                                                    [100%]
+================================== FAILURES ===================================
+___________________ test_a_death_teaches_the_arrows_nothing ___________________
+
+    def test_a_death_teaches_the_arrows_nothing():
+        """A death puts the block back at the level's start, and that IS a rigid
+        translation of the driven colour -- so a frame pair straddling one teaches a
+        bogus vector. Measured before the guard existed: the arrow that had just been
+        pressed flipped sign, (0, 4) -> (0, -4), with the honest-answer control clean
+        (`results/sp80-d1.txt`)."""
+        sw = ready(fired=EVERYWHERE - {(44, 44)}, shots=0, mag=4)
+        out = sw.act(board(x=12, y=20, bar=40), 0)
+        # positive control: the question is only about a pair whose first half ended on
+        # a DIRECTION. If this round fired, the test is measuring nothing.
+        assert out in (1, 2, 3, 4)
+        before = dict(sw.dirs)
+        sw.act(board(x=12, y=16, bar=64), 0)          # the engine's post-death reset
+>       assert dict(sw.dirs) == before
+E       assert {1: (0, -4), ...0), 4: (4, 0)} == {1: (0, -4), ...0), 4: (4, 0)}
+E         
+E         Omitting 3 identical items, use -vv to show
+E         Differing items:
+E         {2: (np.int64(0), np.int64(-4))} != {2: (0, 4)}
+E         Use -v to get more diff
+
+test_swap.py:157: AssertionError
+=========================== short test summary info ===========================
+FAILED test_swap.py::test_a_death_teaches_the_arrows_nothing - assert {1: (0,...
+1 failed, 20 passed in 0.52s

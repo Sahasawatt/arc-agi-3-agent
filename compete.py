@@ -27,6 +27,8 @@ from discover import (Model, body_box, choose_next, classify_colours, infer_body
                       infer_player, infer_step, locate, see, terrain_samples, walkable, _shifts)
 from gate import Gate, cycle, turned
 from cover import Cover, signature
+from swap import Swap
+from swap import signature as swap_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1702,6 +1704,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     wdbg_full, wdbg_near = {}, {}   # ARC_WDBG only: board state at last arrival per goal
     prev_here, frozen = None, 0   # rounds the piece has not moved — the click gate
     cover = Cover(values) if signature(np.array(obs.frame)[-1]) else None
+    # The control-transfer family (`swap.py`). Its signature — a single-colour band
+    # on BOTH screen edges plus a solid block narrower than the board — is sp80
+    # alone of the seventeen at reset (`results/sp80-sig.txt`), and it is disjoint
+    # from cover's (sp80 shows zero framed boxes, re86 has no top band), so the two
+    # are never both live and every other game is identical by construction.
+    swap = Swap(values) if swap_signature(np.array(obs.frame)[-1]) else None
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1826,8 +1834,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # game is identical by construction; it answers None the moment it runs out
         # of ideas and the rungs below take the level back.
         cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed) if cover else None
+        dsrc = "cover"
+        if cv is None and swap is not None:
+            cv = swap.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "swap"
         if cv is not None:
-            psrc, value, plan, expect, trip = "cover", cv, [], [], []
+            psrc, value, plan, expect, trip = dsrc, cv, [], [], []
         elif plan:
             value = plan.pop(0)
             if trip:

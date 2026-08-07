@@ -817,6 +817,50 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   the rotator + motion-identify + veto machinery all reuses. cn04 stays 1/6 [131]
   through every level-2 change (`br-cn04-l2c/d/e.txt`).
 
+- **sp80's fifth shot MASKS the win, so a sweep that trusts its own fires books a false
+  negative at exactly the answer.** The game hands the arrows to a different body on
+  action 5 (`sp80-p8.txt`), and level 1 ends from one column of positions — all 108
+  reachable positions fired, the nine wins are exactly x-left 24 (`sp80-p6.txt`). But the
+  fifth press of action 5 in one life is a GAME_OVER, and the identical position that
+  levels up on a fresh magazine dies silently as shot five (`sp80-p18.txt` A against its
+  own control B). A sweep marking every fired position tested therefore crosses off the
+  one that answers the level and can never return to it. `swap.py` counts shots, LEARNS
+  the magazine size from the first death rather than assuming it, spends the last shot of
+  a life deliberately as a one-action reset and puts that position back. The reset is
+  cheap because `compete.play` answers GAME_OVER with a level reset and carries on
+  (compete.py:1965-1972) — but the engine itself does NOT: without that `reset()` it stays
+  GAME_OVER and hands back empty frames forever (`sp80-p17.txt`).
+- **A signature function and a per-round tracker are not the same instrument even when
+  they read the same feature.** `swap`'s life detector first re-read the band structure
+  every round to spot the clock refilling. The clock is a full-width BAND only while it is
+  FULL: one burnt cell makes its row mixed, the colour drops out of the reading on the very
+  first action, the refill is never seen, and the magazine size stays unlearned for the
+  whole run (`results/sp80-swap1.txt`, `mag=None`). The watched colours are latched from
+  the level's first frame and counted whole thereafter (`sp80-swap2.txt`, `mag=4`).
+- **A death is a RIGID TRANSLATION, so a frame pair that straddles one teaches the
+  movement model a lie.** `swap` reads the arrow mapping from the driven body's own
+  displacement between two frames. When a life ends on the clock the last action was a
+  direction, and the block coming back to the level's start looks exactly like a move:
+  measured, the arrow just pressed had its vector overwritten with a SIGN FLIP,
+  `(0, 4) -> (0, -4)`, against an honest-answer control on the same setup that stayed
+  clean (`results/sp80-d1.txt`), and a corrupt stride collapses the sweep's target set
+  from 192 positions to 32. Ask whether the board was just put back BEFORE reading
+  anything off the pair. The first probe written for this answered "mapping intact" and
+  was measuring nothing — the driver FIRED that round instead of walking, which its own
+  first line said (`emitted 5`); a positive control in the same invocation is what made
+  the second run mean anything, and the first control was worthless besides because its
+  assertion carried an `or` escape hatch that accepted the corruption it was testing for.
+- **sp80 level 2 is a measured wall, not an unsearched one.** Exhaustive BFS over the real
+  engine — 39,328 states, `(board, ammo)` as the visited key, depth 44 against the
+  45-action budget, `deepcopy(env)` nodes — finds no win within one life
+  (`results/sp80-p11.txt`). Transfer legality is position-pure (same position, different
+  clocks and routes, same answer — `sp80-p14.txt`), the win is not clock-gated at the
+  stack-aligned candidates (`sp80-p15.txt`), and the level-2 board is byte-identical for
+  three different level-1 exit recipes (`sp80-p16.txt`). Two instrument lessons came free:
+  `copy.deepcopy(env)` is legal, faithful and ~3ms (`sp80-p10.txt`), and an earlier null
+  from the same search was the INSTRUMENT twice over — a depth cap below the budget, and
+  fires-used missing from the visited key, because ammo is real hidden state.
+
 ## What the scoring actually rewards
 
 `min((baseline_actions / actions_taken)² × 100, 115)` per level, averaged **weighted by level
@@ -836,9 +880,19 @@ sources, including a retraction of the "5× human median" action cap that is not
 `perception` (frame → objects, HUD, glyph bitmaps) → `identity` (cross-frame tracking) →
 `discover` (movement model by acting) → `plan` (BFS routing) / `gate` (locks and the squares
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
-loop). `cover` hangs off the play loop as a whole-game driver for the framed-box
-family (re86): asked first every round, gated on a signature no other public game shows at
-reset, and answering None the moment it runs out of ideas so the rungs take the level back. `play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
+loop).
+
+Two **whole-game drivers** hang off the play loop, both wired the same way: constructed once
+if their own signature matches the reset frame, asked first every round, and answering None
+the moment they run out of ideas so the rungs take the level back. `cover` drives the
+framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
+the control-transfer family (sp80, signature = a single-colour band on BOTH screen edges plus
+a solid block narrower than the board). Both signatures were measured against all seventeen
+games at reset and are disjoint from each other (`results/sp80-sig.txt`), which is the whole
+mechanism by which every other game stays byte-identical — nothing in the wiring scopes a
+driver to one game. Adding a third means measuring its signature the same way first.
+
+`play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
 upper bounds from a dev mode the competition does not offer.
 
 ## Git
