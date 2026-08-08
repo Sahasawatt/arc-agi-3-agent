@@ -48,7 +48,23 @@ Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
 
-1. **Wire tu93** — level 1 solved by hand, 18 actions vs baseline 19
+1. **Wire tu93 — the rung is BUILT and verified; wiring is all that is left.**
+   `maze.py` clears **2 levels, [31, 14] actions** driven by its own harness, verified
+   in the main thread ← results/tu93-maze.txt. `test_maze.py` is 30 tests with a proved
+   teeth mutation ← results/teeth-mut1.txt. **`maze.signature()` was run for real against
+   all 17 reset frames and fires on tu93 alone** — do not trust the multi-True rows in
+   results/maze-sig.txt, those are the exploratory candidate table, not the final
+   predicate. Wiring is three edits in `compete.py` copying the `haul` pattern, then the
+   full sweep, then ask before commit.
+   It stops at level 3, and the blocker is named: the only route to that goal passes a
+   cell patrolled by a MOVING colour-8 hazard, and the driver has no phase model — it
+   blacklists a square only after dying there ← results/tu93-death.txt. Same class of
+   mechanic ls20's levels 6-7 needed, so treat it as its own project, not a bug.
+   ⚠️ Also measured on the way: **tu93's GAME_OVER is NOT budget exhaustion** — it fires
+   with 60 of 64 bar cells left, on collision with that moving body
+   ← results/tu93-budget-trace.txt.
+
+   (superseded) the hand line, still valid: 18 actions vs baseline 19
    `[4,2,2,4,1,4,2,2,3,3,2,4,4,2,4,1,4,2]` ← results/tu93-verify.txt, re-verified in the
    main thread. Plain maze: notched 3x3 piece, 6px lattice, four fixed directions, walls,
    a colour-14 goal block, budget row at y63. ⚠️ The repo's GENERIC maze machinery scores

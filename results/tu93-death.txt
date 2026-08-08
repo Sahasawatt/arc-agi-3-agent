@@ -1,0 +1,40 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 00:42:56 | INFO | Got anonymous API key: e71cd79e-f7f7-41f5-99da-fd41df95c0e4
+2026-08-09 00:42:56 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 00:42:57 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-09 00:42:57 | INFO | Created new scorecard: 17907c47-b6aa-4f18-a0cd-6bbb41a68213
+2026-08-09 00:42:58 | INFO | Successfully fetched metadata for game tu93
+2026-08-09 00:42:58 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+level 1 cleared, now at level 2 start
+piece box: (12, 33, 3, 3)
+before action1: box=(12, 33, 3, 3)
+  after: state=GameState.NOT_FINISHED box=(12, 27, 3, 3)
+before action4: box=(12, 27, 3, 3)
+  after: state=GameState.NOT_FINISHED box=(18, 27, 3, 3)
+before action4: box=(18, 27, 3, 3)
+  after: state=GameState.NOT_FINISHED box=(24, 27, 3, 3)
+
+full local window rows 24-32, cols 18-36 before the fatal press:
+24 5555555555555555555
+25 5555555555555555555
+26 5555555555555555555
+27 0002229992220002228
+28 000222994222000222f
+29 0002229992220002228
+30 5555552225552225552
+31 5555552225552225552
+32 5555552225552225552
+
+pressing action4 (fatal)...
+state: GameState.GAME_OVER
+post-death piece box (body=9,notch=4): None
+full local window rows 24-32, cols 18-36 AFTER:
+24 5555555555555555555
+25 5555555555555555555
+26 5555555555555555555
+27 0002220002228882220
+28 000222000222b882220
+29 0002220002228882220
+30 5555552225552225552
+31 5555552225552225552
+32 5555552225552225552

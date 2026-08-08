@@ -1,0 +1,13 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 00:36:06 | INFO | Got anonymous API key: 878e2051-ad9f-42b2-a781-3064177e9e35
+2026-08-09 00:36:06 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 00:36:08 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-09 00:36:08 | INFO | Created new scorecard: b6416557-9b30-438b-a4ec-b1b5d5178847
+2026-08-09 00:36:09 | INFO | Successfully fetched metadata for game tu93
+2026-08-09 00:36:09 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+i=30 LEVEL UP to 1, action was 2
+  post-transition census: {0: 81, 2: 117, 4: 1, 5: 3807, 6: 64, 8: 8, 9: 8, 14: 9, 15: 1}
+  body cells(9): [(np.int64(33), np.int64(12)), (np.int64(33), np.int64(14)), (np.int64(34), np.int64(12)), (np.int64(34), np.int64(13)), (np.int64(34), np.int64(14)), (np.int64(35), np.int64(12)), (np.int64(35), np.int64(13)), (np.int64(35), np.int64(14))]
+  notch cells(4): [(np.int64(33), np.int64(13))]
+i=31 act()->None at level 2  body=9 notch=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)} open={2} goal=(36, 28)
+  census: {0: 81, 2: 117, 4: 1, 5: 3807, 6: 64, 8: 8, 9: 8, 14: 9, 15: 1}

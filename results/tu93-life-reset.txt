@@ -1,0 +1,47 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 00:39:00 | INFO | Got anonymous API key: 008ecc17-028e-4578-94f6-c7cbb20981e1
+2026-08-09 00:39:00 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 00:39:01 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-09 00:39:01 | INFO | Created new scorecard: e6e0ac30-0b78-4ca0-b513-37060f0ccf6c
+2026-08-09 00:39:02 | INFO | Successfully fetched metadata for game tu93
+2026-08-09 00:39:02 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+i=  0 lvl=0 g_empty=False box=(15, 15, 3, 3) -> action=1 dirs={}
+i=  1 lvl=0 g_empty=False box=(15, 15, 3, 3) -> action=2 dirs={}
+i=  2 lvl=0 g_empty=False box=(15, 15, 3, 3) -> action=3 dirs={}
+i=  3 lvl=0 g_empty=False box=(15, 15, 3, 3) -> action=4 dirs={}
+i=  4 lvl=0 g_empty=False box=(21, 15, 3, 3) -> action=4 dirs={4: (6, 0)}
+i=  5 lvl=0 g_empty=False box=(21, 15, 3, 3) -> action=1 dirs={4: (6, 0)}
+i=  6 lvl=0 g_empty=False box=(21, 15, 3, 3) -> action=2 dirs={4: (6, 0)}
+i=  7 lvl=0 g_empty=False box=(21, 21, 3, 3) -> action=3 dirs={4: (6, 0), 2: (0, 6)}
+i=  8 lvl=0 g_empty=False box=(21, 21, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6)}
+i=  9 lvl=0 g_empty=False box=(21, 27, 3, 3) -> action=1 dirs={4: (6, 0), 2: (0, 6)}
+i= 10 lvl=0 g_empty=False box=(21, 21, 3, 3) -> action=3 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6)}
+i= 11 lvl=0 g_empty=False box=(21, 21, 3, 3) -> action=1 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6)}
+i= 12 lvl=0 g_empty=False box=(21, 15, 3, 3) -> action=3 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6)}
+i= 13 lvl=0 g_empty=False box=(15, 15, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 14 lvl=0 g_empty=False box=(21, 15, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 15 lvl=0 g_empty=False box=(21, 21, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 16 lvl=0 g_empty=False box=(21, 27, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 17 lvl=0 g_empty=False box=(27, 27, 3, 3) -> action=1 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 18 lvl=0 g_empty=False box=(27, 21, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 19 lvl=0 g_empty=False box=(33, 21, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 20 lvl=0 g_empty=False box=(33, 27, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 21 lvl=0 g_empty=False box=(33, 33, 3, 3) -> action=3 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 22 lvl=0 g_empty=False box=(27, 33, 3, 3) -> action=3 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 23 lvl=0 g_empty=False box=(21, 33, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 24 lvl=0 g_empty=False box=(21, 39, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 25 lvl=0 g_empty=False box=(27, 39, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 26 lvl=0 g_empty=False box=(33, 39, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 27 lvl=0 g_empty=False box=(33, 45, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 28 lvl=0 g_empty=False box=(39, 45, 3, 3) -> action=1 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 29 lvl=0 g_empty=False box=(39, 39, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 30 lvl=0 g_empty=False box=(45, 39, 3, 3) -> action=2 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+  LEVEL UP to 1
+i= 31 lvl=1 g_empty=False box=(12, 33, 3, 3) -> action=1 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 32 lvl=1 g_empty=False box=(12, 27, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 33 lvl=1 g_empty=False box=(18, 27, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+i= 34 lvl=1 g_empty=False box=(24, 27, 3, 3) -> action=4 dirs={4: (6, 0), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+  post-step ANOMALY: obs2 is None=False empty_frame=False state=GameState.GAME_OVER
+  RESET CALLED -> new lvl=1
+i= 35 lvl=1 g_empty=False box=(12, 33, 3, 3) -> action=None dirs={4: (-12, 6), 2: (0, 6), 1: (0, -6), 3: (-6, 0)}
+  STOPPED

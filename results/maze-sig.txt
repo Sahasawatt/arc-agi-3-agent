@@ -1,0 +1,112 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 00:32:58 | INFO | Got anonymous API key: 9ead0ea6-dfc9-4499-8355-0076245a9b87
+2026-08-09 00:32:58 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 00:32:59 | INFO | Successfully fetched 25 environment(s) from API
+game  acts        bg  n_notched  first3
+2026-08-09 00:32:59 | INFO | Created new scorecard: 6942ba71-b04b-43d6-a6bb-5596dcfe05ab
+2026-08-09 00:33:00 | INFO | Successfully fetched metadata for game ar25
+2026-08-09 00:33:00 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+ar25  [1, 2, 3, 4, 5, 6, 7]   9 n= 13  [(18, 15, 5, 0), (19, 15, 5, 0), (20, 15, 5, 0)]
+2026-08-09 00:33:01 | INFO | Successfully fetched metadata for game cn04
+2026-08-09 00:33:01 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+cn04  [1, 2, 3, 4, 5, 6]  10 n=  0  []
+2026-08-09 00:33:03 | INFO | Successfully fetched metadata for game dc22
+2026-08-09 00:33:03 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22  [1, 2, 3, 4, 6]   4 n= 45  [(33, 11, 5, 0), (33, 12, 5, 0), (42, 14, 5, 0)]
+2026-08-09 00:33:04 | INFO | Successfully fetched metadata for game ka59
+2026-08-09 00:33:04 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+ka59  [1, 2, 3, 4, 6]   2 n= 14  [(42, 24, 1, 4), (48, 24, 1, 4), (16, 28, 1, 14)]
+2026-08-09 00:33:05 | INFO | Successfully fetched metadata for game ls20
+2026-08-09 00:33:05 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+ls20  [1, 2, 3, 4]   4 n= 32  [(33, 9, 5, 9), (37, 9, 5, 9), (33, 10, 5, 9)]
+2026-08-09 00:33:06 | INFO | Successfully fetched metadata for game m0r0
+2026-08-09 00:33:06 | INFO | Successfully loaded game class M0r0 from environment_files\m0r0\492f87ba\m0r0.py
+m0r0  [1, 2, 3, 4, 5, 6]   5 n=  0  []
+2026-08-09 00:33:07 | INFO | Successfully fetched metadata for game re86
+2026-08-09 00:33:07 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+re86  [1, 2, 3, 4, 5]   5 n=  8  [(14, 2, 4, 11), (5, 8, 4, 11), (23, 8, 4, 11)]
+2026-08-09 00:33:08 | INFO | Successfully fetched metadata for game sc25
+2026-08-09 00:33:08 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+sc25  [1, 2, 3, 4, 6]   5 n= 36  [(22, 47, 3, 2), (26, 47, 3, 2), (27, 47, 3, 0)]
+2026-08-09 00:33:10 | INFO | Successfully fetched metadata for game sp80
+2026-08-09 00:33:10 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+sp80  [1, 2, 3, 4, 5, 6]  12 n=  0  []
+2026-08-09 00:33:11 | INFO | Successfully fetched metadata for game bp35
+2026-08-09 00:33:11 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+bp35  [3, 4, 6, 7]   5 n= 28  [(13, 1, 14, 3), (15, 1, 14, 3), (19, 1, 14, 3)]
+2026-08-09 00:33:12 | INFO | Successfully fetched metadata for game g50t
+2026-08-09 00:33:12 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+g50t  [1, 2, 3, 4, 5]   0 n= 26  [(37, 7, 5, 8), (41, 7, 5, 8), (14, 8, 9, 5)]
+2026-08-09 00:33:13 | INFO | Successfully fetched metadata for game sk48
+2026-08-09 00:33:13 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+sk48  [1, 2, 3, 4, 6, 7]   5 n= 24  [(40, 17, 4, 8), (40, 22, 4, 8), (40, 23, 4, 9)]
+2026-08-09 00:33:14 | INFO | Successfully fetched metadata for game tr87
+2026-08-09 00:33:14 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+tr87  [1, 2, 3, 4]   2 n= 69  [(13, 13, 10, 5), (14, 13, 10, 5), (48, 14, 5, 7)]
+2026-08-09 00:33:15 | INFO | Successfully fetched metadata for game tu93
+2026-08-09 00:33:16 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+tu93  [1, 2, 3, 4]   5 n=  1  [(15, 15, 9, 4)]
+2026-08-09 00:33:17 | INFO | Successfully fetched metadata for game wa30
+2026-08-09 00:33:17 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+wa30  [1, 2, 3, 4, 5]   1 n=  0  []
+2026-08-09 00:33:18 | INFO | Successfully fetched metadata for game cd82
+2026-08-09 00:33:18 | INFO | Successfully loaded game class Cd82 from environment_files\cd82\fb555c5d\cd82.py
+cd82  [1, 2, 3, 4, 5, 6]   5 n=  3  [(33, 0, 3, 4), (45, 0, 3, 4), (33, 6, 3, 4)]
+2026-08-09 00:33:19 | INFO | Successfully fetched metadata for game sb26
+2026-08-09 00:33:19 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+sb26  [5, 6, 7]      4 n=  0  []
+
+== candidate signature: >=1 notched 3x3 window at reset ==
+  ar25: n_notched=13 -> True
+  cn04: n_notched=0 -> False
+  dc22: n_notched=45 -> True
+  ka59: n_notched=14 -> True
+  ls20: n_notched=32 -> True
+  m0r0: n_notched=0 -> False
+  re86: n_notched=8 -> True
+  sc25: n_notched=36 -> True
+  sp80: n_notched=0 -> False
+  bp35: n_notched=28 -> True
+  g50t: n_notched=26 -> True
+  sk48: n_notched=24 -> True
+  tr87: n_notched=69 -> True
+  tu93: n_notched=1 -> True
+  wa30: n_notched=0 -> False
+  cd82: n_notched=3 -> True
+  sb26: n_notched=0 -> False
+
+== candidate signature 2: >=1 notched window AND no complex actions ==
+2026-08-09 00:33:20 | INFO | Successfully fetched metadata for game ar25
+  ar25: n_notched=13 no_complex=False -> False
+2026-08-09 00:33:22 | INFO | Successfully fetched metadata for game cn04
+  cn04: n_notched=0 no_complex=False -> False
+2026-08-09 00:33:23 | INFO | Successfully fetched metadata for game dc22
+  dc22: n_notched=45 no_complex=False -> False
+2026-08-09 00:33:24 | INFO | Successfully fetched metadata for game ka59
+  ka59: n_notched=14 no_complex=False -> False
+2026-08-09 00:33:25 | INFO | Successfully fetched metadata for game ls20
+  ls20: n_notched=32 no_complex=True -> True
+2026-08-09 00:33:26 | INFO | Successfully fetched metadata for game m0r0
+  m0r0: n_notched=0 no_complex=False -> False
+2026-08-09 00:33:27 | INFO | Successfully fetched metadata for game re86
+  re86: n_notched=8 no_complex=True -> True
+2026-08-09 00:33:28 | INFO | Successfully fetched metadata for game sc25
+  sc25: n_notched=36 no_complex=False -> False
+2026-08-09 00:33:29 | INFO | Successfully fetched metadata for game sp80
+  sp80: n_notched=0 no_complex=False -> False
+2026-08-09 00:33:30 | INFO | Successfully fetched metadata for game bp35
+  bp35: n_notched=28 no_complex=False -> False
+2026-08-09 00:33:31 | INFO | Successfully fetched metadata for game g50t
+  g50t: n_notched=26 no_complex=True -> True
+2026-08-09 00:33:32 | INFO | Successfully fetched metadata for game sk48
+  sk48: n_notched=24 no_complex=False -> False
+2026-08-09 00:33:33 | INFO | Successfully fetched metadata for game tr87
+  tr87: n_notched=69 no_complex=True -> True
+2026-08-09 00:33:34 | INFO | Successfully fetched metadata for game tu93
+  tu93: n_notched=1 no_complex=True -> True
+2026-08-09 00:33:35 | INFO | Successfully fetched metadata for game wa30
+  wa30: n_notched=0 no_complex=True -> False
+2026-08-09 00:33:36 | INFO | Successfully fetched metadata for game cd82
+  cd82: n_notched=3 no_complex=False -> False
+2026-08-09 00:33:37 | INFO | Successfully fetched metadata for game sb26
+  sb26: n_notched=0 no_complex=False -> False
