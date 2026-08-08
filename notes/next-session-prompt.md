@@ -53,15 +53,20 @@ the 8th game with a level, and level 1 costs 27 actions against a baseline of 71
 - The hand solution and the four measured rules: `results/breadth-recon.md` §wa30 and
   `results/wa30-solve.txt` (27 actions, `lvl=1`).
 - `haul.py` is WIP and **not wired into compete.py**, so nothing under the gate is
-  touched yet. Its docstring lists the three bugs already fixed with the run that
-  showed each, and names the one it stops on: the bootstrap presses each unmeasured
-  direction until it sees a displacement, and at reset the piece stands directly under
-  a crate, so UP is refused forever and `dirs` never fills (`results/wa30-haul3.txt`,
-  i=9). **A refused probe must count as ATTEMPTED** — the same shape as sp80's "only
-  two of five actions move anything at reset".
-- After that the plan/route halves are untested end to end. Drive it with the trace
-  loop in `results/wa30-haul-dbg2.txt` (it prints dirs, piece, carry, plan, queue per
-  round) rather than by rerunning the harness and reading the verdict.
+  touched yet. It already gets **two of the three crates in** — the frame interior
+  falls 20 → 12 → 6, read from afar both times ← results/wa30-haul9.txt. Its
+  docstring lists all seven bugs fixed so far with the run that showed each.
+- **The one bug left, named:** the grab acts along the HEADING, so it takes whatever
+  the piece is facing — not the crate the plan chose. After two crates are in, the
+  route to the third leaves the piece facing a crate already slotted and pulls it back
+  OUT of the frame (interior 12 → 14 ← results/wa30-haul9.txt i=22-24). Two things
+  fix it: the approach must guarantee the final heading points at the INTENDED crate,
+  and a crate positioned inside the frame must never be a candidate under any heading.
+  Everything downstream — the carry and the drop — is measured working.
+- Drive it with a per-round trace (dirs, piece, carry, filled, queue), not by rerunning
+  the harness and reading the verdict. ⚠️ **`_plan` must stay side-effect free** — an
+  earlier version booked slots when called, and a debug trace that called it before
+  `act` did corrupted the very state it was printing (`results/wa30-haul8.txt`).
 - The signature is already measured and exclusive: two or more crates, the biggest
   strictly bigger and wearing an inner colour none of the others has — wa30 alone of
   the seventeen ← results/haul-sig.txt. Wiring is the `swap.py` pattern, three edits

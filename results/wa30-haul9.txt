@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 17:18:23 | INFO | Got anonymous API key: 7393e07a-f0f2-48b9-96f7-b2a96ffe143e
+2026-08-08 17:18:23 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 17:18:24 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 17:18:24 | INFO | Created new scorecard: 86d1009c-7e99-4331-9eb4-307f99dc77d3
+2026-08-08 17:18:25 | INFO | Successfully fetched metadata for game wa30
+2026-08-08 17:18:25 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+signature: True
+i=409 out of ideas at level 1
+levels completed: 0 []

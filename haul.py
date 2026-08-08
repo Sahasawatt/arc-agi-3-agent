@@ -32,27 +32,44 @@ Level 1 falls in 27 actions against a baseline of 71 BY HAND
 (`results/wa30-solve.txt`); this rung is the attempt to derive that line rather
 than replay it.
 
-STATE (2026-08-08). Three bugs found and fixed, each with the run that showed it:
-  1. `moved()` took the FIRST translating colour and got the piece's 4-cell
-     heading edge instead of its 12-cell body, so `dirs` read (0, 7) and (7, 0)
-     on a board whose step is 4 -- the edge changes SIDE when the piece turns
-     (`results/wa30-haul-dbg.txt`). Now takes the largest.
-  2. `blob()` flood-filled every non-background cell, so the instant a carried
-     crate touched the frame the piece read 16 cells wide (`wa30-haul-dbg.txt`
-     i=16). Now restricted to the piece's own latched colour set.
-  3. `_slots()` offered x = 29, 30, 31 -- rectangles no crate can be dropped on,
-     because crates walk the piece's stride. Now filtered to that lattice.
-  4. Displacement must come from the piece's whole BOUNDING BOX, never one
-     colour: the body is a 4x3 that swaps ends on a turn, so it translates by
-     the step MINUS ONE on any heading change -- measured as dirs[2] = (0, 3)
-     (`results/wa30-haul-dbg2.txt`).
+STATE (2026-08-08). It gets TWO of level 1's three crates into the frame --
+the interior count falls 20 -> 12 -> 6, read from afar both times
+(`results/wa30-haul9.txt`) -- and then livelocks. Seven bugs down, each with the
+run that showed it, and six of the seven are one family: a reading taken from a
+PART of a thing, or taken while something was standing on it.
 
-WHAT IS LEFT, and it is where the rung stops today: the bootstrap presses each
-unmeasured direction until it sees a displacement, and at reset the piece stands
-directly under a crate, so UP is refused forever and `dirs` never fills
-(`results/wa30-haul3.txt`, i=9). A refused probe has to count as ATTEMPTED, not
-be retried -- the same shape as sp80's "only two of five actions move anything
-at reset". After that, the plan/route halves are untested end to end.
+  1. `moved()` took the first translating colour and got the piece's 4-cell
+     heading edge, not its 12-cell body -> dirs (0, 7) and (7, 0) on a step-4
+     board (`wa30-haul-dbg.txt`). Takes the largest now.
+  2. `blob()` flood-filled all non-background, so a carried crate touching the
+     frame swallowed the frame (`wa30-haul-dbg.txt` i=16). Restricted to the
+     piece's own latched colours.
+  3. `_slots()` offered rectangles off the crates' stride, which no plan can
+     reach. Filtered to the lattice.
+  4. Displacement must come from the piece's whole BOUNDING BOX: its body is a
+     4x3 that swaps ends on a turn, so a heading change translates it by the step
+     minus one -- dirs[2] read (0, 3) (`wa30-haul-dbg2.txt`).
+  5. A refused probe has to count as ATTEMPTED. At reset the piece stands under a
+     crate, so UP never moves and the bootstrap pressed it forever
+     (`wa30-haul3.txt`).
+  6. `_approach` walked two steps back and one forward, parking one square short,
+     so every grab fired from nowhere (`wa30-haul5.txt`, plan [2, 1, 5] on loop).
+  7. The frame must be LATCHED. Once the first crate slots in, its interior is no
+     longer one colour, `crates()` stops seeing it, and the "biggest" becomes an
+     ordinary crate -- which carried the second one off the board
+     (`wa30-haul6.txt` i=25). Its slots are latched with it, because reading them
+     live counts whatever the piece is standing on as filled: the free count
+     oscillated 20 -> 14 -> 12 -> 14 -> 6 while nothing was dropped
+     (`wa30-haul7.txt`).
+
+WHAT IS LEFT, named: the grab acts along the HEADING, so it takes whatever the
+piece happens to be facing -- not the crate the plan chose. After two crates are
+in, the route to the third leaves the piece facing a crate already slotted and
+picks it straight back OUT of the frame (`wa30-haul9.txt` i=22-24, interior 12 ->
+14). The approach has to guarantee the final heading points at the INTENDED
+crate, and a crate whose position is inside the frame must never be a candidate
+under any heading. Everything downstream of that -- the carry and the drop -- is
+already measured working.
 """
 
 import sys
@@ -196,6 +213,11 @@ class Haul:
         self.stuck = 0
         self.lattice = None   # the piece's own (x, y) parity, latched at base
         self.was = None       # the piece's top-left last round
+        self.tried = set()    # directions asked since the last reposition
+        self.frame = None     # the target rectangle, latched per level
+        self.slotlist = None  # its slots, latched with it
+        self.filled = set()   # slots a crate has been sent to
+        self.claim = None     # the slot the plan in hand is for
 
     # -- reading -----------------------------------------------------------
     def _piece(self, g, bg):
@@ -231,24 +253,30 @@ class Haul:
         return (x + w - bw, y, bw, bh) if len(ok) else (x, y, bw, bh)
 
     def _slots(self, g, frame):
-        """Free interior cells of the frame, as base-sized rectangles that are
-        entirely interior colour."""
-        w, h, ring, inner, fx, fy = frame
-        bw, bh = self.base
-        # only positions a crate can actually be DROPPED on: the crates walk the
-        # piece's own stride, so a slot off that lattice is a rectangle no plan
-        # can reach (`results/wa30-haul-dbg.txt` offered x=29, 30, 31)
-        sx = abs(next((d[0] for d in self.dirs.values() if d[0]), 0)) or 1
-        sy = abs(next((d[1] for d in self.dirs.values() if d[1]), 0)) or 1
-        out = []
-        for y in range(fy, fy + h - bh + 1):
-            for x in range(fx, fx + w - bw + 1):
-                if (x - self.lattice[0]) % sx or (y - self.lattice[1]) % sy:
-                    continue
-                sub = g[y:y + bh, x:x + bw]
-                if (sub == inner).any() and set(sub.ravel().tolist()) <= {inner, ring}:
-                    out.append((x, y, int((sub == inner).sum())))
-        return sorted(out, key=lambda t: -t[2])
+        """Free slot rectangles, from the frame as it was LATCHED plus a record of
+        what has been dropped -- never re-read live.
+
+        Reading the interior each round counts whatever the piece is standing on
+        as filled: the free-cell count oscillated 20 -> 14 -> 12 -> 14 -> 6 -> 14
+        across consecutive rounds while nothing was dropped, and the plan flipped
+        with it (`results/wa30-haul7.txt`). The piece covers what it stands on --
+        the repo's oldest trap, in a new place.
+        """
+        if self.slotlist is None:
+            w, h, ring, inner, fx, fy = frame
+            bw, bh = self.base
+            sx = abs(next((d[0] for d in self.dirs.values() if d[0]), 0)) or 1
+            sy = abs(next((d[1] for d in self.dirs.values() if d[1]), 0)) or 1
+            out = []
+            for y in range(fy, fy + h - bh + 1):
+                for x in range(fx, fx + w - bw + 1):
+                    if (x - self.lattice[0]) % sx or (y - self.lattice[1]) % sy:
+                        continue
+                    sub = g[y:y + bh, x:x + bw]
+                    if (sub == inner).any() and                             set(sub.ravel().tolist()) <= {inner, ring}:
+                        out.append((x, y, int((sub == inner).sum())))
+            self.slotlist = sorted(out, key=lambda t: -t[2])
+        return [t for t in self.slotlist if (t[0], t[1]) not in self.filled]
 
     # -- the round ---------------------------------------------------------
     def act(self, g, lvl):
@@ -258,7 +286,8 @@ class Haul:
             self.lvl, self.queue, self.done, self.stuck = lvl, [], False, 0
             self.prev, self.last = None, None
             self.base, self.mine, self.lattice = None, None, None
-            self.was = None
+            self.was, self.tried, self.frame = None, set(), None
+            self.slotlist, self.filled, self.claim = None, set(), None
         if self.done:
             return None
         bg = background(g)
@@ -284,32 +313,57 @@ class Haul:
             if c is not None:
                 self.stuck = 0
 
+        # The piece is read, and `was` recorded, BEFORE any early return. Setting
+        # it only on the planning path left it None for the whole bootstrap, so
+        # every displacement was measured against nothing and `dirs` stayed empty
+        # while the piece was visibly walking (`results/wa30-haul4.txt`).
+        box = self._piece(g, bg) if self.body is not None else None
+        if box is not None:
+            if self.base is None:
+                self.base, self.lattice = (box[2], box[3]), (box[0], box[1])
+            self.was = (box[0], box[1])
+
         if self.body is None:
             self.prev, self.last = g, next((a for a in DIRS if a not in self.dirs), 1)
             return self.last
-        unknown = [a for a in DIRS if a not in self.dirs]
+        # A probe the board REFUSED still counts as attempted. At reset the piece
+        # stands directly under a crate, so UP never moves it, and retrying until
+        # a displacement appears presses the same blocked action forever
+        # (`results/wa30-haul3.txt`, i=9) -- the sp80 lesson that only two of five
+        # actions move anything from a starting corner. When all four have been
+        # asked and some are still unknown, walk one step on a direction that DOES
+        # work and ask the rest again from there.
+        unknown = [a for a in DIRS if a not in self.dirs and a not in self.tried]
         if unknown:
+            self.tried.add(unknown[0])
             self.prev, self.last = g, unknown[0]
             return unknown[0]
+        if len(self.dirs) < len(DIRS):
+            if not self.dirs:
+                self.done = True
+                return None
+            self.tried = set()
+            a = sorted(self.dirs)[0]
+            self.prev, self.last = g, a
+            return a
 
-        box = self._piece(g, bg)
         if box is None:
             self.done = True
             return None
-        if self.base is None:
-            self.base = (box[2], box[3])
-            self.lattice = (box[0], box[1])
 
-        self.was = (box[0], box[1])
         if self.queue:
             a = self.queue.pop(0)
             self.prev, self.last = g, a
             return a
 
+        self.claim = None
         plan = self._plan(g, box)
         if not plan:
             self.done = True
             return None
+        if self.claim is not None:
+            self.filled.add(self.claim)
+            self.claim = None
         self.queue = plan[1:]
         self.prev, self.last = g, plan[0]
         return plan[0]
@@ -343,16 +397,33 @@ class Haul:
         """Reach the square touching `target` on `side`, ARRIVING along `side` so
         the heading faces the crate. The last step is always toward it."""
         d = self._step(side)
-        stand = (target[0] - d[0], target[1] - d[1])
-        back = (stand[0] - d[0], stand[1] - d[1])
-        legs = self._walk(frm, back)
+        # `target` IS the square to stand on. Walk to the one step BEFORE it and
+        # take a single step along `side`, which both lands on the target and
+        # leaves the heading facing the crate. Walking two steps back and one
+        # forward parks one square short, so the grab fires from nowhere and the
+        # rung relivelocks on the same plan forever (`results/wa30-haul5.txt`,
+        # plan [2, 1, 5] repeating from i=12).
+        legs = self._walk(frm, (target[0] - d[0], target[1] - d[1]))
         return None if legs is None else legs + [side]
 
     def _plan(self, g, box):
         cr = crates(g)
-        if len(cr) < 2:
-            return None
-        frame = cr[0]
+        # The frame is LATCHED for the level. Once the first crate is slotted its
+        # interior is no longer a single colour, so `crates()` stops seeing the
+        # frame at all and the "biggest" becomes an ordinary crate -- which is how
+        # the second crate got carried off the board (`results/wa30-haul6.txt`,
+        # i=25, frame read as (4, 4, 4, 9, 32, 36)). A signature detector and a
+        # per-round tracker are not the same instrument, the same lesson as
+        # `swap.py`'s clock bands.
+        if self.frame is None:
+            if len(cr) < 2 or cr[0][0] * cr[0][1] <= cr[1][0] * cr[1][1]:
+                return None
+            self.frame = cr[0]
+        frame = self.frame
+        fx0, fy0 = frame[4], frame[5]
+        fx1, fy1 = fx0 + frame[0] - 1, fy0 + frame[1] - 1
+        cr = [c for c in cr
+              if not (fx0 <= c[4] <= fx1 and fy0 <= c[5] <= fy1)]
         bw, bh = self.base
         here = (box[0], box[1])
 
@@ -362,10 +433,18 @@ class Haul:
             for sx, sy, _n in self._slots(g, frame):
                 legs = self._walk(here, (sx - off[0], sy - off[1]))
                 if legs is not None:
+                    # CLAIMED, not committed: `_plan` must stay free of side
+                    # effects or anything that calls it twice -- a debug trace
+                    # did -- books slots that were never used
+                    # (`results/wa30-haul8.txt` showed two filled before the
+                    # first drop). `act` commits it.
+                    self.claim = (sx, sy)
                     return legs + [GRAB]
             return None
 
-        for w, h, ring, inner, cx, cy in cr[1:]:
+        for w, h, ring, inner, cx, cy in cr:
+            if (cx, cy) in self.filled:
+                continue
             if (w, h) != (bw, bh):
                 continue
             for side in DIRS:
