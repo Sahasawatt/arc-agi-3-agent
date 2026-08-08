@@ -46,6 +46,30 @@ record; this brief only points.
 
 ## FIRST TASK
 
+**Finish `haul.py` and land wa30** — the level is already solved by hand and the rung
+is four bugs from working. This is the highest-value item on the board: wa30 would be
+the 8th game with a level, and level 1 costs 27 actions against a baseline of 71.
+
+- The hand solution and the four measured rules: `results/breadth-recon.md` §wa30 and
+  `results/wa30-solve.txt` (27 actions, `lvl=1`).
+- `haul.py` is WIP and **not wired into compete.py**, so nothing under the gate is
+  touched yet. Its docstring lists the three bugs already fixed with the run that
+  showed each, and names the one it stops on: the bootstrap presses each unmeasured
+  direction until it sees a displacement, and at reset the piece stands directly under
+  a crate, so UP is refused forever and `dirs` never fills (`results/wa30-haul3.txt`,
+  i=9). **A refused probe must count as ATTEMPTED** — the same shape as sp80's "only
+  two of five actions move anything at reset".
+- After that the plan/route halves are untested end to end. Drive it with the trace
+  loop in `results/wa30-haul-dbg2.txt` (it prints dirs, piece, carry, plan, queue per
+  round) rather than by rerunning the harness and reading the verdict.
+- The signature is already measured and exclusive: two or more crates, the biggest
+  strictly bigger and wearing an inner colour none of the others has — wa30 alone of
+  the seventeen ← results/haul-sig.txt. Wiring is the `swap.py` pattern, three edits
+  in `compete.py`.
+- Wiring it IS a gated change: full sweep + pytest + ask-before-commit.
+
+## AFTER THAT
+
 **Resolve g50t's open contradiction** ← results/breadth-recon.md §g50t (read it first; the
 mechanic, the search and its two controls are all written up there).
 

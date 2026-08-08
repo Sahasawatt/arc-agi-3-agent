@@ -1,0 +1,37 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 16:57:04 | INFO | Got anonymous API key: 7feb3578-7ac0-4ca4-968b-d10ccd74daf8
+2026-08-08 16:57:04 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 16:57:05 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 16:57:05 | INFO | Created new scorecard: c6452389-e392-45b7-8948-2ebd062b6805
+2026-08-08 16:57:06 | INFO | Successfully fetched metadata for game wa30
+2026-08-08 16:57:06 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+i=0 body=None mine=None dirs={} piece=None carry=None slots=? -> 1
+i=1 body=14 mine=None dirs={1: (0, -4)} piece=None carry=None slots=? -> 2
+i=2 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3)} piece=(32, 48, 4, 4) carry=None slots=? -> 3
+i=3 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3)} piece=(28, 48, 4, 4) carry=None slots=? -> 3
+i=4 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0)} piece=(24, 48, 4, 4) carry=None slots=? -> 4
+i=5 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(28, 48, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 3
+i=6 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-3, 0), 4: (3, 0)} piece=(24, 48, 4, 4) carry=False slots=[(31, 28, 8), (34, 28, 8), (28, 28, 6)] -> 3
+i=7 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(20, 48, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 3
+i=8 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(16, 48, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=9 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(16, 44, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=10 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(16, 40, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=11 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(16, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 5
+i=12 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(16, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=13 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(20, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=14 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(24, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=15 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(28, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=16 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(28, 36, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=17 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(28, 32, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=18 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(28, 28, 4, 4) carry=False slots=[(44, 24, 4)] -> 3
+i=19 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(24, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 5
+i=20 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(24, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=21 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (3, 0)} piece=(28, 28, 4, 4) carry=False slots=[(44, 24, 4)] -> 4
+i=22 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(32, 28, 4, 4) carry=False slots=[(44, 24, 4)] -> 4
+i=23 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(36, 28, 4, 4) carry=False slots=[(44, 24, 4)] -> 4
+i=24 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(40, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=25 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(44, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=26 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(48, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=27 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(52, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 4
+i=28 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(56, 28, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 1
+i=29 body=14 mine={0, 14} dirs={1: (0, -4), 2: (0, 3), 3: (-4, 0), 4: (4, 0)} piece=(56, 24, 4, 4) carry=False slots=[(32, 28, 8), (28, 28, 6), (36, 28, 6)] -> 3
