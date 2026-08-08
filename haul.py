@@ -62,14 +62,26 @@ PART of a thing, or taken while something was standing on it.
      oscillated 20 -> 14 -> 12 -> 14 -> 6 while nothing was dropped
      (`wa30-haul7.txt`).
 
-WHAT IS LEFT, named: the grab acts along the HEADING, so it takes whatever the
-piece happens to be facing -- not the crate the plan chose. After two crates are
-in, the route to the third leaves the piece facing a crate already slotted and
-picks it straight back OUT of the frame (`wa30-haul9.txt` i=22-24, interior 12 ->
-14). The approach has to guarantee the final heading points at the INTENDED
-crate, and a crate whose position is inside the frame must never be a candidate
-under any heading. Everything downstream of that -- the carry and the drop -- is
-already measured working.
+  8. The standing square is one PIECE away on the approach side, not one STEP
+     times the piece -- the old formula put it 16 cells off on a step-4 board.
+
+WHAT IS LEFT, and it is ONE thing: **`_walk` routes straight through crates.**
+It is a naive axis-by-axis walk with no notion of an obstacle, and a crate stops
+the piece. Traced: with the piece at (32, 32) and a crate directly below it at
+(32, 36), the plan [2, 2, 2, 1, 5] is CORRECT -- go below the crate, come up into
+it, grab -- but all three downs are refused by the crate itself, the up then
+carries the piece to (32, 28) where a crate already sits in the frame, and the
+grab takes THAT one back out (`results/wa30-haul9.txt` i=22-24, interior 12 ->
+14). The crate filtering is not at fault and was verified: at that round the
+slotted crate reads inside_frame=True and in_filled=True and is excluded, and the
+plan really is aimed at the right crate.
+
+So the fix is a router, not more filtering: `_walk` has to be a BFS over the
+piece's lattice that treats crates (and the carried crate's own footprint) as
+blocked, while leaving the frame passable -- the piece walks over the frame, and
+that is measured (`results/wa30-p4.txt`, the census dips and recovers as it
+crosses). Everything else is working: two of level 1's three crates already slot
+in, interior 20 -> 12 -> 6 read from afar.
 """
 
 import sys
@@ -449,12 +461,21 @@ class Haul:
                 continue
             for side in DIRS:
                 d = self._step(side)
-                # the square the piece stands on to face this crate along `side`
-                tx = cx - d[0] * bw if d[0] else cx
-                ty = cy - d[1] * bh if d[1] else cy
-                if d[0] and d[0] < 0:
+                # The square the piece stands on to face this crate along `side`:
+                # one PIECE away on the approach side, never one STEP times the
+                # piece. Multiplying by the step put the standing square 16 cells
+                # off on a step-4 board, so the walk ended somewhere whose heading
+                # pointed at a different crate -- which is how a crate already
+                # slotted got picked back out of the frame
+                # (`results/wa30-haul9.txt` i=22-24, interior 12 -> 14).
+                tx, ty = cx, cy
+                if d[0] > 0:
+                    tx = cx - bw
+                elif d[0] < 0:
                     tx = cx + w
-                if d[1] and d[1] < 0:
+                if d[1] > 0:
+                    ty = cy - bh
+                elif d[1] < 0:
                     ty = cy + h
                 legs = self._approach(here, (tx, ty), side)
                 if legs is not None:

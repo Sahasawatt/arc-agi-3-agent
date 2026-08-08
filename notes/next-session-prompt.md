@@ -56,17 +56,19 @@ the 8th game with a level, and level 1 costs 27 actions against a baseline of 71
   touched yet. It already gets **two of the three crates in** — the frame interior
   falls 20 → 12 → 6, read from afar both times ← results/wa30-haul9.txt. Its
   docstring lists all seven bugs fixed so far with the run that showed each.
-- **The one bug left, named:** the grab acts along the HEADING, so it takes whatever
-  the piece is facing — not the crate the plan chose. After two crates are in, the
-  route to the third leaves the piece facing a crate already slotted and pulls it back
-  OUT of the frame (interior 12 → 14 ← results/wa30-haul9.txt i=22-24). Two things
-  fix it: the approach must guarantee the final heading points at the INTENDED crate,
-  and a crate positioned inside the frame must never be a candidate under any heading.
-  Everything downstream — the carry and the drop — is measured working.
-- Drive it with a per-round trace (dirs, piece, carry, filled, queue), not by rerunning
-  the harness and reading the verdict. ⚠️ **`_plan` must stay side-effect free** — an
-  earlier version booked slots when called, and a debug trace that called it before
-  `act` did corrupted the very state it was printing (`results/wa30-haul8.txt`).
+- **The one bug left, and it is ONE thing: `_walk` routes straight through
+  crates.** It is a naive axis walk with no obstacle notion, and a crate stops the
+  piece. With the piece at (32,32) and a crate directly below at (32,36), the plan
+  `[2,2,2,1,5]` is CORRECT — go below it, come up into it, grab — but all three
+  downs are refused by that crate, the up carries the piece to (32,28) where a
+  crate already sits in the frame, and the grab takes THAT one back out (interior
+  12 → 14 ← results/wa30-haul9.txt i=22-24). **The crate filtering is not at fault
+  and was verified** — at that round the slotted crate reads inside_frame=True and
+  in_filled=True and is excluded.
+- So the fix is a ROUTER: make `_walk` a BFS over the piece's lattice treating
+  crates (and the carried crate's own footprint) as blocked, while leaving the
+  FRAME passable — the piece walks over the frame and that is measured
+  ← results/wa30-p4.txt. Nothing else is known broken.
 - The signature is already measured and exclusive: two or more crates, the biggest
   strictly bigger and wearing an inner colour none of the others has — wa30 alone of
   the seventeen ← results/haul-sig.txt. Wiring is the `swap.py` pattern, three edits
