@@ -1173,6 +1173,80 @@ at least once (rather than a specific target) is itself the condition
 (baseline 54 actions for six visits + some dialing is generous but not
 disqualifying). None of these were probed -- flagging rather than guessing.
 
+### tr87 level 1 FALLS: the win is a five-station SIMULTANEOUS combination lock, decoded from the un-explored top glyph region (2026-08-08, later)
+
+Persistence and a null hypothesis, both cheap (`results/tr87-probe12.txt`): the
+dial state at a station is NOT tied to the clamp's presence -- read directly
+from a DIFFERENT station column with no return trip, byte-identical every
+time (leave station0 at phase3, read its window from station1 and station2,
+still phase3; walking back confirms the same) -- so "align all five" was
+never impossible, the earlier open question is answered YES. Refuted in the
+same run: visiting all five stations with zero dial presses (`ACTION4` x5,
+no `ACTION1`) never trips `levels_completed`.
+
+SHAPE match (not exact byte match) against the hint band, cross-station
+too, is REFUTED cleanly (`results/tr87-probe13.txt`): built every station's
+7-state deck, computed cell counts and a canonical form under all 8
+dihedral transforms (rotations + reflections, direct and inverted-ink
+polarity), and checked all 5 hints against all 35 states. Cell-count
+coincidences are common (the five decks all draw counts from the same
+small set `{14,15,16,17,19}`) but **zero shape matches survive
+rotation/reflection**, own-station or cross-station.
+
+The real answer was in the un-examined top region (`results/tr87-probe14.txt`,
+`tr87-probe15.txt`, `tr87-probe16.txt`). It is not "six 7x7 tiles" loosely --
+column-run segmentation on the background colour finds exactly two 17-wide
+runs (x12-28, x35-51), each holding THREE row-bands (y4-10, y13-19, y22-28):
+**six (icon, block) pairs**, an icon (colour-10 background, ink=5) beside a
+block (colour-7 background, ink=5) previously assumed solid and never
+dumped -- it isn't; every one of the six carries its own 5x5 texture
+(`results/tr87-probe15.txt` census). Cropped to the same 5x5 interior every
+other region here uses (1-cell border stripped) and run through the
+dihedral-canon machinery from probe13:
+
+- **The six ICONS identify a STATION.** Five of the six shape- (four) or
+  byte- (one, `top-icon(2,0)` exactly equals `hint@22`) match one of the
+  five hint-band icons one-for-one -- `(0,0)~hint29`, `(0,1)~hint36`,
+  `(1,0)~hint43`, `(1,1)~hint15`, `(2,0)==hint22`. The sixth, `(2,1)`,
+  matches none of the five hints -- not a station label.
+- **The six BLOCKS identify a PHASE.** Each block's texture exact- or
+  shape-matches one specific state in the SAME station's own 7-state deck
+  (identified via its paired icon): `(0,0)->station29 state3` (exact),
+  `(0,1)->station36 state6` (shape), `(1,0)->station43 state5` (shape),
+  `(1,1)->station15 state5` (exact), `(2,0)->station22 state5` (shape).
+
+Five pairs, five stations, no overlaps, one target phase each -- this is
+level 1's full combination, not a per-level index into six levels as
+guessed in "Not attempted" above (the sixth pair, unlabeled by any hint, is
+not part of it; not investigated further).
+
+Single-station tests refute the "any one station alone" reading
+(`results/tr87-probe17.txt`): station29 alone at phase3, and station22
+alone at phase5, both leave `levels_completed=0` even with the clamp
+returned to x15 afterward (final clamp position is not gating either way,
+on this evidence).
+
+**Setting all five simultaneously wins** (`results/tr87-probe18.txt`,
+re-verified clean in a fresh process `results/tr87-solution.txt`):
+station15->5, station22->5, station29->3, station36->6, station43->5,
+driven in that order. `levels_completed` flips to 1 on the action that
+completes the LAST station (43), with the other four already holding
+their target -- consistent with a pure AND-condition over all five dials,
+checked continuously. 28 actions total (`results/tr87-solution.txt`,
+action list
+`1,1,1,1,1,4,1,1,1,1,1,4,1,1,1,4,1,1,1,1,1,1,4,1,1,1,1,1`),
+well inside the 54-action level-1 baseline.
+
+Not re-derived, still true: the shape-match refutation above is about the
+HINT BAND specifically (a station's own display never matches its overhead
+hint by shape either); the win condition lives in the previously-unexamined
+top glyph region instead, and the "Not attempted" idea that it was six
+per-level hints was half right (it does hold per-level information) and
+half wrong (five of the six pairs are this level's per-STATION targets,
+not a single pointer). Levels 2-6 are unmeasured -- whether the top
+region's content changes with the level (a fresh 5-pair combination each
+time) or whether the sixth unlabeled pair becomes relevant later is open.
+
 ## tu93: SOLVED -- fixed-pitch maze, heading-notch piece, level 1 falls in 18 (2026-08-08)
 
 Picked for the same `acts=[1,2,3,4]` no-complex-action shape as re86/sp80/wa30,

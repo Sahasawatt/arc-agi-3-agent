@@ -1,0 +1,64 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:06:57 | INFO | Got anonymous API key: 27a01d46-792f-4ac4-9095-b915e45cd970
+2026-08-08 19:06:57 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:06:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:06:59 | INFO | Created new scorecard: 661e9790-877d-4392-a835-b7b5a04e70a2
+2026-08-08 19:07:00 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 19:07:00 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== six icons, ink=5 mask, cell counts ==
+  pair row=0 col=0 icon@(12,4): 15 ink cells
+    aaaaaaa
+    a55555a
+    a5aaa5a
+    a55a55a
+    a5aaa5a
+    a5aaa5a
+    aaaaaaa
+  pair row=0 col=1 icon@(35,4): 15 ink cells
+    aaaaaaa
+    a5aaa5a
+    a55555a
+    aaa5aaa
+    a55555a
+    a5aaa5a
+    aaaaaaa
+  pair row=1 col=0 icon@(12,13): 11 ink cells
+    aaaaaaa
+    aaaaa5a
+    aaa5a5a
+    a55555a
+    aaa5a5a
+    aaaaa5a
+    aaaaaaa
+  pair row=1 col=1 icon@(35,13): 13 ink cells
+    aaaaaaa
+    aaa5aaa
+    a55555a
+    a5a5a5a
+    a5a5a5a
+    aaa5aaa
+    aaaaaaa
+  pair row=2 col=0 icon@(12,22): 11 ink cells
+    aaaaaaa
+    aaaaa5a
+    aaa5a5a
+    a55555a
+    a5a5aaa
+    a5aaaaa
+    aaaaaaa
+  pair row=2 col=1 icon@(35,22): 15 ink cells
+    aaaaaaa
+    a55a55a
+    a5aaa5a
+    a5aaa5a
+    a55555a
+    a5aaa5a
+    aaaaaaa
+
+== six paired colour-7 blocks: solid, or textured? ==
+  pair row=0 col=0 block@(22,4): census={5: 16, 7: 33}
+  pair row=0 col=1 block@(45,4): census={5: 15, 7: 34}
+  pair row=1 col=0 block@(22,13): census={5: 14, 7: 35}
+  pair row=1 col=1 block@(45,13): census={5: 15, 7: 34}
+  pair row=2 col=0 block@(22,22): census={5: 19, 7: 30}
+  pair row=2 col=1 block@(45,22): census={5: 15, 7: 34}

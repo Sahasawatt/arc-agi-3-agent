@@ -1,0 +1,22 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:05:09 | INFO | Got anonymous API key: d88e6b86-bc05-4ce6-9c90-ecf12b7063b0
+2026-08-08 19:05:09 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:05:11 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:05:11 | INFO | Created new scorecard: f82c698f-f258-4389-91e3-c9553cba21e1
+2026-08-08 19:05:12 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 19:05:12 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== (A) persistence: station0 to phase3, move away twice, re-read WITHOUT returning ==
+station0 window right after 3x ACTION1 (target phase3):
+[[7, 7, 7, 7, 7], [7, 7, 5, 7, 7], [5, 5, 5, 5, 5], [5, 7, 7, 7, 5], [5, 7, 7, 7, 5], [5, 5, 5, 5, 5], [7, 7, 7, 7, 7]]
+station0 window read from station1 (no return): MATCH
+station0 window read from station2 (no return): MATCH
+station0 window after walking back to it: MATCH
+levels_completed so far: 0
+
+== (B) visit all 5 stations, zero dial presses -- win at any point? ==
+  reset: piece x=15 lvl=0
+  after ACTION4 #1: piece x=22 lvl=0 state=NOT_FINISHED
+  after ACTION4 #2: piece x=29 lvl=0 state=NOT_FINISHED
+  after ACTION4 #3: piece x=36 lvl=0 state=NOT_FINISHED
+  after ACTION4 #4: piece x=43 lvl=0 state=NOT_FINISHED
+  after ACTION4 #5: piece x=15 lvl=0 state=NOT_FINISHED

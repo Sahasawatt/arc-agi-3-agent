@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:11:20 | INFO | Got anonymous API key: 0d66e02d-2520-4614-9f16-658918cc909e
+2026-08-08 19:11:20 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:11:20 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:11:20 | INFO | Created new scorecard: 211f4c7a-e862-434e-81e2-c3bef6c3f9af
+2026-08-08 19:11:22 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 19:11:22 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+  reset: lvl=0 state=NOT_FINISHED
+  station15@phase5 set: lvl=0 state=NOT_FINISHED
+  station22@phase5 set: lvl=0 state=NOT_FINISHED
+  station29@phase3 set: lvl=0 state=NOT_FINISHED
+  station36@phase6 set: lvl=0 state=NOT_FINISHED
+  station43@phase5 set: lvl=1 state=NOT_FINISHED
+  LEVEL UP -- stopping

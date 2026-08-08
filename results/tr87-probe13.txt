@@ -1,0 +1,59 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:05:39 | INFO | Got anonymous API key: 4694231c-7108-41fc-9a18-76e39aea6230
+2026-08-08 19:05:39 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:05:40 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:05:40 | INFO | Created new scorecard: 13795513-5f4b-400d-92a9-edf67dedb2e4
+2026-08-08 19:05:42 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 19:05:42 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+hint cell counts: {15: 13, 22: 11, 29: 15, 36: 15, 43: 11}
+deck cell counts (7 states each):
+  x=15: [14, 15, 16, 15, 17, 15, 19]
+  x=22: [15, 16, 15, 17, 15, 19, 14]
+  x=29: [19, 14, 15, 16, 15, 17, 15]
+  x=36: [17, 15, 19, 14, 15, 16, 15]
+  x=43: [16, 15, 17, 15, 19, 14, 15]
+
+== exact cell-COUNT coincidences (necessary condition for any shape match, own station AND cross-station, both polarities) ==
+  COUNT MATCH (inverted hint): hint@22 inv (14) == deck@15 state0 (14)
+  COUNT MATCH (inverted hint): hint@22 inv (14) == deck@22 state6 (14)
+  COUNT MATCH (inverted hint): hint@22 inv (14) == deck@29 state1 (14)
+  COUNT MATCH (inverted hint): hint@22 inv (14) == deck@36 state3 (14)
+  COUNT MATCH (inverted hint): hint@22 inv (14) == deck@43 state5 (14)
+  COUNT MATCH (direct): hint@29 (15) == deck@15 state1 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@15 state3 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@15 state5 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@22 state0 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@22 state2 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@22 state4 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@29 state2 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@29 state4 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@29 state6 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@36 state1 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@36 state4 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@36 state6 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@43 state1 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@43 state3 (15)
+  COUNT MATCH (direct): hint@29 (15) == deck@43 state6 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@15 state1 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@15 state3 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@15 state5 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@22 state0 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@22 state2 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@22 state4 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@29 state2 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@29 state4 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@29 state6 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@36 state1 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@36 state4 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@36 state6 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@43 state1 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@43 state3 (15)
+  COUNT MATCH (direct): hint@36 (15) == deck@43 state6 (15)
+  COUNT MATCH (inverted hint): hint@43 inv (14) == deck@15 state0 (14)
+  COUNT MATCH (inverted hint): hint@43 inv (14) == deck@22 state6 (14)
+  COUNT MATCH (inverted hint): hint@43 inv (14) == deck@29 state1 (14)
+  COUNT MATCH (inverted hint): hint@43 inv (14) == deck@36 state3 (14)
+  COUNT MATCH (inverted hint): hint@43 inv (14) == deck@43 state5 (14)
+
+== shape match under 8 dihedral transforms (direct + inverted hint), own station AND cross-station ==
+  none

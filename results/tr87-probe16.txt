@@ -1,0 +1,118 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:08:01 | INFO | Got anonymous API key: 27da8a6b-b35f-4c51-a92a-c5ebe4d14891
+2026-08-08 19:08:01 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:08:02 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:08:02 | INFO | Created new scorecard: 1a39d02b-12a3-477a-a45d-a86e1674d5bb
+2026-08-08 19:08:03 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 19:08:03 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== six blocks, raw 7x7 ==
+  block row=0 col=0 @(22,4):
+    7777777
+    7555577
+    7577557
+    7577757
+    7557757
+    7755557
+    7777777
+  block row=0 col=1 @(45,4):
+    7777777
+    7555577
+    7577577
+    7577557
+    7577577
+    7555577
+    7777777
+  block row=1 col=0 @(22,13):
+    7777777
+    7555557
+    7577577
+    7577577
+    7555577
+    7577777
+    7777777
+  block row=1 col=1 @(45,13):
+    7777777
+    7775557
+    7775757
+    7555557
+    7575777
+    7555777
+    7777777
+  block row=2 col=0 @(22,22):
+    7777777
+    7555557
+    7577757
+    7575557
+    7575757
+    7555557
+    7777777
+  block row=2 col=1 @(45,22):
+    7777777
+    7775777
+    7555557
+    7575757
+    7555557
+    7775777
+    7777777
+
+== crop interior 5x5 (rows/cols 1:6), ink=5 mask, cell counts ==
+  block(0, 0): 16 cells
+  block(0, 1): 15 cells
+  block(1, 0): 14 cells
+  block(1, 1): 15 cells
+  block(2, 0): 19 cells
+  block(2, 1): 15 cells
+
+== block vs {hint, dial-state, top-icon} -- EXACT match (direct + inverted) ==
+  EXACT: block(0, 0) == deck@15 state2
+  EXACT: block(0, 0) == deck@29 state3
+  EXACT: block(0, 0) == deck@36 state5
+  EXACT: block(0, 0) == deck@43 state0
+  EXACT: block(1, 0) == deck@22 state6
+  EXACT: block(1, 1) == deck@15 state5
+  EXACT: block(1, 1) == deck@29 state6
+  EXACT: block(1, 1) == deck@36 state1
+  EXACT: block(1, 1) == deck@43 state3
+  EXACT: block(2, 1) == deck@15 state1
+  EXACT: block(2, 1) == deck@29 state2
+  EXACT: block(2, 1) == deck@36 state4
+  EXACT: block(2, 1) == deck@43 state6
+
+== block vs {hint, dial-state, top-icon} -- SHAPE match (dihedral-8, direct+inverted) ==
+  SHAPE: block(0, 0) ~ deck@15 state2
+  SHAPE: block(0, 0) ~ deck@22 state1
+  SHAPE: block(0, 0) ~ deck@29 state3
+  SHAPE: block(0, 0) ~ deck@36 state5
+  SHAPE: block(0, 0) ~ deck@43 state0
+  SHAPE: block(0, 1) ~ deck@15 state3
+  SHAPE: block(0, 1) ~ deck@22 state2
+  SHAPE: block(0, 1) ~ deck@29 state4
+  SHAPE: block(0, 1) ~ deck@36 state6
+  SHAPE: block(0, 1) ~ deck@43 state1
+  SHAPE: block(1, 0) ~ deck@15 state0
+  SHAPE: block(1, 0) ~ deck@22 state6
+  SHAPE: block(1, 0) ~ deck@29 state1
+  SHAPE: block(1, 0) ~ deck@36 state3
+  SHAPE: block(1, 0) ~ deck@43 state5
+  SHAPE: block(1, 1) ~ deck@15 state5
+  SHAPE: block(1, 1) ~ deck@22 state4
+  SHAPE: block(1, 1) ~ deck@29 state6
+  SHAPE: block(1, 1) ~ deck@36 state1
+  SHAPE: block(1, 1) ~ deck@43 state3
+  SHAPE: block(2, 0) ~ deck@15 state6
+  SHAPE: block(2, 0) ~ deck@22 state5
+  SHAPE: block(2, 0) ~ deck@29 state0
+  SHAPE: block(2, 0) ~ deck@36 state2
+  SHAPE: block(2, 0) ~ deck@43 state4
+  SHAPE: block(2, 1) ~ deck@15 state1
+  SHAPE: block(2, 1) ~ deck@22 state0
+  SHAPE: block(2, 1) ~ deck@29 state2
+  SHAPE: block(2, 1) ~ deck@36 state4
+  SHAPE: block(2, 1) ~ deck@43 state6
+
+== also: do the six TOP ICONS match each other, the hints, or the deck states (exact + shape)? ==
+  SHAPE: top-icon(0, 0) ~ hint@29
+  SHAPE: top-icon(0, 1) ~ hint@36
+  SHAPE: top-icon(1, 0) ~ hint@43
+  SHAPE: top-icon(1, 1) ~ hint@15
+  EXACT: top-icon(2, 0) <-> hint@22
