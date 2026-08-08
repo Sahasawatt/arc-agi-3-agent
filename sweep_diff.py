@@ -27,6 +27,10 @@ def read(path):
 
 
 a_path, b_path = sys.argv[1], sys.argv[2]
+# The control names the game this comparison EXPECTS to differ. Hardcoding it works
+# for exactly one comparison and then fires on the next: a control that cannot be
+# pointed at the change under test is a tripwire, not a control.
+expect = sys.argv[3] if len(sys.argv) > 3 else "sp80"
 a, mean_a = read(a_path)
 b, mean_b = read(b_path)
 print(f"BEFORE {a_path}: {len(a)} games, mean {mean_a}")
@@ -34,8 +38,8 @@ print(f"AFTER  {b_path}: {len(b)} games, mean {mean_b}")
 
 # positive control: the comparison must be able to SEE a difference. Prove it by
 # asking it about a pair that is known to differ before trusting any 'identical'.
-assert a.get("sp80") != b.get("sp80"), "control failed: the one game meant to change did not"
-print("control ok: sp80 differs, so the comparison is not blind\n")
+assert a.get(expect) != b.get(expect), f"control failed: {expect} did not differ"
+print(f"control ok: {expect} differs, so the comparison is not blind\n")
 
 same, changed, lost = [], [], []
 for g in sorted(set(a) | set(b)):

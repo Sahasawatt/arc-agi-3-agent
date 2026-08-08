@@ -1207,6 +1207,7 @@ minimal action sequences — what a planner produces and a language model does n
 | `compete.py` | plays under the real competition rules — one make(), no rewinding, forward only |
 | `cover.py` | whole-game driver for the framed-box family (`re86`): park every shape so its own boxes lie under it |
 | `swap.py` | whole-game driver for the control-transfer family (`sp80`): sweep the board firing the action that hands the arrows to another body |
+| `haul.py` | whole-game driver for the carry family (`wa30`): grab the crate the piece is facing, carry it, drop it into the frame |
 | `play.py` | the autonomous loop — discover, search object sequences, tour a kind, sweep every reachable square, keep what clears a level |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
 | `agent.py` | play loop with a swappable policy (`random`, two LLM policies) |
@@ -1563,3 +1564,32 @@ clock-gated at the natural candidates (`sp80-p15.txt`), and the level-2 board is
 byte-identical for three different level-1 exits (`sp80-p16.txt`). An earlier null
 from that same search was the INSTRUMENT twice over — a depth cap below the budget,
 and fires-used missing from the visited key, because ammo is real hidden state.
+
+
+## wa30: the carry family (2026-08-08)
+
+One action grabs the crate the piece is **facing** — and the heading is whichever way it
+last walked, so arriving beside a crate sideways refuses. That single rule killed the
+first hand solve, which stood directly under a crate facing left. A second press drops
+the crate; dropped over the 12x4 frame it slots in and eats the frame interior beneath
+it for good, and the level ends when the interior empties. Level 1 by hand: 27 actions
+against a baseline of 71.
+
+The rung is `haul.py`, gated on a signature measured over all seventeen reset frames —
+two or more crates, the biggest strictly bigger and wearing an interior colour none of
+the others has — which wa30 alone shows. It clears level 1 in **43 actions**.
+
+Nine bugs, and almost all of them one family: **a reading taken from a part of a thing,
+or while something was standing on it, or with a detector that only works at reset.**
+The displacement came from one colour when the piece's body is a 4x3 that swaps ends on
+a turn. The piece was found by flood-filling non-background, so a carried crate touching
+the frame swallowed the frame. The frame was re-detected each round, when the first
+slotted crate stops its interior being one colour. Its free slots were read live, when
+the piece covers what it stands on. A refused probe was not counted as attempted, so a
+piece that starts under a crate presses UP forever. And the route walked straight through
+crates.
+
+The last one is worth keeping: fixing the eighth bug changed **nothing**, and a
+byte-identical run after a code change means the change never mattered. Reading the trace
+again with the filtering PRINTED rather than assumed showed the crate filter was correct
+and the plan was aimed at the right crate — it was the walk that was wrong.

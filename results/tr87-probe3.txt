@@ -1,0 +1,54 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:13:32 | INFO | Got anonymous API key: 3dcf64d0-30c8-4826-bce3-a9cf5efdde82
+2026-08-08 18:13:32 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:13:33 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:13:33 | INFO | Created new scorecard: bfe887e5-2dc0-468d-8583-0968e6d5b0c4
+2026-08-08 18:13:34 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:13:34 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== walk ACTION4 x8 from reset, report piece box + room-changed + lvl ==
+reset piece box: (15, 48, 19, 60) room hash cells: 266
+  press0: piece=(22, 48, 26, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press1: piece=(29, 48, 33, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press2: piece=(36, 48, 40, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press3: piece=(43, 48, 47, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press4: piece=(15, 48, 19, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press5: piece=(22, 48, 26, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press6: piece=(29, 48, 33, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+  press7: piece=(36, 48, 40, 60) room_cells_changed=0 lvl=0 state=NOT_FINISHED
+
+== walk ACTION3 x8 from reset (opposite dir hypothesis) ==
+reset piece box: (15, 48, 19, 60)
+  press0: piece=(43, 48, 47, 60) lvl=0
+  press1: piece=(36, 48, 40, 60) lvl=0
+  press2: piece=(29, 48, 33, 60) lvl=0
+  press3: piece=(22, 48, 26, 60) lvl=0
+  press4: piece=(15, 48, 19, 60) lvl=0
+  press5: piece=(43, 48, 47, 60) lvl=0
+  press6: piece=(36, 48, 40, 60) lvl=0
+  press7: piece=(29, 48, 33, 60) lvl=0
+
+== ACTION1 x4 then ACTION2 x4 from reset (piece parked at reset column) ==
+reset room snapshot (7x38):
+  77777777777777777777777777777777777333
+  75555577755577755555775555577555577333
+  77577577757577757775775777577577557333
+  77577577555557755575775555577577757333
+  77555577757577757575777575777557757333
+  77777577755577755555777555777755557333
+  77777777777777777777777777777777777333
+  ACTION1 press0: room_cells_changed=13 piece=(15, 48, 19, 60) lvl=0
+  ACTION1 press1: room_cells_changed=11 piece=(15, 48, 19, 60) lvl=0
+  ACTION1 press2: room_cells_changed=7 piece=(15, 48, 19, 60) lvl=0
+  ACTION1 press3: room_cells_changed=16 piece=(15, 48, 19, 60) lvl=0
+  ACTION2 press0: room_cells_changed=16 piece=(15, 48, 19, 60) lvl=0
+  ACTION2 press1: room_cells_changed=7 piece=(15, 48, 19, 60) lvl=0
+  ACTION2 press2: room_cells_changed=11 piece=(15, 48, 19, 60) lvl=0
+  ACTION2 press3: room_cells_changed=13 piece=(15, 48, 19, 60) lvl=0
+room snapshot after ACTION1x4+ACTION2x4:
+  77777777777777777777777777777777777333
+  75555577755577755555775555577555577333
+  77577577757577757775775777577577557333
+  77577577555557755575775555577577757333
+  77555577757577757575777575777557757333
+  77777577755577755555777555777755557333
+  77777777777777777777777777777777777333

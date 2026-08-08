@@ -1059,3 +1059,117 @@ side that faces the box, press, carry to a slot, press. The routing is ordinary;
 the two things a naive version will get wrong are the heading (rule 2) and the
 piece's own extent, which is the union of its body and its edge colour, not the
 body alone (`wa30-p1.txt`).
+
+## tr87: opened -- a 5-station cyclic-dial puzzle, mechanic measured, level 1 NOT solved (2026-08-08)
+
+Picked from `haul-sig.txt` for its `[1,2,3,4]`-only action set (no complex
+action) and a "5 crates" signature `cover.py`/`haul.py` cannot see. Offline
+only, no scorecard touched.
+
+**Foundation** (`results/tr87-found.txt`): replay-from-reset byte-identical
+in-process (21 frames), a second `arc.make` starts identically, **2,824
+steps/s**. `baseline_actions: [54, 58, 40, 45, 71, 146]` -- six levels.
+Board 64x64: background colour 2 (top) / colour 3 (rest), a colour-1 bar
+filling all of y63 (64 cells at reset) that burns **exactly 1 cell per
+action** (`1->4`, seen on every single diff in `tr87-acts.txt` and every
+probe run below) -- a life is ~64 actions, close to level 1's 54-action
+baseline. Three regions, top to bottom: six 7x7 glyph-tile pairs at y4-28
+(colour 10 ink on colour 5, paired with a colour-7 block each -- unexplored,
+see refuted #1 below); a colour-10/5 band at y40-46 (see "the hint band"
+below); the interactive room at y48-60.
+
+**The piece is a C-clamp, not a walker** (`results/tr87-probe1.txt`):
+colour 0, 14 cells total, two horizontal brackets -- 7 cells at y48-49
+(`x[15-19]` top, opening down) and 7 at y59-60 (`x[15-19]` bottom, opening
+up) -- bracketing the room vertically at whichever x-column it currently
+occupies. `reset-vs-reset identical: True`, `second env identical: True`:
+the whole board, including the y40-46 band, is stable in-process.
+
+**ACTION3/4 move the clamp sideways across exactly 5 fixed stations, step 7,
+with wraparound -- ACTION1/2 never move it** (`tr87-probe3.txt`). From reset
+(x=15), ACTION4 visits x=22,29,36,43 then wraps back to x=15 on the 5th
+press; ACTION3 walks the same five stations backward. `room_cells_changed`
+is 0 on every ACTION3/4 press (`tr87-probe3.txt`) -- moving the clamp never
+touches the room's own pixels.
+
+**ACTION1/2 never move the clamp -- they cycle the ROOM PIXELS under the
+clamp's current station, and ACTION2 is the exact step-by-step inverse of
+ACTION1** (`tr87-probe4.txt`, `tr87-probe5.txt`). Diffed at the pixel level
+(`tr87-probe4.txt`), one ACTION1 press at station 0 changes only cells in
+`x[15-19]`, never the piece or the bar. Five ACTION1 presses then five
+ACTION2 presses reproduces the forward hash list exactly reversed
+(`backward == reversed(forward)? True`, `tr87-probe5.txt`) -- not just a
+net-zero over a round trip, every intermediate step undoes cleanly.
+
+**Every station is an independent 7-state cycle, period exactly 7, measured
+directly at three of the five** (`tr87-probe5.txt` station 0: 30 presses,
+repeats at press 7, 14, 21, 28; `tr87-probe8.txt` stations 1 and 2: each
+closes at press 7). This is a structural constant of the mechanic, not a
+property of one crate's shape.
+
+**Three of the five stations (0, 3, 4) draw from ONE shared, byte-identical
+7-symbol deck, just phase-shifted; stations 1 and 2 each have their OWN
+deck, matching neither station 0's family nor each other** (`tr87-probe7.txt`,
+`tr87-probe11.txt`). Station 3's reset frame is byte-identical to station
+0's own deck-state 4; station 4's reset frame equals station 0's state 2.
+Station 1 (x22) and station 2 (x29) reset frames match none of station 0's
+seven states, and a full 7x7 cross-check between stations 1 and 2 finds zero
+shared states either (`tr87-probe11.txt`, empty match list). The room is
+one continuous colour-5/7 textured strip (x14-51, y51-57, bordered top and
+bottom by solid-7 rows) rather than five separately-walled cells: pressing
+the dial at a station with NO detected "crate" underneath (station 1 or 4)
+still changes pixels there exactly as it does at a station that has one.
+
+**The `haul-sig.txt` "5 crates" reading is partly a false positive.**
+Re-running `haul.crates()` live (`tr87-probe2.txt`, read-only import of
+`haul.py`, not modified) reproduces the same five rectangles byte-for-byte,
+confirming the board itself is stable -- but only **three** sit in the
+actual interactive room (w4h4 at (16,52), w5h3 at (36,52), w3h3 at (29,54)).
+The other two, w4h5 at (46,5) and w3h3 at (25,25), fall inside the
+unrelated top glyph-tile area (y4-46): coincidental ring=5/inner=7
+sub-rectangles inside that region's own noise pattern, not crates to
+interact with. `haul.py`'s own `Haul` driver would not engage tr87 regardless
+-- `self.on = set(DIRS) | {GRAB} <= set(values)` requires action 5, and
+tr87's action set is `[1, 2, 3, 4]` only; not worth a live test, the guard
+is unconditional on the action set alone.
+
+**The hint band (y40-46) is a new find, x-aligned exactly to the five
+stations, and does not answer to the obvious matching rule.** Colour 10/5,
+census `{3: 203, 5: 65, 10: 180}` (`tr87-probe9.txt`). Sliced at the same
+five x-coordinates as the room stations it resolves into five distinct
+5x7 icons (13, 11, 15, 15, 11 colour-5 "ink" cells respectively) -- too
+precisely aligned to the station grid to be unrelated, and the most likely
+carrier of each station's target pattern. Tested directly and refuted (see
+below): none of it matches any station's own reachable dial state.
+
+### What was refuted this session (do not re-derive)
+
+1. **The hint icon's colour-5 mask equals one of ITS OWN station's seven
+   reachable dial states.** Built each station's actual 7-state deck by
+   code (not by hand) and compared both polarities (ink=5 and inverted)
+   against that station's hint icon: zero matches across all 5 stations x 7
+   states x 2 polarities (`results/tr87-probe10.txt`).
+2. **Aligning the three stations that share a confirmed family (0, 3, 4) to
+   a common symbol completes the level, or changes anything outside the
+   room.** Drove station 3 from its reset phase (S4) to S0 (3 presses) and
+   station 4 from S2 to S0 (5 presses), leaving station 0 untouched at S0;
+   `levels_completed` stayed 0 and the only cells changed outside the room
+   and the budget bar were the clamp's own bracket at its new column
+   (`results/tr87-probe8.txt`).
+3. **Stations 1 and 2 share a reachable symbol with each other** (a
+   candidate second "pair" to align, symmetric to 0/3/4). Full 7x7
+   cross-check, zero byte-identical matches (`results/tr87-probe11.txt`).
+   The "families" are not a clean two-group split; at least three of the
+   five stations are singletons relative to each other by this test.
+
+### Not attempted
+
+Whether the target is a SHAPE match (ink cell positions) rather than an
+exact byte match, scaled or reflected, against a station's deck; whether
+the hint band's five icons pair with the SIX top glyph-tiles (one hint
+per level, six tiles for six levels -- an unconfirmed count coincidence,
+not a measured fact); and whether visiting all five stations to ANY state
+at least once (rather than a specific target) is itself the condition
+(baseline 54 actions for six visits + some dialing is generous but not
+disqualifying). None of these were probed -- flagging rather than guessing.
+

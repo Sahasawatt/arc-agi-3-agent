@@ -1,0 +1,35 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:11:31 | INFO | Got anonymous API key: 860ce649-abd0-4bb8-9bff-57ecc2014daf
+2026-08-08 18:11:31 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:11:32 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:11:32 | INFO | Created new scorecard: e327608f-8306-431c-bb33-91d851af5f3c
+2026-08-08 18:11:33 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:11:33 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+shape: (64, 64)
+census: {0: 14, 1: 64, 2: 1570, 3: 1370, 5: 320, 7: 364, 10: 394}
+reset-vs-reset identical: True
+2026-08-08 18:11:34 | INFO | Successfully fetched metadata for game tr87
+second env identical: True
+colour 0: 14 cells, x[15-19] y[48-60]
+colour 1: 64 cells, x[0-63] y[63-63]
+colour 2: 1570 cells, x[0-63] y[0-33]
+colour 3: 1370 cells, x[0-63] y[7-62]
+colour 5: 320 cells, x[13-50] y[5-56]
+colour 7: 364 cells, x[14-51] y[4-57]
+colour 10: 394 cells, x[12-48] y[4-46]
+
+colour-0 cells (candidate piece), sorted by y then x:
+  (15,48)
+  (16,48)
+  (17,48)
+  (18,48)
+  (19,48)
+  (15,49)
+  (19,49)
+  (15,59)
+  (19,59)
+  (15,60)
+  (16,60)
+  (17,60)
+  (18,60)
+  (19,60)

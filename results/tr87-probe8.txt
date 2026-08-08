@@ -1,0 +1,16 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:18:57 | INFO | Got anonymous API key: b4098bff-cd6a-42b9-bcdf-57aeb33b4aed
+2026-08-08 18:18:57 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:18:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:18:59 | INFO | Created new scorecard: 64a4df8a-ea09-4126-8153-a1df06073bc6
+2026-08-08 18:19:00 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:19:00 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== station1 (x22) own-cycle period, up to 12 presses ==
+  press7: repeats press0  period=7
+== station2 (x29) own-cycle period, up to 12 presses ==
+  press7: repeats press0  period=7
+
+== align stations 0,3,4 (shared 7-deck) to symbol S0, watch full frame ==
+levels_completed: 0 state: NOT_FINISHED
+cells changed outside room+bar: 28 [(15, 48), (16, 48), (17, 48), (18, 48), (19, 48), (43, 48), (44, 48), (45, 48), (46, 48), (47, 48), (15, 49), (19, 49), (43, 49), (47, 49), (15, 59), (19, 59), (43, 59), (47, 59), (15, 60), (16, 60)]
+total cells changed: 57

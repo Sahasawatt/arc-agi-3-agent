@@ -384,28 +384,39 @@ class Haul:
     def _step(self, a):
         return self.dirs[a]
 
-    def _walk(self, frm, to):
-        """Axis-by-axis walk. The boards this fires on are open; a refusal simply
-        leaves the piece where it was and the next round replans from the frame."""
-        out, (x, y) = [], frm
-        for axis in (0, 1):
-            while (to[axis] - (x, y)[axis]) != 0:
-                gap = to[axis] - (x, y)[axis]
-                cand = [a for a, d in self.dirs.items()
-                        if d[axis] and (d[axis] > 0) == (gap > 0) and not d[1 - axis]]
-                if not cand:
-                    return None
-                a = cand[0]
-                d = self._step(a)
-                if abs(d[axis]) > abs(gap):
-                    return None
-                out.append(a)
-                x, y = x + d[0], y + d[1]
-                if len(out) > 60:
-                    return None
-        return out if (x, y) == to else None
+    def _walk(self, frm, to, size, blocked, shape):
+        """Shortest route on the piece's own lattice, treating crates as solid.
 
-    def _approach(self, frm, target, side):
+        Was a naive axis-by-axis walk, which routes straight THROUGH a crate: with
+        one directly below the piece, three downs were refused, the up that
+        followed carried it onto the frame, and the grab took whatever it then
+        faced -- pulling a crate back out of its slot
+        (`results/wa30-haul9.txt` i=22-24). The frame itself stays passable: the
+        piece walks over it, measured (`results/wa30-p4.txt`)."""
+        from collections import deque
+        H, W = shape
+        w, h = size
+        q, seen = deque([(frm, [])]), {frm}
+        while q:
+            pos, path = q.popleft()
+            if pos == to:
+                return path
+            if len(path) > 40:
+                continue
+            for a in sorted(self.dirs):
+                d = self.dirs[a]
+                n = (pos[0] + d[0], pos[1] + d[1])
+                if n in seen or not (0 <= n[0] <= W - w and 0 <= n[1] <= H - h):
+                    continue
+                if any(n[0] < bx + bw and n[0] + w > bx
+                       and n[1] < by + bh and n[1] + h > by
+                       for bx, by, bw, bh in blocked):
+                    continue
+                seen.add(n)
+                q.append((n, path + [a]))
+        return None
+
+    def _approach(self, frm, target, side, size, blocked, shape):
         """Reach the square touching `target` on `side`, ARRIVING along `side` so
         the heading faces the crate. The last step is always toward it."""
         d = self._step(side)
@@ -415,7 +426,8 @@ class Haul:
         # forward parks one square short, so the grab fires from nowhere and the
         # rung relivelocks on the same plan forever (`results/wa30-haul5.txt`,
         # plan [2, 1, 5] repeating from i=12).
-        legs = self._walk(frm, (target[0] - d[0], target[1] - d[1]))
+        legs = self._walk(frm, (target[0] - d[0], target[1] - d[1]),
+                          size, blocked, shape)
         return None if legs is None else legs + [side]
 
     def _plan(self, g, box):
@@ -434,6 +446,10 @@ class Haul:
         frame = self.frame
         fx0, fy0 = frame[4], frame[5]
         fx1, fy1 = fx0 + frame[0] - 1, fy0 + frame[1] - 1
+        # Everything that is a crate blocks the walk, except the frame itself.
+        # A crate sitting IN the frame is still solid; it is only excluded from
+        # the pick-up candidates, not from the obstacle set.
+        blocked = [(c[4], c[5], c[0], c[1]) for c in cr if c[:2] + c[4:] != frame[:2] + frame[4:]]
         cr = [c for c in cr
               if not (fx0 <= c[4] <= fx1 and fy0 <= c[5] <= fy1)]
         bw, bh = self.base
@@ -443,7 +459,8 @@ class Haul:
             hx, hy, _, _ = self._held_rect(g, box)
             off = (hx - box[0], hy - box[1])
             for sx, sy, _n in self._slots(g, frame):
-                legs = self._walk(here, (sx - off[0], sy - off[1]))
+                legs = self._walk(here, (sx - off[0], sy - off[1]),
+                                  (box[2], box[3]), blocked, g.shape)
                 if legs is not None:
                     # CLAIMED, not committed: `_plan` must stay free of side
                     # effects or anything that calls it twice -- a debug trace
@@ -477,7 +494,9 @@ class Haul:
                     ty = cy - bh
                 elif d[1] < 0:
                     ty = cy + h
-                legs = self._approach(here, (tx, ty), side)
+                legs = self._approach(here, (tx, ty), side,
+                                      (bw, bh), blocked + [(cx, cy, w, h)],
+                                      g.shape)
                 if legs is not None:
                     return legs + [GRAB]
         return None

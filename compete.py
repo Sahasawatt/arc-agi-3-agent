@@ -29,6 +29,8 @@ from gate import Gate, cycle, turned
 from cover import Cover, signature
 from swap import Swap
 from swap import signature as swap_signature
+from haul import Haul
+from haul import signature as haul_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1710,6 +1712,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # from cover's (sp80 shows zero framed boxes, re86 has no top band), so the two
     # are never both live and every other game is identical by construction.
     swap = Swap(values) if swap_signature(np.array(obs.frame)[-1]) else None
+    # The carry family (`haul.py`). Its signature — two or more crates, the
+    # biggest strictly bigger than the rest and wearing an interior colour none
+    # of them has — is wa30 alone of the seventeen at reset
+    # (`results/haul-sig.txt`), and disjoint from both of the others: re86 shows
+    # eight crates but none bigger, sp80 shows none at all.
+    haul = Haul(values) if haul_signature(np.array(obs.frame)[-1]) else None
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1838,6 +1846,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if cv is None and swap is not None:
             cv = swap.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "swap"
+        if cv is None and haul is not None:
+            cv = haul.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "haul"
         if cv is not None:
             psrc, value, plan, expect, trip = dsrc, cv, [], [], []
         elif plan:

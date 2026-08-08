@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:22:00 | INFO | Got anonymous API key: 14708e12-a9e4-4490-bd38-7b97cd09dd2b
+2026-08-08 18:22:00 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:22:01 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:22:01 | INFO | Created new scorecard: 9e534a05-5ae3-49b7-bb49-a771b1fe086d
+2026-08-08 18:22:02 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:22:03 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+station1(x22) vs station2(x29) cross-matches (byte-identical):
+ matches (station1_state, station2_state): []
+no shared symbol between station1 and station2 -- families differ pairwise too

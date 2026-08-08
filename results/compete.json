@@ -157,11 +157,15 @@
   },
   {
     "game": "wa30",
-    "levels": 0,
+    "levels": 1,
     "of": 9,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
+    "actions": [
+      43
+    ],
+    "baseline": [
+      71
+    ],
+    "environment_score": 2.222
   },
   {
     "game": "cd82",

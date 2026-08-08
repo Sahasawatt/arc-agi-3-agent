@@ -861,6 +861,27 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   from the same search was the INSTRUMENT twice over — a depth cap below the budget, and
   fires-used missing from the visited key, because ammo is real hidden state.
 
+- **wa30 is a CARRY puzzle, and its rung cost nine bugs of which almost all are one
+  family: a reading taken from a PART of a thing, taken while something was standing on
+  it, or taken with a detector that only works at reset.** The game: one action grabs the
+  crate the piece is FACING (the heading is whichever way it last walked -- arriving
+  beside a crate sideways refuses, which killed the first hand solve), a second press
+  drops it, and a crate dropped over the frame slots in and consumes the frame interior
+  beneath it for good; the level ends when that interior empties. What the rung got
+  wrong, each with the run that showed it (`results/wa30-haul*.txt`): the displacement
+  read from ONE COLOUR, when the piece's body is a 4x3 that swaps ends on a turn and so
+  translates by the step MINUS ONE on any heading change; the piece found by
+  flood-filling non-background, so a carried crate touching the frame swallowed the
+  frame; the frame RE-DETECTED each round, when the first slotted crate stops its
+  interior being one colour and `crates()` loses it entirely; its free slots read LIVE,
+  when the piece covers what it stands on (the free count oscillated 20 -> 14 -> 12 ->
+  14 -> 6 with nothing dropped); a refused probe not counted as ATTEMPTED, so a piece
+  that starts under a crate presses UP forever; and finally a route that walked straight
+  THROUGH crates. That last one is why fixing the eighth bug changed nothing -- a
+  byte-identical run after a code change means the change never mattered, and reading
+  the trace again with the filtering PRINTED rather than assumed showed the plan was
+  right and the walk was not. 2026-08-08.
+
 ## What the scoring actually rewards
 
 `min((baseline_actions / actions_taken)² × 100, 115)` per level, averaged **weighted by level
@@ -882,13 +903,16 @@ sources, including a retraction of the "5× human median" action cap that is not
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
 loop).
 
-Two **whole-game drivers** hang off the play loop, both wired the same way: constructed once
+Three **whole-game drivers** hang off the play loop, all wired the same way: constructed once
 if their own signature matches the reset frame, asked first every round, and answering None
 the moment they run out of ideas so the rungs take the level back. `cover` drives the
 framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
 the control-transfer family (sp80, signature = a single-colour band on BOTH screen edges plus
-a solid block narrower than the board). Both signatures were measured against all seventeen
-games at reset and are disjoint from each other (`results/sp80-sig.txt`), which is the whole
+a solid block narrower than the board); `haul` drives the carry family (wa30, signature = two
+or more crates -- a rectangle with a uniform border and a single-colour interior -- with the
+biggest strictly bigger than the rest and wearing an interior colour none of them has).
+All three signatures were measured against all seventeen games at reset and are disjoint
+(`results/sp80-sig.txt`, `results/haul-sig.txt`), which is the whole
 mechanism by which every other game stays byte-identical — nothing in the wiring scopes a
 driver to one game. Adding a third means measuring its signature the same way first.
 

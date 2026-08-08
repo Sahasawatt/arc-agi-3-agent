@@ -1,0 +1,18 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:12:12 | INFO | Got anonymous API key: 46c5731c-761b-43a4-bc5f-9bc424dda1da
+2026-08-08 18:12:12 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:12:13 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:12:13 | INFO | Created new scorecard: bfcd1f30-bf12-4d05-ae24-aa5d553c65b1
+2026-08-08 18:12:14 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:12:14 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+crates() found 5:
+  w=5 h=3 ring=5 inner=7 x0=36 y0=52
+  w=4 h=5 ring=5 inner=7 x0=46 y0=5
+  w=4 h=4 ring=5 inner=7 x0=16 y0=52
+  w=3 h=3 ring=5 inner=7 x0=29 y0=54
+  w=3 h=3 ring=5 inner=7 x0=25 y0=25
+
+signature() -> False
+
+full colour-10 bounding regions (candidate glyph displays):
+  colour 10: x[12-48] y[4-46] n=394

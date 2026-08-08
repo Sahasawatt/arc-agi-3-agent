@@ -1,0 +1,60 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:20:06 | INFO | Got anonymous API key: 299c5e8e-792b-4310-b06f-68f241c7e723
+2026-08-08 18:20:06 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:20:07 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:20:07 | INFO | Created new scorecard: f9033f5b-3fcf-42ca-93c4-523441f0ae4d
+2026-08-08 18:20:08 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:20:08 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== y40-46 band, x0-64, raw ==
+  y=40 33333333333333aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa333333333333333
+  y=41 33333333333333aa555aaaaaaa5aa55555aa55a55aaaa5aaa333333333333333
+  y=42 33333333333333aaaa5aaaaa5a5aaaa5a5aaa5a5aaaaa5aaa333333333333333
+  y=43 33333333333333a55555aa55555aaaaaa5aaa555aaaa555aa333333333333333
+  y=44 33333333333333aaaa5aaa5a5aaaaaa5a5aaa5a5aaaaa5aaa333333333333333
+  y=45 33333333333333aa555aaa5aaaaaa55555aa55a55aa55555a333333333333333
+  y=46 33333333333333aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa333333333333333
+
+band non-background(3) x-range: 14 - 48
+band census: {3: 203, 5: 65, 10: 180}
+
+5-wide slices at each station x, y40-46:
+ station x=15:
+    aaaaa
+    a555a
+    aaa5a
+    55555
+    aaa5a
+    a555a
+    aaaaa
+ station x=22:
+    aaaaa
+    aaaa5
+    aa5a5
+    55555
+    5a5aa
+    5aaaa
+    aaaaa
+ station x=29:
+    aaaaa
+    55555
+    aa5a5
+    aaaa5
+    aa5a5
+    55555
+    aaaaa
+ station x=36:
+    aaaaa
+    55a55
+    a5a5a
+    a555a
+    a5a5a
+    55a55
+    aaaaa
+ station x=43:
+    aaaaa
+    aa5aa
+    aa5aa
+    a555a
+    aa5aa
+    55555
+    aaaaa

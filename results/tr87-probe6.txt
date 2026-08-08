@@ -1,0 +1,154 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:16:39 | INFO | Got anonymous API key: a08a7c0c-69d1-45f7-9102-6f00f9dfc41e
+2026-08-08 18:16:39 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:16:40 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:16:40 | INFO | Created new scorecard: d538091f-d772-4ae2-9d2c-42bf5e4fed0d
+2026-08-08 18:16:41 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:16:41 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== station 1 (x15-19), full crate footprint x16-19 -- 7 states ==
+ state0 (reset):
+    77777
+    55555
+    75775
+    75775
+    75555
+    77775
+    77777
+    census: {5: 14, 7: 21}
+ state1:
+    77777
+    77577
+    55555
+    57575
+    55555
+    77577
+    77777
+    census: {5: 15, 7: 20}
+ state2:
+    77777
+    55557
+    57755
+    57775
+    55775
+    75555
+    77777
+    census: {5: 16, 7: 19}
+ state3:
+    77777
+    77577
+    55555
+    57775
+    57775
+    55555
+    77777
+    census: {5: 15, 7: 20}
+ state4:
+    77777
+    55555
+    57775
+    55555
+    75757
+    75557
+    77777
+    census: {5: 17, 7: 18}
+ state5:
+    77777
+    77555
+    77575
+    55555
+    57577
+    55577
+    77777
+    census: {5: 15, 7: 20}
+ state6:
+    77777
+    55555
+    57575
+    57555
+    57775
+    55555
+    77777
+    census: {5: 19, 7: 16}
+ state7:
+    77777
+    55555
+    75775
+    75775
+    75555
+    77775
+    77777
+    census: {5: 14, 7: 21}
+
+== station 4 (x36-40, the 5x3 crate) -- move there then cycle 7 ==
+ state0:
+    77777
+    55555
+    57775
+    55555
+    75757
+    75557
+    77777
+    census: {5: 17, 7: 18}
+ state1:
+    77777
+    77555
+    77575
+    55555
+    57577
+    55577
+    77777
+    census: {5: 15, 7: 20}
+ state2:
+    77777
+    55555
+    57575
+    57555
+    57775
+    55555
+    77777
+    census: {5: 19, 7: 16}
+ state3:
+    77777
+    55555
+    75775
+    75775
+    75555
+    77775
+    77777
+    census: {5: 14, 7: 21}
+ state4:
+    77777
+    77577
+    55555
+    57575
+    55555
+    77577
+    77777
+    census: {5: 15, 7: 20}
+ state5:
+    77777
+    55557
+    57755
+    57775
+    55775
+    75555
+    77777
+    census: {5: 16, 7: 19}
+ state6:
+    77777
+    77577
+    55555
+    57775
+    57775
+    55555
+    77777
+    census: {5: 15, 7: 20}
+ state7:
+    77777
+    55555
+    57775
+    55555
+    75757
+    75557
+    77777
+    census: {5: 17, 7: 18}

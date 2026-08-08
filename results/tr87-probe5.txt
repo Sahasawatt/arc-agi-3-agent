@@ -1,0 +1,44 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:15:33 | INFO | Got anonymous API key: 82926036-be96-4d0f-9c38-c46efb296479
+2026-08-08 18:15:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:15:35 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:15:35 | INFO | Created new scorecard: e2fb4ea7-784c-46fb-b8d1-168f240c23c3
+2026-08-08 18:15:36 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:15:36 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== ACTION1 x30 at station 1 (x15), room hash each press, find period ==
+  reset: 42d5976ecd
+  press1: 28e279c6d3
+  press2: 8f5dcdff04
+  press3: bd49550ee7
+  press4: d745fb92c9
+  press5: bbc829f4fe
+  press6: b373e84e35
+  press7: 42d5976ecd  <-- repeats press0, period=7
+  press8: 28e279c6d3
+  press9: 8f5dcdff04
+  press10: bd49550ee7
+  press11: d745fb92c9
+  press12: bbc829f4fe
+  press13: b373e84e35
+  press14: 42d5976ecd
+  press15: 28e279c6d3
+  press16: 8f5dcdff04
+  press17: bd49550ee7
+  press18: d745fb92c9
+  press19: bbc829f4fe
+  press20: b373e84e35
+  press21: 42d5976ecd
+  press22: 28e279c6d3
+  press23: 8f5dcdff04
+  press24: bd49550ee7
+  press25: d745fb92c9
+  press26: bbc829f4fe
+  press27: b373e84e35
+  press28: 42d5976ecd
+  press29: 28e279c6d3
+  press30: 8f5dcdff04
+
+== verify ACTION2 undoes ACTION1 step by step (not just net over 4) ==
+forward hashes: ['42d5976ecd', '28e279c6d3', '8f5dcdff04', 'bd49550ee7', 'd745fb92c9', 'bbc829f4fe']
+backward hashes: ['bbc829f4fe', 'd745fb92c9', 'bd49550ee7', '8f5dcdff04', '28e279c6d3', '42d5976ecd']
+backward == reversed(forward)? True

@@ -1,0 +1,37 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 18:14:17 | INFO | Got anonymous API key: ae67bdf5-55fb-49b4-8891-0de1fac3cb30
+2026-08-08 18:14:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 18:14:18 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 18:14:18 | INFO | Created new scorecard: 63eae672-3a7e-401f-ac4b-4d215908f951
+2026-08-08 18:14:19 | INFO | Successfully fetched metadata for game tr87
+2026-08-08 18:14:19 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+== ACTION1 pressed 8x alone from reset: period? exact diff each time ==
+  press0: n=13 x-range=15-19 lvl=0
+  press1: n=12 x-range=15-19 lvl=0
+  press2: n=7 x-range=15-18 lvl=0
+  press3: n=17 x-range=15-19 lvl=0
+  press4: n=10 x-range=15-18 lvl=0
+  press5: n=9 x-range=15-19 lvl=0
+  press6: n=15 x-range=15-18 lvl=0
+  press7: n=14 x-range=15-19 lvl=0
+  (env re-reset for compare only, ignore its own side effect)
+
+== move to x22 (1x ACTION4) then ACTION1 x2: does a DIFFERENT region change? ==
+piece now at x: 22
+  press0: n=12 x-range=22-26
+  press1: n=7 x-range=22-26
+
+== reset baseline, ACTION1 once, exact (x,y,old,new) diff list (bar excluded) ==
+  (15,52) 5->7
+  (15,53) 7->5
+  (15,54) 7->5
+  (15,55) 7->5
+  (16,52) 5->7
+  (16,54) 5->7
+  (17,53) 7->5
+  (17,54) 7->5
+  (17,56) 7->5
+  (18,52) 5->7
+  (18,53) 7->5
+  (19,52) 5->7
+  (19,56) 5->7
