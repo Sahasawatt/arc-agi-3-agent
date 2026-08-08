@@ -1029,3 +1029,33 @@ Open, in order: what a box's ring being 3 is FOR (nothing yet made it stick); wh
 the 12x4 colour-9 ring with the colour-2 inner is; and whether the heading is an
 input the game reads (the piece rotates for free while walking, so a level that
 cares about facing would be turned by the route).
+
+**wa30 level 1 FALLS by hand, 27 actions against a baseline of 71
+(`results/wa30-solve.txt`).** The whole game in four measured rules:
+
+1. **Action 5 beside a box GRABS it.** The box's 12 ring cells take the piece's
+   own edge colour and the pair moves as one (`wa30-p2.txt` A, `p3`).
+2. **It acts along the HEADING, and the heading is whichever way the piece last
+   walked.** Arriving beside a box sideways refuses the grab -- measured, the
+   first solve attempt died on exactly that at step 10, with the piece standing
+   directly under the box and facing left (`wa30-solve.txt`, first run). Drop a
+   row, go west, come UP into it, and it grabs. This is what the colour-0 edge is
+   FOR.
+3. **A second press DROPS the box where it stands**, and a box dropped over the
+   12x4 colour-9 frame SLOTS IN: its ring joins the frame's row and the cells of
+   the frame's colour-2 inner beneath it are consumed for good -- still gone when
+   the piece steps away, so not occlusion (`wa30-p5.txt`).
+4. **The frame's inner is the counter.** 10x2 = 20 cells at level 1; the three
+   boxes cover 6 + 8 + 6 of it, and the level ends on the press that takes it to
+   zero (`wa30-solve.txt` step 26: slots 6 -> 0 -> `lvl=1`).
+
+Level 2 is the same puzzle, larger: an 8x12 frame with **60** inner cells and
+more boxes, on a board that redraws entirely.
+
+So wa30 is buildable as a rung of the `cover.py` / `swap.py` shape: read the
+frame as the ring with the largest distinct inner, read the boxes as the smaller
+rings, and for each one route the piece to an adjacent square ARRIVING FROM the
+side that faces the box, press, carry to a slot, press. The routing is ordinary;
+the two things a naive version will get wrong are the heading (rule 2) and the
+piece's own extent, which is the union of its body and its edge colour, not the
+body alone (`wa30-p1.txt`).

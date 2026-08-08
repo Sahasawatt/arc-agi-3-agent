@@ -1,0 +1,36 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 16:46:28 | INFO | Got anonymous API key: e087a549-5a16-43e6-991b-006f8dfb802b
+2026-08-08 16:46:28 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 16:46:29 | INFO | Successfully fetched 25 environment(s) from API
+== A: action 5 from four different places ==
+2026-08-08 16:46:29 | INFO | Created new scorecard: 27e705f7-6986-4a4a-9b74-e3095eb5a257
+2026-08-08 16:46:31 | INFO | Successfully fetched metadata for game wa30
+2026-08-08 16:46:31 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+  home (no moves): piece (32, 48, 35, 51) h=top -> (32, 48, 35, 51) h=top non-clock cells changed=0
+2026-08-08 16:46:32 | INFO | Successfully fetched metadata for game wa30
+  2 left        : piece (24, 48, 27, 51) h=left -> (24, 48, 27, 51) h=left non-clock cells changed=0
+2026-08-08 16:46:33 | INFO | Successfully fetched metadata for game wa30
+  2 up          : piece (32, 40, 35, 43) h=top -> (32, 36, 35, 43) h=?[(32, 36), (32, 37), (32, 38), (32, 39), (32, 40), (33, 36), (33, 39), (33, 40), (34, 36), (34, 39), (34, 40), (35, 36), (35, 37), (35, 38), (35, 39), (35, 40)] non-clock cells changed=12
+2026-08-08 16:46:34 | INFO | Successfully fetched metadata for game wa30
+  2 up 3 left   : piece (20, 40, 23, 43) h=left -> (20, 40, 23, 43) h=left non-clock cells changed=0
+2026-08-08 16:46:35 | INFO | Successfully fetched metadata for game wa30
+  4 right 2 up  : piece (48, 40, 51, 43) h=top -> (48, 40, 51, 43) h=top non-clock cells changed=0
+
+== B: press into a box from each side that can reach one ==
+2026-08-08 16:46:36 | INFO | Successfully fetched metadata for game wa30
+  from BELOW, pressing up: at (32, 40, 35, 43) h=top rings=(4, 4, 3, 9) -> (32, 40, 35, 43) h=top rings=(4, 4, 3, 9) lvl=0 REFUSED
+2026-08-08 16:46:37 | INFO | Successfully fetched metadata for game wa30
+  from LEFT, pressing right: at (16, 36, 19, 39) h=top rings=(4, 4, 4, 9) -> (20, 36, 23, 39) h=right rings=(4, 4, 4, 9) lvl=0 MOVED
+2026-08-08 16:46:39 | INFO | Successfully fetched metadata for game wa30
+  from ABOVE, pressing down: at (32, 32, 35, 35) h=right rings=(4, 4, 4, 9) -> (32, 32, 35, 35) h=bottom rings=(4, 4, 3, 9) lvl=0 REFUSED
+2026-08-08 16:46:40 | INFO | Successfully fetched metadata for game wa30
+  from RIGHT, pressing left: at (48, 36, 51, 39) h=top rings=(4, 4, 4, 9) -> (44, 36, 47, 39) h=left rings=(4, 4, 4, 9) lvl=0 MOVED
+
+== C: walk into the BIG ring at (28,28)-(39,31) from below ==
+2026-08-08 16:46:41 | INFO | Successfully fetched metadata for game wa30
+  up 0: piece=(32, 44, 35, 47) h=top rings=(4, 4, 4, 9) census={0: 4, 1: 3920, 2: 20, 4: 36, 7: 64, 9: 40, 14: 12} lvl=0
+  up 1: piece=(32, 40, 35, 43) h=top rings=(4, 4, 3, 9) census={0: 4, 1: 3920, 2: 20, 3: 12, 4: 25, 7: 63, 9: 40, 14: 12} lvl=0
+  up 2: piece=(32, 40, 35, 43) h=top rings=(4, 4, 3, 9) census={0: 4, 1: 3920, 2: 20, 3: 12, 4: 25, 7: 63, 9: 40, 14: 12} lvl=0
+  up 3: piece=(32, 40, 35, 43) h=top rings=(4, 4, 3, 9) census={0: 4, 1: 3920, 2: 20, 3: 12, 4: 25, 7: 63, 9: 40, 14: 12} lvl=0
+  up 4: piece=(32, 40, 35, 43) h=top rings=(4, 4, 3, 9) census={0: 4, 1: 3920, 2: 20, 3: 12, 4: 26, 7: 62, 9: 40, 14: 12} lvl=0
+  up 5: piece=(32, 40, 35, 43) h=top rings=(4, 4, 3, 9) census={0: 4, 1: 3920, 2: 20, 3: 12, 4: 26, 7: 62, 9: 40, 14: 12} lvl=0
