@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:03:17 | INFO | Got anonymous API key: c238d168-f91d-4da3-85b4-cbd234c76fc4
+2026-08-08 19:03:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:03:18 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:03:18 | INFO | Created new scorecard: 3eb1042a-6a02-42c2-a7f7-2401d2d85336
+2026-08-08 19:03:19 | INFO | Successfully fetched metadata for game tu93
+2026-08-08 19:03:19 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+reset: lvl=0 state=GameState.NOT_FINISHED
+  step 0 action4: state=GameState.NOT_FINISHED lvl=0
+  step 1 action2: state=GameState.NOT_FINISHED lvl=0
+  step 2 action2: state=GameState.NOT_FINISHED lvl=0
+  step 3 action4: state=GameState.NOT_FINISHED lvl=0
+  step 4 action1: state=GameState.NOT_FINISHED lvl=0
+  step 5 action4: state=GameState.NOT_FINISHED lvl=0
+  step 6 action2: state=GameState.NOT_FINISHED lvl=0
+  step 7 action2: state=GameState.NOT_FINISHED lvl=0
+  step 8 action3: state=GameState.NOT_FINISHED lvl=0
+  step 9 action3: state=GameState.NOT_FINISHED lvl=0
+  step 10 action2: state=GameState.NOT_FINISHED lvl=0
+  step 11 action4: state=GameState.NOT_FINISHED lvl=0
+  step 12 action4: state=GameState.NOT_FINISHED lvl=0
+  step 13 action2: state=GameState.NOT_FINISHED lvl=0
+  step 14 action4: state=GameState.NOT_FINISHED lvl=0
+  step 15 action1: state=GameState.NOT_FINISHED lvl=0
+  step 16 action4: state=GameState.NOT_FINISHED lvl=0
+  step 17 action2: state=GameState.NOT_FINISHED lvl=1
+
+FINAL: lvl=1 state=GameState.NOT_FINISHED

@@ -1173,3 +1173,92 @@ at least once (rather than a specific target) is itself the condition
 (baseline 54 actions for six visits + some dialing is generous but not
 disqualifying). None of these were probed -- flagging rather than guessing.
 
+## tu93: SOLVED -- fixed-pitch maze, heading-notch piece, level 1 falls in 18 (2026-08-08)
+
+Picked for the same `acts=[1,2,3,4]` no-complex-action shape as re86/sp80/wa30,
+plus a full-width single-colour row at y63. Offline only, no scorecard touched.
+
+**Foundation** (`results/tu93-found.txt`): replay-from-reset byte-identical
+in-process (21 frames), second `arc.make` starts identically, **8,905
+steps/s**. `baseline_actions: [19, 16, 34, 42, 123, 80, 14, 23, 111]` -- nine
+levels. Board 64x64, background colour 5. Rows 15-47 hold a lattice of
+colour-0/colour-2 cells on a 6px pitch (a small maze, not open floor); rows
+0-14 and 48-62 are empty background. Row y63 is 64 cells of colour 6 --
+matches every other budget row measured so far.
+
+**The piece is a notched 3x3, not a solid block, and the notch marks
+heading** (`results/tu93-p1.txt`, `tu93-p2.txt`). At reset it is a 3x3
+colour-9 block at y15-17,x15-17 with ONE cell -- the mid-right cell
+`(16,17)` -- recoloured 4 instead. Pressing the action that moves it right
+relocates the whole 8-cell colour-9 body AND the single colour-4 cell
+together in one press (`tu93-found.txt` ACTION4 diff: `9->0:8 0->9:8
+4->0:1 0->4:1`), and the colour-4 cell's position **inside** the 3x3
+rotates to track the side the piece last moved toward -- bottom-middle
+after moving down twice, top-middle after moving up (`tu93-p3.txt`, steps
+1-2 vs step 4/15). Same family as wa30's heading-edge and g50t's ring-with-
+a-hole: the piece's own extent is the union of its body colour and its
+notch, and reading body-colour alone would report the wrong facing.
+
+**Movement is one full lattice-step per press, not incremental, and is
+blocked directionally by maze walls** (`tu93-p1.txt`, `tu93-p2.txt`).
+A single press moves the piece by exactly 6px (one grid cell) in a fixed
+screen direction; 14 more presses of the SAME action at a wall then show
+literally zero further change. This refutes the very first read taken
+straight off `probe_acts.py`: from the reset corner, actions 1/2/3 looked
+like permanent no-ops (0 cells changed across 10 presses each, only the
+budget row burning) while action4 looked like a one-shot special. Retried
+after one rightward move (Trap 1 -- never conclude no-op from one reset
+position), action2 fired twice in a row (18 cells changed each = a full
+8-body+1-notch displacement) before hitting its own wall. 1/2/3/4 are four
+ordinary fixed absolute directions; all three "dead" actions were reading
+a corner cell blocked in three of its four directions, not a broken action
+set.
+
+**The budget row burns ~1-2 cells per action regardless of whether the
+move succeeds, and refills to 64/64 on level-up** (`tu93-p3.txt`: 64 ->
+63 -> ... -> 42, then back to 64/64 on the same step `levels_completed`
+went 0 -> 1). Same shape as every other budget row measured in this repo;
+level 1's 18-action clear left more than half the bar (46 of 64 cells)
+unspent.
+
+**Level 1 SOLVED and verified live**: `bfs_solve.py tu93 25 60000` found a
+win in 18 actions (baseline 19) after expanding 529 nodes / 591 states in
+10s, zero deaths (`results/tu93-bfs.txt`):
+
+```
+[4, 2, 2, 4, 1, 4, 2, 2, 3, 3, 2, 4, 4, 2, 4, 1, 4, 2]
+```
+
+Replayed forward-only on a FRESH `arc.make` (not the BFS deepcopy tree),
+`obs.levels_completed` goes 0 -> 1 on the 18th step
+(`results/tu93-verify.txt`, `results/tu93-p3.txt`). The colour-14 3x3 block
+first seen at y45-47,x45-47 sits untouched through steps 0-16 and is still
+there when the level turns over -- the winning press (`act2`, step 17) is
+the one that would have moved the piece from y39-41,x45-47 onto exactly
+that cell, and the frame returned already belongs to level 2 (new piece
+position at y33-35,x12-14, budget refilled, a colour-14 block again at the
+same screen coordinates). Read together this says the colour-14 block IS
+the per-level goal and stepping onto it wins -- but this is inferred from
+the coincidence of timing and position, not from ever observing the piece
+and the goal occupying the same cell in one frame, so it stays a strong
+hypothesis, not a measured fact.
+
+**Refuted:**
+- Actions 1/2/3 are permanent no-ops -- refuted by retrying from a
+  different tile; they are ordinary directions blocked only at the
+  starting corner (`tu93-p1.txt`).
+- Action4 is a one-shot special action -- refuted the same way; it is an
+  ordinary direction that happened to face open corridor once from the
+  reset tile (`tu93-p2.txt`).
+- The piece is a solid 3x3 block -- refuted; it is a notched 3x3 whose
+  notch rotates with heading (`tu93-p1.txt`, `tu93-p3.txt`).
+
+**Next lever**: build the rung. The mechanic is simple enough (4 fixed
+directions, 6px lattice, wall-blocked, single coloured goal square) that
+`bfs_solve.py` or a direct BFS over the maze lattice should clear the
+remaining 8 levels the same way level 1 fell, PROVIDED the goal-square
+hypothesis above is confirmed on level 2 first (find whether the piece
+must exactly overlap the colour-14 cells, or merely become adjacent, by
+watching one level-2 approach frame-by-frame instead of inferring it from
+the transition).
+

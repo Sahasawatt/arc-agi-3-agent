@@ -1,0 +1,61 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-08 19:00:42 | INFO | Got anonymous API key: a94230fb-9d4f-48bd-b76e-d10ccf3aa9ff
+2026-08-08 19:00:42 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-08 19:00:43 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-08 19:00:43 | INFO | Created new scorecard: 322bf755-c4cc-4ae5-97d7-b070f1eed0c7
+2026-08-08 19:00:44 | INFO | Successfully fetched metadata for game tu93
+2026-08-08 19:00:44 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+-- reset --
+  color9: n=8 y[15-17] x[15-17] cells=[(15, 15), (15, 16), (15, 17), (16, 15), (16, 16), (17, 15), (17, 16), (17, 17)]
+  color4: n=1 y[16-16] x[17-17] cells=[(16, 17)]
+  color14: n=9 y[45-47] x[45-47] cells=[(45, 45), (45, 46), (45, 47), (46, 45), (46, 46), (46, 47), (47, 45), (47, 46), (47, 47)]
+
+== walk action4 up to 20x ==
+  0: changed_cells(excl budget)=19 state=NOT_FINISHED lvl=0
+  1: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+  2: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  3: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  4: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  5: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+  6: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  7: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  8: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+  9: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  10: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  11: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  12: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+  13: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  14: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  15: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  16: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+  17: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  18: changed_cells(excl budget)=1 state=NOT_FINISHED lvl=0
+  19: changed_cells(excl budget)=2 state=NOT_FINISHED lvl=0
+-- after action4 walk --
+  color9: n=8 y[15-17] x[21-23] cells=[(15, 21), (15, 22), (15, 23), (16, 21), (16, 22), (17, 21), (17, 22), (17, 23)]
+  color4: n=1 y[16-16] x[23-23] cells=[(16, 23)]
+  color14: n=9 y[45-47] x[45-47] cells=[(45, 45), (45, 46), (45, 47), (46, 45), (46, 46), (46, 47), (47, 45), (47, 46), (47, 47)]
+
+== retry action1/2/3 from here, 5x each ==
+ action1:
+   0: non-budget changed cells=0
+   1: non-budget changed cells=0
+   2: non-budget changed cells=0
+   3: non-budget changed cells=0
+   4: non-budget changed cells=0
+ action2:
+   0: non-budget changed cells=18
+   1: non-budget changed cells=18
+   2: non-budget changed cells=0
+   3: non-budget changed cells=0
+   4: non-budget changed cells=0
+ action3:
+   0: non-budget changed cells=0
+   1: non-budget changed cells=0
+   2: non-budget changed cells=0
+   3: non-budget changed cells=0
+   4: non-budget changed cells=0
+-- after retry block --
+  color9: n=8 y[27-29] x[21-23] cells=[(27, 21), (27, 22), (27, 23), (28, 21), (28, 22), (28, 23), (29, 21), (29, 23)]
+  color4: n=1 y[29-29] x[22-22] cells=[(29, 22)]
+  color14: n=9 y[45-47] x[45-47] cells=[(45, 45), (45, 46), (45, 47), (46, 45), (46, 46), (46, 47), (47, 45), (47, 46), (47, 47)]
