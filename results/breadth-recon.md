@@ -1045,9 +1045,18 @@ cares about facing would be turned by the route).
    12x4 colour-9 frame SLOTS IN: its ring joins the frame's row and the cells of
    the frame's colour-2 inner beneath it are consumed for good -- still gone when
    the piece steps away, so not occlusion (`wa30-p5.txt`).
-4. **The frame's inner is the counter.** 10x2 = 20 cells at level 1; the three
-   boxes cover 6 + 8 + 6 of it, and the level ends on the press that takes it to
-   zero (`wa30-solve.txt` step 26: slots 6 -> 0 -> `lvl=1`).
+4. **The frame's inner is the counter, and the level ends on the DROP that fills
+   the last slot -- not on the moment the count reads zero.** 10x2 = 20 cells at
+   level 1; the three boxes cover 6 + 8 + 6 of it. CORRECTED 2026-08-08 by an
+   audit of this file against its own run: the count reaches zero at step 24, an
+   ordinary `left`, with `lvl` still 0, because the piece is standing over the
+   frame and the zero is OCCLUSION. The level flips at step 26, the `act5` that
+   drops the crate (`wa30-solve.txt`). The first write-up cited step 26 for the
+   6 -> 0 transition and paired two different rows; the mechanic survives -- the
+   consumption is real and was separately measured from afar
+   (`wa30-p5.txt`) -- but the evidence pointer was wrong, and it was wrong in
+   this repo's oldest way: a count read while the piece was standing on the thing
+   being counted.
 
 Level 2 is the same puzzle, larger: an 8x12 frame with **60** inner cells and
 more boxes, on a board that redraws entirely.
