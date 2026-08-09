@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 05:59:16 | INFO | Got anonymous API key: 514779c6-f8fa-4dad-ac9f-a8c53b8b65d8
+2026-08-09 05:59:16 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 05:59:17 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-09 05:59:17 | INFO | Created new scorecard: 4421d6cf-5ebe-4247-889a-bf74a22a8d76
+2026-08-09 05:59:18 | INFO | Successfully fetched metadata for game tu93
+2026-08-09 05:59:18 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+tu93   2/9 levels  actions=[31, 14]  score=5.946%
+
+mean over 1 environments: 5.946%

@@ -31,6 +31,10 @@ from swap import Swap
 from swap import signature as swap_signature
 from haul import Haul
 from haul import signature as haul_signature
+from maze import Maze
+from maze import signature as maze_signature
+from dial import Dial
+from dial import signature as dial_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1718,6 +1722,23 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # (`results/haul-sig.txt`), and disjoint from both of the others: re86 shows
     # eight crates but none bigger, sp80 shows none at all.
     haul = Haul(values) if haul_signature(np.array(obs.frame)[-1]) else None
+    # The fixed-pitch maze family (`maze.py`). Its signature — EXACTLY one
+    # notched 3x3 window (8 cells of one colour, the ninth a second) — is tu93
+    # alone of the seventeen at reset; the other sixteen come back 0 or 3-69,
+    # so "at least one" is not the discriminator and the exact count is
+    # (`results/maze-sig.txt`). The four shipped predicates were then run
+    # against all seventeen reset frames together and no game is claimed by two
+    # (`results/maze-sig2.txt`), so every other game is identical by
+    # construction.
+    maze = Maze(values) if maze_signature(np.array(obs.frame)[-1]) else None
+    # The combination-lock family (`dial.py`). Its signature — two 7-row station
+    # strips plus a top region whose (icon, block) pairs name at least two of
+    # the stations — is tr87 alone of the seventeen at reset. Unlike the three
+    # above it is NOT disjoint from `cover`, whose signature is the loose one
+    # and fires on four games including tr87 (`results/sig-sweep.txt`), so this
+    # driver is asked FIRST below; that ordering is the whole reason tr87's
+    # trace is the only one that moves.
+    dial = Dial(values) if dial_signature(np.array(obs.frame)[-1]) else None
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1841,14 +1862,23 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         # identical cells — is re86 alone of the seventeen at reset, so every other
         # game is identical by construction; it answers None the moment it runs out
         # of ideas and the rungs below take the level back.
-        cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed) if cover else None
-        dsrc = "cover"
+        # `dial` first: it is the only driver whose signature overlaps another's
+        # (see its construction above), and on the contested board it is the one
+        # built for it.
+        cv = dial.act(np.array(obs.frame)[-1], obs.levels_completed) if dial else None
+        dsrc = "dial"
+        if cv is None and cover is not None:
+            cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "cover"
         if cv is None and swap is not None:
             cv = swap.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "swap"
         if cv is None and haul is not None:
             cv = haul.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "haul"
+        if cv is None and maze is not None:
+            cv = maze.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "maze"
         if cv is not None:
             psrc, value, plan, expect, trip = dsrc, cv, [], [], []
         elif plan:

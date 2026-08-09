@@ -903,18 +903,34 @@ sources, including a retraction of the "5× human median" action cap that is not
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
 loop).
 
-Three **whole-game drivers** hang off the play loop, all wired the same way: constructed once
+Five **whole-game drivers** hang off the play loop, all wired the same way: constructed once
 if their own signature matches the reset frame, asked first every round, and answering None
 the moment they run out of ideas so the rungs take the level back. `cover` drives the
 framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
 the control-transfer family (sp80, signature = a single-colour band on BOTH screen edges plus
 a solid block narrower than the board); `haul` drives the carry family (wa30, signature = two
 or more crates -- a rectangle with a uniform border and a single-colour interior -- with the
-biggest strictly bigger than the rest and wearing an interior colour none of them has).
-All three signatures were measured against all seventeen games at reset and are disjoint
-(`results/sp80-sig.txt`, `results/haul-sig.txt`), which is the whole
-mechanism by which every other game stays byte-identical — nothing in the wiring scopes a
-driver to one game. Adding a third means measuring its signature the same way first.
+biggest strictly bigger than the rest and wearing an interior colour none of them has);
+`maze` drives the fixed-pitch maze family (tu93, signature = EXACTLY one notched 3x3 window,
+8 cells of one colour and the ninth a second); `dial` drives the combination-lock family
+(tr87, signature = two 7-row station strips plus a top region whose (icon, block) pairs name
+at least two of the stations).
+
+Every signature is measured against all seventeen games at reset before its driver is wired,
+which is the whole mechanism by which every other game stays byte-identical — nothing in the
+wiring scopes a driver to one game. `sigs.py` runs all five SHIPPED predicates over all
+seventeen reset frames in one invocation (`results/sig-sweep.txt`) and is the check to run
+before adding a sixth. Two things it exists to enforce:
+
+- **Measure the shipped predicate, not a candidate table.** `maze_sig.py` prints the
+  candidate table a signature is chosen from, and both of its candidates fire on five games;
+  `maze.signature`, the function actually wired in, is neither of them.
+- **They are no longer all disjoint.** `cover`'s is the loose one — it fires on ar25, re86,
+  bp35 and tr87, and only ever ENGAGES re86, because a driver handed a board it cannot read
+  answers None on its first round. So the contested board is settled by CASCADE ORDER: `dial`
+  is asked before `cover` in `compete.play`, and `sigs.py` fails if any contested game has a
+  driver other than the one built for it asked first. Keep its `CASCADE` list equal to the
+  wiring.
 
 `play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
 upper bounds from a dev mode the competition does not offer.

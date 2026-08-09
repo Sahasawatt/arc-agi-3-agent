@@ -1208,6 +1208,9 @@ minimal action sequences — what a planner produces and a language model does n
 | `cover.py` | whole-game driver for the framed-box family (`re86`): park every shape so its own boxes lie under it |
 | `swap.py` | whole-game driver for the control-transfer family (`sp80`): sweep the board firing the action that hands the arrows to another body |
 | `haul.py` | whole-game driver for the carry family (`wa30`): grab the crate the piece is facing, carry it, drop it into the frame |
+| `maze.py` | whole-game driver for the fixed-pitch maze family (`tu93`): read the wall lattice off the frame and walk a notched heading-piece to the goal block |
+| `dial.py` | whole-game driver for the combination-lock family (`tr87`): read which phase each station is asked for, and dial them all there |
+| `sigs.py` | every shipped driver signature against every playable game's reset frame — the check before another driver is wired |
 | `play.py` | the autonomous loop — discover, search object sequences, tour a kind, sweep every reachable square, keep what clears a level |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
 | `agent.py` | play loop with a swappable policy (`random`, two LLM policies) |
@@ -1593,3 +1596,92 @@ The last one is worth keeping: fixing the eighth bug changed **nothing**, and a
 byte-identical run after a code change means the change never mattered. Reading the trace
 again with the filtering PRINTED rather than assumed showed the crate filter was correct
 and the plan was aimed at the right crate — it was the walk that was wrong.
+
+
+## tu93: the fixed-pitch maze family (2026-08-09)
+
+A notched 3x3 piece on a 6px lattice, four fixed directions, walls, and a colour-14 goal
+block. Level 1 by hand: 18 actions against a baseline of 19 (`tu93-verify.txt`). The
+driver is `maze.py`, wired into the play loop like the other three, and it clears
+**two levels in 31 and 14 actions** — 5.946%, tu93's first score
+(`results/tu93-maze.txt`, `results/tu93-wired.txt`, `results/sweep-maze.log`).
+
+Three things the repo's generic machinery could not do here, all of them readings:
+
+* **The piece is not rigid in its own body colour.** The notch names the heading and moves
+  to whichever side the piece last walked, so the body colour alone is not a pure
+  translation of itself across a heading-changing press, and a `shifted()`-style check
+  refuses a real move. The union of body and notch is the only rigid reading.
+* **A life reset is a rigid translation, so a frame pair straddling one teaches a lie** —
+  the sp80 lesson again, measured here as `dirs[4]` flipping to `(-12, 6)` on a board
+  whose real step is `(6, 0)` (`tu93-life-reset.txt`). What detects the reset is a latched
+  budget-band colour whose count goes UP; re-reading `bands()` each round cannot, because
+  the band is a full-width row only while it is full.
+* **Three of the four actions are dead from the reset corner**, so a refusal is not retried
+  in place: ask every direction once from here, walk on one that works, ask the rest from
+  the new position.
+
+The signature is EXACTLY one notched 3x3 window at reset. "At least one" is not the
+discriminator — the other sixteen games come back 0 or 3 to 69, by accident, on busy art
+(`results/maze-sig.txt`); tu93's board is otherwise a clean two-colour grid where an 8:1
+split almost never happens. Worth separating from the code: that table's two *candidate*
+predicates each fire on five games, and neither is what `maze.signature` computes.
+`sigs.py` runs every shipped predicate over all seventeen reset frames in one
+invocation — maze fires on tu93 alone and no other driver claims it (`results/sig-sweep.txt`),
+and the sweep is then identical to the digit on 16 of 17 games with tu93 the only change
+(`sweep-haul.log` -> `sweep-maze.log`, mean 5.527% -> 5.876%).
+
+**It stops at level 3, and the blocker is named.** The only route to that goal passes a
+cell patrolled by a MOVING colour-8 hazard and the driver has no phase model — it
+blacklists a square only after dying there (`results/tu93-death.txt`). Same class of
+mechanic ls20's levels 6-7 needed, so it is its own project, not a bug. Measured on the
+way: **tu93's GAME_OVER is not budget exhaustion** — it fires with 60 of 64 bar cells
+left, on collision with that moving body (`results/tu93-budget-trace.txt`).
+
+
+## tr87: the combination-lock family (2026-08-09)
+
+Five stations on a 7-pitch lattice, each an independent 7-state cycle; one action dials
+the station under the clamp, another slides the clamp along. The level opens when every
+station holds its own target phase **at once** — and the board says which phase each one
+wants, in a region an entire session had dumped and never matched against anything
+(`results/breadth-recon.md` §tr87). Level 1 by hand: 28 actions against a baseline of 54.
+The driver is `dial.py`, and it clears level 1 in **28 actions** — the same line, derived
+in-run rather than looked up.
+
+The reading, all of it off one frame and none of it a coordinate literal
+(`results/tr87-probe20.txt`, whose control is the hand solution's five pairs):
+
+* the HINT band and the ROOM are the two 7-row strips of the lower region; each has a
+  frame colour and one ink colour, and the stations are the 5-wide windows on its lattice.
+* a top (icon, block) pair is framed in **those two strips' colours** — the icon in the
+  hint band's, the block in the room's. That is what pairs a tile to a meaning without
+  knowing where it is: the icon says which station, the block says which phase of that
+  station's deck.
+* a pair whose icon names no station, or two, is dropped rather than guessed. tr87's
+  sixth pair is exactly that.
+
+Three things worth keeping:
+
+* **A shape match, not a byte match.** Two of the five icons equal their hint exactly and
+  three only up to rotation or reflection, so an exact comparison reads three of the five
+  stations as unlabelled. The canon is dihedral-8 over both ink polarities.
+* **"Dial until the window matches" is only correct because the deck keys are distinct.**
+  Measured, not assumed: all seven states of every station have different shape keys, so
+  the match cannot stop at a lookalike. That question is the one the plan rests on and it
+  costs one probe to answer.
+* **The drive needs no route and no arithmetic.** If the clamp is parked at a station that
+  is not at its target, dial; otherwise slide. The slide wraps, so one action covers every
+  station whichever direction it turns out to go — the direction is never assumed because
+  it is never needed. Everything is re-read from the live frame, so a death costs the plan
+  nothing.
+
+**Level 2 is the same family with a different geometry, and the driver correctly declines
+it**: seven stations rather than five, and a hint band on its OWN lattice offset that does
+not line up with the room's, so a hint no longer names a station by position
+(`results/tr87-l2.txt`). It answers None and the rungs take the level back.
+
+The signature is the first that is **not disjoint from every other**: `cover`'s fires on
+tr87 too (it fires on four games and engages one). The wiring settles it by asking `dial`
+first, and `sigs.py` now checks that ordering for every contested game rather than checking
+disjointness it no longer has (`results/sig-sweep.txt`).

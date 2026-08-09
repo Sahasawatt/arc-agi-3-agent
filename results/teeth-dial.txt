@@ -1,0 +1,25 @@
+== teeth proof for test_dial.py (dial.py mutated, then restored byte-identical) ==
+baseline: 23 passed  <- results/pytest-dial1.txt
+
+M1  top_pairs scans row bands over the whole top region instead of per column run
+    (the bug the live probe hit: 3 of 6 pairs found)
+=========================== short test summary info ===========================
+FAILED test_dial.py::test_top_pairs_finds_every_pair_not_one_per_row_band - A...
+FAILED test_dial.py::test_combination_names_a_station_through_its_hint - asse...
+FAILED test_dial.py::test_combination_drops_a_pair_whose_icon_names_no_station
+FAILED test_dial.py::test_signature_true_on_the_family_board - assert False i...
+FAILED test_dial.py::test_act_dials_the_station_the_clamp_is_parked_at - asse...
+FAILED test_dial.py::test_act_slides_on_when_the_parked_station_already_matches
+FAILED test_dial.py::test_act_none_on_an_empty_frame_without_giving_up - asse...
+FAILED test_dial.py::test_act_gives_up_on_a_station_a_full_turn_never_answers
+FAILED test_dial.py::test_act_moves_on_rather_than_giving_up_while_another_station_is_live
+FAILED test_dial.py::test_a_new_level_forgets_the_presses_spent_on_the_old_one
+10 failed, 13 passed in 0.40s
+
+M2  combination accepts an icon that names MORE THAN ONE station (hit[0] instead of len(hit)==1)
+E         Use -v to get more diff
+
+test_dial.py:134: AssertionError
+=========================== short test summary info ===========================
+FAILED test_dial.py::test_combination_drops_an_icon_that_names_two_stations
+1 failed, 22 passed in 0.38s

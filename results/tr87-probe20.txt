@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-09 19:12:18 | INFO | Got anonymous API key: 5ec792e2-b3b5-4e4e-afac-11be37570770
+2026-08-09 19:12:18 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-09 19:12:19 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-09 19:12:19 | INFO | Created new scorecard: da3e0891-fb56-45b2-903b-ade6b9c930bd
+2026-08-09 19:12:20 | INFO | Successfully fetched metadata for game tr87
+2026-08-09 19:12:20 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+board: {'hint': (40, 46), 'room': (51, 57), 'stations': [15, 22, 29, 36, 43], 'hframe': 10, 'hink': 5, 'rframe': 7, 'rink': 5, 'clamp': 15, 'top_end': 33}
+hint keys distinct across stations: True
+top (icon, block) pairs found: 6
+  icon -> stations [29]
+  icon -> stations [43]
+  icon -> stations [22]
+  icon -> stations [36]
+  icon -> stations [15]
+  icon -> stations []
+stations with a target: [15, 22, 29, 36, 43]
+
+station  deck-keys-distinct  target-matches-at-phase
+   15      True                [5]
+   22      True                [5]
+   29      True                [3]
+   36      True                [6]
+   43      True                [5]
+
+derived: {15: 5, 22: 5, 29: 3, 36: 6, 43: 5}
+known:   {15: 5, 22: 5, 29: 3, 36: 6, 43: 5}
+VERDICT: PASS

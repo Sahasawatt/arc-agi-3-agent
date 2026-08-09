@@ -5,9 +5,9 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **8/17 games with a level, mean 5.527%**
-(ls20 43.629 · re86 41.477 · wa30 2.222 · sp80 4.762 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-haul.log
+Clear ≥1 level in EVERY game. Standing: **10/17 games with a level, mean 6.156%**
+(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-dial.log  ⚠️ PENDING — the sweep for tr87's wiring; if it has not been read yet, read it
 
 ## THE PATTERN THAT WORKS — four games have fallen to it, follow it
 
@@ -15,7 +15,10 @@ Clear ≥1 level in EVERY game. Standing: **8/17 games with a level, mean 5.527%
 2. `probe_acts.py <game> 8` — per-action diffs, guarded against empty frames.
 3. Hypothesis probes until the mechanic is MEASURED.
 4. **Solve level 1 BY HAND** with a scripted action list, verified forward-only.
-5. Only then build a rung, shaped like `cover.py` / `swap.py` / `haul.py`.
+5. Only then build a rung, shaped like `cover.py` / `swap.py` / `haul.py` / `maze.py` / `dial.py`,
+   and measure its signature with `sigs.py` (every SHIPPED predicate x 17 reset frames)
+   BEFORE wiring. Signatures are no longer all disjoint: `cover`'s fires on four games,
+   so a contested game is settled by CASCADE ORDER and `sigs.py` checks that.
 
 `bfs_solve.py <game> <depth> <nodes>` searches real engine states with deepcopy nodes.
 Validated: sp80 L1 `[4,4,4,5]` in 38 expansions, ls20 L1 in 13 actions, tu93 L1 in 18
@@ -25,7 +28,7 @@ unless it reports `exhausted=True` AND the depth covers a whole life.** Not rule
 
 ## GATE
 
-Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`discover.py`/`gate.py` =
+Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`discover.py`/`gate.py` =
 full 17-game sweep before commit, per-game, no game loses a level ← CLAUDE.md.
 
 ```bash
@@ -39,47 +42,32 @@ The third argument is the positive control — it refuses to report "identical" 
 SEEN a difference in the game the change was aimed at. Hardcoding it worked for exactly one
 comparison and then fired on the next.
 
-Values that must not move ← results/sweep-haul.log:
+Values that must not move ← results/sweep-dial.log:
 - ls20 **7/7** `[23, 45, 99, 178, 292, 209, 526]` · re86 **5/8** `[31, 56, 66, 80, 188]`
-- sp80 `[16]` · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]`
-- pytest **255 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
+- tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sp80 `[16]` · wa30 `[43]` · ar25 `[173]`
+  · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]`
+- pytest **308 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
 
 Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
 
-1. **Wire tu93 — the rung is BUILT and verified; wiring is all that is left.**
-   `maze.py` clears **2 levels, [31, 14] actions** driven by its own harness, verified
-   in the main thread ← results/tu93-maze.txt. `test_maze.py` is 30 tests with a proved
-   teeth mutation ← results/teeth-mut1.txt. **`maze.signature()` was run for real against
-   all 17 reset frames and fires on tu93 alone** — do not trust the multi-True rows in
-   results/maze-sig.txt, those are the exploratory candidate table, not the final
-   predicate. Wiring is three edits in `compete.py` copying the `haul` pattern, then the
-   full sweep, then ask before commit.
-   It stops at level 3, and the blocker is named: the only route to that goal passes a
-   cell patrolled by a MOVING colour-8 hazard, and the driver has no phase model — it
-   blacklists a square only after dying there ← results/tu93-death.txt. Same class of
-   mechanic ls20's levels 6-7 needed, so treat it as its own project, not a bug.
-   ⚠️ Also measured on the way: **tu93's GAME_OVER is NOT budget exhaustion** — it fires
-   with 60 of 64 bar cells left, on collision with that moving body
-   ← results/tu93-budget-trace.txt.
-
-   (superseded) the hand line, still valid: 18 actions vs baseline 19
-   `[4,2,2,4,1,4,2,2,3,3,2,4,4,2,4,1,4,2]` ← results/tu93-verify.txt, re-verified in the
-   main thread. Plain maze: notched 3x3 piece, 6px lattice, four fixed directions, walls,
-   a colour-14 goal block, budget row at y63. ⚠️ The repo's GENERIC maze machinery scores
-   zero here, on a game whose mechanic is four directions and a goal square — so what fails
-   is upstream of routing, most likely piece identification, because the colour-4 notch
-   rotates to whichever side the piece last moved and the body is not rigid.
-2. **Wire tr87** — level 1 solved, 28 actions vs baseline 54
-   `[1,1,1,1,1,4,1,1,1,1,1,4,1,1,1,4,1,1,1,1,1,1,4,1,1,1,1,1]` ← results/tr87-solution.txt.
-   Five-station combination lock: ACTION1/2 dial the station under the clamp (period 7,
-   2 is 1's inverse), ACTION3/4 slide the clamp between five fixed x-stations (15, 22, 29,
-   36, 43). Win = all five at their target phase AT ONCE (15→5, 22→5, 29→3, 36→6, 43→5),
-   checked continuously. Targets are read from the top y4-28 region: six (icon, block)
-   pairs, icon names the station, block names the phase.
-3. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sk48, sb26, g50t. Prefer ones
+1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sk48, sb26, g50t. Prefer ones
    with no complex action; the click-driven ones are a different problem.
+2. **tr87 level 2 — same family, different geometry.** `dial.py` clears level 1 in 28
+   actions and correctly declines level 2 ← results/tr87-l2.txt: SEVEN stations rather
+   than five, and the hint band sits on its OWN lattice offset (band x18-45 against
+   stations at x8,15,...,50), so a hint no longer names a station by POSITION -- which is
+   the assumption level 1's reading rests on. Its top region also loses the (icon, block)
+   tiles the level-1 combination is read from. Find what names a station there before
+   writing any code; the driver's reading is otherwise geometry-free and should transfer.
+3. **tu93 level 3 — a MOVING hazard, its own project.** The driver is wired and clears
+   2/9 `[31, 14]` (5.946%, ← results/sweep-dial.log). It stops at level 3 because the only
+   route to that goal passes a cell patrolled by a moving colour-8 body, and `maze.py` has
+   no phase model — it blacklists a square only after dying there ← results/tu93-death.txt.
+   Same class of mechanic ls20's levels 6-7 needed (`gate.mover_period` / `route_moving`
+   are the built precedent). ⚠️ **tu93's GAME_OVER is NOT budget exhaustion** — it fires
+   with 60 of 64 bar cells left, on collision ← results/tu93-budget-trace.txt.
 4. g50t's open contradiction ← results/breadth-recon.md §g50t · re86 L6 · cn04 L2 trigger ·
    ar25 walls-during-planning.
 
@@ -100,6 +88,14 @@ Recon-only work needs no sweep.
   became undetectable the moment the first crate slotted in; swap.py's clock is a band only
   while it is full. A signature function and a per-round tracker are not the same instrument.
 - **A byte-identical run after a code change proves the change never executed.**
+- **A signature you were told was measured may never have been.** The brief said
+  `maze.signature()` had been run against all 17 reset frames; no run file held it, and
+  what existed was a CANDIDATE table whose two predicates each fire on five games. Run
+  `sigs.py` (every shipped predicate x 17 frames, own controls) before wiring anything.
+- **Driver signatures are no longer disjoint, so CASCADE ORDER is load-bearing.**
+  `cover`'s fires on ar25, re86, bp35 AND tr87 while only ever engaging re86 -- a driver
+  handed a board it cannot read answers None on its first round. `dial` is asked before
+  it; `sigs.py` fails if a contested game has the wrong driver first.
 - **Put a positive control in the SAME invocation as any probe.** A probe that "ran" is not
   a probe that "measured".
 - **Something measured but never COMPARED against anything is where the answer hides.**
