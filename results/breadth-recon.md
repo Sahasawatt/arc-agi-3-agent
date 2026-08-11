@@ -1478,3 +1478,30 @@ test first.
   bands); (c) steer DURING the burn: cross once, then explore with A3/A4
   between crossings and watch whether the e-block groups interact with the
   piece at all.
+
+### bp35, third pass: the piece has a HEADING, the erasure is a RISING FLOOD, and only the first event climbed (2026-08-11)
+
+Full-frame dumps at every event of one run (`bp35_p5.py` -> `bp35-p5.txt`):
+
+- **The piece carries a heading marker** -- the colour-11 cell sits on
+  whichever side the piece last walked (`599b` at reset, `5b99` after an A3
+  leg): wa30's edge-marker lesson, fourth game. Any reader keyed on the
+  9-cells alone reports a position that shifts on turns.
+- **The bottom-up "erasure" is a RISING FLOOD of colour 15** -- a woven f
+  pattern climbing ~one band per chute-crossing event from y62 upward, on
+  the same colour the y63 action counter uses (mask both before any census).
+  GAME_OVER at the sixth event = the flood reaching the piece's chamber. The
+  crossings-are-a-budget reading stands, with the mechanism now visible.
+- **Only event #1 rearranged the tower** (the ascent-shaped shift); events
+  2-6 raised the flood and moved nothing above y36. Hypothesis: entering the
+  chute-aligned column ascends ONE chamber, and the chute the piece came up
+  through is the y48-54 stub visible BELOW it afterwards; the shuttle's
+  later crossings happened inside one chamber and only fed the flood. If
+  right, level 1 is "climb chambers faster than the flood": find each
+  chamber's upward passage, park under it, and never waste a crossing.
+  Untested.
+
+Next session: (a) after event #1, walk the FULL width and log where the next
+event fires -- that maps the new chamber's passage; (b) climb as fast as the
+passages allow and see whether the level falls; (c) A3-vs-A7 discriminator
+still unknown.
