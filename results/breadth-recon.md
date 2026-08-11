@@ -1615,3 +1615,36 @@ in some other tape position; (b) whether the tape is a LOOP -- ride down
 repeatedly from reset and see whether new rooms arrive; (c) the win
 condition is still unmeasured, and level 1's baseline of 21 actions against
 a flood that starts at 8 says it is roughly two rides plus a dozen actions.
+
+### bp35, sixth pass: the wall is the BLOCKS, and the room widens when they go (2026-08-11)
+
+Three more measurements, same session (`bp35_p14.py`, `bp35_p15.py`,
+`bp35_climb3.py`):
+
+- **A ride is the same ride from every column.** At T0 four blocks sit over
+  the room at x31-35/37-41/43-47/49-53 and the piece can stand under any of
+  them; riding from x38, x44 and x50 lands on the identical tape position
+  (`bp35-p14.txt` E17). The door is not the shaft column, but the ride is
+  one room whatever door is used.
+- **Riding DOWN bottoms out at the starting position.** A7 at the shaft
+  column from T0 returns the reset tape every time, six in a row
+  (`bp35-p14.txt` E18) -- so as driven, the reachable tape is exactly three
+  positions.
+- **The wall the walk hits is the BLOCKS, not the one-column background gap
+  at x30.** At T1 the walk left stops at x=32; clear the three blocks in the
+  room's own row band and it runs 44 -> 14, with the uncleared control
+  stopping at 32 in the same invocation (`bp35-p15.txt`). So clearing is how
+  the room grows, and the left column's own overhead doors are reachable
+  after all -- p14's "three positions" is a statement about an UNCLEARED
+  board.
+- **What broke the first attempt at that was the picker, not the game**: it
+  took the median of every colour-14 cell near the piece and landed between
+  two blocks, clearing a neighbour. A block is a door only when it overlaps
+  the piece's own five columns.
+
+`bp35_climb3.py` (overlap picker, clear-then-walk-then-ride) rides four
+times in eleven actions and still does not finish the level; it then wedges
+clicking a phantom target that answers one cell. Level 1 remains unwon and
+the win condition remains unmeasured -- what is now cheap to ask, with
+clearing understood, is whether the level wants a particular room ENTERED or
+simply every block gone.

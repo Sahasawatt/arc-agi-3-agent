@@ -1,0 +1,29 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:24:48 | INFO | Got anonymous API key: 67f26eca-7949-45d3-8a18-940ebbd78717
+2026-08-11 21:24:48 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:24:49 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:24:49 | INFO | Created new scorecard: 222f4532-46f5-4e09-a5d2-c4dedc035542
+2026-08-11 21:24:50 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:24:50 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== 1: clear the room's own row band (x15,21,27 at y39) ==
+  click(15,39): n=   26 st=NOT_FINISHED
+  click(21,39): n=   31 st=NOT_FINISHED
+  click(27,39): n=   36 st=NOT_FINISHED
+  walk left: [44, 38, 32, 26, 20, 14, 14, 14]  lvl=0 st=NOT_FINISHED
+  then click(18,35) over the piece: n=36 clear only lvl=0
+
+2026-08-11 21:24:51 | INFO | Successfully fetched metadata for game bp35
+== 2: clear that band and the one below (y45) ==
+  click(15,39): n=   26 st=NOT_FINISHED
+  click(21,39): n=   31 st=NOT_FINISHED
+  click(27,39): n=   36 st=NOT_FINISHED
+  click(15,45): n=   31 st=NOT_FINISHED
+  click(21,45): n=   37 st=NOT_FINISHED
+  click(27,45): n=   43 st=NOT_FINISHED
+  walk left: [44, 38, 32, 26, 20, 14, 14, 14]  lvl=0 st=NOT_FINISHED
+  then click(18,35) over the piece: n=36 clear only lvl=0
+
+2026-08-11 21:24:52 | INFO | Successfully fetched metadata for game bp35
+== 3: control -- clear nothing ==
+  walk left: [44, 38, 32, 32, 32, 32, 32, 32]  lvl=0 st=NOT_FINISHED
+

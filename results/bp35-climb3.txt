@@ -1,0 +1,53 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:25:52 | INFO | Got anonymous API key: 3e0b3a1b-6c3b-4630-87d3-1dec2496b5ec
+2026-08-11 21:25:52 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:25:54 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:25:54 | INFO | Created new scorecard: 2ce7c0f8-20ef-4e26-94fe-11cd2574915a
+2026-08-11 21:25:55 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:25:55 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  i= 0 ride click(21,3)       n=   26 x=20 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 walk A3                n=   47 x=14 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 ride click(15,3)       n=   31 x=14 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 walk A4                n=   47 x=20 cnt= 4 flood=None lvl=0 st=NOT_FINISHED
+  i= 4 walk A4                n=   47 x=26 cnt= 5 flood=None lvl=0 st=NOT_FINISHED
+  i= 5 ride click(27,3)       n=   36 x=26 cnt= 6 flood=None lvl=0 st=NOT_FINISHED
+  i= 6 walk A4                n=   47 x=32 cnt= 7 flood=None lvl=0 st=NOT_FINISHED
+  i= 7 ride click(33,15)      n=   36 x=32 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 walk A4                n=   47 x=38 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 ride click(39,15)      n=   43 x=38 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+  i=10 walk A4                n=  933 x=44 cnt=11 flood=None lvl=0 st=NOT_FINISHED   RIDE
+  i=11 ride click(45,33)      n= 1130 x=44 cnt=12 flood=None lvl=0 st=NOT_FINISHED   RIDE
+  i=12 clear click(27,39)     n=   37 x=44 cnt=13 flood=None lvl=0 st=NOT_FINISHED
+  i=13 clear click(21,39)     n=   37 x=44 cnt=14 flood=None lvl=0 st=NOT_FINISHED
+  i=14 clear click(15,39)     n=   37 x=44 cnt=15 flood=None lvl=0 st=NOT_FINISHED
+  i=15 walk A3                n=   47 x=38 cnt=16 flood=None lvl=0 st=NOT_FINISHED
+  i=16 ride click(39,15)      n=   43 x=38 cnt=17 flood=None lvl=0 st=NOT_FINISHED
+  i=17 walk A3                n=   47 x=32 cnt=18 flood=None lvl=0 st=NOT_FINISHED
+  i=18 ride click(33,15)      n=   43 x=32 cnt=19 flood=None lvl=0 st=NOT_FINISHED
+  i=19 walk A3                n=   47 x=26 cnt=20 flood=None lvl=0 st=NOT_FINISHED
+  i=20 ride click(27,24)      n=    1 x=26 cnt=21 flood=None lvl=0 st=NOT_FINISHED
+  i=21 ride click(27,24)      n=    1 x=26 cnt=22 flood=None lvl=0 st=NOT_FINISHED
+  i=22 ride click(27,24)      n=    1 x=26 cnt=23 flood=None lvl=0 st=NOT_FINISHED
+  i=23 ride click(27,24)      n=    1 x=26 cnt=24 flood=None lvl=0 st=NOT_FINISHED
+  i=24 ride click(27,24)      n=    1 x=26 cnt=25 flood=None lvl=0 st=NOT_FINISHED
+  i=25 ride click(27,24)      n=    1 x=26 cnt=26 flood=None lvl=0 st=NOT_FINISHED
+  i=26 ride click(27,24)      n=    1 x=26 cnt=27 flood=None lvl=0 st=NOT_FINISHED
+  i=27 ride click(27,24)      n=    1 x=26 cnt=28 flood=None lvl=0 st=NOT_FINISHED
+  i=28 ride click(27,24)      n=    1 x=26 cnt=29 flood=None lvl=0 st=NOT_FINISHED
+  i=29 ride click(27,24)      n=    1 x=26 cnt=30 flood=None lvl=0 st=NOT_FINISHED
+  i=30 ride click(27,24)      n=    1 x=26 cnt=31 flood=None lvl=0 st=NOT_FINISHED
+  i=31 ride click(27,24)      n=    1 x=26 cnt=32 flood=None lvl=0 st=NOT_FINISHED
+  i=32 ride click(27,24)      n=    1 x=26 cnt=33 flood=None lvl=0 st=NOT_FINISHED
+  i=33 ride click(27,24)      n=    1 x=26 cnt=34 flood=None lvl=0 st=NOT_FINISHED
+  i=34 ride click(27,24)      n=    1 x=26 cnt=35 flood=None lvl=0 st=NOT_FINISHED
+  i=35 ride click(27,24)      n=    1 x=26 cnt=36 flood=None lvl=0 st=NOT_FINISHED
+  i=36 ride click(27,24)      n=    1 x=26 cnt=37 flood=None lvl=0 st=NOT_FINISHED
+  i=37 ride click(27,24)      n=    1 x=26 cnt=38 flood=None lvl=0 st=NOT_FINISHED
+  i=38 ride click(27,24)      n=    1 x=26 cnt=39 flood=None lvl=0 st=NOT_FINISHED
+  i=39 ride click(27,24)      n=    1 x=26 cnt=40 flood=None lvl=0 st=NOT_FINISHED
+  i=40 ride click(27,24)      n=    1 x=26 cnt=41 flood=None lvl=0 st=NOT_FINISHED
+  i=41 ride click(27,24)      n=    1 x=26 cnt=42 flood=None lvl=0 st=NOT_FINISHED
+  i=42 ride click(27,24)      n=    1 x=26 cnt=43 flood=None lvl=0 st=NOT_FINISHED
+  i=43 ride click(27,24)      n=    1 x=26 cnt=44 flood=None lvl=0 st=NOT_FINISHED
+  i=44 ride click(27,24)      n=    1 x=26 cnt=45 flood=None lvl=0 st=NOT_FINISHED
+line: ['ride click(21,3)', 'walk A3', 'ride click(15,3)', 'walk A4', 'walk A4', 'ride click(27,3)', 'walk A4', 'ride click(33,15)', 'walk A4', 'ride click(39,15)', 'walk A4', 'ride click(45,33)', 'clear click(27,39)', 'clear click(21,39)', 'clear click(15,39)', 'walk A3', 'ride click(39,15)', 'walk A3', 'ride click(33,15)', 'walk A3', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)', 'ride click(27,24)']
