@@ -1413,3 +1413,40 @@ burns one cell per THREE actions (~192-action life), 6/7 unused.
   machine); ploughing straight through threads all four in the wrong order
   and does not win. The mechanic that reorders them is unmeasured -- its own
   project, like tu93's level 3.
+
+## bp35 opened: the board is two vertical CONVEYORS, and the instrument wall came first (2026-08-11)
+
+**The BFS instrument is dead on this game** -- bp35's own (obfuscated) game code
+recurses infinitely on a `deepcopy`'d env: RecursionError at the default limit
+AND at 20,000, same one-line frame repeating, under an ordinary `step` of the
+copy. Every other playable game deepcopies cleanly, so the likely mechanism is
+an object-identity invariant (a visited set, a memo keyed on `id()`) that the
+copy breaks. `bfs_solve.py` gained two things on the way: a dead-action latch
+(25 consecutive None answers retires an action -- bp35/cn04's click raises
+inside the game and every attempt logged a full traceback) and the higher
+recursion limit. sp80's control line `[4,4,4,5]` is intact after both.
+Forward-only probes are the only road here.
+
+**Measured so far** (`bp35_p1.py` -> `results/bp35-p1.txt`, `bp35_p2.py` ->
+`bp35-p2.txt`): actions `[3, 4, 6, 7]`, click raises (cn04-class, retire it);
+y63 is a counter row filling one cell per action. The piece is the 4x5
+colour-9/11 marker in the bottom box; A3/A4 slide it 6px left/right, refused
+at walls. TWO frame layers -- layer 0 is the mid-animation position, useful
+as a free direction reading. **A7 from reset is a no-op; later it moves the
+piece or fires the big event -- context-dependent, unmapped.**
+
+**The 1,141-cell event**: when the piece arrives under the x43-47 chute, the
+WHOLE BOARD rearranges. Comparing full dumps (reset vs after): the left
+column x13-29 went from [3-block group, box] to [box, 3-group, 3-group,
+3-group]; the right column x31-53 from [box, 4-group, box] to [box, 4-group
+lower]; the chute itself moved y30-36 -> y48-54 and the bottom box shrank.
+Both columns SHIFTED with new content entering -- two vertical conveyors
+stepping past a fixed transfer point, not a camera (the piece's screen rows
+did not move). The event also fires on A7 from some states.
+
+Open, in order: (a) map A7's contexts (when is it a no-op / a piece move /
+the event); (b) does the event REPEAT deterministically -- dump three
+consecutive events and diff the conveyor steps; (c) what the win condition
+could be -- baseline 21 for level 1 is roughly piece-to-chute (4) + a few
+events + slack, so "step the conveyor until some alignment" is the shape to
+test first.

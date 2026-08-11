@@ -1,0 +1,275 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 16:36:02 | INFO | Got anonymous API key: 9d88e56c-43ec-4945-b7fa-4f5aa32f614c
+2026-08-11 16:36:02 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 16:36:03 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 16:36:03 | INFO | Created new scorecard: 3fb00959-5bc8-4cf8-9848-cbdd900f513e
+2026-08-11 16:36:04 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 16:36:04 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:04 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:05 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:06 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:07 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:36:07 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+2026-08-11 16:57:02 | ERROR | Error performing step with action ACTION7: maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4547, in urzvqcxbsz
+  File "<string>", line 1480, in svmaaixutx
+  File "<string>", line 1255, in srlqyenmue
+  File "<string>", line 1244, in upiapwkxxz
+  File "<string>", line 1241, in xlbvewsbto
+  File "<string>", line 1241, in xlbvewsbto
+  File "<string>", line 1241, in xlbvewsbto
+  [Previous line repeated 19987 more times]
+  File "<string>", line 1239, in xlbvewsbto
+RecursionError: maximum recursion depth exceeded

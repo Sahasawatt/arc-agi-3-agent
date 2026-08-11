@@ -84,9 +84,11 @@ Recon-only work needs no sweep.
 1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sb26, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
    sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
-   Fresh ground: **sc25** (metronome game, br-sc25-*.txt exist) and **bp35** (2-layer
-   frame, A7 does something big at the bottom rows, cover-sig false positive). Run the
-   pattern on bp35 first; sc25's election problem is a known repo-wide blocker.
+   Fresh ground: **bp35** (OPENED -- two vertical conveyors stepping past a chute when
+   the piece parks under it; BFS impossible there, deepcopy sends the game's own code
+   into infinite recursion; full findings + the three next probes ← breadth-recon
+   §bp35) and **sc25** (metronome game, br-sc25-*.txt exist; its election problem is a
+   known repo-wide blocker).
 2. **sk48 level 2 — the rearrange puzzle.** `skewer.py` clears L1 (1/8 `[24]`); level 2
    has four blocks in ONE row, recipe [8,12,9,14] vs forced row order 14,9,12,8 —
    ploughing through threads all four and does NOT win ← breadth-recon §sk48. Find the
