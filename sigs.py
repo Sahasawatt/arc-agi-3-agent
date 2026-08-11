@@ -27,19 +27,20 @@ from maze import signature as maze_sig
 from dial import signature as dial_sig
 from skewer import signature as skewer_sig
 from tape import signature as tape_sig
+from bridge import signature as bridge_sig
 
 SIGS = {"cover": cover_sig, "swap": swap_sig, "haul": haul_sig,
         "maze": maze_sig, "dial": dial_sig, "skewer": skewer_sig,
-        "tape": tape_sig}
+        "tape": tape_sig, "bridge": bridge_sig}
 OWNER = {"swap": "sp80", "haul": "wa30", "maze": "tu93", "dial": "tr87",
-         "skewer": "sk48", "tape": "bp35"}
+         "skewer": "sk48", "tape": "bp35", "bridge": "dc22"}
 # `cover` predates this script and is the loose one -- it fires on four games,
 # and the sweep is what shows it only ever ENGAGES re86 (a driver handed a board
 # it cannot read answers None on its first round). So it is not checked for
 # exclusivity; what is checked instead is that wherever two signatures claim the
 # same game, the driver built for it is asked FIRST. That order is the wiring in
 # `compete.play`, and this list must be kept equal to it.
-CASCADE = ["dial", "tape", "cover", "swap", "haul", "maze", "skewer"]
+CASCADE = ["dial", "tape", "bridge", "cover", "swap", "haul", "maze", "skewer"]
 
 
 def grid_of(obs):

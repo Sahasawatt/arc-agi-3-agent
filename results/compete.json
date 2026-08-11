@@ -25,11 +25,15 @@
   },
   {
     "game": "dc22",
-    "levels": 0,
+    "levels": 1,
     "of": 6,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
+    "actions": [
+      25
+    ],
+    "baseline": [
+      59
+    ],
+    "environment_score": 4.762
   },
   {
     "game": "ka59",

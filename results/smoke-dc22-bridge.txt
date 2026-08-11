@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:14:09 | INFO | Got anonymous API key: aef31e90-76b6-4d15-8b3b-3e1029dd9c6c
+2026-08-12 03:14:09 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:14:10 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 03:14:10 | INFO | Created new scorecard: e6808e56-da53-4bd3-b512-e7dbf3ef951e
+2026-08-12 03:14:11 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:14:11 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22   1/6 levels  actions=[25]  score=4.762%
+
+mean over 1 environments: 4.762%

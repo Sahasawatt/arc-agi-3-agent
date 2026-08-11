@@ -1,0 +1,50 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:12:58 | INFO | Got anonymous API key: c97cb913-8470-4670-a60a-96074bfbfc65
+2026-08-12 03:12:58 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:12:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 03:12:59 | INFO | Created new scorecard: 2cdb5c53-f410-4aa2-80b8-4ce4a4b53b95
+2026-08-12 03:13:00 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:13:00 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+signature at reset: True
+read: {'play': (0, 31), 'panel': (34, 63), 'pbg': 4, 'nbg': 5, 'twins': ((24, 25, 20, 21, 11, 4), (10, 11, 40, 41, 14, 4))}
+  i= 0 A1             n=    9 mover=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i= 2 click(48,19)   n=  129 mover=14 lvl=0 st=NOT_FINISHED
+  i= 3 click(48,36)   n=   17 mover=14 lvl=0 st=NOT_FINISHED
+  i= 4 A3             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i= 5 A1             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i= 6 A1             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i= 7 A1             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i= 8 A1             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i= 9 click(48,19)   n=   49 mover=14 lvl=0 st=NOT_FINISHED
+  i=10 A4             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=11 A4             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i=12 A4             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=13 A4             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i=14 A4             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=15 click(48,19)   n=   49 mover=14 lvl=0 st=NOT_FINISHED
+  i=16 A1             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i=17 A1             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=18 A1             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i=19 click(48,19)   n=   10 mover=14 lvl=0 st=NOT_FINISHED
+  i=20 click(48,36)   n=   17 mover=14 lvl=0 st=NOT_FINISHED
+  i=21 A1             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=22 A1             n=    9 mover=14 lvl=0 st=NOT_FINISHED
+  i=23 A4             n=    8 mover=14 lvl=0 st=NOT_FINISHED
+  i=24 A4             n= 1112 mover=14 lvl=1 st=NOT_FINISHED
+  ** LEVEL 1 at action 25 **
+  i=25 A1             n=    9 mover=None lvl=1 st=NOT_FINISHED
+  i=26 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=27 A1             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=28 A1             n=    9 mover=14 lvl=1 st=NOT_FINISHED
+  i=29 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=30 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=31 A4             n=    9 mover=14 lvl=1 st=NOT_FINISHED
+  i=32 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=33 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=34 A4             n=    9 mover=14 lvl=1 st=NOT_FINISHED
+  i=35 A4             n=    8 mover=14 lvl=1 st=NOT_FINISHED
+  i=36 click(52,22)   n=  129 mover=14 lvl=1 st=NOT_FINISHED
+  i=37 click(52,40)   n=   24 mover=14 lvl=1 st=NOT_FINISHED
+  i=38 driver answered None -- the rungs would take over
+levels: 1, at actions [25]

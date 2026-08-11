@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:12:10 | INFO | Got anonymous API key: a149f202-61f7-4b75-ba16-b76d44e5aac7
+2026-08-12 03:12:10 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:12:11 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 03:12:11 | INFO | Created new scorecard: 7f645ab0-0898-4289-9947-4a9aa0ff045d
+2026-08-12 03:12:12 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:12:12 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+signature at reset: True
+read: {'play': (0, 31), 'panel': (34, 63), 'pbg': 4, 'nbg': 5, 'twins': ((24, 25, 20, 21, 11, 4), (10, 11, 40, 41, 14, 4))}
+  i= 0 A1             n=    9 mover=None lvl=0 st=NOT_FINISHED
+  i= 1 click(48,19)   n=  129 mover=14 lvl=0 st=NOT_FINISHED
+  i= 2 click(48,36)   n=   17 mover=14 lvl=0 st=NOT_FINISHED
+  i= 3 driver answered None -- the rungs would take over
+levels: 0, at actions []

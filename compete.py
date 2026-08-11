@@ -39,6 +39,8 @@ from skewer import Skewer
 from skewer import signature as skewer_signature
 from tape import Tape
 from tape import signature as tape_signature
+from bridge import Bridge
+from bridge import signature as bridge_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1755,6 +1757,13 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # built when the game has a complex action to click with.
     tape = (Tape(values) if clicker is not None
             and tape_signature(np.array(obs.frame)[-1]) else None)
+    # The toggle-and-bridge family (`bridge.py`). Its signature — a play area
+    # and a panel, two identically sized framed markers in the play area and a
+    # panel object big enough to be a button — is dc22 alone of the seventeen
+    # at reset (`results/sig-sweep-bridge.txt`). It clicks, so same rule as
+    # `tape`: only where the game has a complex action.
+    bridge = (Bridge(values) if clicker is not None
+              and bridge_signature(np.array(obs.frame)[-1]) else None)
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1893,6 +1902,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             else:
                 cv = tape.act(np.array(obs.frame)[-1], obs.levels_completed)
                 dsrc = "tape"
+        if cv is None and bridge is not None:
+            if clicker is None:
+                bridge = None
+            else:
+                cv = bridge.act(np.array(obs.frame)[-1], obs.levels_completed)
+                dsrc = "bridge"
         if cv is None and cover is not None:
             cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "cover"

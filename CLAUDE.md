@@ -923,7 +923,7 @@ sources, including a retraction of the "5× human median" action cap that is not
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
 loop).
 
-Seven **whole-game drivers** hang off the play loop, all wired the same way: constructed once
+Eight **whole-game drivers** hang off the play loop, all wired the same way: constructed once
 if their own signature matches the reset frame, asked first every round, and answering None
 the moment they run out of ideas so the rungs take the level back. `cover` drives the
 framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
@@ -939,7 +939,10 @@ at least two of the stations); `skewer` drives the skewer family (sk48, signatur
 drives the stacked-rooms family (bp35, signature = a piece standing in a floor room at least
 30 wide and 5 tall, three or more blocks above its ceiling, and a narrow floor column over
 that ceiling) and is the first driver that drives with CLICKS, so it is built only where the
-game has a complex action and is dropped if that clicker is ever retired.
+game has a complex action and is dropped if that clicker is ever retired; `bridge` drives
+the toggle-and-bridge family (dc22, signature = a play area and a panel with different
+background colours, two identically sized framed markers in the play area, and a panel
+object big enough to be a button) and clicks as well, so it carries the same rule.
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the

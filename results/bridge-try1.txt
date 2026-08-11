@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:09:54 | INFO | Got anonymous API key: e27af8ba-5c7e-4345-9b06-434a190acd59
+2026-08-12 03:09:54 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:09:55 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 03:09:55 | INFO | Created new scorecard: 0d62518f-f4ef-4718-9823-1fe127ddf043
+2026-08-12 03:09:56 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:09:56 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+signature at reset: True
+  i= 0 A1             n=    9 lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=    8 lvl=0 st=NOT_FINISHED
+  i= 2 A2             n=    9 lvl=0 st=NOT_FINISHED
+  i= 3 A3             n=    8 lvl=0 st=NOT_FINISHED
+  i= 4 driver answered None
+levels: 0 at []
