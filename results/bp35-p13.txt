@@ -1,0 +1,44 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:10:47 | INFO | Got anonymous API key: fb0aefec-c7b2-476f-befc-64846db2fb57
+2026-08-11 21:10:47 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:10:48 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:10:48 | INFO | Created new scorecard: 75ee6607-16f3-45cf-afd3-f32847c1d2dc
+2026-08-11 21:10:49 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:10:49 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== A: one click far from the piece ==
+  T0 x=44 bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  click(33,33)   n=   36 x=44 cnt= 5 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./3G B/B B/B ./b B/B
+
+2026-08-11 21:10:50 | INFO | Successfully fetched metadata for game bp35
+== B: clear the other three, then ride ==
+  T0 x=44 bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  click(33,33)   n=   36 x=44 cnt= 5 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./3G B/B B/B ./b B/B
+  click(39,33)   n=   43 x=44 cnt= 6 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./2G B/B B/B ./b B/B
+  click(51,33)   n=   36 x=44 cnt= 7 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./1G B/B B/B ./b B/B
+  A4             n= 1381 x=50 cnt= 8 lvl=0 st=NOT_FINISHED  RIDE
+                 bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./1G
+
+2026-08-11 21:10:51 | INFO | Successfully fetched metadata for game bp35
+== C: clear all four, then ride ==
+  T0 x=44 bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  click(33,33)   n=   36 x=44 cnt= 5 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./3G B/B B/B ./b B/B
+  click(39,33)   n=   43 x=44 cnt= 6 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./2G B/B B/B ./b B/B
+  click(51,33)   n=   36 x=44 cnt= 7 lvl=0 st=NOT_FINISHED
+                 bands: B/B 3G/. 3G/B 3G/B ./B ./1G B/B B/B ./b B/B
+  click(45,33)   n= 1290 x=44 cnt= 8 lvl=0 st=NOT_FINISHED  RIDE
+                 bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./B
+  A4             n=   47 x=50 cnt= 9 lvl=0 st=NOT_FINISHED
+                 bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./B
+
+2026-08-11 21:10:52 | INFO | Successfully fetched metadata for game bp35
+== D: control -- the click over the piece alone ==
+  T0 x=44 bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  click(45,33)   n= 1343 x=44 cnt= 5 lvl=0 st=NOT_FINISHED  RIDE
+                 bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+

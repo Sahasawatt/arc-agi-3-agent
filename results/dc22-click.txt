@@ -1,0 +1,79 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:12:12 | INFO | Got anonymous API key: fdd6809f-734a-48d2-8bfc-ba217df3182f
+2026-08-11 21:12:12 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:12:13 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:12:13 | INFO | Created new scorecard: f759154e-6d24-443e-8735-921cdfec53eb
+2026-08-11 21:12:13 | INFO | Successfully fetched metadata for game dc22
+2026-08-11 21:12:14 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22 reset: 35 components
+2026-08-11 21:12:15 | INFO | Successfully fetched metadata for game dc22
+  ( 9,34) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:16 | INFO | Successfully fetched metadata for game dc22
+  (11,34) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:16 | INFO | Successfully fetched metadata for game dc22
+  ( 8,35) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:17 | INFO | Successfully fetched metadata for game dc22
+  (10,35) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:18 | INFO | Successfully fetched metadata for game dc22
+  ( 9,36) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:19 | INFO | Successfully fetched metadata for game dc22
+  (11,36) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:20 | INFO | Successfully fetched metadata for game dc22
+  ( 8,37) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:21 | INFO | Successfully fetched metadata for game dc22
+  (10,37) colour  9 size    1: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:22 | INFO | Successfully fetched metadata for game dc22
+  (32,10) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:23 | INFO | Successfully fetched metadata for game dc22
+  (32,14) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:24 | INFO | Successfully fetched metadata for game dc22
+  (32,18) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:25 | INFO | Successfully fetched metadata for game dc22
+  (24,20) colour 11 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:25 | INFO | Successfully fetched metadata for game dc22
+  (32,22) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:26 | INFO | Successfully fetched metadata for game dc22
+  (32,26) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:27 | INFO | Successfully fetched metadata for game dc22
+  (32,30) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:28 | INFO | Successfully fetched metadata for game dc22
+  (32,34) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:29 | INFO | Successfully fetched metadata for game dc22
+  (32,38) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:30 | INFO | Successfully fetched metadata for game dc22
+  (10,40) colour 14 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:31 | INFO | Successfully fetched metadata for game dc22
+  (32,42) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:32 | INFO | Successfully fetched metadata for game dc22
+  (32,46) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:33 | INFO | Successfully fetched metadata for game dc22
+  (32,50) colour  0 size    4: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:34 | INFO | Successfully fetched metadata for game dc22
+  (19,21) colour  9 size   16: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:35 | INFO | Successfully fetched metadata for game dc22
+  ( 9,31) colour  2 size   16: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:36 | INFO | Successfully fetched metadata for game dc22
+  (19,31) colour 13 size   16: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:36 | INFO | Successfully fetched metadata for game dc22
+  (14,31) colour  8 size   24: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:38 | INFO | Successfully fetched metadata for game dc22
+  (24,20) colour  2 size   32: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:38 | INFO | Successfully fetched metadata for game dc22
+  (10,40) colour  2 size   32: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:39 | INFO | Successfully fetched metadata for game dc22
+  (48,19) colour  0 size   40: n=  129 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:40 | INFO | Successfully fetched metadata for game dc22
+  (48,36) colour  0 size   40: n=   97 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:41 | INFO | Successfully fetched metadata for game dc22
+  (48,19) colour  8 size   47: n=  129 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:42 | INFO | Successfully fetched metadata for game dc22
+  (48,36) colour  9 size   47: n=   97 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:43 | INFO | Successfully fetched metadata for game dc22
+  (31,63) colour  0 size   64: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:44 | INFO | Successfully fetched metadata for game dc22
+  (31,58) colour  3 size  576: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:45 | INFO | Successfully fetched metadata for game dc22
+  (31, 4) colour  3 size  640: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+2026-08-11 21:12:46 | INFO | Successfully fetched metadata for game dc22
+  (47,31) colour  5 size 1190: n=    1 lvl=0 st=NOT_FINISHED   RESPONDS
+live responders: 35 of 35

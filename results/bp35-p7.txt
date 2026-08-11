@@ -1,0 +1,54 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 20:54:15 | INFO | Got anonymous API key: 4efd0c5a-3562-4e95-8aaa-ffc13abdcbe3
+2026-08-11 20:54:15 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 20:54:16 | INFO | Successfully fetched 25 environment(s) from API
+== E1: A3 vs A7 from the same state (A4 once, then the left action) ==
+2026-08-11 20:54:16 | INFO | Created new scorecard: d819001a-2f47-43e9-b44f-6322b780e6c4
+2026-08-11 20:54:17 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 20:54:17 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  A3: x 26 -> 20  changed=47  tower=55604481
+2026-08-11 20:54:18 | INFO | Successfully fetched metadata for game bp35
+  A7: x 26 -> 20  changed=47  tower=55604481
+  IDENTICAL=False differing_cells=4
+  differ at y38-39 x20-22
+2026-08-11 20:54:19 | INFO | Successfully fetched metadata for game bp35
+  control (reset vs moved) differing_cells=6 (expect > 0)
+
+== E2: per-action trace of a shuttle (what actually fires) ==
+2026-08-11 20:54:20 | INFO | Successfully fetched metadata for game bp35
+  i= 0 A4 x 20->26 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 1 A4 x 26->32 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 2 A4 x 32->38 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 3 A4 x 38->44 n= 1141 tower=MOVED flood_top=None st=NOT_FINISHED
+        bands: B/B 63e/. 63e/B 63e/B ./B ./84e B/B B/B ./b B/B
+  i= 4 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 5 A3 x 50->44 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 6 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 7 A3 x 50->44 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 8 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i= 9 A3 x 50->44 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=10 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=11 A3 x 50->44 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=12 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=13 A3 x 50->44 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=14 A4 x 44->50 n=   47 tower=.     flood_top=None st=NOT_FINISHED
+  i=15 A3 x 50->44 n=  357 tower=.     flood_top=59 st=NOT_FINISHED
+  i=16 A4 x 44->50 n=   47 tower=.     flood_top=59 st=NOT_FINISHED
+  i=17 A3 x 50->44 n=  390 tower=.     flood_top=53 st=NOT_FINISHED
+  i=18 A4 x 44->50 n=   47 tower=.     flood_top=53 st=NOT_FINISHED
+  i=19 A3 x 50->44 n=  444 tower=.     flood_top=47 st=NOT_FINISHED
+  i=20 A4 x 44->50 n=   47 tower=.     flood_top=47 st=NOT_FINISHED
+  i=21 A3 x 50->44 n=  432 tower=.     flood_top=41 st=NOT_FINISHED
+  i=22 A4 x 44->50 n=   23 tower=.     flood_top=41 st=NOT_FINISHED
+  i=23 A3 x 50->None n=  368 tower=MOVED flood_top=35 st=GAME_OVER
+        bands: B/B 63e/. 63e/B 63e/B ./B ./36e ./. ./. ./. ./.
+  END lvl=0 state=GAME_OVER
+
+== E3: return to x44 by A3 vs by A7 (tower is the readout) ==
+2026-08-11 20:54:21 | INFO | Successfully fetched metadata for game bp35
+  via A3: x 44->50->44  n(step back)=47  tower 645b2c7f -> 645b2c7f (same)  flood_top=None
+        bands: B/B 63e/. 63e/B 63e/B ./B ./84e B/B B/B ./b B/B
+2026-08-11 20:54:22 | INFO | Successfully fetched metadata for game bp35
+  via A7: x 44->50->44  n(step back)=47  tower 645b2c7f -> 645b2c7f (same)  flood_top=None
+        bands: B/B 63e/. 63e/B 63e/B ./B ./84e B/B B/B ./b B/B
+  arms identical=False differing_cells=4

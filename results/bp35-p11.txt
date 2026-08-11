@@ -1,0 +1,104 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:04:33 | INFO | Got anonymous API key: f6e10b93-6720-4621-af44-77d94cc68757
+2026-08-11 21:04:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:04:34 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:04:34 | INFO | Created new scorecard: 5ce46767-2f2a-4c48-82e4-cf37f23f2bd1
+2026-08-11 21:04:35 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:04:35 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== state S: x=44 bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G ==
+  y 0 5555555555555555555555555555555555555555555555555555555555555555
+  y 1 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y 2 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y 3 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y 4 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y 5 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y 6 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y 7 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y 8 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y 9 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y10 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y11 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y12 5555555555555aaaaaaaaaaa5555555555555555555aaaaaaaaaaa5555555555
+  y13 5535555535555aaaaaaaaaaa53eee353eee353eee35aaaaaaaaaaa5535555535
+  y14 5555555555555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa5555555555
+  y15 5555555555555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa5555555555
+  y16 5355555355555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa5355555355
+  y17 5555355555355aaaaaaaaaaa53eee353eee353eee35aaaaaaaaaaa5555355555
+  y18 5555555555555aaaaaaaaaaa5555555555555555555aaaaaaaaaaa5555555555
+  y19 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y20 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y21 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y22 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y23 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y24 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y25 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y26 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y27 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y28 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y29 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y30 5555555555555555555555555555555555555555555555555555555555555555
+  y31 55355555355553eee353eee353eee35535555535555535555535555535555535
+  y32 5555555555555eeeee5eeeee5eeeee5555555555555555555555555555555555
+  y33 5555555555555eeeee5eeeee5eeeee5555555555555555555555555555555555
+  y34 5355555355555eeeee5eeeee5eeeee5355555355555355555355555355555355
+  y35 55553555553553eee353eee353eee35555355555355555355555355555355555
+  y36 5555555555555555555555555555555555555555555555555555555555555555
+  y37 55355555355553eee353eee353eee35aaaaaaaaaaaa55955aaaaaa5535555535
+  y38 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaa599b5aaaaaa5555555555
+  y39 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaa599b5aaaaaa5555555555
+  y40 5355555355555eeeee5eeeee5eeeee5aaaaaaaaaaaa55955aaaaaa5355555355
+  y41 55553555553553eee353eee353eee35aaaaaaaaaaaaa555aaaaaaa5555355555
+  y42 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y43 55355555355553eee353eee353eee35aaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y44 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y45 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y46 5355555355555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y47 55553555553553eee353eee353eee35aaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y48 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y49 5535555535555535555535555535555aaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y50 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y51 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y52 5355555355555355555355555355555aaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y53 5555355555355555355555355555355aaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y54 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y55 55355555355555355555355555355553eee353eee35aaaaa53eee35535555535
+  y56 5555555555555555555555555555555eeeee5eeeee5aaaaa5eeeee5555555555
+  y57 5555555555555555555555555555555eeeee5eeeee5aaaaa5eeeee5555555555
+  y58 5355555355555355555355555355555eeeee5eeeee5aaaaa5eeeee5355555355
+  y59 55553555553555553555553555553553eee353eee35aaaaa53eee35555355555
+  y60 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y61 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y62 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y63 fffff00000000000000000000000000000000000000000000000000000000000
+
+== 15 colour-14 blocks at S; one fresh episode each ==
+2026-08-11 21:04:36 | INFO | Successfully fetched metadata for game bp35
+  (27,15) block 5x5    n=   43 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:37 | INFO | Successfully fetched metadata for game bp35
+  (33,15) block 5x5    n=   36 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:38 | INFO | Successfully fetched metadata for game bp35
+  (39,15) block 5x5    n=   43 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:39 | INFO | Successfully fetched metadata for game bp35
+  (15,33) block 5x5    n=   31 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:40 | INFO | Successfully fetched metadata for game bp35
+  (21,33) block 5x5    n=   31 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:41 | INFO | Successfully fetched metadata for game bp35
+  (27,33) block 5x5    n=   31 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:41 | INFO | Successfully fetched metadata for game bp35
+  (15,39) block 5x5    n=   26 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:42 | INFO | Successfully fetched metadata for game bp35
+  (21,39) block 5x5    n=   26 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:43 | INFO | Successfully fetched metadata for game bp35
+  (27,39) block 5x5    n=   31 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:45 | INFO | Successfully fetched metadata for game bp35
+  (15,45) block 5x5    n=   26 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:46 | INFO | Successfully fetched metadata for game bp35
+  (21,45) block 5x5    n=   26 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:47 | INFO | Successfully fetched metadata for game bp35
+  (27,45) block 5x5    n=   31 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:48 | INFO | Successfully fetched metadata for game bp35
+  (33,57) block 5x5    n=   36 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:48 | INFO | Successfully fetched metadata for game bp35
+  (39,57) block 5x5    n=   43 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED
+2026-08-11 21:04:49 | INFO | Successfully fetched metadata for game bp35
+  (51,57) block 5x5    n=   43 tape dy= +0 then A3/A4 -> n=   47 lvl=0 st=NOT_FINISHED

@@ -1,0 +1,51 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:03:18 | INFO | Got anonymous API key: d0c8cb98-b9bd-424c-a5a8-3be17cfee92b
+2026-08-11 21:03:18 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:03:19 | INFO | Successfully fetched 25 environment(s) from API
+== E11+E12: climb -> click the group above -> try to climb again ==
+2026-08-11 21:03:19 | INFO | Created new scorecard: 363df476-a51b-44b7-9dd1-9c5a46745552
+2026-08-11 21:03:20 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:03:20 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  start  x=20  bands: 3G/B ./B ./4G B/B B/B ./b B/B B/B B/B B/B
+  i= 0 A4             n=   47 x=26 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 x=32 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 A4             n=   47 x=38 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4             n= 1141 x=44 cnt= 4 flood=None lvl=0 st=NOT_FINISHED  TAPE dy=+18 fit=0.98
+       bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  i= 4 click(45,33)   n= 1343 x=44 cnt= 5 flood=None lvl=0 st=NOT_FINISHED  TAPE dy=+24 fit=0.96
+       bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+  i= 5 A3             n=   47 x=38 cnt= 6 flood=None lvl=0 st=NOT_FINISHED
+  i= 6 A4             n=   47 x=44 cnt= 7 flood=None lvl=0 st=NOT_FINISHED
+  i= 7 A3             n=   47 x=38 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 A4             n=   47 x=44 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 A3             n=   47 x=38 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+  i=10 A4             n=   47 x=44 cnt=11 flood=None lvl=0 st=NOT_FINISHED
+
+== E13: click the block over the chute first, then walk in ==
+2026-08-11 21:03:21 | INFO | Successfully fetched metadata for game bp35
+  start  x=20  bands: 3G/B ./B ./4G B/B B/B ./b B/B B/B B/B B/B
+  i= 0 click(45,15)   n=   36 x=20 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 x=26 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 A4             n=   47 x=32 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4             n=   47 x=38 cnt= 4 flood=None lvl=0 st=NOT_FINISHED
+  i= 4 A4             n= 1080 x=44 cnt= 5 flood=None lvl=0 st=NOT_FINISHED  TAPE dy=-36 fit=0.85
+       bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+  i= 5 A3             n=   47 x=38 cnt= 6 flood=None lvl=0 st=NOT_FINISHED
+  i= 6 A4             n=   47 x=44 cnt= 7 flood=None lvl=0 st=NOT_FINISHED
+
+== E14: climb, then click the same spot repeatedly ==
+2026-08-11 21:03:22 | INFO | Successfully fetched metadata for game bp35
+  start  x=20  bands: 3G/B ./B ./4G B/B B/B ./b B/B B/B B/B B/B
+  i= 0 A4             n=   47 x=26 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 x=32 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 A4             n=   47 x=38 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4             n= 1141 x=44 cnt= 4 flood=None lvl=0 st=NOT_FINISHED  TAPE dy=+18 fit=0.98
+       bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  i= 4 click(45,33)   n= 1343 x=44 cnt= 5 flood=None lvl=0 st=NOT_FINISHED  TAPE dy=+24 fit=0.96
+       bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+  i= 5 click(45,33)   n=    1 x=44 cnt= 6 flood=None lvl=0 st=NOT_FINISHED
+  i= 6 click(45,33)   n=    1 x=44 cnt= 7 flood=None lvl=0 st=NOT_FINISHED
+  i= 7 click(45,33)   n=    1 x=44 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 click(45,33)   n=    1 x=44 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 click(45,33)   n=    1 x=44 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+

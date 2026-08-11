@@ -1,0 +1,42 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:00:30 | INFO | Got anonymous API key: 3b084889-1857-4776-afe1-5367bd1794bc
+2026-08-11 21:00:30 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:00:31 | INFO | Successfully fetched 25 environment(s) from API
+== click sweep, RESET ==
+2026-08-11 21:00:31 | INFO | Created new scorecard: b1bb383d-6e66-46a0-a0e1-60fbbb91483e
+2026-08-11 21:00:32 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:00:32 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  (15, 3) e-block, left column top: n=   26 x=20 flood=None lvl=0 st=NOT_FINISHED at y1-63 x0-17
+2026-08-11 21:00:33 | INFO | Successfully fetched metadata for game bp35
+  (45, 3) box interior, right column top: n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+2026-08-11 21:00:34 | INFO | Successfully fetched metadata for game bp35
+  (33,15) e-block, right column y13-17: n=   36 x=20 flood=None lvl=0 st=NOT_FINISHED at y12-63 x0-35
+2026-08-11 21:00:35 | INFO | Successfully fetched metadata for game bp35
+  (45,15) e-block directly over the chute: n=   36 x=20 flood=None lvl=0 st=NOT_FINISHED at y12-63 x0-47
+2026-08-11 21:00:36 | INFO | Successfully fetched metadata for game bp35
+  (33,24) big box interior above the chute: n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+2026-08-11 21:00:37 | INFO | Successfully fetched metadata for game bp35
+  (45,33) the chute itself: n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+2026-08-11 21:00:38 | INFO | Successfully fetched metadata for game bp35
+  (21,39) the piece: n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+2026-08-11 21:00:39 | INFO | Successfully fetched metadata for game bp35
+  (45,50) chamber floor, under the chute: n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+2026-08-11 21:00:39 | INFO | Successfully fetched metadata for game bp35
+  ( 2, 2) outer background (control: expect nothing): n=    1 x=20 flood=None lvl=0 st=NOT_FINISHED at y63-63 x0-0
+
+== click sweep, AFTER EVENT #1 (piece x=44) ==
+2026-08-11 21:00:40 | INFO | Successfully fetched metadata for game bp35
+  (45,33) the 4-block group now above the ceiling: n= 1343 x=44 flood=None lvl=0 st=NOT_FINISHED at y0-63 x4-53
+2026-08-11 21:00:41 | INFO | Successfully fetched metadata for game bp35
+  (33,33) same group, left end: n=   36 x=44 flood=None lvl=0 st=NOT_FINISHED at y30-63 x4-35
+2026-08-11 21:00:42 | INFO | Successfully fetched metadata for game bp35
+  (45,50) the chute now BELOW the piece: n=    1 x=44 flood=None lvl=0 st=NOT_FINISHED at y63-63 x4-4
+2026-08-11 21:00:43 | INFO | Successfully fetched metadata for game bp35
+  (45,39) the piece: n=    1 x=44 flood=None lvl=0 st=NOT_FINISHED at y63-63 x4-4
+2026-08-11 21:00:44 | INFO | Successfully fetched metadata for game bp35
+  ( 2, 2) outer background (control): n=    1 x=44 flood=None lvl=0 st=NOT_FINISHED at y63-63 x4-4
+
+== control: the same click twice in one episode ==
+2026-08-11 21:00:45 | INFO | Successfully fetched metadata for game bp35
+  press 0: n=    1 x=20 flood=None st=NOT_FINISHED
+  press 1: n=    1 x=20 flood=None st=NOT_FINISHED

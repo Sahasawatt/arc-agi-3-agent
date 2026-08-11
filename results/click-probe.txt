@@ -1,0 +1,51 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:01:33 | INFO | Got anonymous API key: 451ee8c6-79b6-46a0-a77a-41bc0b7747c0
+2026-08-11 21:01:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:01:34 | INFO | Successfully fetched 25 environment(s) from API
+== cn04 ==
+2026-08-11 21:01:34 | INFO | Created new scorecard: 3c98ccda-8eaf-4874-a73d-4ef6459bd410
+2026-08-11 21:01:35 | INFO | Successfully fetched metadata for game cn04
+2026-08-11 21:01:35 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+  GameAction.set_data exists: True
+2026-08-11 21:01:36 | INFO | Successfully fetched metadata for game cn04
+2026-08-11 21:01:36 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 1063, in step
+KeyError: 'x'
+  set_data click at (32,32): DEAD (obs=None, the KeyError path)
+2026-08-11 21:01:37 | INFO | Successfully fetched metadata for game cn04
+  data-kwarg click at (32,32): alive, n=0 cells changed, state=NOT_FINISHED
+
+== bp35 ==
+2026-08-11 21:01:38 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:01:38 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  GameAction.set_data exists: True
+2026-08-11 21:01:39 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:01:39 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+  set_data click at (32,32): DEAD (obs=None, the KeyError path)
+2026-08-11 21:01:40 | INFO | Successfully fetched metadata for game bp35
+  data-kwarg click at (32,32): alive, n=1 cells changed, state=NOT_FINISHED
+
+== dc22 ==
+2026-08-11 21:01:41 | INFO | Successfully fetched metadata for game dc22
+2026-08-11 21:01:41 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+  GameAction.set_data exists: True
+2026-08-11 21:01:42 | INFO | Successfully fetched metadata for game dc22
+  set_data click at (32,32): alive, n=1 cells changed, state=NOT_FINISHED
+2026-08-11 21:01:43 | INFO | Successfully fetched metadata for game dc22
+  data-kwarg click at (32,32): alive, n=1 cells changed, state=NOT_FINISHED
+

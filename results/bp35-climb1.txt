@@ -1,0 +1,53 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:08:03 | INFO | Got anonymous API key: 814f3d5b-8c37-4125-a236-5fed25ac5b97
+2026-08-11 21:08:03 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:08:04 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:08:04 | INFO | Created new scorecard: b6226357-1d8d-46d2-8d3f-29510f4c26a6
+2026-08-11 21:08:05 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 21:08:05 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+start x=20 bands: 3G/B ./B ./4G B/B B/B ./b B/B B/B B/B B/B
+  i= 0 A4->shaft        n=   47 x=26 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4->shaft        n=   47 x=32 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 A4->shaft        n=   47 x=38 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4->shaft        n= 1141 x=44 cnt= 4 flood=None lvl=0 st=NOT_FINISHED   RIDE
+       bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  i= 4 click(45, 35)    n= 1343 x=44 cnt= 5 flood=None lvl=0 st=NOT_FINISHED   RIDE
+       bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+  i= 5 A7 ride down     n= 1343 x=44 cnt= 6 flood=None lvl=0 st=NOT_FINISHED   RIDE
+       bands: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+  i= 6 click(45, 35)    n= 1343 x=44 cnt= 7 flood=None lvl=0 st=NOT_FINISHED   RIDE
+       bands: B/B B/B 1G/2G B/B B/B 3G/. 3G/B 3G/B ./B ./3G
+  i= 7 A4 ride up       n=   47 x=50 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 A3->shaft        n=   47 x=44 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 A7 ride down     n=   47 x=50 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+  i=10 A3->shaft        n=   47 x=44 cnt=11 flood=None lvl=0 st=NOT_FINISHED
+  i=11 A4 ride up       n=   47 x=50 cnt=12 flood=None lvl=0 st=NOT_FINISHED
+  i=12 A3->shaft        n=   47 x=44 cnt=13 flood=None lvl=0 st=NOT_FINISHED
+  i=13 A7 ride down     n=   47 x=50 cnt=14 flood=None lvl=0 st=NOT_FINISHED
+  i=14 A3->shaft        n=   47 x=44 cnt=15 flood=None lvl=0 st=NOT_FINISHED
+  i=15 A4 ride up       n=   47 x=50 cnt=16 flood=None lvl=0 st=NOT_FINISHED
+  i=16 A3->shaft        n=   47 x=44 cnt=17 flood=None lvl=0 st=NOT_FINISHED
+  i=17 A7 ride down     n=   47 x=50 cnt=18 flood=None lvl=0 st=NOT_FINISHED
+  i=18 A3->shaft        n=   47 x=44 cnt=19 flood=None lvl=0 st=NOT_FINISHED
+  i=19 A4 ride up       n=   47 x=50 cnt=20 flood=None lvl=0 st=NOT_FINISHED
+  i=20 A3->shaft        n=   47 x=44 cnt=21 flood=None lvl=0 st=NOT_FINISHED
+  i=21 A7 ride down     n=   47 x=50 cnt=22 flood=None lvl=0 st=NOT_FINISHED
+  i=22 A3->shaft        n=   47 x=44 cnt=23 flood=None lvl=0 st=NOT_FINISHED
+  i=23 A4 ride up       n=   47 x=50 cnt=24 flood=None lvl=0 st=NOT_FINISHED
+  i=24 A3->shaft        n=   47 x=44 cnt=25 flood=None lvl=0 st=NOT_FINISHED
+  i=25 A7 ride down     n=   47 x=50 cnt=26 flood=None lvl=0 st=NOT_FINISHED
+  i=26 A3->shaft        n=   47 x=44 cnt=27 flood=None lvl=0 st=NOT_FINISHED
+  i=27 A4 ride up       n=   47 x=50 cnt=28 flood=None lvl=0 st=NOT_FINISHED
+  i=28 A3->shaft        n=   47 x=44 cnt=29 flood=None lvl=0 st=NOT_FINISHED
+  i=29 A7 ride down     n=   47 x=50 cnt=30 flood=None lvl=0 st=NOT_FINISHED
+  i=30 A3->shaft        n=   47 x=44 cnt=31 flood=None lvl=0 st=NOT_FINISHED
+  i=31 A4 ride up       n=   47 x=50 cnt=32 flood=None lvl=0 st=NOT_FINISHED
+  i=32 A3->shaft        n=   47 x=44 cnt=33 flood=None lvl=0 st=NOT_FINISHED
+  i=33 A7 ride down     n=   47 x=50 cnt=34 flood=None lvl=0 st=NOT_FINISHED
+  i=34 A3->shaft        n=   47 x=44 cnt=35 flood=None lvl=0 st=NOT_FINISHED
+  i=35 A4 ride up       n=   47 x=50 cnt=36 flood=None lvl=0 st=NOT_FINISHED
+  i=36 A3->shaft        n=   47 x=44 cnt=37 flood=None lvl=0 st=NOT_FINISHED
+  i=37 A7 ride down     n=   47 x=50 cnt=38 flood=None lvl=0 st=NOT_FINISHED
+  i=38 A3->shaft        n=   47 x=44 cnt=39 flood=None lvl=0 st=NOT_FINISHED
+  i=39 A4 ride up       n=   47 x=50 cnt=40 flood=None lvl=0 st=NOT_FINISHED
+line: ['A4->shaft', 'A4->shaft', 'A4->shaft', 'A4->shaft', 'click(45, 35)', 'A7 ride down', 'click(45, 35)', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up', 'A3->shaft', 'A7 ride down', 'A3->shaft', 'A4 ride up']

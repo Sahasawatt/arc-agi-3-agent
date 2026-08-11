@@ -1,0 +1,65 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 20:57:57 | INFO | Got anonymous API key: 9b44155e-815d-42f4-92ca-835263f7351e
+2026-08-11 20:57:57 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 20:57:58 | INFO | Successfully fetched 25 environment(s) from API
+== E7: ratchet -- leave x44 by A3 (silent), return by A4 ==
+2026-08-11 20:57:58 | INFO | Created new scorecard: 23d6d99c-b03a-48c8-aa2f-4719368a7447
+2026-08-11 20:57:59 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 20:57:59 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  i= 0 A4 x 20->26 n=   47 cnt= 1 flood=None st=NOT_FINISHED lvl=0
+  i= 1 A4 x 26->32 n=   47 cnt= 2 flood=None st=NOT_FINISHED lvl=0
+  i= 2 A4 x 32->38 n=   47 cnt= 3 flood=None st=NOT_FINISHED lvl=0
+  i= 3 A4 x 38->44 n= 1141 cnt= 4 flood=None st=NOT_FINISHED lvl=0  TAPE dy=+18 fit=0.98
+  i= 4 A3 x 44->38 n=   47 cnt= 5 flood=None st=NOT_FINISHED lvl=0
+  i= 5 A4 x 38->44 n=   47 cnt= 6 flood=None st=NOT_FINISHED lvl=0
+  i= 6 A3 x 44->38 n=   47 cnt= 7 flood=None st=NOT_FINISHED lvl=0
+  i= 7 A4 x 38->44 n=   47 cnt= 8 flood=None st=NOT_FINISHED lvl=0
+  i= 8 A3 x 44->38 n=   47 cnt= 9 flood=None st=NOT_FINISHED lvl=0
+  i= 9 A4 x 38->44 n=   47 cnt=10 flood=None st=NOT_FINISHED lvl=0
+  i=10 A3 x 44->38 n=   47 cnt=11 flood=None st=NOT_FINISHED lvl=0
+  i=11 A4 x 38->44 n=   47 cnt=12 flood=None st=NOT_FINISHED lvl=0
+  i=12 A3 x 44->38 n=   47 cnt=13 flood=None st=NOT_FINISHED lvl=0
+  i=13 A4 x 38->44 n=   47 cnt=14 flood=None st=NOT_FINISHED lvl=0
+  i=14 A3 x 44->38 n=   47 cnt=15 flood=None st=NOT_FINISHED lvl=0
+  i=15 A4 x 38->44 n=  357 cnt=16 flood=59 st=NOT_FINISHED lvl=0
+  i=16 A3 x 44->38 n=   47 cnt=17 flood=59 st=NOT_FINISHED lvl=0
+  i=17 A4 x 38->44 n=  390 cnt=18 flood=53 st=NOT_FINISHED lvl=0
+  i=18 A3 x 44->38 n=   47 cnt=19 flood=53 st=NOT_FINISHED lvl=0
+  i=19 A4 x 38->44 n=  444 cnt=20 flood=47 st=NOT_FINISHED lvl=0
+  i=20 A3 x 44->38 n=   47 cnt=21 flood=47 st=NOT_FINISHED lvl=0
+  i=21 A4 x 38->44 n=  432 cnt=22 flood=41 st=NOT_FINISHED lvl=0
+  control shift(g,g) = (0, 1.0) (expect dy=0, fit=1.00)
+
+== E8: flood law -- press A3 into the left wall, 30 actions ==
+2026-08-11 20:58:00 | INFO | Successfully fetched metadata for game bp35
+  i= 0 A3 x=14 n=  47 cnt= 1 flood=None st=NOT_FINISHED
+  i= 1 A3 x=14 n=   1 cnt= 2 flood=None st=NOT_FINISHED
+  i= 2 A3 x=14 n=   1 cnt= 3 flood=None st=NOT_FINISHED
+  i= 7 A3 x=14 n= 311 cnt= 8 flood=59 st=NOT_FINISHED
+  i= 9 A3 x=14 n= 416 cnt=10 flood=53 st=NOT_FINISHED
+  i=11 A3 x=14 n= 416 cnt=12 flood=47 st=NOT_FINISHED
+  i=13 A3 x=14 n= 410 cnt=14 flood=41 st=NOT_FINISHED
+  i=15 A3 x=None n= 342 cnt=16 flood=35 st=GAME_OVER
+  END at action 16: lvl=0 state=GAME_OVER
+
+== E9: A6 (complex) at the chute and away from it ==
+2026-08-11 20:58:01 | INFO | Successfully fetched metadata for game bp35
+  at x44 (after event #1): x=44
+2026-08-11 20:58:01 | ERROR | Error performing step with action ACTION6: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arc_agi\local_wrapper.py", line 239, in step
+    FrameDataRaw, self._game.perform_action(action_input, raw=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\.venv\Lib\site-packages\arcengine\base_game.py", line 231, in perform_action
+    self.step()
+  File "<string>", line 4504, in step
+  File "<string>", line 4544, in urzvqcxbsz
+KeyError: 'x'
+Traceback (most recent call last):
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\bp35_p8.py", line 139, in <module>
+    g2 = grid_of(obs)
+         ^^^^^^^^^^^^
+  File "C:\Users\Vampi\Desktop\projects\arc-agi-3-agent\bp35_p8.py", line 31, in grid_of
+    f = np.array(obs.frame)
+                 ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'frame'

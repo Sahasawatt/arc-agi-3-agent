@@ -1521,3 +1521,97 @@ climbed is THE open question -- candidates: the chamber above was blocked
 a specific side, or A7 (which reads as a REVERSE move -- it went left while
 the heading marker pointed right) does something at x44 that A3/A4 do not.
 Level-1 baseline 21 says the whole dance is ~5 climbs' worth of actions.
+
+### THE CLICK WAS NEVER AIMED -- repo-wide, and it is one line (2026-08-11)
+
+`compete.py:1965` attaches click coordinates with `clicker.set_data({...})`
+and then calls `env.step(clicker)`. The local wrapper builds its own
+`ActionInput` from its own `data` kwarg and never reads the action object
+(`local_wrapper.py:234`: `ActionInput(id=action, data=data or {})`), so
+every click this agent has ever made arrived with `data={}`.
+
+Measured side by side, same game, same coordinates, one invocation
+(`results/click-probe.txt`):
+
+| game | `set_data` then step | `step(action, data={...})` |
+|---|---|---|
+| cn04 | DEAD -- `KeyError: 'x'`, obs None | alive, state NOT_FINISHED |
+| bp35 | DEAD -- `KeyError: 'x'`, obs None | alive |
+| dc22 | alive (its game tolerates the missing key) | alive |
+
+So **CLAUDE.md's cn04 trap is wrong about whose bug it is**: "cn04's own
+`step()` raises `KeyError('x')` on its complex action" is this call site,
+not the game. The play loop's guard (a click answered with `obs=None`
+retires the clicker for the run) has therefore been firing on the agent's
+own malformed call, on every click game, from the first click.
+
+What the aimed click finds, in games where the un-aimed one found nothing:
+
+- **dc22**: 35 components clicked one per fresh episode
+  (`results/dc22-click.txt`) -- exactly two respond with real changes,
+  (48,19) n=129 and (48,36) n=97; everything else answers 1 cell (the
+  action counter). breadth-recon's "63 single clicks all eventually answer
+  zero changed cells" was 63 un-aimed clicks.
+- **bp35**: the click is the game's whole second verb (below).
+
+Not yet changed in `compete.py` -- that is a gated edit (17-game sweep) and
+`kaggle/adapter.py:83`'s proxy `step(self, action)` takes no `data`, so the
+bundle needs the same widening or it breaks on the first click.
+
+### bp35, fifth pass: the flood is an ACTION TIMER, the click is the verb, and the tape only oscillates (2026-08-11)
+
+Four of the earlier readings do not survive per-action tracing
+(`bp35_p7.py`/`bp35_p8.py` -> `results/bp35-p7.txt`, `bp35-p8.txt`):
+
+- **"The event fires on ARRIVAL at x44" is false.** p4 read a `>100 cells`
+  threshold as one event class; it is two. The 1,141-cell TOWER step fired
+  once, at the first arrival; the 357-444 cell events at i=15,17,19,21 are
+  the FLOOD rising and are not positional at all. Ten further arrivals at
+  x44 fired nothing.
+- **"Crossings are a budget" is false -- the budget is ACTIONS.** Pressing
+  A3 into the left wall, doing nothing at all, floods at action 8 and is
+  GAME_OVER at 16 (`bp35-p8.txt` E8). A run with one tape event floods at
+  16 and dies at 24; a run with four events was still dry at action 40
+  (`bp35-climb1.txt`). The law that fits all four runs: **flood starts at
+  action 8 + ~8 per tape event, then climbs one band every 2 actions.**
+- **A3 and A7 differ by exactly 4 cells, the heading marker** (E1, byte
+  comparison of two arms from the same state). A7 is the reverse move:
+  same displacement, heading unchanged.
+- **A6 is not a broken action, it is the CLICK** -- `KeyError: 'x'` was the
+  un-aimed call above, not the game.
+
+The mechanics, all forward-only and each with its run:
+
+- **The tape is a stack of rooms.** The piece holds screen rows y37-41
+  always; a ride scrolls the tape so the piece is in the room above (+18)
+  or below (-18/-24, room heights differ).
+- **A4 at the shaft column x43-47 rides UP when a shaft section sits above;
+  A7 there rides DOWN when one sits below** (p12 E15: A7 at x44 fired 1343
+  cells with the piece not moving). Returning to x44 from either side never
+  re-fires (`bp35-p8.txt` E7, ten attempts).
+- **A click turns a colour-14 block into colour-10 FLOOR** -- printed rows
+  either side, `3eee35` -> `aaaaa5` (p12 E16).
+- **A click on the block directly ABOVE the piece rides; a click anywhere
+  else only clears** (`bp35-p13.txt`: x33/x39/x51 answer 36-43 cells, x45
+  answers 1290-1381 and the tape moves).
+- **Clearing the whole band does not buy a longer ride.** Arms A-D of p13
+  land on the same tape position whether one block or four were cleared --
+  a ride is one room, always.
+
+Where it stands: the reachable set is two tape positions, T0 (one ride from
+reset) and T1 (T0 + the click over the piece), and they map onto each other
+-- click up, A7 down, forever (`bp35-climb1.txt`, 40 actions, no flood, no
+level). At T1 the piece's room is x31-53 y37-53 with **background above it**
+on its own side; the blocks that could be cleared sit at x13-29, behind a
+one-column background gap at x30 that no click closes, and the walk left
+stops at x=32 (p12 E15). A digging climber keyed on adjacency finds nothing
+to click at all, because every block in this game is separated from every
+room by that one-column gap (`bp35-climb2.py`, `bp35-climb2.txt`).
+
+Open, in order: (a) what opens a passage on the piece's own side at T1 --
+the candidates left are a click on a room/gap cell rather than a block, a
+ride down to a room with a different geometry, or an x the shaft occupies
+in some other tape position; (b) whether the tape is a LOOP -- ride down
+repeatedly from reset and see whether new rooms arrive; (c) the win
+condition is still unmeasured, and level 1's baseline of 21 actions against
+a flood that starts at 8 says it is roughly two rides plus a dozen actions.

@@ -55,10 +55,24 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   separating threshold. Board-change discriminator: cd82's productive grind happens on a
   byte-identical frame — observationally equivalent to sterile pacing. Full account in
   `breadth-recon.md` §night 2; next lever = walls learned DURING planning. 2026-08-05.
-- **cn04's own `step()` raises `KeyError: 'x'` on its complex action — one click kills
-  the RUN at the engine** (673/2,000 actions died mid-run). Guard in the play loop: a
-  click answered with `obs=None` retires the clicker for the run, level-resets, plays on
-  with the keyboard. Never remove the guard; never "fix" it by re-enabling clicks there.
+- **CORRECTED (2026-08-11): the `KeyError: 'x'` is OURS, not cn04's.** The entry below
+  read the crash as the game's own bug for three months. `compete.py:1965` attaches the
+  coordinates with `clicker.set_data({...})` and the local wrapper never looks at the
+  action object — it builds `ActionInput(id=action, data=data or {})` from its own `data`
+  kwarg (`local_wrapper.py:234`), so every click this agent has ever made arrived with
+  `data={}` and a game that reads `data['x']` answered KeyError. Measured both ways in one
+  invocation, same coordinates: cn04 and bp35 DIE on `set_data` and are alive on
+  `step(action, data={...})`; dc22 tolerates the empty dict and so clicked somewhere
+  nobody chose (`results/click-probe.txt`). Consequences already measured: dc22's "63
+  single clicks all answer zero changed cells" was 63 un-aimed clicks — aimed, exactly two
+  of its 35 components respond, n=129 and n=97 (`results/dc22-click.txt`); bp35's whole
+  second verb is the click (`results/breadth-recon.md` §bp35 fifth pass). The one-line fix
+  is gated (17-game sweep) and `kaggle/adapter.py:83`'s proxy `step(self, action)` must
+  widen with it or the bundle breaks on the first click.
+- **cn04's complex action kills the RUN when the click is malformed** (673/2,000 actions
+  died mid-run). Guard in the play loop: a click answered with `obs=None` retires the
+  clicker for the run, level-resets, plays on with the keyboard. Keep the guard — a click
+  can still be answered with None — but it is a safety net, not evidence about the game.
 - **One scattering action vetoes four clean directions.** re86's action 5 ((2,17), (±11,0)…)
   got a most_common direction anyway; that junk vector killed `coherent` (no inverse) and
   dragged `infer_step`'s gcd 3→1. `infer_dirs` now drops any action with ≥3 samples and no
