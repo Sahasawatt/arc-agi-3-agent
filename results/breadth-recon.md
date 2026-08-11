@@ -1700,3 +1700,31 @@ ground, the buttons lay the route, and the piece walks to a marker that wears
 the same frame the piece does. Level 2 is unseen; a driver is a BFS over
 (position, toggle state) with the toggles learned in four actions, since they
 are reversible.
+
+### sb26 LEVEL 1 FALLS -- 9 actions against a baseline of 18 (2026-08-12)
+
+Full line, controls and the retraction: `results/sb26-solution.txt`
+(`sb26_p1.py`/`p2`/`p3`, `sb26_solve.py` -> `results/sb26-p1.txt`,
+`sb26-p2.txt`, `sb26-p3.txt`, `sb26-solve1.txt`, `sb26-solve2.txt`).
+
+The click is half a DRAG: click a bottom block to select it, click one of the
+machine's four colour-2 slot marks to load it. Load all four in the order the
+TOP row names, then press ACTION5 -- the action §sb26 recorded as "a pure
+timer burn, nothing else ever changes" -- and the machine runs. Loaded in the
+blocks' own order instead, the same ACTION5 answers one cell and nothing
+happens, so the control discriminates.
+
+**All three of §sb26's "measured wall" readings were readings about an
+unreachable state set.** The 1,024-spot click sweep measured one destination
+1,024 times (the un-aimed click); ACTION5 and ACTION7 were both characterised
+on an EMPTY machine, which was the only machine that could exist while no
+click could land. That is the third game today whose wall dissolved with the
+click fix, after bp35 and dc22 -- and the general form is worth keeping: a
+channel can read dead because the state that wakes it is only reachable
+through a channel that was broken.
+
+Also measured in passing (`results/click-sweep-all.txt`, every playable game
+with a complex action swept at reset, one fresh episode per component):
+ka59 answers two clicks of 3 cells each, sc25 answers NONE of its 22
+components, and g50t has no complex action at all -- so of the four remaining
+zero-level games, only ka59's walls could still be a click artefact.

@@ -1,0 +1,28 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 05:15:35 | INFO | Got anonymous API key: 357947c4-ab47-43fe-8e22-105810b20b18
+2026-08-12 05:15:35 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:15:35 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:15:35 | INFO | Created new scorecard: 21b6866f-f0e9-44c0-a4e6-bd84c55aea11
+2026-08-12 05:15:37 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:15:37 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+2026-08-12 05:15:38 | INFO | Successfully fetched metadata for game sb26
+== A: the top row's order: order [9, 14, 11, 15] into slots [22, 28, 34, 40] ==
+  select 9         click(35,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 0  click(22,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 14        click(19,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 1  click(28,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 11        click(43,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 2  click(34,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 15        click(27,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 3  click(40,29) n=   53 lvl=0 st=NOT_FINISHED
+
+2026-08-12 05:15:39 | INFO | Successfully fetched metadata for game sb26
+== B: control -- the blocks' own order: order [14, 15, 9, 11] into slots [22, 28, 34, 40] ==
+  select 14        click(19,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 0  click(22,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 15        click(27,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 1  click(28,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 9         click(35,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 2  click(34,29) n=   53 lvl=0 st=NOT_FINISHED
+  select 11        click(43,58) n=   20 lvl=0 st=NOT_FINISHED
+  place in slot 3  click(40,29) n=   53 lvl=0 st=NOT_FINISHED

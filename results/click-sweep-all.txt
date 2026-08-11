@@ -1,0 +1,171 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 05:08:52 | INFO | Got anonymous API key: 2841a9d8-341c-428b-967f-d951922d0290
+2026-08-12 05:08:52 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:08:53 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:08:53 | INFO | Created new scorecard: 684263c2-5590-4b72-9928-98ab4b3e2515
+2026-08-12 05:08:54 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:08:55 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+== ka59: actions=[1, 2, 3, 4, 6] complex=yes components=13 ==
+2026-08-12 05:08:56 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:08:57 | INFO | Successfully fetched metadata for game ka59
+  (28,31) colour  5 size    1: n=    3 lvl=0   RESPONDS
+2026-08-12 05:08:58 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:08:58 | INFO | Successfully fetched metadata for game ka59
+  (28,31) colour 14 size    8: n=    3 lvl=0   RESPONDS
+2026-08-12 05:09:00 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:01 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:02 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:03 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:04 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:05 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:06 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:07 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:08 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 05:09:09 | INFO | Successfully fetched metadata for game ka59
+  responders beyond the 1-cell tick: 2 of 13 components
+
+2026-08-12 05:09:10 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:10 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+== sc25: actions=[1, 2, 3, 4, 6] complex=yes components=22 ==
+2026-08-12 05:09:11 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:12 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:13 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:14 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:15 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:16 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:17 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:18 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:19 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:21 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:22 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:23 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:24 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:25 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:26 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:27 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:28 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:29 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:30 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:31 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:32 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:33 | INFO | Successfully fetched metadata for game sc25
+2026-08-12 05:09:34 | INFO | Successfully fetched metadata for game sc25
+  responders beyond the 1-cell tick: 0 of 22 components
+
+2026-08-12 05:09:35 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:35 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+== sb26: actions=[5, 6, 7] complex=yes components=23 ==
+2026-08-12 05:09:36 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:38 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:39 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:40 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:40 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:41 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:42 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:43 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:45 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:46 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:47 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:48 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:49 | INFO | Successfully fetched metadata for game sb26
+  (19,58) colour 14 size   16: n=   20 lvl=0   RESPONDS
+2026-08-12 05:09:50 | INFO | Successfully fetched metadata for game sb26
+  (27,58) colour 15 size   16: n=   20 lvl=0   RESPONDS
+2026-08-12 05:09:51 | INFO | Successfully fetched metadata for game sb26
+  (35,58) colour  9 size   16: n=   20 lvl=0   RESPONDS
+2026-08-12 05:09:52 | INFO | Successfully fetched metadata for game sb26
+  (43,58) colour 11 size   16: n=   20 lvl=0   RESPONDS
+2026-08-12 05:09:53 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:54 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:55 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:56 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:57 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:58 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:09:59 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:10:00 | INFO | Successfully fetched metadata for game sb26
+  responders beyond the 1-cell tick: 4 of 23 components
+
+2026-08-12 05:10:01 | INFO | Successfully fetched metadata for game g50t
+2026-08-12 05:10:01 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+== g50t: actions=[1, 2, 3, 4, 5] complex=NO components=10 ==
+  no complex action -- its walls cannot be a click artefact
+2026-08-12 05:10:02 | INFO | Successfully fetched metadata for game cn04
+2026-08-12 05:10:02 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+== cn04: actions=[1, 2, 3, 4, 5, 6] complex=yes components=7 ==
+2026-08-12 05:10:03 | INFO | Successfully fetched metadata for game cn04
+  (15,27) colour  8 size    9: n=  135 lvl=0   RESPONDS
+2026-08-12 05:10:04 | INFO | Successfully fetched metadata for game cn04
+  (21,27) colour  8 size    9: n=  135 lvl=0   RESPONDS
+2026-08-12 05:10:05 | INFO | Successfully fetched metadata for game cn04
+  (39,36) colour  8 size    9: n=  279 lvl=0   RESPONDS
+2026-08-12 05:10:06 | INFO | Successfully fetched metadata for game cn04
+  (39,42) colour  8 size    9: n=  279 lvl=0   RESPONDS
+2026-08-12 05:10:07 | INFO | Successfully fetched metadata for game cn04
+2026-08-12 05:10:08 | INFO | Successfully fetched metadata for game cn04
+2026-08-12 05:10:10 | INFO | Successfully fetched metadata for game cn04
+2026-08-12 05:10:11 | INFO | Successfully fetched metadata for game cn04
+  responders beyond the 1-cell tick: 4 of 7 components
+
+2026-08-12 05:10:12 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:12 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== bp35: actions=[3, 4, 6, 7] complex=yes components=45 ==
+2026-08-12 05:10:13 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:14 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:15 | INFO | Successfully fetched metadata for game bp35
+  (13, 1) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:16 | INFO | Successfully fetched metadata for game bp35
+  (17, 1) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:17 | INFO | Successfully fetched metadata for game bp35
+  (19, 1) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:18 | INFO | Successfully fetched metadata for game bp35
+  (23, 1) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:19 | INFO | Successfully fetched metadata for game bp35
+  (25, 1) colour  3 size    1: n=   31 lvl=0   RESPONDS
+2026-08-12 05:10:20 | INFO | Successfully fetched metadata for game bp35
+  (29, 1) colour  3 size    1: n=   31 lvl=0   RESPONDS
+2026-08-12 05:10:21 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:22 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:23 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:24 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:26 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:27 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:28 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:29 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:30 | INFO | Successfully fetched metadata for game bp35
+  (13, 5) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:31 | INFO | Successfully fetched metadata for game bp35
+  (17, 5) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:32 | INFO | Successfully fetched metadata for game bp35
+  (19, 5) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:33 | INFO | Successfully fetched metadata for game bp35
+  (23, 5) colour  3 size    1: n=   26 lvl=0   RESPONDS
+2026-08-12 05:10:34 | INFO | Successfully fetched metadata for game bp35
+  (25, 5) colour  3 size    1: n=   31 lvl=0   RESPONDS
+2026-08-12 05:10:35 | INFO | Successfully fetched metadata for game bp35
+  (29, 5) colour  3 size    1: n=   31 lvl=0   RESPONDS
+2026-08-12 05:10:36 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:37 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:39 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:40 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:41 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:42 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:43 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:44 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:45 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:46 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:47 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:48 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:49 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:50 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:51 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:52 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:53 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:54 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:55 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:56 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:57 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:10:59 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:11:00 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 05:11:01 | INFO | Successfully fetched metadata for game bp35
+  responders beyond the 1-cell tick: 12 of 45 components
+

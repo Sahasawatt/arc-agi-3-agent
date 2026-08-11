@@ -1,18 +1,70 @@
 INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
-2026-08-11 06:32:35 | INFO | Got anonymous API key: 3e600262-a254-433f-ac58-fbda367b8781
-2026-08-11 06:32:35 | INFO | You can register for an API key at https://three.arcprize.org
-2026-08-11 06:32:36 | INFO | Successfully fetched 25 environment(s) from API
-2026-08-11 06:32:36 | INFO | Created new scorecard: 3c9cb62b-f281-47e6-9e15-3b7d78dfd595
-2026-08-11 06:32:37 | INFO | Successfully fetched metadata for game sb26
-2026-08-11 06:32:37 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
-== 20x ACTION5, diff excluding the y53 bar ==
-  0: -  state=NOT_FINISHED lvl=0
-  1: -  state=NOT_FINISHED lvl=0
-  2: -  state=NOT_FINISHED lvl=0
-after 1x A5 -> ACTION7: -  lvl=0
-after 2x A5 -> ACTION7: -  lvl=0
-after 3x A5 -> ACTION7: -  lvl=0
-after 5x A5 -> ACTION7: -  lvl=0
-after 8x A5 -> ACTION7: -  lvl=0
-after 13x A5 -> ACTION7: -  lvl=0
-done
+2026-08-12 05:13:16 | INFO | Got anonymous API key: a2f149e2-6790-4f13-b8bc-6d91b14583ca
+2026-08-12 05:13:16 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:13:17 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:13:17 | INFO | Created new scorecard: 5c838817-43cd-4ad8-8814-aadb863fafe5
+2026-08-12 05:13:18 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:13:18 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+blocks: {14: 19, 15: 27, 9: 35, 11: 43}   top-row order: [9, 14, 11, 15]
+
+== control: 7 and 5 with nothing selected ==
+2026-08-12 05:13:19 | INFO | Successfully fetched metadata for game sb26
+  A7: n=0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:20 | INFO | Successfully fetched metadata for game sb26
+  A5: n=1 lvl=0 st=NOT_FINISHED
+
+== E4: select a block, then press 7 / 5 ==
+2026-08-12 05:13:21 | INFO | Successfully fetched metadata for game sb26
+  select colour  9, then A7: n=    0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:22 | INFO | Successfully fetched metadata for game sb26
+  select colour  9, then A5: n=   21 lvl=0 st=NOT_FINISHED
+    after (changed y53-61)
+      y53 2222222222222222222222222222222222222222222222222222222222222223
+      y57 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y58 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y59 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y60 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+2026-08-12 05:13:23 | INFO | Successfully fetched metadata for game sb26
+  select colour 14, then A7: n=    0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:24 | INFO | Successfully fetched metadata for game sb26
+  select colour 14, then A5: n=   21 lvl=0 st=NOT_FINISHED
+    after (changed y53-61)
+      y53 2222222222222222222222222222222222222222222222222222222222222223
+      y57 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y58 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y59 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y60 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+2026-08-12 05:13:25 | INFO | Successfully fetched metadata for game sb26
+  select colour 11, then A7: n=    0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:26 | INFO | Successfully fetched metadata for game sb26
+  select colour 11, then A5: n=   21 lvl=0 st=NOT_FINISHED
+    after (changed y53-61)
+      y53 2222222222222222222222222222222222222222222222222222222222222223
+      y57 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y58 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y59 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y60 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+2026-08-12 05:13:27 | INFO | Successfully fetched metadata for game sb26
+  select colour 15, then A7: n=    0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:29 | INFO | Successfully fetched metadata for game sb26
+  select colour 15, then A5: n=   21 lvl=0 st=NOT_FINISHED
+    after (changed y53-61)
+      y53 2222222222222222222222222222222222222222222222222222222222222223
+      y57 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y58 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y59 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+      y60 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+
+== E5: select-and-commit down the top row's order ==
+2026-08-12 05:13:30 | INFO | Successfully fetched metadata for game sb26
+  committing with A7
+    colour  9: commit n=    0 lvl=0 st=NOT_FINISHED
+    colour 14: commit n=    0 lvl=0 st=NOT_FINISHED
+    colour 11: commit n=    0 lvl=0 st=NOT_FINISHED
+    colour 15: commit n=    0 lvl=0 st=NOT_FINISHED
+2026-08-12 05:13:31 | INFO | Successfully fetched metadata for game sb26
+  committing with A5
+    colour  9: commit n=   21 lvl=0 st=NOT_FINISHED
+    colour 14: commit n=   21 lvl=0 st=NOT_FINISHED
+    colour 11: commit n=   21 lvl=0 st=NOT_FINISHED
+    colour 15: commit n=   21 lvl=0 st=NOT_FINISHED

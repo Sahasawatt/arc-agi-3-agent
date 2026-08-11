@@ -1,12 +1,55 @@
 INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
-2026-08-11 06:33:44 | INFO | Got anonymous API key: d3bd6b51-eac0-4053-9b46-184c555f30c3
-2026-08-11 06:33:44 | INFO | You can register for an API key at https://three.arcprize.org
-2026-08-11 06:33:45 | INFO | Successfully fetched 25 environment(s) from API
-2026-08-11 06:33:45 | INFO | Created new scorecard: 0a57dab3-a032-4567-bc8b-1202f656b564
-2026-08-11 06:33:46 | INFO | Successfully fetched metadata for game sb26
-2026-08-11 06:33:46 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
-A5 x70: GAME_OVER at press 64; net change outside bar = 0
-A7 x70: ran out; net change outside bar = 0
-5,7 alternating x35: ran out; net change outside bar = 0
-A7 x17 then A5: ran out; net change outside bar = 0
-A5 x17 then A7: ran out; net change outside bar = 0
+2026-08-12 05:16:10 | INFO | Got anonymous API key: cb310519-8260-46ab-88b0-e15889b97024
+2026-08-12 05:16:10 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:16:11 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:16:11 | INFO | Created new scorecard: b04269ab-d400-4d67-ae92-3d99bcb8c8a7
+2026-08-12 05:16:12 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:16:12 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+== the machine, loaded in the top row's order ==
+  y 0 4444444444444444455555555555555555555555555555444444444444444444
+  y 1 4444444444444444459999995eeeeee5bbbbbb5ffffff5444444444444444444
+  y 2 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 3 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 4 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 5 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 6 4444444444444444459999995eeeeee5bbbbbb5ffffff5444444444444444444
+  y 7 4444444444444444455555555555555555555555555555444444444444444444
+  y24 4444444444444444400044444444444444444444444400044444444444444444
+  y25 4444444444444444408888888888888888888888888888044444444444444444
+  y26 4444444444444444408444444444444444444444444448044444444444444444
+  y27 4444444444444444448444444444444444444444444448444444444444444444
+  y28 444444444444444444844999944eeee44bbbb44ffff448444444444444444444
+  y29 444444444444444444844999944eeee44bbbb44ffff448444444444444444444
+  y30 444444444444444444844999944eeee44bbbb44ffff448444444444444444444
+  y31 444444444444444444844999944eeee44bbbb44ffff448444444444444444444
+  y32 4444444444444444448444444444444444444444444448444444444444444444
+  y33 4444444444444444408444444444444444444444444448044444444444444444
+  y34 4444444444444444408888888888888888888888888888044444444444444444
+  y35 4444444444444444400044444444444444444444444400044444444444444444
+  y53 2222222222222222222222222222222222222222222222222222222222223333
+  y58 4444444444444444444224444442244444422444444224444444444444444444
+  y59 4444444444444444444224444442244444422444444224444444444444444444
+
+== press each action on the loaded machine ==
+2026-08-12 05:16:13 | INFO | Successfully fetched metadata for game sb26
+  A7 #0: n=   32 lvl=0 st=NOT_FINISHED
+  A7 #1: n=   32 lvl=0 st=NOT_FINISHED
+  A7 #2: n=   32 lvl=0 st=NOT_FINISHED
+2026-08-12 05:16:14 | INFO | Successfully fetched metadata for game sb26
+  A5 #0: n=  752 lvl=1 st=NOT_FINISHED
+  ** LEVEL **
+
+== click the machine body / frame once loaded ==
+2026-08-12 05:16:15 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:16:16 | INFO | Successfully fetched metadata for game sb26
+  (31,25) top bar           : n=    0 lvl=0
+2026-08-12 05:16:17 | INFO | Successfully fetched metadata for game sb26
+  (18,29) left wall         : n=    0 lvl=0
+2026-08-12 05:16:18 | INFO | Successfully fetched metadata for game sb26
+  (46,29) right wall        : n=    0 lvl=0
+2026-08-12 05:16:19 | INFO | Successfully fetched metadata for game sb26
+  (31,34) bottom bar        : n=    0 lvl=0
+2026-08-12 05:16:20 | INFO | Successfully fetched metadata for game sb26
+  (31,20) above the machine : n=    0 lvl=0
+2026-08-12 05:16:21 | INFO | Successfully fetched metadata for game sb26
+  (31,40) below the machine : n=    0 lvl=0

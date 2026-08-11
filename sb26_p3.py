@@ -1,14 +1,26 @@
-"""sb26: no probed spot answers a click. Stop guessing spots -- sweep the
-whole board: one episode per spot, click, diff (bar row excluded), record any
-responder. Also try click SEQUENCES on the bottom blocks (top-row order and
-bottom-row order) in single episodes, ACTION7 after each, since a selection
-game may only draw once a valid sequence starts.
+"""sb26: if the click selects and nothing commits, the click is half a DRAG.
+
+p2 measured A7 as answering zero cells in every state (with and without a
+selection) and A5 as deselect-plus-burn -- so neither is a commit. What has
+not been tried is the other half of a drag: select a bottom block, then click
+a DESTINATION.
+
+The reset sweep only found the bottom blocks live, but that sweep had nothing
+selected. This re-sweeps every component WITH a block selected -- the same
+lesson dc22 taught, where a whole channel only wakes up once the board is in
+the right state.
+
+E6  the full reset board, so the machine's slots can be named.
+E7  select each bottom block, then click every component centre; anything
+    that answers is printed with the region it changed.
 """
 import sys
 
 import numpy as np
 
 import arc_agi
+
+ROW = 58
 
 
 def grid_of(obs):
@@ -18,53 +30,94 @@ def grid_of(obs):
     return None if f.ndim < 2 or f.size == 0 else f[-1]
 
 
-def changed(a, b, skip_row=53):
-    if a is None or b is None:
-        return -1
-    m = a != b
-    m[skip_row] = False
-    return int(m.sum())
+def boxes(g, row):
+    bg = int(np.bincount(g.ravel()).argmax())
+    out, run = [], None
+    for x in range(g.shape[1]):
+        c = int(g[row, x])
+        if c != bg and (run is None or run[2] != c):
+            if run:
+                out.append(((run[0] + run[1]) // 2, run[2]))
+            run = [x, x, c]
+        elif c != bg:
+            run[1] = x
+        elif run:
+            out.append(((run[0] + run[1]) // 2, run[2]))
+            run = None
+    if run:
+        out.append(((run[0] + run[1]) // 2, run[2]))
+    return out
+
+
+def components(g):
+    bg = int(np.bincount(g.ravel()).argmax())
+    seen = np.zeros(g.shape, dtype=bool)
+    out = []
+    for y in range(g.shape[0]):
+        for x in range(g.shape[1]):
+            if seen[y, x] or g[y, x] == bg:
+                continue
+            col = int(g[y, x])
+            stack, cells = [(y, x)], []
+            seen[y, x] = True
+            while stack:
+                cy, cx = stack.pop()
+                cells.append((cy, cx))
+                for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    ny, nx = cy + dy, cx + dx
+                    if (0 <= ny < g.shape[0] and 0 <= nx < g.shape[1]
+                            and not seen[ny, nx] and g[ny, nx] == col):
+                        seen[ny, nx] = True
+                        stack.append((ny, nx))
+            ys = [c[0] for c in cells]
+            xs = [c[1] for c in cells]
+            out.append(((min(xs) + max(xs)) // 2, (min(ys) + max(ys)) // 2,
+                        col, len(cells)))
+    return out
 
 
 arc = arc_agi.Arcade()
 envs = {e.game_id.split("-")[0]: e for e in arc.get_environments()}
-env = arc.make(envs["sb26"].game_id)
-click = next(a for a in env.action_space if a.is_complex())
-A = {a.value: a for a in env.action_space}
 
-print("== full-grid click sweep, stride 2 ==")
-hits = []
-n = 0
-for y in range(0, 64, 2):
-    for x in range(0, 64, 2):
-        obs = env.reset()
-        g0 = grid_of(obs)
-        click.set_data({"x": x, "y": y})
-        obs = env.step(click)
+
+def fresh():
+    env = arc.make(envs["sb26"].game_id)
+    return env, {a.value: a for a in env.action_space}, env.reset()
+
+
+env, A, obs = fresh()
+g0 = grid_of(obs)
+print("== E6: the reset board ==")
+for y in range(64):
+    line = "".join(str(int(v)) if v < 10 else chr(87 + int(v)) for v in g0[y])
+    if len(set(line)) > 1:
+        print(f"  y{y:2d} {line}")
+where = {c: x for x, c in boxes(g0, ROW)}
+order = [c for _, c in boxes(g0, 6) if c in where]
+cands = components(g0)
+print(f"  blocks {where}  order {order}  components {len(cands)}")
+sys.stdout.flush()
+
+print("\n== E7: select a block, then click every component ==")
+for c in order[:2]:                      # two sources is enough to see a rule
+    hits = 0
+    for cx, cy, col, size in cands:
+        if cy >= ROW - 2:
+            continue                     # the source row itself is known
+        env, A, obs = fresh()
+        obs = env.step(A[6], data={"x": where[c], "y": ROW})
         g1 = grid_of(obs)
-        c = changed(g0, g1)
-        n += 1
-        if c > 0 or (obs is not None and obs.levels_completed > 0):
-            hits.append((x, y, c, obs.levels_completed))
-            print(f"  ({x},{y}): {c} cells lvl={obs.levels_completed}")
-        if obs is None:
-            print(f"  ({x},{y}): obs=None (engine rejected)")
-print(f"swept {n} spots, {len(hits)} responders")
-
-print("\n== click sequences on the bottom blocks ==")
-BLOCK = {"e": (20, 58), "f": (28, 58), "9": (36, 58), "b": (44, 58)}
-for label, order in [("top-row order 9,e,b,f", "9ebf"),
-                     ("bottom-row order e,f,9,b", "ef9b")]:
-    obs = env.reset()
-    g0 = grid_of(obs)
-    for ch in order:
-        x, y = BLOCK[ch]
-        click.set_data({"x": x, "y": y})
-        obs = env.step(click)
-    g1 = grid_of(obs)
-    print(f"  {label}: {changed(g0, g1)} cells lvl={obs.levels_completed} "
-          f"state={str(obs.state).split('.')[-1]}")
-    obs = env.step(A[7])
-    print(f"    then ACTION7: lvl={obs.levels_completed} "
-          f"state={str(obs.state).split('.')[-1]}")
-    sys.stdout.flush()
+        obs = env.step(A[6], data={"x": cx, "y": cy})
+        g2 = grid_of(obs)
+        if g2 is None:
+            print(f"  src {c} -> ({cx:2d},{cy:2d}): DEAD FRAME")
+            continue
+        n = int((g1 != g2).sum())
+        if n > 1:
+            hits += 1
+            ys, xs = np.nonzero(g1 != g2)
+            print(f"  src {c:2d} -> ({cx:2d},{cy:2d}) colour{col:3d} "
+                  f"size{size:4d}: n={n:5d} changed y{ys.min()}-{ys.max()} "
+                  f"x{xs.min()}-{xs.max()} lvl={obs.levels_completed}")
+        sys.stdout.flush()
+    print(f"  source {c}: {hits} destinations answered")

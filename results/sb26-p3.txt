@@ -1,15 +1,85 @@
 INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
-2026-08-11 06:33:11 | INFO | Got anonymous API key: 7bc86208-5918-492a-9eff-84a9d3a02680
-2026-08-11 06:33:11 | INFO | You can register for an API key at https://three.arcprize.org
-2026-08-11 06:33:13 | INFO | Successfully fetched 25 environment(s) from API
-2026-08-11 06:33:13 | INFO | Created new scorecard: dad430b7-fe7f-46ec-98ac-d86bfce2e046
-2026-08-11 06:33:14 | INFO | Successfully fetched metadata for game sb26
-2026-08-11 06:33:14 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
-== full-grid click sweep, stride 2 ==
-swept 1024 spots, 0 responders
+2026-08-12 05:14:18 | INFO | Got anonymous API key: c7a75af9-015f-46ca-a440-3ed66018ec3c
+2026-08-12 05:14:18 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:14:19 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:14:19 | INFO | Created new scorecard: 57ddf26e-d7ec-4e56-91cf-a8d2fd1a1bd2
+2026-08-12 05:14:20 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:20 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+== E6: the reset board ==
+  y 0 4444444444444444455555555555555555555555555555444444444444444444
+  y 1 4444444444444444459999995eeeeee5bbbbbb5ffffff5444444444444444444
+  y 2 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 3 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 4 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 5 4444444444444444459555595e5555e5b5555b5f5555f5444444444444444444
+  y 6 4444444444444444459999995eeeeee5bbbbbb5ffffff5444444444444444444
+  y 7 4444444444444444455555555555555555555555555555444444444444444444
+  y24 4444444444444444400044444444444444444444444400044444444444444444
+  y25 4444444444444444408888888888888888888888888888044444444444444444
+  y26 4444444444444444408444444444444444444444444448044444444444444444
+  y27 4444444444444444448444444444444444444444444448444444444444444444
+  y28 4444444444444444448444444444444444444444444448444444444444444444
+  y29 4444444444444444448444224444224444224444224448444444444444444444
+  y30 4444444444444444448444224444224444224444224448444444444444444444
+  y31 4444444444444444448444444444444444444444444448444444444444444444
+  y32 4444444444444444448444444444444444444444444448444444444444444444
+  y33 4444444444444444408444444444444444444444444448044444444444444444
+  y34 4444444444444444408888888888888888888888888888044444444444444444
+  y35 4444444444444444400044444444444444444444444400044444444444444444
+  y57 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+  y58 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+  y59 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+  y60 444444444444444444eeee4444ffff444499994444bbbb444444444444444444
+  blocks {14: 19, 15: 27, 9: 35, 11: 43}  order [9, 14, 11, 15]  components 23
 
-== click sequences on the bottom blocks ==
-  top-row order 9,e,b,f: 0 cells lvl=0 state=NOT_FINISHED
-    then ACTION7: lvl=0 state=NOT_FINISHED
-  bottom-row order e,f,9,b: 0 cells lvl=0 state=NOT_FINISHED
-    then ACTION7: lvl=0 state=NOT_FINISHED
+== E7: select a block, then click every component ==
+2026-08-12 05:14:21 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:23 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:24 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:25 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:26 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:27 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:28 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:29 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:30 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:31 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:32 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:33 | INFO | Successfully fetched metadata for game sb26
+  src  9 -> (31,29) colour  8 size  72: n=   53 changed y28-61 x27-63 lvl=0
+2026-08-12 05:14:34 | INFO | Successfully fetched metadata for game sb26
+  src  9 -> (22,29) colour  2 size   4: n=   53 changed y28-61 x21-63 lvl=0
+2026-08-12 05:14:35 | INFO | Successfully fetched metadata for game sb26
+  src  9 -> (28,29) colour  2 size   4: n=   53 changed y28-61 x27-63 lvl=0
+2026-08-12 05:14:36 | INFO | Successfully fetched metadata for game sb26
+  src  9 -> (34,29) colour  2 size   4: n=   53 changed y28-61 x33-63 lvl=0
+2026-08-12 05:14:37 | INFO | Successfully fetched metadata for game sb26
+  src  9 -> (40,29) colour  2 size   4: n=   53 changed y28-61 x33-63 lvl=0
+2026-08-12 05:14:38 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:39 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:40 | INFO | Successfully fetched metadata for game sb26
+  source 9: 5 destinations answered
+2026-08-12 05:14:41 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:42 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:43 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:44 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:45 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:46 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:47 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:48 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:49 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:50 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:51 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:52 | INFO | Successfully fetched metadata for game sb26
+  src 14 -> (31,29) colour  8 size  72: n=   53 changed y28-61 x17-63 lvl=0
+2026-08-12 05:14:53 | INFO | Successfully fetched metadata for game sb26
+  src 14 -> (22,29) colour  2 size   4: n=   53 changed y28-61 x17-63 lvl=0
+2026-08-12 05:14:54 | INFO | Successfully fetched metadata for game sb26
+  src 14 -> (28,29) colour  2 size   4: n=   53 changed y28-61 x17-63 lvl=0
+2026-08-12 05:14:55 | INFO | Successfully fetched metadata for game sb26
+  src 14 -> (34,29) colour  2 size   4: n=   53 changed y28-61 x17-63 lvl=0
+2026-08-12 05:14:56 | INFO | Successfully fetched metadata for game sb26
+  src 14 -> (40,29) colour  2 size   4: n=   53 changed y28-61 x17-63 lvl=0
+2026-08-12 05:14:57 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:58 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:14:59 | INFO | Successfully fetched metadata for game sb26
+  source 14: 5 destinations answered

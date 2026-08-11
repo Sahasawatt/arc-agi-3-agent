@@ -1,0 +1,37 @@
+sb26 level 1 SOLVED -- 9 actions against a baseline of 18.
+Two identical runs plus a discriminating control: results/sb26-solve2.txt.
+
+THE GAME. Four framed boxes across the top name a colour ORDER (9, 14, 11,
+15); four solid blocks sit along the bottom in a different one (14, 15, 9,
+11); a machine between them holds four empty slot marks in colour 2. The
+click is half a DRAG: clicking a bottom block selects it (a 0-border, 20
+cells), and clicking a slot then moves it in (53 cells). Load all four in the
+TOP row's order, then press ACTION5, and the machine runs.
+
+  1  click(35,58)  select colour 9      5  click(43,58)  select colour 11
+  2  click(22,29)  into slot 0          6  click(34,29)  into slot 2
+  3  click(19,58)  select colour 14     7  click(27,58)  select colour 15
+  4  click(28,29)  into slot 1          8  click(40,29)  into slot 3
+  9  ACTION5       run  ->  LEVEL 1 (n=752)
+
+Control, same 9 actions with the blocks loaded in their own left-to-right
+order: ACTION5 answers ONE cell and no level. The order is the puzzle.
+
+WHY THIS WAS A "MEASURED WALL". breadth-recon §sb26 closed the game as "every
+input channel is dead at every reachable state", on three readings that were
+each true of what was measured and false of the game:
+  * "clicks are dead EVERYWHERE at EVERY state -- a stride-2 full-grid sweep,
+    1,024 spots, one episode each, changes zero cells" -- every one of those
+    clicks went through `set_data` and arrived with no coordinates
+    (results/click-probe.txt), so the sweep measured one destination 1,024
+    times;
+  * "ACTION5 is a pure timer burn, nothing else ever changes" -- true on an
+    EMPTY machine, which is the only machine that existed while no click
+    could land. Loaded, it is the run button;
+  * "ACTION7 is free and silent" -- also empty-machine only; loaded it
+    answers 32 cells.
+The lesson is not that the readings were sloppy. It is that a channel can
+look dead because the state that wakes it is unreachable through a broken
+one, so "every channel is dead" is a claim about the SET of states probed.
+
+NOT YET IN THE AGENT.
