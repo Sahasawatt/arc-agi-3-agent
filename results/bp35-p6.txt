@@ -1,0 +1,12 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 20:47:47 | INFO | Got anonymous API key: 3e253836-99dc-4da9-a755-01701aef01de
+2026-08-11 20:47:47 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 20:47:48 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 20:47:48 | INFO | Created new scorecard: 0fb28c22-ebd3-4660-9ebd-85a88247037c
+2026-08-11 20:47:49 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 20:47:49 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== after event #1 (piece x=44): walk LEFT to the wall ==
+  final piece x=14
+2026-08-11 20:47:50 | INFO | Successfully fetched metadata for game bp35
+== after event #1 (piece x=44): walk RIGHT to the wall ==
+  final piece x=50

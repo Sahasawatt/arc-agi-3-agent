@@ -1505,3 +1505,19 @@ Next session: (a) after event #1, walk the FULL width and log where the next
 event fires -- that maps the new chamber's passage; (b) climb as fast as the
 passages allow and see whether the level falls; (c) A3-vs-A7 discriminator
 still unknown.
+
+### bp35, fourth pass: the trigger is ARRIVING at x44, and nothing else on the floor triggers anything (2026-08-11)
+
+`bp35_p6.py` -> `bp35-p6.txt`, two fresh episodes after event #1: walking
+LEFT the full width (44 -> 14) and RIGHT to the wall (44 -> 50) fires ZERO
+events and never moves the tower. With `bp35-p4.txt`'s shuttle (which fired
+on every return) the discriminator is clean: the event fires on the piece
+ARRIVING at x=44 -- standing under the chute -- not on crossing that column,
+and no other x in the bottom chamber triggers anything. So: every x44
+arrival raises the flood one band; the FIRST arrival also stepped the tower
+once; arrivals 2+ moved nothing above y36 in that run. Why only the first
+climbed is THE open question -- candidates: the chamber above was blocked
+(the 4-group sat at y31-35 after step #1), the climb needs an arrival from
+a specific side, or A7 (which reads as a REVERSE move -- it went left while
+the heading marker pointed right) does something at x44 that A3/A4 do not.
+Level-1 baseline 21 says the whole dance is ~5 climbs' worth of actions.
