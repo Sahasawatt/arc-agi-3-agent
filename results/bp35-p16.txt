@@ -1,0 +1,85 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 22:29:43 | INFO | Got anonymous API key: f2971080-b233-44c7-a8d7-920d641eae39
+2026-08-11 22:29:43 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 22:29:44 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 22:29:44 | INFO | Created new scorecard: ff967a6c-749b-4ab7-9821-2bbac3283334
+2026-08-11 22:29:46 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 22:29:46 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  i= 0 A4             n=   47 x=26 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 x=32 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 A4             n=   47 x=38 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4             n= 1141 x=44 cnt= 4 flood=None lvl=0 st=NOT_FINISHED   RIDE
+  i= 4 click(45,33)   n= 1343 x=44 cnt= 5 flood=None lvl=0 st=NOT_FINISHED   RIDE
+  i= 5 click(15,39)   n=   26 x=44 cnt= 6 flood=None lvl=0 st=NOT_FINISHED
+  i= 6 click(21,39)   n=   31 x=44 cnt= 7 flood=None lvl=0 st=NOT_FINISHED
+  i= 7 click(27,39)   n=   36 x=44 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 A3             n=   47 x=38 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 A3             n=   47 x=32 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+  i=10 A3             n=   47 x=26 cnt=11 flood=None lvl=0 st=NOT_FINISHED
+  i=11 A3             n=   47 x=20 cnt=12 flood=None lvl=0 st=NOT_FINISHED
+  i=12 A3             n=   47 x=14 cnt=13 flood=None lvl=0 st=NOT_FINISHED
+  i=13 click(15,33)   n= 1353 x=14 cnt=14 flood=None lvl=0 st=NOT_FINISHED   RIDE
+  --- after the line, piece x=14 (x10-55 shown) ---
+   y 0 5555555555555555555555555555555555555555555555
+   y 1 5555355555355555355555355555355555355555355555
+   y 2 5555555555555555555555555555555555555555555555
+   y 3 5555555555555555555555555555555555555555555555
+   y 4 5553555553555553555553555553555553555553555553
+   y 5 3555553555553555553555553555553555553555553555
+   y 6 5555555555555555555555555555555555555555555555
+   y 7 5555355555355555355555355555355555355555355555
+   y 8 5555555555555555555555555555555555555555555555
+   y 9 5555555555555555555555555555555555555555555555
+   y10 5553555553555553555553555553555553555553555553
+   y11 3555553555553555553555553555553555553555553555
+   y12 5555555555555555555555555555555555555555555555
+   y13 5555355555355555355555355555355555355555355555
+   y14 5555555555555555555555555555555555555555555555
+   y15 5555555555555555555555555555555555555555555555
+   y16 5553555553555553555553555553555553555553555553
+   y17 3555553555553555553555553555553555553555553555
+   y18 5555555555555555555555555555555555555555555555
+   y19 555aaaaaa55755aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y20 555aaaaaa57775aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y21 555aaaaaa55755aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y22 555aaaaaaa555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa53
+   y23 355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y24 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y25 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y26 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y27 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y28 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa53
+   y29 355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y30 5555555555555555555555555555555555555555555555
+   y31 5555355555355555355553eee353eee353eee355355555
+   y32 555555555555555555555eeeee5eeeee5eeeee55555555
+   y33 555555555555555555555eeeee5eeeee5eeeee55555555
+   y34 555355555355555355555eeeee5eeeee5eeeee53555553
+   y35 3555553555553555553553eee353eee353eee355553555
+   y36 5555555555555555555555555555555555555555555555
+   y37 55555955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y38 5555b995aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y39 5555b995aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y40 55555955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa53
+   y41 355a555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y42 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y43 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y44 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y45 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y46 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa53
+   y47 355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y48 555aaaaaaaaaaa5555555555555555555aaaaaaaaaaa55
+   y49 555aaaaaaaaaaa53eee353eee353eee35aaaaaaaaaaa55
+   y50 555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa55
+   y51 555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa55
+   y52 555aaaaaaaaaaa5eeeee5eeeee5eeeee5aaaaaaaaaaa53
+   y53 355aaaaaaaaaaa53eee353eee353eee35aaaaaaaaaaa55
+   y54 555aaaaaaaaaaa5555555555555555555aaaaaaaaaaa55
+   y55 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y56 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y57 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y58 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa53
+   y59 355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y60 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y61 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55
+   y62 555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa55

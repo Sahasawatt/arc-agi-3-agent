@@ -101,20 +101,25 @@ Recon-only work needs no sweep.
    the first click), then the full 17-game sweep — cn04 is the positive control for
    `sweep_diff.py` (its clicker stops being retired) and its 1/6 `[131]` is what to watch.
 
-2. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sb26, g50t — and the walls
+2. **bp35 LEVEL 1 IS SOLVED BY HAND — build the driver.** 20 actions against a baseline
+   of 21, forward-only, two identical runs ← results/bp35-solution.txt (the full line and
+   the mechanic behind every step), bp35-p17.txt/bp35-p17b.txt. The win is **walking onto
+   a colour-7 object**; it lives in the room the THIRD ride reaches, which is why fourteen
+   probes never saw it. Verbs: a click turns a block into floor; a click on the block over
+   the piece's own columns rides one room up; A7 at a shaft column rides down; the flood
+   is an action timer (8 + ~8 per ride). Next per the repo's own pattern: a `bp35` driver
+   shaped like `cover`/`swap`/`haul`/`maze`/`dial`/`skewer`, its signature measured by
+   `sigs.py` over all 17 reset frames BEFORE wiring, cascade order re-checked, then the
+   gated sweep. Level 2 is unseen.
+
+3. **Next 0-level game.** Remaining: dc22, ka59, sc25, sb26, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
    sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
-   Fresh ground: **bp35** (OPENED -- two vertical conveyors stepping past a chute when
-   the piece parks under it; BFS impossible there, deepcopy sends the game's own code
-   into infinite recursion; full findings + the three next probes ← breadth-recon
-   §bp35) and **sc25** (metronome game, br-sc25-*.txt exist; its election problem is a
-   known repo-wide blocker). bp35 is now five passes deep and three of its earlier
-   readings are RETRACTED (the trigger is not arrival at x44; the budget is actions, not
-   crossings; A6 is the click) ← breadth-recon §bp35 fifth pass. Model: the tape is a
-   stack of rooms, a click turns a block into floor, a click on the block directly above
-   the piece rides one room up, A7 at x44 rides down, and the flood starts at action 8 +
-   ~8 per ride. The reachable set is two tape positions that map onto each other, so the
-   open question is what opens a passage on the piece's OWN side at T1.
+   Fresh ground: **sc25** (metronome game, br-sc25-*.txt exist; its election problem is a
+   known repo-wide blocker). bp35 has left this list — see item 2. What its fall is worth
+   to the others: the click verb now works everywhere (item 1), and a reachability claim
+   expired TWICE in one session on the same board, both times because it had been measured
+   before something was cleared.
 2. **sk48 level 2 — the rearrange puzzle.** `skewer.py` clears L1 (1/8 `[24]`); level 2
    has four blocks in ONE row, recipe [8,12,9,14] vs forced row order 14,9,12,8 —
    ploughing through threads all four and does NOT win ← breadth-recon §sk48. Find the

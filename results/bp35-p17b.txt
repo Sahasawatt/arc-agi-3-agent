@@ -1,0 +1,15 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 22:31:12 | INFO | Got anonymous API key: f2b463a6-9895-4a46-b0ee-d67ff6e502c5
+2026-08-11 22:31:12 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 22:31:13 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 22:31:13 | INFO | Created new scorecard: 6deba365-a3e8-44e7-a78b-541c2c1f97e5
+2026-08-11 22:31:14 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 22:31:14 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+after p16's line (14 actions): x=14 colour7 at (20, 22, 19, 21) lvl=0
+  i= 0 A4             n=   47 x=20 cnt=15 flood=None c7=(20, 22, 19, 21) lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 x=26 cnt=16 flood=None c7=(20, 22, 19, 21) lvl=0 st=NOT_FINISHED
+  i= 2 A4             n=   47 x=32 cnt=17 flood=None c7=(20, 22, 19, 21) lvl=0 st=NOT_FINISHED
+  i= 3 click(33,35)   n=  747 x=32 cnt=18 flood=None c7=(20, 22, 37, 39) lvl=0 st=NOT_FINISHED   RIDE
+  i= 4 A3             n=   47 x=26 cnt=19 flood=None c7=(20, 22, 37, 39) lvl=0 st=NOT_FINISHED
+  i= 5 A3             n= 1312 x=14 cnt= 0 flood=7 c7=None lvl=1 st=NOT_FINISHED   RIDE
+  END lvl=1 state=NOT_FINISHED after 20 actions

@@ -1648,3 +1648,26 @@ clicking a phantom target that answers one cell. Level 1 remains unwon and
 the win condition remains unmeasured -- what is now cheap to ask, with
 clearing understood, is whether the level wants a particular room ENTERED or
 simply every block gone.
+
+### bp35 LEVEL 1 FALLS -- 20 actions against a baseline of 21 (2026-08-11)
+
+Full line, two identical runs and the mechanics behind each step:
+`results/bp35-solution.txt` (`bp35_p17.py` -> `bp35-p17.txt`, `bp35-p17b.txt`).
+
+**The win is a colour-7 object the piece walks onto**, and the reason
+fourteen probes never saw one is that it only exists in the room reached by
+the THIRD ride -- which is only reachable after clearing the blocks that
+wall the room in, which was only measurable once the click was aimed. The
+chain: ride the reset chute, ride again off the block overhead, clear the
+room's row band (the walk then runs 44 -> 14 instead of stopping at 32),
+ride from the LEFT column, walk back right, ride once more -- and that ride
+brings the colour 7 down from y19-21 into the piece's own room at y37-39,
+two steps away.
+
+So p14's "the reachable tape is exactly three positions" was a statement
+about an uncleared board, and this is the second time in one session that a
+reachability claim expired with the equilibrium it was measured in.
+
+Not in the agent: this is a hand line. A bp35 driver in the six drivers'
+shape needs its signature measured by `sigs.py` over all 17 reset frames
+before wiring, and the cascade order re-checked.

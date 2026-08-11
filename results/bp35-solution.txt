@@ -1,0 +1,47 @@
+bp35 level 1 SOLVED -- 20 actions, forward-only, rules-legal (baseline 21)
+Two identical runs: results/bp35-p17.txt, bp35-p17b.txt (bp35_p17.py, which
+replays bp35_p16.py's line and then walks).
+
+  #   action              what it does
+  1   A4                  20 -> 26
+  2   A4                  26 -> 32
+  3   A4                  32 -> 38
+  4   A4                  38 -> 44   RIDE 1 (the reset chute, tape +18)
+  5   click(45,33)        RIDE 2 (the block over the piece; T0 -> T1)
+  6   click(15,39)        clear the room's row band -- this is the wall that
+  7   click(21,39)        stops the walk at x=32, NOT the background column
+  8   click(27,39)        at x30
+  9   A3                  44 -> 38
+ 10   A3                  38 -> 32
+ 11   A3                  32 -> 26
+ 12   A3                  26 -> 20
+ 13   A3                  20 -> 14   (impossible before the clears)
+ 14   click(15,33)        RIDE 3 -- from the LEFT column, which only exists
+                          as a door once the row band is gone
+ 15   A4                  14 -> 20
+ 16   A4                  20 -> 26
+ 17   A4                  26 -> 32
+ 18   click(33,35)        RIDE 4 -- brings the colour-7 object down into the
+                          piece's own room (c7 y19-21 -> y37-39)
+ 19   A3                  32 -> 26
+ 20   A3                  onto the colour 7 -> LEVEL 1
+
+THE WIN CONDITION: walk the piece onto the colour-7 object. It is the only
+colour on this board that is neither terrain (5/10), block (14/3), piece
+(9/11) nor flood/counter (15), and it first appears in the room reached by
+ride 3 -- which is why fourteen probes never saw it.
+
+Mechanics the line rests on, each measured this session:
+  * a click turns a colour-14 block into colour-10 floor (bp35-p12.txt E16)
+  * a click on the block over the piece's own columns RIDES one room; a
+    click anywhere else only clears (bp35-p13.txt)
+  * A7 at a shaft column rides down (bp35-p12.txt E15)
+  * the flood is an ACTION timer, 8 actions plus about 8 per ride
+    (bp35-p8.txt E7/E8) -- this line spends 20 against a budget of ~40
+  * the click had to be aimed at all: compete.py's set_data path never
+    reached the game (results/click-probe.txt)
+
+NOT YET IN THE AGENT. Turning this into points needs a bp35 driver in the
+`cover`/`swap`/`haul`/`maze`/`dial`/`skewer` shape, with its signature
+measured by sigs.py against all 17 reset frames before wiring -- and the
+cascade order checked, since the signatures are no longer disjoint.
