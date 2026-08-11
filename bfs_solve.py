@@ -21,7 +21,12 @@ import copy
 import hashlib
 import sys
 import time
-from collections import deque
+from collections import Counter, deque
+
+# bp35's own game code recurses past the default 1000 frames (a flood-fill
+# shaped routine died 987 levels deep under an ordinary step); deepcopy of a
+# big env graph gets deep too. One knob covers both.
+sys.setrecursionlimit(20000)
 
 import numpy as np
 
@@ -54,16 +59,25 @@ def solve(game, depth=60, max_nodes=60000, clock_rows=(), report=2000):
     seen = {(bkey(g0), 0)}
     frontier = deque([([], env)])
     expanded, t0, win, deaths, deepest = 0, time.time(), None, 0, 0
+    # An action the engine answers with None every time it is tried is dead
+    # for the whole run -- bp35's (and cn04's) complex action raises KeyError
+    # inside the game and each attempt logs a full traceback; without this
+    # latch the log drowns and every expansion pays the exception.
+    nones = Counter()
     while frontier and expanded < max_nodes and win is None:
         seq, node = frontier.popleft()
         deepest = max(deepest, len(seq))
         if len(seq) >= depth:
             continue
         for a in sorted(A):
+            if nones[a] >= 25:
+                continue
             child = copy.deepcopy(node)
             o = child.step(A[a])
             if o is None:
+                nones[a] += 1
                 continue
+            nones[a] = 0
             if o.levels_completed > 0 or str(o.state).endswith("WIN"):
                 win = seq + [a]
                 break

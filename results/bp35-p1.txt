@@ -1,0 +1,72 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 10:50:35 | INFO | Got anonymous API key: 976ce6dc-5ba8-4a26-8ac9-a2e020b35aa8
+2026-08-11 10:50:35 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 10:50:35 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 10:50:35 | INFO | Created new scorecard: b71ecb88-88c9-47ab-8c16-35d3c4d49394
+2026-08-11 10:50:36 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 10:50:36 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+== the 9/11 marker at reset ==
+  (bottom box, left part)
+  y36 555555555555555555
+  y37 aaaaaa55955aaaaaaa
+  y38 aaaaaa599b5aaaaaaa
+  y39 aaaaaa599b5aaaaaaa
+  y40 aaaaaa55955aaaaaaa
+  y41 aaaaaaa555aaaaaaaa
+  y42 aaaaaaaaaaaaaaaaaa
+
+== 6x A4 (right), per press ==
+A4 #0: last=47c x[0-29] y[37-63] 5->10:15 10->5:15 9->10:6 10->9:6
+       layer0 differs from layer-1: 38c x[21-29] y[37-41] 5->10:11 10->5:11 9->10:6 10->9:6
+A4 #1: last=47c x[1-35] y[37-63] 5->10:15 10->5:15 9->10:6 10->9:6
+       layer0 differs from layer-1: 38c x[27-35] y[37-41] 5->10:11 10->5:11 9->10:6 10->9:6
+A4 #2: last=47c x[2-41] y[37-63] 5->10:15 10->5:15 9->10:6 10->9:6
+       layer0 differs from layer-1: 38c x[33-41] y[37-41] 5->10:11 10->5:11 9->10:6 10->9:6
+A4 #3: last=1141c x[3-53] y[0-63] 10->5:499 5->14:162 14->10:147 5->10:86
+       layer0 differs from layer-1: 1132c x[13-53] y[0-54] 10->5:495 5->14:162 14->10:147 10->14:84
+A4 #4: last=47c x[4-53] y[37-63] 5->10:15 10->5:15 9->10:6 10->9:6
+       layer0 differs from layer-1: 38c x[45-53] y[37-41] 5->10:11 10->5:11 9->10:6 10->9:6
+A4 #5: last=1c x[5-5] y[63-63] 0->15:1
+       layer0 differs from layer-1: 20c x[48-53] y[37-41] 5->10:5 10->5:5 9->5:4 5->9:2
+
+== then A7, watching BOTH layers over 3 presses ==
+A7 #0: last=1c x[6-6] y[63-63] 0->15:1  layers=2
+A7 #1: last=47c x[7-53] y[37-63] 10->5:15 5->10:15 10->9:6 9->10:6  layers=2
+A7 #2: last=1141c x[8-53] y[0-63] 5->10:499 14->5:162 10->14:147 10->5:86  layers=2
+
+== board after, full bottom half ==
+
+  y30 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y31 5535555535555535555535555535555535555535555aaaaa5535555535555535
+  y32 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y33 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y34 5355555355555355555355555355555355555355555aaaaa5355555355555355
+  y35 5555355555355555355555355555355555355555355aaaaa5555355555355555
+  y36 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y37 5535555535555aaaaaaaaaaaaaaaaaaaaaaaa55955aaaaaaaaaaaa5535555535
+  y38 5555555555555aaaaaaaaaaaaaaaaaaaaaaaa599b5aaaaaaaaaaaa5555555555
+  y39 5555555555555aaaaaaaaaaaaaaaaaaaaaaaa599b5aaaaaaaaaaaa5555555555
+  y40 5355555355555aaaaaaaaaaaaaaaaaaaaaaaa55955aaaaaaaaaaaa5355555355
+  y41 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaa555aaaaaaaaaaaaa5555355555
+  y42 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y43 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y44 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y45 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y46 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y47 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y48 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y49 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y50 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y51 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y52 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y53 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y54 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y55 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y56 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y57 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y58 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y59 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y60 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y61 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y62 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y63 fffffffff0000000000000000000000000000000000000000000000000000000

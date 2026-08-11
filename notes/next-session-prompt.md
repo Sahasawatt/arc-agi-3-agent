@@ -20,7 +20,15 @@ Clear ≥1 level in EVERY game. Standing: **11/17 games with a level, mean 6.320
    BEFORE wiring. Signatures are no longer all disjoint: `cover`'s fires on four games,
    so a contested game is settled by CASCADE ORDER and `sigs.py` checks that.
 
-`bfs_solve.py <game> <depth> <nodes>` searches real engine states with deepcopy nodes.
+`bfs_solve.py <game> <depth> <nodes> [clock_rows]` searches real engine states with
+deepcopy nodes; an action the engine answers None 25x in a row is retired for the run
+(bp35/cn04's click raises inside the game -- without the latch every expansion pays the
+exception and the log drowns in tracebacks). ⚠️ **bp35 cannot be BFS'd at all**: its own
+game code recurses infinitely on a deepcopied env (RecursionError persists at limit
+20000 -- deepcopy likely breaks an object-identity invariant, e.g. a visited set). The
+instrument is dead there, not the game; bp35 needs forward-only hand probes
+(`bp35_p1.py` started: the 9/11 piece slides on A3/A4, a 1141-cell global event fires
+under the x43-47 chute, A7 is context-dependent).
 Validated: sp80 L1 `[4,4,4,5]` in 38 expansions, ls20 L1 in 13 actions, tu93 L1 in 18
 ← results/bfs-control.txt, bfs-control-ls20.txt, tu93-bfs.txt. **A null means nothing
 unless it reports `exhausted=True` AND the depth covers a whole life.** Not rules-legal
