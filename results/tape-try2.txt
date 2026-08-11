@@ -1,0 +1,31 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 23:12:11 | INFO | Got anonymous API key: 1ecdff90-04d4-4c51-934a-6a392b0ca94d
+2026-08-11 23:12:11 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 23:12:12 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 23:12:12 | INFO | Created new scorecard: cadfcced-f875-4f52-a694-aa0cd9c3a1db
+2026-08-11 23:12:13 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 23:12:13 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+signature at reset: True
+  i= 0 A4             n=   47 cnt= 1 flood=None lvl=0 st=NOT_FINISHED
+  i= 1 A4             n=   47 cnt= 2 flood=None lvl=0 st=NOT_FINISHED
+  i= 2 click(33,15)   n=   36 cnt= 3 flood=None lvl=0 st=NOT_FINISHED
+  i= 3 A4             n=   47 cnt= 4 flood=None lvl=0 st=NOT_FINISHED
+  i= 4 click(39,15)   n=   43 cnt= 5 flood=None lvl=0 st=NOT_FINISHED
+  i= 5 A4             n= 1113 cnt= 6 flood=None lvl=0 st=NOT_FINISHED  RIDE
+  i= 6 A3             n= 1396 cnt= 7 flood=None lvl=0 st=NOT_FINISHED  RIDE
+  i= 7 click(27,39)   n=   31 cnt= 8 flood=None lvl=0 st=NOT_FINISHED
+  i= 8 click(21,39)   n=   31 cnt= 9 flood=None lvl=0 st=NOT_FINISHED
+  i= 9 click(15,39)   n=   31 cnt=10 flood=None lvl=0 st=NOT_FINISHED
+  i=10 A3             n=   47 cnt=11 flood=None lvl=0 st=NOT_FINISHED
+  i=11 A3             n=   47 cnt=12 flood=None lvl=0 st=NOT_FINISHED
+  i=12 click(27,24)   n=    1 cnt=13 flood=None lvl=0 st=NOT_FINISHED
+  i=13 A3             n=   47 cnt=14 flood=None lvl=0 st=NOT_FINISHED
+  i=14 click(21,33)   n= 1333 cnt=15 flood=None lvl=0 st=NOT_FINISHED  RIDE
+  i=15 A4             n=   47 cnt=16 flood=None lvl=0 st=NOT_FINISHED
+  i=16 A4             n=   47 cnt=17 flood=None lvl=0 st=NOT_FINISHED
+  i=17 click(33,33)   n=  747 cnt=18 flood=None lvl=0 st=NOT_FINISHED  RIDE
+  i=18 A3             n=   47 cnt=19 flood=None lvl=0 st=NOT_FINISHED
+  i=19 A3             n= 1312 cnt= 0 flood=7 lvl=1 st=NOT_FINISHED  RIDE
+  ** LEVEL 1 at action 20 **
+  i=20 driver answered None -- the rungs would take over
+levels: 1, at actions [20]

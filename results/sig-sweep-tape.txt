@@ -1,0 +1,64 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 23:13:52 | INFO | Got anonymous API key: 1ae2bb6b-99a5-4aef-890f-bde672a48351
+2026-08-11 23:13:52 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 23:13:53 | INFO | Successfully fetched 25 environment(s) from API
+game    cover   swap    haul    maze    dial    skewer  tape  
+2026-08-11 23:13:53 | INFO | Created new scorecard: 4765a757-453f-47b6-82eb-0a2192efdb14
+2026-08-11 23:13:54 | INFO | Successfully fetched metadata for game ar25
+2026-08-11 23:13:54 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+ar25    True    False   False   False   False   False   False 
+2026-08-11 23:13:55 | INFO | Successfully fetched metadata for game cn04
+2026-08-11 23:13:55 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+cn04    False   False   False   False   False   False   False 
+2026-08-11 23:13:57 | INFO | Successfully fetched metadata for game dc22
+2026-08-11 23:13:57 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22    False   False   False   False   False   False   False 
+2026-08-11 23:13:58 | INFO | Successfully fetched metadata for game ka59
+2026-08-11 23:13:58 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+ka59    False   False   False   False   False   False   False 
+2026-08-11 23:14:00 | INFO | Successfully fetched metadata for game ls20
+2026-08-11 23:14:00 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+ls20    False   False   False   False   False   False   False 
+2026-08-11 23:14:01 | INFO | Successfully fetched metadata for game m0r0
+2026-08-11 23:14:01 | INFO | Successfully loaded game class M0r0 from environment_files\m0r0\492f87ba\m0r0.py
+m0r0    False   False   False   False   False   False   False 
+2026-08-11 23:14:02 | INFO | Successfully fetched metadata for game re86
+2026-08-11 23:14:02 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+re86    True    False   False   False   False   False   False 
+2026-08-11 23:14:04 | INFO | Successfully fetched metadata for game sc25
+2026-08-11 23:14:04 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+sc25    False   False   False   False   False   False   False 
+2026-08-11 23:14:05 | INFO | Successfully fetched metadata for game sp80
+2026-08-11 23:14:05 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+sp80    False   True    False   False   False   False   False 
+2026-08-11 23:14:07 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 23:14:07 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+bp35    True    False   False   False   False   False   True  
+2026-08-11 23:14:09 | INFO | Successfully fetched metadata for game g50t
+2026-08-11 23:14:09 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+g50t    False   False   False   False   False   False   False 
+2026-08-11 23:14:10 | INFO | Successfully fetched metadata for game sk48
+2026-08-11 23:14:10 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+sk48    False   False   False   False   False   True    False 
+2026-08-11 23:14:11 | INFO | Successfully fetched metadata for game tr87
+2026-08-11 23:14:11 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+tr87    True    False   False   False   True    False   False 
+2026-08-11 23:14:13 | INFO | Successfully fetched metadata for game tu93
+2026-08-11 23:14:13 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+tu93    False   False   False   True    False   False   False 
+2026-08-11 23:14:14 | INFO | Successfully fetched metadata for game wa30
+2026-08-11 23:14:14 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+wa30    False   False   True    False   False   False   False 
+2026-08-11 23:14:16 | INFO | Successfully fetched metadata for game cd82
+2026-08-11 23:14:16 | INFO | Successfully loaded game class Cd82 from environment_files\cd82\fb555c5d\cd82.py
+cd82    False   False   False   False   False   False   False 
+2026-08-11 23:14:17 | INFO | Successfully fetched metadata for game sb26
+2026-08-11 23:14:17 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+sb26    False   False   False   False   False   False   False 
+
+fired: {'cover': ['ar25', 're86', 'bp35', 'tr87'], 'swap': ['sp80'], 'haul': ['wa30'], 'maze': ['tu93'], 'dial': ['tr87'], 'skewer': ['sk48'], 'tape': ['bp35']}
+drivers not firing on exactly their own game: {}
+contested: bp35 claimed by ['tape', 'cover']; asked first = tape, built for it = tape
+contested: tr87 claimed by ['dial', 'cover']; asked first = dial, built for it = dial
+contested games where the wrong driver is asked first: {}
+VERDICT: PASS

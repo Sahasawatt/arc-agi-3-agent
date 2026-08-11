@@ -5,25 +5,27 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **11/17 games with a level, mean 6.320%**
-(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · sk48 2.778 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-skewer.log (sweep_diff vs sweep-dial.log, control sk48: 16/17 identical to the digit, PASS)
+Clear ≥1 level in EVERY game. Standing: **12/17 games with a level, mean 6.451%**
+(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-tape.log (sweep_diff vs sweep-click-aimed.log, control bp35: 16/17 identical to the digit, PASS)
 
-## THE PATTERN THAT WORKS — four games have fallen to it, follow it
+## THE PATTERN THAT WORKS — five games have fallen to it, follow it
 
 1. `probe_found.py <game>` — determinism, step rate, census, board dump, baselines.
 2. `probe_acts.py <game> 8` — per-action diffs, guarded against empty frames.
 3. Hypothesis probes until the mechanic is MEASURED.
 4. **Solve level 1 BY HAND** with a scripted action list, verified forward-only.
-5. Only then build a rung, shaped like `cover.py` / `swap.py` / `haul.py` / `maze.py` / `dial.py`,
+5. Only then build a rung, shaped like `cover.py` / `swap.py` / `haul.py` / `maze.py` /
+   `dial.py` / `skewer.py` / `tape.py`,
    and measure its signature with `sigs.py` (every SHIPPED predicate x 17 reset frames)
    BEFORE wiring. Signatures are no longer all disjoint: `cover`'s fires on four games,
    so a contested game is settled by CASCADE ORDER and `sigs.py` checks that.
 
 `bfs_solve.py <game> <depth> <nodes> [clock_rows]` searches real engine states with
 deepcopy nodes; an action the engine answers None 25x in a row is retired for the run
-(bp35/cn04's click raises inside the game -- without the latch every expansion pays the
-exception and the log drowns in tracebacks). ⚠️ **bp35 cannot be BFS'd at all**: its own
+(bp35/cn04's click answered KeyError while the coordinates were being attached the way
+the local wrapper ignores -- see QUEUE 1; the latch is still right, since a click can be
+answered with None for other reasons). ⚠️ **bp35 cannot be BFS'd at all**: its own
 game code recurses infinitely on a deepcopied env (RecursionError persists at limit
 20000 -- deepcopy likely breaks an object-identity invariant, e.g. a visited set). The
 instrument is dead there, not the game; bp35 needs forward-only hand probes
@@ -36,13 +38,14 @@ unless it reports `exhausted=True` AND the depth covers a whole life.** Not rule
 
 ## GATE
 
-Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`skewer.py`/`discover.py`/`gate.py` =
+Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`skewer.py`/
+`tape.py`/`discover.py`/`gate.py` =
 full 17-game sweep before commit, per-game, no game loses a level ← CLAUDE.md.
 
 ```bash
 ./.venv/Scripts/python.exe compete.py > results/sweep-<name>.log 2>&1
 ```
-~90 min. Compare with the parser, never by eye and never with `diff` (rewritten here):
+~100 min (bp35's level 2 alone spends 2,202 actions). Compare with the parser, never by eye and never with `diff` (rewritten here):
 ```bash
 ./.venv/Scripts/python.exe sweep_diff.py <before.log> <after.log> <game-expected-to-change>
 ```
@@ -50,10 +53,10 @@ The third argument is the positive control — it refuses to report "identical" 
 SEEN a difference in the game the change was aimed at. Hardcoding it worked for exactly one
 comparison and then fired on the next.
 
-Values that must not move ← results/sweep-skewer.log:
+Values that must not move ← results/sweep-tape.log:
 - ls20 **7/7** `[23, 45, 99, 178, 292, 209, 526]` · re86 **5/8** `[31, 56, 66, 80, 188]`
 - tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sk48 **1/8** `[24]` · sp80 `[16]`
-  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]`
+  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]` · bp35 `[20]`
 - pytest **330 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
 
 Recon-only work needs no sweep.
@@ -61,7 +64,7 @@ Recon-only work needs no sweep.
 ## QUEUE (highest value first)
 
 0. **Kaggle submission — READY, needs the human.** The FULL agent (compete.play,
-   rungs + all six drivers) runs unchanged on a worker thread behind a queue-backed
+   rungs + all seven drivers) runs unchanged on a worker thread behind a queue-backed
    proxy env: `kaggle/adapter.py` + `kaggle/bundle.py` -> generated `kaggle/my_agent.py`
    (rebuild after ANY module change). Verified through the official starter kit's own
    harness: **ls20 7/7 WIN 43.59%**, per-level transitions identical to the local sweep
@@ -101,7 +104,19 @@ Recon-only work needs no sweep.
    the first click), then the full 17-game sweep — cn04 is the positive control for
    `sweep_diff.py` (its clicker stops being retired) and its 1/6 `[131]` is what to watch.
 
-2. **bp35 LEVEL 1 IS SOLVED BY HAND — build the driver.** 20 actions against a baseline
+2. **bp35 LEVEL 1: SHIPPED. `tape.py` is the seventh driver; bp35 is 1/9 [20], 2.222%,
+   and the sweep is clean — 16/17 identical to the digit, mean 6.320% -> 6.451%
+   (results/sweep-tape.log). What is left there is LEVEL 2, which nobody has seen and
+   which currently swallows 2,202 actions of `wander`.** The driver
+   rediscovers the line from the frame — `1/9 levels actions=[20]`, score 2.222%, the hand
+   line's own count ← results/tape-try2.txt, results/smoke-bp35-tape.txt. `sigs.py` PASSES
+   with it (fires on bp35 alone; cascade `dial → tape → cover → …`, because cover's loose
+   signature claims bp35 too) ← results/sig-sweep-tape.txt. pytest 330. It is the first
+   driver that drives with CLICKS, so it is built only where a complex action exists and
+   dropped if the clicker is retired. ⚠️ bp35 now takes ~10 minutes per run: its level 2
+   swallows 2,202 actions of `wander`, so the whole sweep is ~100 min, not ~90. Level 2 is
+   unseen and is the next bp35 question. Below is the hand line's own write-up:
+   20 actions against a baseline
    of 21, forward-only, two identical runs ← results/bp35-solution.txt (the full line and
    the mechanic behind every step), bp35-p17.txt/bp35-p17b.txt. The win is **walking onto
    a colour-7 object**; it lives in the room the THIRD ride reaches, which is why fourteen
