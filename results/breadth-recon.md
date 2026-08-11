@@ -1450,3 +1450,31 @@ consecutive events and diff the conveyor steps; (c) what the win condition
 could be -- baseline 21 for level 1 is roughly piece-to-chute (4) + a few
 events + slack, so "step the conveyor until some alignment" is the shape to
 test first.
+
+### bp35, second pass: A7 is LEFT, the event fires on every chute crossing, and crossings are a BUDGET (2026-08-11)
+
+- **A7 is a move-left** -- piece_x walks 44 -> 38 -> 32 -> 26 -> 20 under
+  repeated A7 and no-ops at the left wall, which is why it read "no-op" from
+  reset (the piece starts against that wall) and "context-dependent" before:
+  the roster's no-op trap, third appearance this campaign (`bp35-p3.txt`).
+  Why the game has TWO left actions (3 and 7) is unknown -- suspect they
+  differ somewhere not yet visible.
+- **The 1,141-cell event fires on EVERY crossing of x44** (under the chute):
+  A4 arriving, A3 leaving, A7 leaving -- all fire it (`bp35-p3.txt`,
+  `bp35-p4.txt`).
+- **Crossings are a BUDGET, not a pump.** Shuttling across the chute fires
+  events that ERASE the board from the bottom up -- bands y48+ empty first,
+  then y42, y36 -- while bands y0-36 hold perfectly still; at the SIXTH event
+  the run is GAME_OVER (`bp35-p4.txt`). The final event also degraded the
+  right column's 4-block group to ~1 block. Reading: each crossing burns a
+  finite tape (fuel? terrain passed?), and whatever the level wants must
+  happen within ~5 crossings. The rocket-shaped piece (9 body, 11 flame)
+  suggests an ASCENT frame -- each event one stage climbed, the emptying
+  bands the world passing below -- but that is a hypothesis, not a
+  measurement.
+- Next probes: (a) what distinguishes A3 from A7; (b) dump the FULL frame at
+  each of the six events in one run and diff properly (the band fingerprint
+  hides sub-band structure -- the "static" top may be animating inside
+  bands); (c) steer DURING the burn: cross once, then explore with A3/A4
+  between crossings and watch whether the e-block groups interact with the
+  piece at all.

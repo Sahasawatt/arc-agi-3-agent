@@ -1,0 +1,49 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 20:43:49 | INFO | Got anonymous API key: 6f2e5a99-b6f3-47ba-991d-46dfa70c2650
+2026-08-11 20:43:49 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 20:43:50 | INFO | Successfully fetched 25 environment(s) from API
+== (a) A7 from every reachable piece x ==
+2026-08-11 20:43:50 | INFO | Created new scorecard: ebcf313a-087a-4a75-a52c-3d743ac44992
+2026-08-11 20:43:51 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 20:43:51 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+  after 0x A4 (piece x=20): A7 -> 1 cells = no-op  lvl=0
+2026-08-11 20:43:52 | INFO | Successfully fetched metadata for game bp35
+  after 1x A4 (piece x=26): A7 -> 47 cells = piece-move  lvl=0
+2026-08-11 20:43:53 | INFO | Successfully fetched metadata for game bp35
+  after 2x A4 (piece x=32): A7 -> 47 cells = piece-move  lvl=0
+2026-08-11 20:43:55 | INFO | Successfully fetched metadata for game bp35
+  after 3x A4 (piece x=38): A7 -> 47 cells = piece-move  lvl=0
+2026-08-11 20:43:56 | INFO | Successfully fetched metadata for game bp35
+  after 4x A4 (piece x=44): A7 -> 1141 cells = EVENT  lvl=0
+2026-08-11 20:43:57 | INFO | Successfully fetched metadata for game bp35
+  after 5x A4 (piece x=50): A7 -> 47 cells = piece-move  lvl=0
+
+== (b) park under the chute, A7 repeatedly ==
+2026-08-11 20:43:58 | INFO | Successfully fetched metadata for game bp35
+after arrival event, piece x = 44
+    y00  BOX|BOX
+    y06   3G|.
+    y12   3G|BOX
+    y18   3G|BOX
+    y24    .|BOX
+    y30    .|4G
+    y36  BOX|BOX
+    y42  BOX|BOX
+    y48    .|box
+    y54  BOX|BOX
+A7 #0: 1141 cells  lvl=0 state=NOT_FINISHED piece_x=38
+    y00   3G|BOX
+    y06    .|BOX
+    y12    .|4G
+    y18  BOX|BOX
+    y24  BOX|BOX
+    y30    .|box
+    y36  BOX|BOX
+    y42  BOX|BOX
+    y48  BOX|BOX
+    y54  BOX|BOX
+A7 #1: 47 cells  lvl=0 state=NOT_FINISHED piece_x=32
+A7 #2: 47 cells  lvl=0 state=NOT_FINISHED piece_x=26
+A7 #3: 47 cells  lvl=0 state=NOT_FINISHED piece_x=20
+A7 #4: 1 cells  lvl=0 state=NOT_FINISHED piece_x=20
+A7 #5: 1 cells  lvl=0 state=NOT_FINISHED piece_x=20

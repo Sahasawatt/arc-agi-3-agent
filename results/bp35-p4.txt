@@ -1,0 +1,15 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 20:44:49 | INFO | Got anonymous API key: 27badad1-8138-4d59-a0ee-ad42ec66fb74
+2026-08-11 20:44:49 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 20:44:50 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 20:44:50 | INFO | Created new scorecard: 9830ed15-946f-4ebf-9f58-c6af6c2ecc10
+2026-08-11 20:44:51 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 20:44:51 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+i=3 A4 EVENT #1: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b B/B
+i=15 A3 EVENT #2: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b b/b
+i=17 A3 EVENT #3: B/B 3G/. 3G/B 3G/B ./B ./4G B/B B/B ./b ./.
+i=19 A3 EVENT #4: B/B 3G/. 3G/B 3G/B ./B ./4G B/B b/B ./. ./.
+i=21 A3 EVENT #5: B/B 3G/. 3G/B 3G/B ./B ./4G b/b ./. ./. ./.
+i=23 A3 EVENT #6: B/B 3G/. 3G/B 3G/B ./B ./1G ./. ./. ./. ./.
+i=23: GAME_OVER after 6 events
+done: 6 events, lvl=0, state=GAME_OVER
