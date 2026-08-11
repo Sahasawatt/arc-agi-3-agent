@@ -1724,3 +1724,36 @@ sb26, probed the same session, is the opposite outcome and is written up in
 `results/breadth-recon.md`: every input channel measured dead at every reachable state —
 clicks swallowed before the game logic (they do not even tick the clock), the free action
 silent at all 64 bar lengths, the burn action a pure timer. A wall, filed behind dc22.
+
+
+## The Kaggle port: the whole agent through a queue (2026-08-11)
+
+The competition notebook drives an agent through `choose_action(frames, latest_frame)`
+— it inverts control, where `compete.play` drives an environment. Rather than rewrite
+seven hundred measured lines as a state machine, the bundle runs `play` UNCHANGED on a
+worker thread against a proxy environment whose `reset`/`step` block on a queue;
+`choose_action` answers the queue (`kaggle/adapter.py`). `kaggle/bundle.py` embeds all
+fifteen modules (zlib+base64) into the one file the official starter kit splices into
+the submission notebook.
+
+Verified through the starter kit's own harness — the same `Agent.main()` loop the
+Kaggle gateway drives: **ls20 7/7 WIN at 43.59%**, per-level transitions identical to
+the local sweep to the action; the six driver games identical to their compete.py
+numbers. Three traps that cost a run each:
+
+* **`GameAction(v)` raises on every int** — the enum's `.value` is a property over a
+  richer `_value_`, so lookup-by-call never works. Map `{int(a.value): a}` instead.
+* **A module exec'd into a namespace must be in `sys.modules` BEFORE exec** — the
+  `@dataclass` decorator resolves its own module through `sys.modules` at
+  class-creation time, and registering after exec hands it `None`.
+* **A per-round timeout is a fail-open kill switch, not a safety net.** ls20's level-6
+  patrol planner legitimately thinks for minutes on one round; a 120s timeout killed
+  the worker mid-level, the random fallback played the rest, and the run reported 5/7
+  with no error anywhere — the tell was the accounting file truncated at the OS buffer
+  boundary (never closed = worker still blocked) plus resets every ~130 actions in the
+  tail (the fallback dying to the lives clock). The timeout is now 1800s and exists
+  only against a true hang; Kaggle's own wall clock bounds the run.
+
+What a submission still needs from a human: accept the competition rules, put a Kaggle
+username in the starter kit's `kernel-metadata.json`, `make submit`, then Save & Run
+All and Submit to Competition on the kernel page.

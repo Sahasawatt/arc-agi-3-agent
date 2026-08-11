@@ -936,7 +936,36 @@ before adding a sixth. Two things it exists to enforce:
 `play.py` is the older rewinding searcher and is **not** rules-legal — its numbers are
 upper bounds from a dev mode the competition does not offer.
 
+## The Kaggle bundle
+
+`kaggle/bundle.py` builds `kaggle/my_agent.py` -- the single-file submission agent the
+official starter kit splices into the Kaggle notebook. It embeds every module
+(zlib+base64, registered in `sys.modules` BEFORE exec or dataclasses break) and runs
+`compete.play` unchanged on a worker thread behind a queue-backed proxy env
+(`kaggle/adapter.py`). Verified through the starter kit's harness: ls20 7/7 at 43.59%,
+driver games identical to compete.py (`results/kaggle-ls20-v2.txt`, `kaggle-local*.txt`).
+**Rebuild the bundle after any change to the modules it embeds** -- it is a build
+artifact, never hand-edited. Two mechanics that cost a run each: `GameAction(v)` raises
+on every int (map `{int(a.value): a}`), and the adapter's per-round timeout must dwarf
+the slowest planning round (level-6 rounds think for minutes; 120s killed the worker
+mid-run and the random fallback's 5/7 looked like a logic bug).
+
 ## Git
 
 Branch `master`, remote `Sahasawatt/arc-agi-3-agent` (public, MIT-0 — the competition requires
 open source for prize eligibility). **Ask before every commit**, and stage files by name.
+
+## The Kaggle submission pipeline (`kaggle/`)
+
+`kaggle/bundle.py` embeds the agent's modules (zlib+base64) plus the adapter class from
+`kaggle/adapter.py` into `kaggle/my_agent.py` — the ONE file the official starter kit
+(`github.com/arcprize/ARC-AGI-3-Kaggle-Starter`) splices into the submission notebook.
+The generated file is a build artifact: never hand-edit, rebuild after any module change.
+The adapter runs `compete.play` UNCHANGED on a worker thread against a queue-backed proxy
+environment, because the Kaggle framework inverts control (it calls `choose_action` per
+move, play() drives an env). Mechanics that already bit: `GameAction(v)` raises on every
+int (`.value` is a property — map by iteration); a module must be in `sys.modules` BEFORE
+its source is exec'd (dataclasses resolve their module at class-creation); local
+`play_local` SSL-fails on the SECOND game per process (first always works — Kaggle's
+gateway is unaffected). Verification state lives in the brief's QUEUE item 0: levels 1-5
+of ls20 replay through the pipe action-for-action; level 6 diverges, under measurement.

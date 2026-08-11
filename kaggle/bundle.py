@@ -4,18 +4,18 @@
 
 The competition's starter kit (`github.com/arcprize/ARC-AGI-3-Kaggle-Starter`)
 splices ONE file -- `agent/my_agent.py` -- into the submission notebook, so
-everything the agent needs must live in that file. This script embeds the six
-driver modules verbatim (zlib+base64, because their sources contain every
-quoting style) and appends the adapter class from `kaggle/adapter.py`.
+everything the agent needs must live in that file. This script embeds the agent's
+modules verbatim (zlib+base64, because their sources contain every quoting
+style) and appends the adapter class from `kaggle/adapter.py`.
 
 The drivers are the source of truth; `kaggle/my_agent.py` is a build artifact
 and is never edited by hand. Rebuild after any driver change.
 
-What this bundle is NOT: the full `compete.py` rung machinery (the thing that
-plays ls20 at 43%). That loop drives the environment directly and the Kaggle
-framework inverts control -- porting it is its own project. This bundle is
-the six drivers plus a random fallback, which is the roster's other ten
-games' current strategy anyway.
+The bundle carries the FULL agent -- `compete.play`, the rung machinery that
+plays ls20 at 43% plus all six whole-game drivers. `play` drives an
+environment directly and the Kaggle framework inverts control, so the
+adapter runs it on a worker thread against a queue-backed proxy env; see
+`kaggle/adapter.py`.
 """
 from __future__ import annotations
 
@@ -24,7 +24,11 @@ import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULES = ["cover", "swap", "haul", "maze", "dial", "skewer"]
+# Dependency order matters: each module's imports must already be in
+# sys.modules when it executes.
+MODULES = ["identity", "perception", "signals", "trace", "discover", "plan",
+           "gate", "cover", "swap", "haul", "maze", "dial", "skewer",
+           "scoring", "compete"]
 OUT = ROOT / "kaggle" / "my_agent.py"
 ADAPTER = ROOT / "kaggle" / "adapter.py"
 
@@ -38,8 +42,10 @@ of truth: github.com/Sahasawatt/arc-agi-3-agent
 from __future__ import annotations
 
 import base64 as _b64
+import queue
 import random
 import sys as _sys
+import threading
 import types as _types
 import zlib as _zlib
 from typing import Any
@@ -55,8 +61,9 @@ LOADER = '''
 def _load(name, blob):
     m = _types.ModuleType(name)
     src = _zlib.decompress(_b64.b64decode(blob)).decode("utf-8")
+    _sys.modules[name] = m   # BEFORE exec: dataclasses resolve their own
+    #                          module through sys.modules at class-creation
     exec(compile(src, name + ".py", "exec"), m.__dict__)
-    _sys.modules[name] = m
     return m
 
 '''

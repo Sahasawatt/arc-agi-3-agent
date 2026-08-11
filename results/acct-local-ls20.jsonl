@@ -1,0 +1,2342 @@
+{"i": 0, "lvl": 0, "src": "wander", "v": 1}
+{"i": 1, "lvl": 0, "src": "wander", "v": 2}
+{"i": 2, "lvl": 0, "src": "wander", "v": 3}
+{"i": 3, "lvl": 0, "src": "wander", "v": 4}
+{"i": 4, "lvl": 0, "src": "wander", "v": 2}
+{"i": 5, "lvl": 0, "src": "cand", "v": 1}
+{"i": 6, "lvl": 0, "src": "cand", "v": 1}
+{"i": 7, "lvl": 0, "src": "cand", "v": 1}
+{"i": 8, "lvl": 0, "src": "cand", "v": 3}
+{"i": 9, "lvl": 0, "src": "cand", "v": 3}
+{"i": 10, "lvl": 0, "src": "cand", "v": 3}
+{"i": 11, "lvl": 0, "src": "cand", "v": 1}
+{"i": 12, "lvl": 0, "src": "cand", "v": 3}
+{"i": 13, "lvl": 0, "src": "cand", "v": 3}
+{"i": 14, "lvl": 0, "src": "cand", "v": 2}
+{"i": 15, "lvl": 0, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 0}
+{"i": 16, "lvl": 0, "src": "door", "v": 1}
+{"i": 17, "lvl": 0, "src": "door", "v": 4}
+{"i": 18, "lvl": 0, "src": "door", "v": 4}
+{"i": 19, "lvl": 0, "src": "door", "v": 4}
+{"i": 20, "lvl": 0, "src": "door", "v": 1}
+{"i": 21, "lvl": 0, "src": "door", "v": 1}
+{"i": 22, "lvl": 0, "src": "door", "v": 1}
+{"i": 23, "lvl": 1, "src": "wander", "v": 1}
+{"i": 24, "lvl": 1, "src": "cand", "v": 4}
+{"i": 25, "lvl": 1, "src": "cand", "v": 1}
+{"i": 26, "lvl": 1, "src": "cand", "v": 1}
+{"i": 27, "lvl": 1, "src": "cand", "v": 1}
+{"i": 28, "lvl": 1, "src": "cand", "v": 1}
+{"i": 29, "lvl": 1, "src": "cand", "v": 1}
+{"i": 30, "lvl": 1, "src": "cand", "v": 4}
+{"i": 31, "lvl": 1, "src": "cand", "v": 4}
+{"i": 32, "lvl": 1, "src": "cand", "v": 2}
+{"i": 33, "lvl": 1, "src": "cand", "v": 4}
+{"i": 34, "lvl": 1, "src": "cand", "v": 2}
+{"i": 35, "lvl": 1, "src": "cand", "v": 2}
+{"i": 36, "lvl": 1, "src": "cand", "v": 2}
+{"i": 37, "lvl": 1, "src": "cand", "v": 2}
+{"i": 38, "lvl": 1, "src": "cand", "v": 2}
+{"i": 39, "lvl": 1, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 1}
+{"i": 40, "lvl": 1, "src": "cand", "v": 2}
+{"i": 41, "lvl": 1, "src": "cand", "v": 3}
+{"i": 42, "lvl": 1, "src": "cand", "v": 3}
+{"i": 43, "lvl": 1, "src": "turn-walk", "v": 4}
+{"i": 44, "lvl": 1, "src": "turn-walk", "v": 1}
+{"i": 45, "lvl": 1, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 1}
+{"i": 46, "lvl": 1, "src": "cycle-on-turn", "v": 1}
+{"i": 47, "lvl": 1, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 1}
+{"i": 48, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 49, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 50, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 51, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 52, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 53, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 54, "lvl": 1, "src": "door-fuel", "v": 1}
+{"i": 55, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 56, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 57, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 58, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 59, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 60, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 61, "lvl": 1, "src": "door-fuel", "v": 2}
+{"i": 62, "lvl": 1, "src": "door-fuel", "v": 3}
+{"i": 63, "lvl": 1, "src": "door", "v": 2}
+{"i": 64, "lvl": 1, "src": "door", "v": 2}
+{"i": 65, "lvl": 1, "src": "door", "v": 2}
+{"i": 66, "lvl": 1, "src": "door", "v": 2}
+{"i": 67, "lvl": 1, "src": "door", "v": 2}
+{"i": 68, "lvl": 2, "src": "wander", "v": 2}
+{"i": 69, "lvl": 2, "src": "cand", "v": 1}
+{"i": 70, "lvl": 2, "src": "cand", "v": 1}
+{"i": 71, "lvl": 2, "src": "cand", "v": 1}
+{"i": 72, "lvl": 2, "src": "cand", "v": 1}
+{"i": 73, "lvl": 2, "src": "cand", "v": 1}
+{"i": 74, "lvl": 2, "src": "cand", "v": 1}
+{"i": 75, "lvl": 2, "src": "cand", "v": 1}
+{"i": 76, "lvl": 2, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 2}
+{"i": 77, "lvl": 2, "src": "cand", "v": 3}
+{"i": 78, "lvl": 2, "src": "cand", "v": 2}
+{"i": 79, "lvl": 2, "src": "cand", "v": 2}
+{"i": 80, "lvl": 2, "src": "cand", "v": 2}
+{"i": 81, "lvl": 2, "src": "cand", "v": 2}
+{"i": 82, "lvl": 2, "src": "cand", "v": 2}
+{"i": 83, "lvl": 2, "src": "cand", "v": 2}
+{"i": 84, "lvl": 2, "src": "cand", "v": 2}
+{"i": 85, "lvl": 2, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 2}
+{"i": 86, "lvl": 2, "src": "desperate", "v": 1}
+{"i": 87, "lvl": 2, "src": "desperate", "v": 1}
+{"i": 88, "lvl": 2, "src": "desperate", "v": 1}
+{"i": 89, "lvl": 2, "src": "desperate", "v": 3}
+{"event": "chg", "lvl": 2}
+{"event": "silentdeath", "lvl": 2}
+{"i": 90, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 91, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 92, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 93, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 94, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 95, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 96, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 97, "lvl": 2, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 2}
+{"i": 98, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 99, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 100, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 101, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 102, "lvl": 2, "src": "probe", "v": 2}
+{"i": 103, "lvl": 2, "src": "probe", "v": 2}
+{"i": 104, "lvl": 2, "src": "probe", "v": 4}
+{"i": 105, "lvl": 2, "src": "probe", "v": 4}
+{"i": 106, "lvl": 2, "src": "probe", "v": 4}
+{"i": 107, "lvl": 2, "src": "probe", "v": 4}
+{"i": 108, "lvl": 2, "src": "probe", "v": 1}
+{"i": 109, "lvl": 2, "src": "probe", "v": 1}
+{"i": 110, "lvl": 2, "src": "probe", "v": 1}
+{"i": 111, "lvl": 2, "src": "probe", "v": 1}
+{"event": "slid", "lvl": 2}
+{"i": 112, "lvl": 2, "src": "probe", "v": 1}
+{"i": 113, "lvl": 2, "src": "probe", "v": 1}
+{"i": 114, "lvl": 2, "src": "probe", "v": 1}
+{"i": 115, "lvl": 2, "src": "probe", "v": 1}
+{"i": 116, "lvl": 2, "src": "probe", "v": 1}
+{"i": 117, "lvl": 2, "src": "probe", "v": 1}
+{"i": 118, "lvl": 2, "src": "probe", "v": 3}
+{"i": 119, "lvl": 2, "src": "probe", "v": 1}
+{"event": "chg", "lvl": 2}
+{"i": 120, "lvl": 2, "src": "probe", "v": 1}
+{"i": 121, "lvl": 2, "src": "probe", "v": 4}
+{"event": "slid", "lvl": 2}
+{"i": 122, "lvl": 2, "src": "desperate", "v": 1}
+{"i": 123, "lvl": 2, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 2}
+{"event": "silentdeath", "lvl": 2}
+{"i": 124, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 125, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 126, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 127, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 128, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 129, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 130, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 131, "lvl": 2, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 2}
+{"i": 132, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 133, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 134, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 135, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 136, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 137, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 138, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 139, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 140, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 141, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 142, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 143, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 144, "lvl": 2, "src": "stage1", "v": 2}
+{"event": "chg", "lvl": 2}
+{"i": 145, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 146, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 147, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 148, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 149, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 150, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 151, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 152, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 153, "lvl": 2, "src": "stage1", "v": 2}
+{"i": 154, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 155, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 156, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 157, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 158, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 159, "lvl": 2, "src": "stage1", "v": 1}
+{"i": 160, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 161, "lvl": 2, "src": "stage1", "v": 1}
+{"event": "chg", "lvl": 2}
+{"i": 162, "lvl": 2, "src": "stage1", "v": 3}
+{"i": 163, "lvl": 2, "src": "stage1", "v": 4}
+{"event": "chg", "lvl": 2}
+{"i": 164, "lvl": 2, "src": "stage1", "v": 4}
+{"i": 165, "lvl": 2, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 2}
+{"i": 166, "lvl": 2, "src": "door", "v": 2}
+{"i": 167, "lvl": 3, "src": "wander", "v": 1}
+{"i": 168, "lvl": 3, "src": "cand", "v": 3}
+{"i": 169, "lvl": 3, "src": "cand", "v": 3}
+{"i": 170, "lvl": 3, "src": "cand", "v": 3}
+{"i": 171, "lvl": 3, "src": "cand", "v": 2}
+{"i": 172, "lvl": 3, "src": "cand", "v": 3}
+{"i": 173, "lvl": 3, "src": "cand", "v": 2}
+{"i": 174, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 175, "lvl": 3, "src": "cand", "v": 3}
+{"i": 176, "lvl": 3, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 177, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 178, "lvl": 3, "src": "cand", "v": 2}
+{"i": 179, "lvl": 3, "src": "cand", "v": 3}
+{"i": 180, "lvl": 3, "src": "cand", "v": 3}
+{"i": 181, "lvl": 3, "src": "cand", "v": 3}
+{"i": 182, "lvl": 3, "src": "cand", "v": 3}
+{"i": 183, "lvl": 3, "src": "cand", "v": 1}
+{"i": 184, "lvl": 3, "src": "cand", "v": 1}
+{"i": 185, "lvl": 3, "src": "cand", "v": 1}
+{"i": 186, "lvl": 3, "src": "cand", "v": 1}
+{"i": 187, "lvl": 3, "src": "cand", "v": 1}
+{"i": 188, "lvl": 3, "src": "cand", "v": 4}
+{"i": 189, "lvl": 3, "src": "cand", "v": 4}
+{"i": 190, "lvl": 3, "src": "cand", "v": 1}
+{"i": 191, "lvl": 3, "src": "cand", "v": 4}
+{"i": 192, "lvl": 3, "src": "cand", "v": 4}
+{"i": 193, "lvl": 3, "src": "cand", "v": 4}
+{"i": 194, "lvl": 3, "src": "cand", "v": 2}
+{"i": 195, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 196, "lvl": 3, "src": "cand", "v": 2}
+{"i": 197, "lvl": 3, "src": "cand", "v": 2}
+{"i": 198, "lvl": 3, "src": "cand", "v": 2}
+{"i": 199, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 200, "lvl": 3, "src": "wander", "v": 4}
+{"i": 201, "lvl": 3, "src": "near-fuel", "v": 3}
+{"i": 202, "lvl": 3, "src": "near-fuel", "v": 2}
+{"i": 203, "lvl": 3, "src": "near-fuel", "v": 2}
+{"i": 204, "lvl": 3, "src": "near-fuel", "v": 3}
+{"i": 205, "lvl": 3, "src": "near-fuel", "v": 3}
+{"i": 206, "lvl": 3, "src": "near-fuel", "v": 3}
+{"i": 207, "lvl": 3, "src": "near-fuel", "v": 3}
+{"i": 208, "lvl": 3, "src": "cand", "v": 4}
+{"i": 209, "lvl": 3, "src": "cand", "v": 4}
+{"i": 210, "lvl": 3, "src": "cand", "v": 4}
+{"i": 211, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 212, "lvl": 3, "src": "cand", "v": 3}
+{"i": 213, "lvl": 3, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 214, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 215, "lvl": 3, "src": "cand", "v": 4}
+{"i": 216, "lvl": 3, "src": "cand", "v": 4}
+{"event": "slid", "lvl": 3}
+{"i": 217, "lvl": 3, "src": "cand", "v": 4}
+{"i": 218, "lvl": 3, "src": "cand", "v": 4}
+{"event": "slid", "lvl": 3}
+{"i": 219, "lvl": 3, "src": "cand", "v": 2}
+{"i": 220, "lvl": 3, "src": "cand", "v": 3}
+{"i": 221, "lvl": 3, "src": "cand", "v": 3}
+{"i": 222, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 223, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 224, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 225, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 226, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 227, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 228, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 229, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 230, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 231, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 232, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 233, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 234, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 235, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 236, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 237, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 238, "lvl": 3, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 239, "lvl": 3, "src": "cand", "v": 4}
+{"i": 240, "lvl": 3, "src": "cand", "v": 2}
+{"i": 241, "lvl": 3, "src": "cand", "v": 4}
+{"i": 242, "lvl": 3, "src": "cand", "v": 4}
+{"i": 243, "lvl": 3, "src": "cand", "v": 1}
+{"i": 244, "lvl": 3, "src": "cand", "v": 1}
+{"i": 245, "lvl": 3, "src": "cand", "v": 4}
+{"i": 246, "lvl": 3, "src": "cand", "v": 4}
+{"event": "slid", "lvl": 3}
+{"i": 247, "lvl": 3, "src": "cand", "v": 4}
+{"i": 248, "lvl": 3, "src": "cand", "v": 4}
+{"event": "slid", "lvl": 3}
+{"i": 249, "lvl": 3, "src": "cand", "v": 2}
+{"i": 250, "lvl": 3, "src": "cand", "v": 3}
+{"i": 251, "lvl": 3, "src": "cand", "v": 3}
+{"i": 252, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 253, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 254, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 255, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 256, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 257, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 258, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 259, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 260, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 261, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 262, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 263, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 264, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 265, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 266, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 267, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 268, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 269, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 270, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 271, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 272, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 273, "lvl": 3, "src": "cand", "v": 4}
+{"i": 274, "lvl": 3, "src": "cand", "v": 1}
+{"i": 275, "lvl": 3, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 276, "lvl": 3, "src": "cand", "v": 1}
+{"event": "chg", "lvl": 3}
+{"i": 277, "lvl": 3, "src": "desperate", "v": 2}
+{"i": 278, "lvl": 3, "src": "desperate", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 279, "lvl": 3, "src": "cand", "v": 4}
+{"i": 280, "lvl": 3, "src": "cand", "v": 1}
+{"i": 281, "lvl": 3, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 282, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "chg", "lvl": 3}
+{"i": 283, "lvl": 3, "src": "cycle-last", "v": 2}
+{"i": 284, "lvl": 3, "src": "cycle-last", "v": 1}
+{"event": "chg", "lvl": 3}
+{"i": 285, "lvl": 3, "src": "wander", "v": 4}
+{"event": "chg", "lvl": 3}
+{"event": "silentdeath", "lvl": 3}
+{"i": 286, "lvl": 3, "src": "probe", "v": 3}
+{"i": 287, "lvl": 3, "src": "probe", "v": 3}
+{"i": 288, "lvl": 3, "src": "probe", "v": 3}
+{"i": 289, "lvl": 3, "src": "probe", "v": 2}
+{"i": 290, "lvl": 3, "src": "probe", "v": 2}
+{"i": 291, "lvl": 3, "src": "probe", "v": 2}
+{"i": 292, "lvl": 3, "src": "probe", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 293, "lvl": 3, "src": "probe", "v": 2}
+{"i": 294, "lvl": 3, "src": "probe", "v": 2}
+{"i": 295, "lvl": 3, "src": "probe", "v": 3}
+{"i": 296, "lvl": 3, "src": "probe", "v": 3}
+{"i": 297, "lvl": 3, "src": "probe", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 298, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 299, "lvl": 3, "src": "stage1", "v": 3}
+{"i": 300, "lvl": 3, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 3}
+{"i": 301, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 302, "lvl": 3, "src": "stage1", "v": 2}
+{"i": 303, "lvl": 3, "src": "stage1", "v": 3}
+{"i": 304, "lvl": 3, "src": "stage1", "v": 3}
+{"i": 305, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 306, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 307, "lvl": 3, "src": "stage1", "v": 1}
+{"event": "chg", "lvl": 3}
+{"i": 308, "lvl": 3, "src": "cand", "v": 2}
+{"i": 309, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 310, "lvl": 3, "src": "cand", "v": 4}
+{"i": 311, "lvl": 3, "src": "cand", "v": 1}
+{"i": 312, "lvl": 3, "src": "cand", "v": 1}
+{"i": 313, "lvl": 3, "src": "cand", "v": 1}
+{"i": 314, "lvl": 3, "src": "cand", "v": 1}
+{"i": 315, "lvl": 3, "src": "cand", "v": 4}
+{"i": 316, "lvl": 3, "src": "cand", "v": 1}
+{"i": 317, "lvl": 3, "src": "cand", "v": 4}
+{"i": 318, "lvl": 3, "src": "cand", "v": 4}
+{"i": 319, "lvl": 3, "src": "cand", "v": 4}
+{"i": 320, "lvl": 3, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 3}
+{"i": 321, "lvl": 3, "src": "cand", "v": 2}
+{"i": 322, "lvl": 3, "src": "cand", "v": 2}
+{"i": 323, "lvl": 3, "src": "cand", "v": 3}
+{"i": 324, "lvl": 3, "src": "cand", "v": 3}
+{"i": 325, "lvl": 3, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 3}
+{"i": 326, "lvl": 3, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 3}
+{"i": 327, "lvl": 3, "src": "cycle-on-turn", "v": 1}
+{"i": 328, "lvl": 3, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 3}
+{"i": 329, "lvl": 3, "src": "cycle-on-turn", "v": 1}
+{"i": 330, "lvl": 3, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 3}
+{"i": 331, "lvl": 3, "src": "wander", "v": 4}
+{"i": 332, "lvl": 3, "src": "wander", "v": 3}
+{"i": 333, "lvl": 3, "src": "wander", "v": 1}
+{"i": 334, "lvl": 3, "src": "door", "v": 4}
+{"event": "slid", "lvl": 3}
+{"i": 335, "lvl": 3, "src": "door", "v": 2}
+{"i": 336, "lvl": 3, "src": "door", "v": 2}
+{"i": 337, "lvl": 3, "src": "door", "v": 3}
+{"i": 338, "lvl": 3, "src": "door", "v": 3}
+{"i": 339, "lvl": 3, "src": "door", "v": 3}
+{"i": 340, "lvl": 3, "src": "door", "v": 1}
+{"i": 341, "lvl": 3, "src": "door", "v": 1}
+{"i": 342, "lvl": 3, "src": "door", "v": 3}
+{"i": 343, "lvl": 3, "src": "door", "v": 3}
+{"i": 344, "lvl": 3, "src": "door", "v": 3}
+{"i": 345, "lvl": 4, "src": "wander", "v": 1}
+{"i": 346, "lvl": 4, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 347, "lvl": 4, "src": "cand", "v": 1}
+{"i": 348, "lvl": 4, "src": "cand", "v": 3}
+{"i": 349, "lvl": 4, "src": "cand", "v": 1}
+{"i": 350, "lvl": 4, "src": "cand", "v": 1}
+{"i": 351, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 352, "lvl": 4, "src": "cand", "v": 2}
+{"i": 353, "lvl": 4, "src": "cand", "v": 2}
+{"i": 354, "lvl": 4, "src": "cand", "v": 2}
+{"i": 355, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 356, "lvl": 4, "src": "cand", "v": 2}
+{"i": 357, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 358, "lvl": 4, "src": "cand", "v": 2}
+{"i": 359, "lvl": 4, "src": "cand", "v": 2}
+{"i": 360, "lvl": 4, "src": "cand", "v": 2}
+{"i": 361, "lvl": 4, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 362, "lvl": 4, "src": "cand", "v": 4}
+{"i": 363, "lvl": 4, "src": "cand", "v": 3}
+{"i": 364, "lvl": 4, "src": "cand", "v": 2}
+{"i": 365, "lvl": 4, "src": "cand", "v": 2}
+{"i": 366, "lvl": 4, "src": "cand", "v": 2}
+{"i": 367, "lvl": 4, "src": "cand", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 368, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 369, "lvl": 4, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 370, "lvl": 4, "src": "probe", "v": 4}
+{"i": 371, "lvl": 4, "src": "probe", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 372, "lvl": 4, "src": "probe", "v": 2}
+{"i": 373, "lvl": 4, "src": "probe", "v": 2}
+{"i": 374, "lvl": 4, "src": "probe", "v": 2}
+{"i": 375, "lvl": 4, "src": "probe", "v": 4}
+{"i": 376, "lvl": 4, "src": "probe", "v": 4}
+{"i": 377, "lvl": 4, "src": "probe", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 378, "lvl": 4, "src": "cand", "v": 1}
+{"i": 379, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 380, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 381, "lvl": 4, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 382, "lvl": 4, "src": "desperate", "v": 4}
+{"i": 383, "lvl": 4, "src": "desperate", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 384, "lvl": 4, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 4}
+{"event": "silentdeath", "lvl": 4}
+{"i": 385, "lvl": 4, "src": "probe", "v": 1}
+{"i": 386, "lvl": 4, "src": "probe", "v": 3}
+{"i": 387, "lvl": 4, "src": "probe", "v": 1}
+{"i": 388, "lvl": 4, "src": "probe", "v": 1}
+{"i": 389, "lvl": 4, "src": "probe", "v": 1}
+{"i": 390, "lvl": 4, "src": "probe", "v": 1}
+{"i": 391, "lvl": 4, "src": "probe", "v": 3}
+{"i": 392, "lvl": 4, "src": "probe", "v": 3}
+{"i": 393, "lvl": 4, "src": "probe", "v": 3}
+{"i": 394, "lvl": 4, "src": "probe", "v": 3}
+{"i": 395, "lvl": 4, "src": "probe", "v": 3}
+{"i": 396, "lvl": 4, "src": "probe", "v": 2}
+{"i": 397, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 398, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 399, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 400, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 401, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 402, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 403, "lvl": 4, "src": "probe", "v": 1}
+{"i": 404, "lvl": 4, "src": "probe", "v": 4}
+{"i": 405, "lvl": 4, "src": "probe", "v": 4}
+{"i": 406, "lvl": 4, "src": "probe", "v": 4}
+{"i": 407, "lvl": 4, "src": "probe", "v": 4}
+{"i": 408, "lvl": 4, "src": "probe", "v": 1}
+{"i": 409, "lvl": 4, "src": "probe", "v": 4}
+{"i": 410, "lvl": 4, "src": "probe", "v": 4}
+{"i": 411, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 412, "lvl": 4, "src": "probe", "v": 2}
+{"i": 413, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 414, "lvl": 4, "src": "probe", "v": 2}
+{"i": 415, "lvl": 4, "src": "probe", "v": 2}
+{"i": 416, "lvl": 4, "src": "probe", "v": 2}
+{"i": 417, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 418, "lvl": 4, "src": "probe", "v": 2}
+{"i": 419, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 420, "lvl": 4, "src": "probe", "v": 2}
+{"i": 421, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 422, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 423, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 424, "lvl": 4, "src": "desperate", "v": 2}
+{"event": "silentdeath", "lvl": 4}
+{"i": 425, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 426, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 427, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 428, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 429, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 430, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 431, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 432, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 433, "lvl": 4, "src": "stage1", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 434, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 435, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 436, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 437, "lvl": 4, "src": "stage1", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 438, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 439, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 440, "lvl": 4, "src": "wander", "v": 4}
+{"i": 441, "lvl": 4, "src": "near-fuel", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 442, "lvl": 4, "src": "near-fuel", "v": 2}
+{"i": 443, "lvl": 4, "src": "near-fuel", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 444, "lvl": 4, "src": "near-fuel", "v": 4}
+{"i": 445, "lvl": 4, "src": "cand", "v": 3}
+{"i": 446, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 447, "lvl": 4, "src": "probe", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 448, "lvl": 4, "src": "probe", "v": 2}
+{"i": 449, "lvl": 4, "src": "probe", "v": 3}
+{"i": 450, "lvl": 4, "src": "probe", "v": 2}
+{"i": 451, "lvl": 4, "src": "probe", "v": 3}
+{"i": 452, "lvl": 4, "src": "probe", "v": 3}
+{"i": 453, "lvl": 4, "src": "probe", "v": 1}
+{"i": 454, "lvl": 4, "src": "probe", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 455, "lvl": 4, "src": "probe", "v": 3}
+{"i": 456, "lvl": 4, "src": "probe", "v": 3}
+{"i": 457, "lvl": 4, "src": "probe", "v": 4}
+{"i": 458, "lvl": 4, "src": "probe", "v": 1}
+{"i": 459, "lvl": 4, "src": "probe", "v": 4}
+{"i": 460, "lvl": 4, "src": "probe", "v": 4}
+{"i": 461, "lvl": 4, "src": "probe", "v": 2}
+{"i": 462, "lvl": 4, "src": "probe", "v": 2}
+{"i": 463, "lvl": 4, "src": "probe", "v": 3}
+{"i": 464, "lvl": 4, "src": "probe", "v": 3}
+{"i": 465, "lvl": 4, "src": "probe", "v": 4}
+{"i": 466, "lvl": 4, "src": "probe", "v": 2}
+{"i": 467, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 468, "lvl": 4, "src": "probe", "v": 4}
+{"i": 469, "lvl": 4, "src": "probe", "v": 3}
+{"i": 470, "lvl": 4, "src": "probe", "v": 2}
+{"i": 471, "lvl": 4, "src": "probe", "v": 2}
+{"i": 472, "lvl": 4, "src": "probe", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 473, "lvl": 4, "src": "probe", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 474, "lvl": 4, "src": "near-fuel", "v": 2}
+{"i": 475, "lvl": 4, "src": "near-fuel", "v": 2}
+{"i": 476, "lvl": 4, "src": "near-fuel", "v": 3}
+{"i": 477, "lvl": 4, "src": "probe", "v": 4}
+{"i": 478, "lvl": 4, "src": "probe", "v": 2}
+{"i": 479, "lvl": 4, "src": "probe", "v": 4}
+{"i": 480, "lvl": 4, "src": "probe", "v": 1}
+{"i": 481, "lvl": 4, "src": "probe", "v": 1}
+{"i": 482, "lvl": 4, "src": "probe", "v": 1}
+{"event": "chg", "lvl": 4}
+{"i": 483, "lvl": 4, "src": "probe", "v": 2}
+{"i": 484, "lvl": 4, "src": "probe", "v": 2}
+{"i": 485, "lvl": 4, "src": "probe", "v": 2}
+{"i": 486, "lvl": 4, "src": "probe", "v": 4}
+{"i": 487, "lvl": 4, "src": "probe", "v": 4}
+{"i": 488, "lvl": 4, "src": "probe", "v": 4}
+{"i": 489, "lvl": 4, "src": "probe", "v": 4}
+{"i": 490, "lvl": 4, "src": "probe", "v": 4}
+{"i": 491, "lvl": 4, "src": "probe", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 492, "lvl": 4, "src": "probe", "v": 1}
+{"i": 493, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 494, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 495, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 496, "lvl": 4, "src": "desperate", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 497, "lvl": 4, "src": "desperate", "v": 1}
+{"i": 498, "lvl": 4, "src": "desperate", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 499, "lvl": 4, "src": "desperate", "v": 3}
+{"event": "gameover", "lvl": 4}
+{"i": 500, "lvl": 4, "src": "wander", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 501, "lvl": 4, "src": "probe", "v": 2}
+{"i": 502, "lvl": 4, "src": "probe", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 503, "lvl": 4, "src": "probe", "v": 1}
+{"i": 504, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 505, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 506, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 507, "lvl": 4, "src": "stage1", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 508, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 509, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 510, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 511, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 512, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 513, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 514, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 515, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 516, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 517, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 518, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 519, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 520, "lvl": 4, "src": "stage1", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 521, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 522, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 523, "lvl": 4, "src": "stage1", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 524, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 525, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 526, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 527, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 528, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 529, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 530, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 531, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 532, "lvl": 4, "src": "stage1", "v": 1}
+{"event": "chg", "lvl": 4}
+{"i": 533, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 534, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 535, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 536, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 537, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 538, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 539, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 540, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 541, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 542, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 543, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 544, "lvl": 4, "src": "turn-fuel", "v": 4}
+{"i": 545, "lvl": 4, "src": "turn-walk", "v": 3}
+{"i": 546, "lvl": 4, "src": "turn-walk", "v": 2}
+{"i": 547, "lvl": 4, "src": "turn-walk", "v": 2}
+{"i": 548, "lvl": 4, "src": "turn-walk", "v": 2}
+{"i": 549, "lvl": 4, "src": "turn-walk", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 550, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 551, "lvl": 4, "src": "turn-walk", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 552, "lvl": 4, "src": "cycle-on-turn", "v": 4}
+{"i": 553, "lvl": 4, "src": "cycle-on-turn", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 554, "lvl": 4, "src": "wander", "v": 1}
+{"i": 555, "lvl": 4, "src": "wander", "v": 4}
+{"i": 556, "lvl": 4, "src": "wander", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 557, "lvl": 4, "src": "cand", "v": 2}
+{"i": 558, "lvl": 4, "src": "cand", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 559, "lvl": 4, "src": "cand", "v": 2}
+{"i": 560, "lvl": 4, "src": "cand", "v": 3}
+{"i": 561, "lvl": 4, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 562, "lvl": 4, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 563, "lvl": 4, "src": "desperate", "v": 4}
+{"i": 564, "lvl": 4, "src": "desperate", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 565, "lvl": 4, "src": "desperate", "v": 2}
+{"i": 566, "lvl": 4, "src": "desperate", "v": 3}
+{"event": "chg", "lvl": 4}
+{"event": "silentdeath", "lvl": 4}
+{"i": 567, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 568, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 569, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 570, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 571, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 572, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 573, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 574, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 575, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 576, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 577, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 578, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 579, "lvl": 4, "src": "stage1", "v": 2}
+{"i": 580, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 581, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 582, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 583, "lvl": 4, "src": "stage1", "v": 1}
+{"i": 584, "lvl": 4, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 585, "lvl": 4, "src": "near-fuel", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 586, "lvl": 4, "src": "near-fuel", "v": 4}
+{"i": 587, "lvl": 4, "src": "stage1", "v": 3}
+{"i": 588, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "slid", "lvl": 4}
+{"i": 589, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 590, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 591, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 592, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 593, "lvl": 4, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 594, "lvl": 4, "src": "stage1", "v": 4}
+{"i": 595, "lvl": 4, "src": "stage1", "v": 1}
+{"event": "slid", "lvl": 4}
+{"i": 596, "lvl": 4, "src": "turn-walk", "v": 1}
+{"i": 597, "lvl": 4, "src": "turn-walk", "v": 3}
+{"i": 598, "lvl": 4, "src": "turn-walk", "v": 3}
+{"i": 599, "lvl": 4, "src": "turn-walk", "v": 3}
+{"i": 600, "lvl": 4, "src": "turn-walk", "v": 3}
+{"i": 601, "lvl": 4, "src": "turn-walk", "v": 1}
+{"i": 602, "lvl": 4, "src": "turn-walk", "v": 3}
+{"event": "chg", "lvl": 4}
+{"i": 603, "lvl": 4, "src": "moving", "v": 1}
+{"i": 604, "lvl": 4, "src": "moving", "v": 2}
+{"event": "chg", "lvl": 4}
+{"i": 605, "lvl": 4, "src": "near-fuel", "v": 3}
+{"i": 606, "lvl": 4, "src": "near-fuel", "v": 3}
+{"i": 607, "lvl": 4, "src": "turn-walk", "v": 4}
+{"i": 608, "lvl": 4, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 609, "lvl": 4, "src": "cycle-on-turn", "v": 1}
+{"i": 610, "lvl": 4, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 4}
+{"i": 611, "lvl": 4, "src": "cycle-on-turn", "v": 1}
+{"i": 612, "lvl": 4, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 4}
+{"i": 613, "lvl": 4, "src": "cycle-on-turn", "v": 1}
+{"i": 614, "lvl": 4, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 4}
+{"i": 615, "lvl": 4, "src": "cycle-on-turn", "v": 1}
+{"i": 616, "lvl": 4, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 4}
+{"i": 617, "lvl": 4, "src": "moving", "v": 2}
+{"i": 618, "lvl": 4, "src": "moving", "v": 2}
+{"i": 619, "lvl": 4, "src": "moving", "v": 2}
+{"event": "slid", "lvl": 4}
+{"i": 620, "lvl": 4, "src": "moving", "v": 2}
+{"i": 621, "lvl": 4, "src": "moving", "v": 2}
+{"i": 622, "lvl": 4, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 623, "lvl": 4, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 4}
+{"i": 624, "lvl": 4, "src": "moving", "v": 2}
+{"i": 625, "lvl": 4, "src": "moving", "v": 2}
+{"i": 626, "lvl": 4, "src": "moving", "v": 3}
+{"i": 627, "lvl": 4, "src": "moving", "v": 4}
+{"i": 628, "lvl": 4, "src": "moving", "v": 2}
+{"i": 629, "lvl": 4, "src": "moving", "v": 4}
+{"i": 630, "lvl": 4, "src": "moving", "v": 4}
+{"i": 631, "lvl": 4, "src": "moving", "v": 4}
+{"i": 632, "lvl": 4, "src": "moving", "v": 4}
+{"i": 633, "lvl": 4, "src": "moving", "v": 4}
+{"i": 634, "lvl": 4, "src": "moving", "v": 4}
+{"i": 635, "lvl": 4, "src": "moving", "v": 4}
+{"event": "slid", "lvl": 4}
+{"i": 636, "lvl": 4, "src": "moving", "v": 1}
+{"i": 637, "lvl": 5, "src": "wander", "v": 1}
+{"i": 638, "lvl": 5, "src": "cand", "v": 1}
+{"event": "chg", "lvl": 5}
+{"i": 639, "lvl": 5, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 640, "lvl": 5, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 641, "lvl": 5, "src": "cand", "v": 3}
+{"i": 642, "lvl": 5, "src": "cand", "v": 1}
+{"i": 643, "lvl": 5, "src": "cand", "v": 1}
+{"i": 644, "lvl": 5, "src": "cand", "v": 1}
+{"i": 645, "lvl": 5, "src": "cand", "v": 4}
+{"i": 646, "lvl": 5, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 647, "lvl": 5, "src": "cand", "v": 2}
+{"i": 648, "lvl": 5, "src": "probe", "v": 1}
+{"i": 649, "lvl": 5, "src": "probe", "v": 4}
+{"i": 650, "lvl": 5, "src": "probe", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 651, "lvl": 5, "src": "probe", "v": 4}
+{"i": 652, "lvl": 5, "src": "probe", "v": 4}
+{"i": 653, "lvl": 5, "src": "probe", "v": 1}
+{"i": 654, "lvl": 5, "src": "probe", "v": 4}
+{"i": 655, "lvl": 5, "src": "probe", "v": 4}
+{"event": "slid", "lvl": 5}
+{"i": 656, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 657, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 658, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 659, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 660, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 661, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 662, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 663, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 664, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 665, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 666, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 667, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 668, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 669, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 670, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 671, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 672, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 673, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 674, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 675, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 676, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 677, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 678, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 679, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 680, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 681, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 682, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 683, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 684, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 685, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 686, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 687, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 688, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 689, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 690, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 691, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 692, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 693, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 694, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 695, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 696, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 697, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 698, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 699, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 700, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 701, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 702, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 703, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 704, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 705, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 706, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 707, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 708, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 709, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 710, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 711, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 712, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 713, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 714, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 715, "lvl": 5, "src": "moving-learn", "v": 2}
+{"i": 716, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 717, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 718, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 719, "lvl": 5, "src": "moving-learn", "v": 4}
+{"i": 720, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 721, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 722, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 723, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 724, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 725, "lvl": 5, "src": "moving-learn", "v": 1}
+{"i": 726, "lvl": 5, "src": "moving-learn", "v": 3}
+{"i": 727, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 728, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 729, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 730, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 731, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 732, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 733, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 734, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 735, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 736, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 737, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 738, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 739, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 740, "lvl": 5, "src": "moving-learn", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 741, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 742, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 743, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 744, "lvl": 5, "src": "moving-learn", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 745, "lvl": 5, "src": "probe", "v": 4}
+{"i": 746, "lvl": 5, "src": "probe", "v": 2}
+{"i": 747, "lvl": 5, "src": "probe", "v": 4}
+{"i": 748, "lvl": 5, "src": "probe", "v": 4}
+{"i": 749, "lvl": 5, "src": "probe", "v": 1}
+{"i": 750, "lvl": 5, "src": "probe", "v": 1}
+{"event": "slid", "lvl": 5}
+{"i": 751, "lvl": 5, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 5}
+{"event": "silentdeath", "lvl": 5}
+{"i": 752, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 753, "lvl": 5, "src": "stage1", "v": 1}
+{"event": "chg", "lvl": 5}
+{"i": 754, "lvl": 5, "src": "stage1", "v": 4}
+{"i": 755, "lvl": 5, "src": "stage1", "v": 4}
+{"i": 756, "lvl": 5, "src": "stage1", "v": 4}
+{"i": 757, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 758, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 759, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 760, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 761, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 762, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 763, "lvl": 5, "src": "stage1", "v": 1}
+{"i": 764, "lvl": 5, "src": "moving", "v": 2}
+{"i": 765, "lvl": 5, "src": "moving", "v": 1}
+{"i": 766, "lvl": 5, "src": "moving", "v": 2}
+{"i": 767, "lvl": 5, "src": "moving", "v": 1}
+{"i": 768, "lvl": 5, "src": "moving", "v": 2}
+{"i": 769, "lvl": 5, "src": "moving", "v": 2}
+{"i": 770, "lvl": 5, "src": "moving", "v": 2}
+{"i": 771, "lvl": 5, "src": "moving", "v": 2}
+{"i": 772, "lvl": 5, "src": "moving", "v": 2}
+{"i": 773, "lvl": 5, "src": "moving", "v": 2}
+{"i": 774, "lvl": 5, "src": "moving", "v": 2}
+{"i": 775, "lvl": 5, "src": "moving", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 776, "lvl": 5, "src": "moving", "v": 4}
+{"i": 777, "lvl": 5, "src": "moving", "v": 1}
+{"i": 778, "lvl": 5, "src": "moving", "v": 1}
+{"i": 779, "lvl": 5, "src": "moving", "v": 1}
+{"i": 780, "lvl": 5, "src": "moving", "v": 3}
+{"i": 781, "lvl": 5, "src": "moving", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 782, "lvl": 5, "src": "moving", "v": 4}
+{"i": 783, "lvl": 5, "src": "moving", "v": 4}
+{"i": 784, "lvl": 5, "src": "moving", "v": 1}
+{"i": 785, "lvl": 5, "src": "moving", "v": 1}
+{"i": 786, "lvl": 5, "src": "moving", "v": 4}
+{"i": 787, "lvl": 5, "src": "moving", "v": 4}
+{"i": 788, "lvl": 5, "src": "moving", "v": 1}
+{"i": 789, "lvl": 5, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 5}
+{"i": 790, "lvl": 5, "src": "moving", "v": 4}
+{"i": 791, "lvl": 5, "src": "moving", "v": 2}
+{"i": 792, "lvl": 5, "src": "moving", "v": 2}
+{"i": 793, "lvl": 5, "src": "moving", "v": 1}
+{"i": 794, "lvl": 5, "src": "moving", "v": 1}
+{"i": 795, "lvl": 5, "src": "moving", "v": 3}
+{"i": 796, "lvl": 5, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 5}
+{"i": 797, "lvl": 5, "src": "moving", "v": 1}
+{"i": 798, "lvl": 5, "src": "moving", "v": 1}
+{"i": 799, "lvl": 5, "src": "moving", "v": 1}
+{"i": 800, "lvl": 5, "src": "moving", "v": 3}
+{"i": 801, "lvl": 5, "src": "moving", "v": 3}
+{"i": 802, "lvl": 5, "src": "moving", "v": 3}
+{"i": 803, "lvl": 5, "src": "moving", "v": 3}
+{"i": 804, "lvl": 5, "src": "moving", "v": 3}
+{"i": 805, "lvl": 5, "src": "moving", "v": 3}
+{"i": 806, "lvl": 5, "src": "moving", "v": 2}
+{"i": 807, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 808, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 809, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 810, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 811, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 812, "lvl": 5, "src": "moving", "v": 4}
+{"i": 813, "lvl": 5, "src": "moving", "v": 2}
+{"i": 814, "lvl": 5, "src": "moving", "v": 2}
+{"i": 815, "lvl": 5, "src": "moving", "v": 2}
+{"i": 816, "lvl": 5, "src": "moving", "v": 2}
+{"i": 817, "lvl": 5, "src": "moving", "v": 2}
+{"i": 818, "lvl": 5, "src": "moving", "v": 2}
+{"i": 819, "lvl": 5, "src": "moving", "v": 3}
+{"i": 820, "lvl": 5, "src": "moving", "v": 3}
+{"i": 821, "lvl": 5, "src": "moving", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 822, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 823, "lvl": 5, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 5}
+{"i": 824, "lvl": 5, "src": "moving", "v": 4}
+{"i": 825, "lvl": 5, "src": "moving", "v": 1}
+{"i": 826, "lvl": 5, "src": "moving", "v": 1}
+{"i": 827, "lvl": 5, "src": "moving", "v": 1}
+{"i": 828, "lvl": 5, "src": "moving", "v": 3}
+{"i": 829, "lvl": 5, "src": "moving", "v": 3}
+{"event": "chg", "lvl": 5}
+{"i": 830, "lvl": 5, "src": "moving", "v": 2}
+{"event": "chg", "lvl": 5}
+{"i": 831, "lvl": 5, "src": "moving", "v": 1}
+{"i": 832, "lvl": 5, "src": "moving", "v": 4}
+{"i": 833, "lvl": 5, "src": "moving", "v": 4}
+{"i": 834, "lvl": 5, "src": "moving", "v": 1}
+{"i": 835, "lvl": 5, "src": "moving", "v": 1}
+{"i": 836, "lvl": 5, "src": "moving", "v": 4}
+{"i": 837, "lvl": 5, "src": "moving", "v": 4}
+{"i": 838, "lvl": 5, "src": "moving", "v": 1}
+{"i": 839, "lvl": 5, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 5}
+{"i": 840, "lvl": 5, "src": "moving", "v": 4}
+{"i": 841, "lvl": 5, "src": "moving", "v": 2}
+{"i": 842, "lvl": 5, "src": "moving", "v": 2}
+{"i": 843, "lvl": 5, "src": "moving", "v": 2}
+{"i": 844, "lvl": 5, "src": "moving", "v": 2}
+{"i": 845, "lvl": 5, "src": "moving", "v": 2}
+{"i": 846, "lvl": 6, "src": "wander", "v": 1}
+{"i": 847, "lvl": 6, "src": "cand", "v": 2}
+{"i": 848, "lvl": 6, "src": "cand", "v": 3}
+{"i": 849, "lvl": 6, "src": "cand", "v": 3}
+{"i": 850, "lvl": 6, "src": "cand", "v": 2}
+{"i": 851, "lvl": 6, "src": "cand", "v": 2}
+{"i": 852, "lvl": 6, "src": "cand", "v": 2}
+{"i": 853, "lvl": 6, "src": "cand", "v": 2}
+{"i": 854, "lvl": 6, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 855, "lvl": 6, "src": "cand", "v": 2}
+{"i": 856, "lvl": 6, "src": "wander", "v": 4}
+{"i": 857, "lvl": 6, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 6}
+{"i": 858, "lvl": 6, "src": "cand", "v": 4}
+{"i": 859, "lvl": 6, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 860, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 861, "lvl": 6, "src": "stage1", "v": 2}
+{"i": 862, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 863, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 864, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 865, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 866, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 867, "lvl": 6, "src": "stage1", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 868, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 869, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 870, "lvl": 6, "src": "parity-fuel", "v": 1}
+{"i": 871, "lvl": 6, "src": "parity-fuel", "v": 3}
+{"i": 872, "lvl": 6, "src": "parity-fuel", "v": 3}
+{"i": 873, "lvl": 6, "src": "parity-fuel", "v": 1}
+{"i": 874, "lvl": 6, "src": "parity-fuel", "v": 1}
+{"i": 875, "lvl": 6, "src": "parity-fuel", "v": 4}
+{"i": 876, "lvl": 6, "src": "parity-fuel", "v": 4}
+{"i": 877, "lvl": 6, "src": "parity-fuel", "v": 4}
+{"i": 878, "lvl": 6, "src": "parity-fuel", "v": 4}
+{"i": 879, "lvl": 6, "src": "parity-fuel", "v": 1}
+{"i": 880, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 881, "lvl": 6, "src": "parity-walk", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 882, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 883, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 884, "lvl": 6, "src": "quarter-fuel", "v": 2}
+{"i": 885, "lvl": 6, "src": "quarter-fuel", "v": 2}
+{"i": 886, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 887, "lvl": 6, "src": "quarter-trip", "v": 3}
+{"i": 888, "lvl": 6, "src": "quarter-trip", "v": 1}
+{"i": 889, "lvl": 6, "src": "quarter-trip", "v": 1}
+{"i": 890, "lvl": 6, "src": "quarter-trip", "v": 3}
+{"i": 891, "lvl": 6, "src": "quarter-trip", "v": 3}
+{"i": 892, "lvl": 6, "src": "quarter-trip", "v": 3}
+{"i": 893, "lvl": 6, "src": "wander", "v": 1}
+{"i": 894, "lvl": 6, "src": "quarter-home", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 895, "lvl": 6, "src": "quarter-home", "v": 1}
+{"i": 896, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 897, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 898, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 899, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 900, "lvl": 6, "src": "quarter-home", "v": 2}
+{"i": 901, "lvl": 6, "src": "quarter-home", "v": 2}
+{"i": 902, "lvl": 6, "src": "quarter-home", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 903, "lvl": 6, "src": "cycle-last", "v": 1}
+{"i": 904, "lvl": 6, "src": "cycle-last", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 905, "lvl": 6, "src": "cycle-last", "v": 1}
+{"i": 906, "lvl": 6, "src": "cycle-last", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 907, "lvl": 6, "src": "desperate", "v": 4}
+{"i": 908, "lvl": 6, "src": "desperate", "v": 4}
+{"event": "silentdeath", "lvl": 6}
+{"i": 909, "lvl": 6, "src": "quarter-trip", "v": 1}
+{"i": 910, "lvl": 6, "src": "quarter-trip", "v": 1}
+{"i": 911, "lvl": 6, "src": "quarter-trip", "v": 4}
+{"i": 912, "lvl": 6, "src": "quarter-trip", "v": 4}
+{"i": 913, "lvl": 6, "src": "quarter-trip", "v": 2}
+{"i": 914, "lvl": 6, "src": "quarter-trip", "v": 4}
+{"i": 915, "lvl": 6, "src": "quarter-trip", "v": 2}
+{"i": 916, "lvl": 6, "src": "quarter-trip", "v": 2}
+{"i": 917, "lvl": 6, "src": "quarter-trip", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 918, "lvl": 6, "src": "quarter-home", "v": 1}
+{"i": 919, "lvl": 6, "src": "quarter-home", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 920, "lvl": 6, "src": "quarter-home", "v": 1}
+{"i": 921, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 922, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 923, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 924, "lvl": 6, "src": "quarter-home", "v": 3}
+{"i": 925, "lvl": 6, "src": "quarter-home", "v": 2}
+{"i": 926, "lvl": 6, "src": "quarter-home", "v": 2}
+{"i": 927, "lvl": 6, "src": "quarter-home", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 928, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 929, "lvl": 6, "src": "near-fuel", "v": 2}
+{"i": 930, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 931, "lvl": 6, "src": "stage1", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 932, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 933, "lvl": 6, "src": "quarter-fuel", "v": 3}
+{"i": 934, "lvl": 6, "src": "quarter-fuel", "v": 3}
+{"i": 935, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 936, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 937, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 938, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 939, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 940, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 941, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 942, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 943, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 944, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 945, "lvl": 6, "src": "quarter-fuel", "v": 4}
+{"i": 946, "lvl": 6, "src": "quarter-fuel", "v": 1}
+{"i": 947, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 948, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 949, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 950, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 951, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 952, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 953, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 954, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 955, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 956, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 957, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 958, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 959, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 960, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 961, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 962, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 963, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 964, "lvl": 6, "src": "parity-walk", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 965, "lvl": 6, "src": "cand", "v": 2}
+{"i": 966, "lvl": 6, "src": "cand", "v": 2}
+{"i": 967, "lvl": 6, "src": "cand", "v": 2}
+{"i": 968, "lvl": 6, "src": "cand", "v": 3}
+{"i": 969, "lvl": 6, "src": "cand", "v": 3}
+{"i": 970, "lvl": 6, "src": "cand", "v": 3}
+{"i": 971, "lvl": 6, "src": "cand", "v": 3}
+{"i": 972, "lvl": 6, "src": "cand", "v": 3}
+{"i": 973, "lvl": 6, "src": "cand", "v": 2}
+{"i": 974, "lvl": 6, "src": "cand", "v": 2}
+{"i": 975, "lvl": 6, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 976, "lvl": 6, "src": "desperate", "v": 1}
+{"event": "silentdeath", "lvl": 6}
+{"i": 977, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 978, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 979, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 980, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 981, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 982, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 983, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 984, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 985, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 986, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 987, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 988, "lvl": 6, "src": "parity-walk", "v": 4}
+{"i": 989, "lvl": 6, "src": "parity-walk", "v": 2}
+{"i": 990, "lvl": 6, "src": "parity-walk", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 991, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 992, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 993, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 994, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 995, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 996, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 997, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 998, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 999, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1000, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1001, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1002, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1003, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1004, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1005, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1006, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1007, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1008, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1009, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1010, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1011, "lvl": 6, "src": "moving-learn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1012, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 1013, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 1014, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1015, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1016, "lvl": 6, "src": "near-fuel", "v": 3}
+{"i": 1017, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1018, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1019, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1020, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1021, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1022, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1023, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1024, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1025, "lvl": 6, "src": "near-fuel", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1026, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 1027, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 1028, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 1029, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 1030, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 1031, "lvl": 6, "src": "turn-fuel", "v": 3}
+{"i": 1032, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1033, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1034, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1035, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1036, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1037, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1038, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1039, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1040, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1041, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1042, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1043, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1044, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1045, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1046, "lvl": 6, "src": "cand", "v": 2}
+{"i": 1047, "lvl": 6, "src": "cand", "v": 3}
+{"i": 1048, "lvl": 6, "src": "cand", "v": 3}
+{"i": 1049, "lvl": 6, "src": "cand", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1050, "lvl": 6, "src": "moving-learn", "v": 1}
+{"i": 1051, "lvl": 6, "src": "moving-learn", "v": 1}
+{"i": 1052, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1053, "lvl": 6, "src": "moving-learn", "v": 1}
+{"i": 1054, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1055, "lvl": 6, "src": "moving-learn", "v": 1}
+{"i": 1056, "lvl": 6, "src": "desperate", "v": 4}
+{"i": 1057, "lvl": 6, "src": "desperate", "v": 2}
+{"i": 1058, "lvl": 6, "src": "desperate", "v": 3}
+{"i": 1059, "lvl": 6, "src": "desperate", "v": 3}
+{"i": 1060, "lvl": 6, "src": "desperate", "v": 3}
+{"i": 1061, "lvl": 6, "src": "desperate", "v": 3}
+{"i": 1062, "lvl": 6, "src": "desperate", "v": 3}
+{"event": "gameover", "lvl": 6}
+{"i": 1063, "lvl": 6, "src": "wander", "v": 4}
+{"i": 1064, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 1065, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 1066, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 1067, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 1068, "lvl": 6, "src": "stage1", "v": 2}
+{"i": 1069, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 1070, "lvl": 6, "src": "stage1", "v": 2}
+{"i": 1071, "lvl": 6, "src": "stage1", "v": 2}
+{"i": 1072, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 1073, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 1074, "lvl": 6, "src": "turn-fuel", "v": 2}
+{"i": 1075, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1076, "lvl": 6, "src": "turn-fuel", "v": 4}
+{"i": 1077, "lvl": 6, "src": "turn-fuel", "v": 1}
+{"i": 1078, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1079, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1080, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1081, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1082, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1083, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1084, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1085, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1086, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1087, "lvl": 6, "src": "moving-learn", "v": 3}
+{"i": 1088, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1089, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1090, "lvl": 6, "src": "moving-learn", "v": 2}
+{"i": 1091, "lvl": 6, "src": "moving-learn", "v": 1}
+{"i": 1092, "lvl": 6, "src": "moving-learn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1093, "lvl": 6, "src": "stage1", "v": 4}
+{"i": 1094, "lvl": 6, "src": "stage1", "v": 2}
+{"i": 1095, "lvl": 6, "src": "stage1", "v": 1}
+{"i": 1096, "lvl": 6, "src": "stage1", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1097, "lvl": 6, "src": "stage1", "v": 3}
+{"i": 1098, "lvl": 6, "src": "stage1", "v": 3}
+{"event": "chg", "lvl": 6}
+{"i": 1099, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1100, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1101, "lvl": 6, "src": "stage2", "v": 1}
+{"i": 1102, "lvl": 6, "src": "stage2", "v": 3}
+{"i": 1103, "lvl": 6, "src": "stage2", "v": 3}
+{"i": 1104, "lvl": 6, "src": "stage2", "v": 1}
+{"i": 1105, "lvl": 6, "src": "stage2", "v": 1}
+{"i": 1106, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1107, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1108, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1109, "lvl": 6, "src": "stage2", "v": 4}
+{"i": 1110, "lvl": 6, "src": "stage2", "v": 2}
+{"i": 1111, "lvl": 6, "src": "stage2", "v": 2}
+{"i": 1112, "lvl": 6, "src": "stage2", "v": 2}
+{"i": 1113, "lvl": 6, "src": "stage2", "v": 2}
+{"i": 1114, "lvl": 6, "src": "stage2", "v": 2}
+{"i": 1115, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1116, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1117, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1118, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1119, "lvl": 6, "src": "turn-walk", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1120, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1121, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1122, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1123, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1124, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1125, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1126, "lvl": 6, "src": "turn-walk", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1127, "lvl": 6, "src": "turn-walk", "v": 4}
+{"i": 1128, "lvl": 6, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1129, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1130, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"i": 1131, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1132, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1133, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1134, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1135, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1136, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1137, "lvl": 6, "src": "near-fuel", "v": 3}
+{"i": 1138, "lvl": 6, "src": "near-fuel", "v": 2}
+{"i": 1139, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1140, "lvl": 6, "src": "turn-walk", "v": 3}
+{"event": "chg", "lvl": 6}
+{"i": 1141, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1142, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1143, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1144, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1145, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1146, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1147, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1148, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1149, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1150, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1151, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1152, "lvl": 6, "src": "moving", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1153, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1154, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1155, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1156, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1157, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1158, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1159, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1160, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1161, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1162, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1163, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1164, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1165, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1166, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1167, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1168, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1169, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1170, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1171, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1172, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1173, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1174, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1175, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1176, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1177, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1178, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1179, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1180, "lvl": 6, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1181, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1182, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1183, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1184, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1185, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1186, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1187, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1188, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1189, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1190, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1191, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1192, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1193, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1194, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1195, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1196, "lvl": 6, "src": "turn-walk", "v": 2}
+{"event": "slid", "lvl": 6}
+{"i": 1197, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1198, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1199, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1200, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1201, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1202, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1203, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1204, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1205, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1206, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1207, "lvl": 6, "src": "moving", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1208, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1209, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1210, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1211, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1212, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1213, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1214, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1215, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1216, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1217, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1218, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1219, "lvl": 6, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1220, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1221, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1222, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1223, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1224, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1225, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1226, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1227, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1228, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1229, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1230, "lvl": 6, "src": "turn-walk", "v": 3}
+{"event": "gameover", "lvl": 6}
+{"i": 1231, "lvl": 6, "src": "wander", "v": 2}
+{"i": 1232, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1233, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1234, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1235, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1236, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1237, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1238, "lvl": 6, "src": "turn-walk", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1239, "lvl": 6, "src": "turn-walk", "v": 4}
+{"i": 1240, "lvl": 6, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1241, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1242, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"i": 1243, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1244, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1245, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1246, "lvl": 6, "src": "turn-walk", "v": 3}
+{"event": "chg", "lvl": 6}
+{"i": 1247, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1248, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1249, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1250, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1251, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1252, "lvl": 6, "src": "heading", "v": 4}
+{"event": "silentdeath", "lvl": 6}
+{"i": 1253, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1254, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1255, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1256, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1257, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1258, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1259, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1260, "lvl": 6, "src": "moving", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1261, "lvl": 6, "src": "moving", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1262, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1263, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1264, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1265, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1266, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1267, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1268, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1269, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1270, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1271, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1272, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1273, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1274, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1275, "lvl": 6, "src": "moving", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1276, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1277, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1278, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1279, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1280, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1281, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1282, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1283, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1284, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1285, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1286, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1287, "lvl": 6, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1288, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1289, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1290, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1291, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1292, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1293, "lvl": 6, "src": "heading", "v": 2}
+{"i": 1294, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1295, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1296, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1297, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1298, "lvl": 6, "src": "turn-walk", "v": 3}
+{"event": "slid", "lvl": 6}
+{"i": 1299, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1300, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1301, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1302, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1303, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1304, "lvl": 6, "src": "turn-walk", "v": 2}
+{"i": 1305, "lvl": 6, "src": "turn-walk", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1306, "lvl": 6, "src": "turn-walk", "v": 4}
+{"i": 1307, "lvl": 6, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1308, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1309, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"i": 1310, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1311, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1312, "lvl": 6, "src": "turn-walk", "v": 3}
+{"i": 1313, "lvl": 6, "src": "turn-walk", "v": 3}
+{"event": "chg", "lvl": 6}
+{"i": 1314, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1315, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1316, "lvl": 6, "src": "near-fuel", "v": 1}
+{"i": 1317, "lvl": 6, "src": "near-fuel", "v": 4}
+{"i": 1318, "lvl": 6, "src": "near-fuel", "v": 2}
+{"i": 1319, "lvl": 6, "src": "near-fuel", "v": 2}
+{"i": 1320, "lvl": 6, "src": "turn-walk", "v": 1}
+{"i": 1321, "lvl": 6, "src": "turn-walk", "v": 4}
+{"event": "chg", "lvl": 6}
+{"i": 1322, "lvl": 6, "src": "cycle-on-turn", "v": 1}
+{"i": 1323, "lvl": 6, "src": "cycle-on-turn", "v": 2}
+{"event": "chg", "lvl": 6}
+{"i": 1324, "lvl": 6, "src": "parity-walk", "v": 1}
+{"i": 1325, "lvl": 6, "src": "parity-walk", "v": 3}
+{"i": 1326, "lvl": 6, "src": "parity-walk", "v": 3}
+{"i": 1327, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1328, "lvl": 6, "src": "heading", "v": 1}
+{"i": 1329, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1330, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1331, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1332, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1333, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1334, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1335, "lvl": 6, "src": "moving", "v": 4}
+{"event": "slid", "lvl": 6}
+{"i": 1336, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1337, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1338, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1339, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1340, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1341, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1342, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1343, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1344, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1345, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1346, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1347, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1348, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1349, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1350, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1351, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1352, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1353, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1354, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1355, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1356, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1357, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1358, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1359, "lvl": 6, "src": "moving", "v": 4}
+{"i": 1360, "lvl": 6, "src": "moving", "v": 1}
+{"i": 1361, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1362, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1363, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1364, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1365, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1366, "lvl": 6, "src": "moving", "v": 3}
+{"i": 1367, "lvl": 6, "src": "moving", "v": 1}
+{"event": "slid", "lvl": 6}
+{"i": 1368, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1369, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1370, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1371, "lvl": 6, "src": "moving", "v": 2}
+{"i": 1372, "lvl": 7, "src": "wander", "v": 1}
+{"event": "gameover", "lvl": 7}
+{"i": 1373, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1374, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1375, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1376, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1377, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1378, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1379, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1380, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1381, "lvl": 7, "src": "cand", "v": 3}
+{"event": "chg", "lvl": 7}
+{"i": 1382, "lvl": 7, "src": "door", "v": 1}
+{"i": 1383, "lvl": 7, "src": "door", "v": 4}
+{"i": 1384, "lvl": 7, "src": "door", "v": 4}
+{"i": 1385, "lvl": 7, "src": "door", "v": 4}
+{"i": 1386, "lvl": 7, "src": "door", "v": 1}
+{"i": 1387, "lvl": 7, "src": "door", "v": 1}
+{"i": 1388, "lvl": 7, "src": "door", "v": 1}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1389, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1390, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1391, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1392, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1393, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1394, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1395, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1396, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1397, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1398, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1399, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1400, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1401, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1402, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1403, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1404, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1405, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1406, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1407, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1408, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1409, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1410, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1411, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1412, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1413, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1414, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1415, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1416, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1417, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1418, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1419, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1420, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1421, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1422, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1423, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1424, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1425, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1426, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1427, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1428, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1429, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1430, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1431, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1432, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1433, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1434, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1435, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1436, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1437, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1438, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1439, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1440, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1441, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1442, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1443, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1444, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1445, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1446, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1447, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1448, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 7}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1449, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1450, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1451, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1452, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1453, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1454, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1455, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1456, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1457, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1458, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1459, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1460, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1461, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1462, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1463, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1464, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1465, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1466, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1467, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1468, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1469, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1470, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1471, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1472, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1473, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1474, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1475, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1476, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1477, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1478, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1479, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1480, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1481, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1482, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1483, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1484, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1485, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1486, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1487, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1488, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1489, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1490, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1491, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1492, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1493, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1494, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1495, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1496, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1497, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1498, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1499, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1500, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1501, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1502, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1503, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1504, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1505, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1506, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1507, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1508, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 7}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1509, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1510, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1511, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1512, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1513, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1514, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1515, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1516, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1517, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1518, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1519, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1520, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1521, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1522, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1523, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1524, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1525, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1526, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1527, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1528, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1529, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1530, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1531, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1532, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1533, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1534, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1535, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1536, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1537, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1538, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1539, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1540, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1541, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1542, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1543, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1544, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1545, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1546, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1547, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1548, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1549, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1550, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1551, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1552, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1553, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1554, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1555, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1556, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1557, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1558, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1559, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1560, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1561, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1562, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1563, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1564, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1565, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1566, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1567, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1568, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "gameover", "lvl": 7}
+{"i": 1569, "lvl": 7, "src": "wander", "v": 3}
+{"event": "chg", "lvl": 7}
+{"i": 1570, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1571, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1572, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1573, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1574, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1575, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1576, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1577, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1578, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1579, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1580, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1581, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1582, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1583, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1584, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1585, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1586, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1587, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1588, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1589, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1590, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1591, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1592, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1593, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1594, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1595, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1596, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1597, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1598, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1599, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1600, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1601, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1602, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1603, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1604, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1605, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1606, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1607, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1608, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1609, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1610, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1611, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1612, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1613, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1614, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1615, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1616, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1617, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1618, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1619, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1620, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1621, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1622, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1623, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1624, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1625, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1626, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1627, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1628, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1629, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 7}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1630, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1631, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1632, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1633, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1634, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1635, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1636, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1637, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1638, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1639, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1640, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1641, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1642, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1643, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1644, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1645, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1646, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1647, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1648, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1649, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1650, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1651, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1652, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1653, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1654, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1655, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1656, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1657, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1658, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1659, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1660, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1661, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1662, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1663, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1664, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1665, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1666, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1667, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1668, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1669, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1670, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1671, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1672, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1673, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1674, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1675, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1676, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1677, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1678, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1679, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1680, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1681, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1682, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1683, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1684, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1685, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1686, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1687, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1688, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1689, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "chg", "lvl": 7}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1690, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1691, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1692, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1693, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1694, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1695, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1696, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1697, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1698, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1699, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1700, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1701, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1702, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1703, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1704, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1705, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1706, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1707, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1708, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1709, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1710, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1711, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1712, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1713, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1714, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1715, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1716, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1717, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1718, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1719, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1720, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1721, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1722, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1723, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1724, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1725, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1726, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1727, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1728, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1729, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1730, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1731, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1732, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1733, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1734, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1735, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1736, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1737, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1738, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1739, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1740, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1741, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1742, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1743, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1744, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1745, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1746, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1747, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1748, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1749, "lvl": 7, "src": "desperate", "v": 1}
+{"event": "gameover", "lvl": 7}
+{"i": 1750, "lvl": 7, "src": "wander", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1751, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1752, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1753, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1754, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1755, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1756, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1757, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1758, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1759, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1760, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1761, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1762, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1763, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1764, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1765, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1766, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1767, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1768, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1769, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1770, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1771, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1772, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1773, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1774, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1775, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1776, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1777, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1778, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1779, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1780, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1781, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1782, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1783, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1784, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1785, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1786, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1787, "lvl": 7, "src": "cand", "v": 3}
+{"i": 1788, "lvl": 7, "src": "cand", "v": 1}
+{"i": 1789, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1790, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1791, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1792, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1793, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1794, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1795, "lvl": 7, "src": "cand", "v": 4}
+{"i": 1796, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1797, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1798, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1799, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1800, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1801, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1802, "lvl": 7, "src": "cand", "v": 2}
+{"event": "chg", "lvl": 7}
+{"i": 1803, "lvl": 7, "src": "desperate", "v": 1}
+{"i": 1804, "lvl": 7, "src": "desperate", "v": 3}
+{"i": 1805, "lvl": 7, "src": "desperate", "v": 3}
+{"i": 1806, "lvl": 7, "src": "cand", "v": 2}
+{"i": 1807, "lvl": 7, "src": "cand", "v": 4}
+{"event": "chg", "lvl": 7}
+{"i": 1808, "lvl": 7, "src": "desperate", "v": 3}
+{"i": 1809, "lvl": 7, "src": "desperate", "v": 3}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1810, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1811, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1812, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1813, "lvl": 7, "src": "turn-walk", "v": 2}
+{"i": 1814, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1815, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1816, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1817, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1818, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1819, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1820, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1821, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1822, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1823, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1824, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1825, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1826, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1827, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1828, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1829, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1830, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1831, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1832, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1833, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1834, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1835, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1836, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1837, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1838, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1839, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1840, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1841, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1842, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1843, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1844, "lvl": 7, "src": "stage2", "v": 3}
+{"i": 1845, "lvl": 7, "src": "stage2", "v": 3}
+{"i": 1846, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1847, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1848, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1849, "lvl": 7, "src": "near-fuel", "v": 3}
+{"i": 1850, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1851, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1852, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1853, "lvl": 7, "src": "heading", "v": 3}
+{"event": "gameover", "lvl": 7}
+{"i": 1854, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1855, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1856, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1857, "lvl": 7, "src": "stage2", "v": 1}
+{"i": 1858, "lvl": 7, "src": "stage2", "v": 1}
+{"i": 1859, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1860, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1861, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1862, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1863, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1864, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1865, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1866, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1867, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1868, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1869, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1870, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1871, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1872, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1873, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1874, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1875, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1876, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1877, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1878, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1879, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1880, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1881, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1882, "lvl": 7, "src": "turn-walk", "v": 1}
+{"i": 1883, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1884, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1885, "lvl": 7, "src": "turn-walk", "v": 3}
+{"i": 1886, "lvl": 7, "src": "turn-walk", "v": 2}
+{"i": 1887, "lvl": 7, "src": "turn-walk", "v": 2}
+{"i": 1888, "lvl": 7, "src": "turn-walk", "v": 2}
+{"i": 1889, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1890, "lvl": 7, "src": "stage2", "v": 1}
+{"i": 1891, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1892, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1893, "lvl": 7, "src": "stage2", "v": 2}
+{"i": 1894, "lvl": 7, "src": "stage2", "v": 4}
+{"i": 1895, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1896, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1897, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1898, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1899, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1900, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1901, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1902, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1903, "lvl": 7, "src": "wander", "v": 3}
+{"i": 1904, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1905, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1906, "lvl": 7, "src": "near-fuel", "v": 2}
+{"i": 1907, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1908, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1909, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1910, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1911, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1912, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1913, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1914, "lvl": 7, "src": "turn-walk", "v": 4}
+{"i": 1915, "lvl": 7, "src": "turn-walk", "v": 4}
+{"event": "slid", "lvl": 7}
+{"i": 1916, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1917, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1918, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1919, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1920, "lvl": 7, "src": "probe", "v": 4}
+{"i": 1921, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1922, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1923, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1924, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1925, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1926, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1927, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1928, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1929, "lvl": 7, "src": "probe", "v": 2}
+{"i": 1930, "lvl": 7, "src": "probe", "v": 2}
+{"i": 1931, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1932, "lvl": 7, "src": "probe", "v": 2}
+{"i": 1933, "lvl": 7, "src": "probe", "v": 2}
+{"i": 1934, "lvl": 7, "src": "probe", "v": 4}
+{"i": 1935, "lvl": 7, "src": "probe", "v": 4}
+{"i": 1936, "lvl": 7, "src": "probe", "v": 4}
+{"i": 1937, "lvl": 7, "src": "heading", "v": 2}
+{"event": "gameover", "lvl": 7}
+{"i": 1938, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1939, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1940, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1941, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1942, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1943, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1944, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1945, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1946, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1947, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1948, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1949, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1950, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1951, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1952, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1953, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1954, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1955, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1956, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1957, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1958, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1959, "lvl": 7, "src": "heading", "v": 3}
+{"event": "silentdeath", "lvl": 7}
+{"i": 1960, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1961, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1962, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1963, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1964, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1965, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1966, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1967, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1968, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1969, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1970, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1971, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1972, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1973, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1974, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1975, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1976, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1977, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1978, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1979, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1980, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1981, "lvl": 7, "src": "heading", "v": 3}
+{"i": 1982, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1983, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1984, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1985, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1986, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1987, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1988, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1989, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1990, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1991, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1992, "lvl": 7, "src": "wander", "v": 1}
+{"i": 1993, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1994, "lvl": 7, "src": "wander", "v": 4}
+{"i": 1995, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1996, "lvl": 7, "src": "probe", "v": 3}
+{"i": 1997, "lvl": 7, "src": "wander", "v": 2}
+{"i": 1998, "lvl": 7, "src": "probe", "v": 1}
+{"i": 1999, "lvl": 7, "src": "probe", "v": 3}

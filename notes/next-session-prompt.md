@@ -52,22 +52,26 @@ Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
 
-0. **Port the GENERIC rung machinery into the Kaggle agent — in progress.** `kaggle/`
-   holds the submission pipeline: `bundle.py` embeds driver modules (zlib+b64) +
-   `adapter.py` (MyAgent per the official starter-kit contract) -> generated
-   `kaggle/my_agent.py`, verified through the starter's own harness on all six driver
-   games with numbers identical to compete.py (results/kaggle-local*.txt; starter kit =
-   github.com/arcprize/ARC-AGI-3-Kaggle-Starter, cloned to scratchpad). What is NOT in
-   yet: compete.play's rung machinery (ls20 43.6% + ar25/cn04/m0r0/cd82). Plan: run
-   compete.play on a THREAD against an env PROXY whose step()/reset() pipe through the
-   framework's choose_action queue — inversion without touching play()'s logic.
-   Gotchas already measured: `GameAction(v)` raises on every int (enum .value is a
-   property; map `{int(a.value): a for a in GameAction}` like compete does) · local
-   play_local SSL-fails on the SECOND game per process (first always works; Kaggle
-   gateway unaffected) · slim_framework.py writes cp1252 on Windows — rewrite the
-   vendored agents/__init__.py ascii. Submission steps for the human: accept rules ->
-   kaggle.json + username in kernel-metadata.json -> `make submit` -> Save & Run All ->
-   Submit to Competition.
+0. **Kaggle submission — READY, needs the human.** The FULL agent (compete.play,
+   rungs + all six drivers) runs unchanged on a worker thread behind a queue-backed
+   proxy env: `kaggle/adapter.py` + `kaggle/bundle.py` -> generated `kaggle/my_agent.py`
+   (rebuild after ANY module change). Verified through the official starter kit's own
+   harness: **ls20 7/7 WIN 43.59%**, per-level transitions identical to the local sweep
+   ← results/kaggle-ls20-v2.txt; driver games identical ← results/kaggle-local*.txt.
+   Starter kit = github.com/arcprize/ARC-AGI-3-Kaggle-Starter (clone fresh; scratchpad
+   copy dies with the session). Human steps: accept rules → username into
+   notebooks/kernel-metadata.json + kaggle.json → copy kaggle/my_agent.py to
+   agent/my_agent.py → `make submit` → Save & Run All → Submit to Competition.
+   Traps already paid for: `GameAction(v)` raises on every int (map {int(a.value): a})
+   · exec'd modules must enter sys.modules BEFORE exec (dataclasses) · the adapter's
+   per-round timeout must dwarf the slowest planning round — ls20 L6 thinks for MINUTES
+   on one round; a 120s timeout killed the worker and the silent 5/7 that resulted had
+   no error anywhere (tell: acct file truncated at the 32KB OS buffer = never closed,
+   + fallback resets every ~130 actions). Local-only: play_local SSL-fails on the
+   SECOND game per process; slim_framework.py writes cp1252 on Windows.
+   ⚠️ Pipe is ~20x slower per action than raw local (framework validate+log) — before
+   submitting for real, estimate 110-game rerun wall clock; MAX_ACTIONS=2600 may need
+   trimming.
 
 1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sb26, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),

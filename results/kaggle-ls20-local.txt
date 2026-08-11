@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 09:17:01 | INFO | Got anonymous API key: 72343b3f-a492-4cc4-930f-a413bf3c002f
+2026-08-11 09:17:01 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 09:17:02 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 09:17:02 | INFO | Created new scorecard: 698815bc-dfb9-4d71-bb27-ac4a0d06a938
+2026-08-11 09:17:04 | INFO | Successfully fetched metadata for game ls20
+2026-08-11 09:17:04 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+ls20   7/7 levels  actions=[23, 45, 99, 178, 292, 209, 526]  score=43.629%
+
+mean over 1 environments: 43.629%
