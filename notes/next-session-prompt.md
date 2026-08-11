@@ -52,6 +52,23 @@ Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
 
+0. **Port the GENERIC rung machinery into the Kaggle agent — in progress.** `kaggle/`
+   holds the submission pipeline: `bundle.py` embeds driver modules (zlib+b64) +
+   `adapter.py` (MyAgent per the official starter-kit contract) -> generated
+   `kaggle/my_agent.py`, verified through the starter's own harness on all six driver
+   games with numbers identical to compete.py (results/kaggle-local*.txt; starter kit =
+   github.com/arcprize/ARC-AGI-3-Kaggle-Starter, cloned to scratchpad). What is NOT in
+   yet: compete.play's rung machinery (ls20 43.6% + ar25/cn04/m0r0/cd82). Plan: run
+   compete.play on a THREAD against an env PROXY whose step()/reset() pipe through the
+   framework's choose_action queue — inversion without touching play()'s logic.
+   Gotchas already measured: `GameAction(v)` raises on every int (enum .value is a
+   property; map `{int(a.value): a for a in GameAction}` like compete does) · local
+   play_local SSL-fails on the SECOND game per process (first always works; Kaggle
+   gateway unaffected) · slim_framework.py writes cp1252 on Windows — rewrite the
+   vendored agents/__init__.py ascii. Submission steps for the human: accept rules ->
+   kaggle.json + username in kernel-metadata.json -> `make submit` -> Save & Run All ->
+   Submit to Competition.
+
 1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sb26, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
    sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
