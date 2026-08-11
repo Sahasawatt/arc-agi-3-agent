@@ -1671,3 +1671,32 @@ reachability claim expired with the equilibrium it was measured in.
 Not in the agent: this is a hand line. A bp35 driver in the six drivers'
 shape needs its signature measured by `sigs.py` over all 17 reset frames
 before wiring, and the cascade order re-checked.
+
+### dc22 LEVEL 1 FALLS -- 20 actions against a baseline of 59 (2026-08-12)
+
+Full line and the board model: `results/dc22-solution.txt` (`dc22_climb.py` ->
+`dc22-climb1.txt`, `dc22-climb1b.txt`, two identical runs). Recon:
+`dc22_p1.py`/`p2`/`p3` -> `results/dc22-p1.txt`, `dc22-p2.txt`, `dc22-p3.txt`.
+
+**Both of §dc22's standing verdicts were artefacts of the un-aimed click.**
+"Clicks are INERT on this level -- 6 floor/panel spots, all 20 object centres,
+double-clicks, pairs: zero play-area cells changed, ever" and "the piece's
+room is SEALED -- all nine positions probed in all four directions" were
+measured through `set_data`, which the local wrapper ignores, so every click
+in that campaign arrived at one empty-dict destination. Aimed, exactly two
+targets answer, and they are BUTTONS:
+
+  * (48,19) swaps the colour-8 block between a 6x4 at (12-17, 30-33) and a
+    4x6 at (18-21, 24-29) -- a bridge, stood up or laid down;
+  * (48,36) swaps the checkered 9/4 pad at (8-11, 34-37) with the solid
+    9-block at (18-21, 20-23) -- checkered is WALL, solid is FLOOR.
+
+The room is sealed only while that pad is checkered. Pressing the 9-button is
+the level's first move, and the walk that recon called impossible then runs
+from y40 to y30 (`dc22-p3.txt` E7/E8: 9 reachable positions become 18).
+
+The genre is now legible: the colour-4 field is void, blocks are the only
+ground, the buttons lay the route, and the piece walks to a marker that wears
+the same frame the piece does. Level 2 is unseen; a driver is a BFS over
+(position, toggle state) with the toggles learned in four actions, since they
+are reversible.

@@ -1,0 +1,38 @@
+dc22 level 1 SOLVED -- 20 actions against a baseline of 59, forward-only.
+Two identical runs: results/dc22-climb1.txt, dc22-climb1b.txt (dc22_climb.py).
+
+THE BOARD. The colour-4 field is VOID; the only walkable ground is the blocks
+drawn on it. The checkered 9/4 pad is a wall and its solid twin is floor. The
+right panel holds two display boxes, and each is a BUTTON that swaps a pair:
+
+  8-button (48,19):  colour-8 block (12-17, 30-33) 6x4  <->  (18-21, 24-29) 4x6
+  9-button (48,36):  checkered pad  ( 8-11, 34-37)       <->  solid 9 block (18-21, 20-23)
+
+So the route up is BUILT, not found, and the piece (colour 14 in its own
+colour-2 frame) is walked over it to the colour-11 marker at (24-25, 20-21) --
+which sits in an identical frame and is the only object no button touches.
+
+  #   action        what it does
+  1   click(48,36)  floor the pad under the piece's room
+  2-6 UP x5         (10,40) -> (10,30), over the pad and onto the block row
+  7-10 RIGHT x4     (10,30) -> (18,30), across the 8-block and onto the 13-block
+ 11   click(48,19)  stand the 8-block up as a bridge at (18-21, 24-29)
+ 12-14 UP x3        (18,30) -> (18,24), up the bridge
+ 15   click(48,36)  floor the 9-block at (18-21, 20-23); the pad behind is not
+                    needed again
+ 16-17 UP x2        (18,24) -> (18,20)
+ 18-20 RIGHT x3     onto the colour-11 marker -> LEVEL 1
+
+WHY THIS WAS INVISIBLE. breadth-recon §dc22 recorded "clicks are INERT on this
+level -- 6 floor/panel spots, all 20 object centres, double-clicks, pairs: zero
+play-area cells changed, ever" and "the piece's room is SEALED -- all nine
+positions probed in all four directions". Both were measured through
+`set_data`, which the local wrapper ignores, so every one of those clicks
+arrived at the same empty-dict destination (results/click-probe.txt). The room
+is sealed only while the checkered pad is a wall, and the pad is what the
+9-button floors -- the first button press is the level's first move.
+
+NOT YET IN THE AGENT. A driver here is a BFS over (piece position, toggle
+state): the two buttons are reversible, so their effect can be learned in four
+actions at level start (press, restore, press, restore) against a baseline of
+59, and everything after that is offline search on the frame's own geometry.

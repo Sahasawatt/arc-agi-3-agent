@@ -1,0 +1,52 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:06:12 | INFO | Got anonymous API key: f2bc32fb-3cca-4292-963a-fd8c65466b2a
+2026-08-12 03:06:12 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:06:14 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 03:06:14 | INFO | Created new scorecard: 8ea68cf9-efb7-470d-9d0f-3df509dd78d8
+2026-08-12 03:06:15 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:06:15 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+start piece=(10, 40)
+  i= 0 click(48, 36)  n=   97 piece=(10, 40) lvl=0 st=NOT_FINISHED
+  i= 1 A1             n=    9 piece=(10, 38) lvl=0 st=NOT_FINISHED
+  i= 2 A1             n=    8 piece=(10, 36) lvl=0 st=NOT_FINISHED
+  i= 3 A1             n=    9 piece=(10, 34) lvl=0 st=NOT_FINISHED
+  i= 4 A1             n=    8 piece=(10, 32) lvl=0 st=NOT_FINISHED
+  i= 5 A1             n=    9 piece=(10, 30) lvl=0 st=NOT_FINISHED
+  i= 6 A4             n=    8 piece=(12, 30) lvl=0 st=NOT_FINISHED
+  i= 7 A4             n=    9 piece=(14, 30) lvl=0 st=NOT_FINISHED
+  i= 8 A4             n=    8 piece=(16, 30) lvl=0 st=NOT_FINISHED
+  i= 9 A4             n=    9 piece=(18, 30) lvl=0 st=NOT_FINISHED
+  i=10 click(48, 19)  n=   49 piece=(18, 30) lvl=0 st=NOT_FINISHED
+  i=11 A1             n=    8 piece=(18, 28) lvl=0 st=NOT_FINISHED
+  i=12 A1             n=    9 piece=(18, 26) lvl=0 st=NOT_FINISHED
+  i=13 A1             n=    8 piece=(18, 24) lvl=0 st=NOT_FINISHED
+  i=14 click(48, 36)  n=   17 piece=(18, 24) lvl=0 st=NOT_FINISHED
+  i=15 A1             n=    9 piece=(18, 22) lvl=0 st=NOT_FINISHED
+  i=16 A1             n=    8 piece=(18, 20) lvl=0 st=NOT_FINISHED
+  i=17 A4             n=    9 piece=(20, 20) lvl=0 st=NOT_FINISHED
+  i=18 A4             n=    8 piece=(22, 20) lvl=0 st=NOT_FINISHED
+  i=19 A4             n= 1099 piece=(6, 30) lvl=1 st=NOT_FINISHED
+  END lvl=1 state=NOT_FINISHED after 20 actions
+  final board, piece=(6, 30)
+    y24 44444444222288888888dddd88888888
+    y25 44444444222288888888dddd88888888
+    y26 44444444222288888888dddd88888888
+    y27 44444444222288888888dddd88888888
+    y28 44442222999944444444444444444444
+    y29 44442222999944444444444444444444
+    y30 444422ee999944444444444444444444
+    y31 444422ee999944444444444444444444
+    y32 44444949444444444444444444444444
+    y33 44449494444444444444444444444444
+    y34 44444949444444444444444444444444
+    y35 44449494444444444444444444444444
+    y36 44444949444444444444444444444444
+    y37 44449494444444444444444444444444
+    y38 44444949444444444444444444444444
+    y39 44449494444444444444444444444444
+    y40 44442222777777776666777777774444
+    y41 44442222777777776666777777774444
+    y42 44442222777777776666777777774444
+    y43 44442222777777776666777777774444
+    y52 44444444444444442222444444444444
+    y53 44444444444444442882444444444444

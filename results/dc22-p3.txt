@@ -1,0 +1,46 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 03:05:09 | INFO | Got anonymous API key: 6e587bce-f08f-4995-9621-8e06665e8ea4
+2026-08-12 03:05:09 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 03:05:09 | INFO | Successfully fetched 25 environment(s) from API
+== E8: after the 9-button, walk up ==
+2026-08-12 03:05:09 | INFO | Created new scorecard: bcef5028-92d8-42b3-a798-0a3647daf2aa
+2026-08-12 03:05:10 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 03:05:11 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+  trail: [(10, 40), (10, 38), (10, 36), (10, 34), (10, 32), (10, 30), (10, 30)]  lvl=0
+  board after
+    y18 44444444444444444444442222224444
+    y19 44444444444444444444442222224444
+    y20 444444444444444444494922bb224444
+    y21 444444444444444444949422bb224444
+    y22 44444444444444444449492222224444
+    y23 44444444444444444494942222224444
+    y30 4444444422ee888888dddd4444444444
+    y31 4444444422ee888888dddd4444444444
+    y32 444444442222888888dddd4444444444
+    y33 444444442222888888dddd4444444444
+    y34 44444444999944444444444444444444
+    y35 44444444999944444444444444444444
+    y36 44444444999944444444444444444444
+    y37 44444444999944444444444444444444
+    y38 44444444222222444444444444444444
+    y39 44444444222222444444444444444444
+    y40 44444444222222444444444444444444
+    y41 44444444222222444444444444444444
+    y42 44444444222222444444444444444444
+    y43 44444444222222444444444444444444
+
+== E9: reachable set per button combination ==
+2026-08-12 03:05:12 | INFO | Successfully fetched metadata for game dc22
+  none (control):  9 distinct positions x8-12 y38-42 lvl=0 st=NOT_FINISHED
+2026-08-12 03:05:13 | INFO | Successfully fetched metadata for game dc22
+  9             : 18 distinct positions x8-20 y30-40 lvl=0 st=NOT_FINISHED
+2026-08-12 03:05:14 | INFO | Successfully fetched metadata for game dc22
+  8             :  9 distinct positions x8-12 y38-42 lvl=0 st=NOT_FINISHED
+2026-08-12 03:05:15 | INFO | Successfully fetched metadata for game dc22
+  8 then 9      : 14 distinct positions x8-10 y30-42 lvl=0 st=NOT_FINISHED
+
+== E10: the objects no button touches ==
+2026-08-12 03:05:16 | INFO | Successfully fetched metadata for game dc22
+  colour 11: x24-25 y20-21 cells=4
+  colour 13: x18-21 y30-33 cells=16
+  colour  2: x8-27 y18-43 cells=80
