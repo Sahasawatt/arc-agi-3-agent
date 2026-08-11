@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 21:17:17 | INFO | Got anonymous API key: a07e6b8d-c2fc-40ab-9142-e58d79c4e774
+2026-08-11 21:17:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 21:17:18 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 21:17:18 | INFO | Created new scorecard: c9628019-d6e2-4841-8fb4-868a00d17c80
+2026-08-11 21:17:19 | INFO | Successfully fetched metadata for game cn04
+2026-08-11 21:17:19 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+cn04   1/6 levels  actions=[131]  score=0.233%
+
+mean over 1 environments: 0.233%

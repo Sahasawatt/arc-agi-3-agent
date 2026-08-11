@@ -81,7 +81,16 @@ Recon-only work needs no sweep.
    submitting for real, estimate 110-game rerun wall clock; MAX_ACTIONS=2600 may need
    trimming.
 
-1. **THE CLICK HAS NEVER BEEN AIMED — one line, but gated.** `compete.py:1965` sets the
+1. **DONE 2026-08-11 — the click is aimed now, and it is INERT.** Fix in `compete.py`
+   (both ways) + `kaggle/adapter.py`'s proxy `step(action, data=None)`; sweep
+   `results/sweep-click-aimed.log` is identical to `sweep-skewer.log` in all 17 games,
+   mean 6.320% (`sweep_diff.py`'s control fails on purpose — nothing differs), pytest 330.
+   **Next lever, its own gated change:** `poke-click` picks the SMALLEST unprobed object
+   first; dc22's only two responding targets are 40 and 47 cells, so the rung never
+   reaches them. Order by response, or sweep large objects too. Rebuild the Kaggle bundle
+   before any submission — `kaggle/adapter.py` changed. The original finding, kept because
+   the reasoning is what generalises:
+   `compete.py:1965` set the
    coordinates with `clicker.set_data({...})`; the local wrapper reads only its own `data`
    kwarg (`local_wrapper.py:234`), so every click ever made arrived empty and cn04/bp35
    answered `KeyError: 'x'` — the crash CLAUDE.md filed as cn04's own bug. Measured both

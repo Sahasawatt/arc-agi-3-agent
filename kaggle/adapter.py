@@ -80,7 +80,12 @@ class _Proxy:
     def reset(self):
         return self._agent._exchange(("reset", None))
 
-    def step(self, action):
+    def step(self, action, data=None):
+        # `play` passes click coordinates the local wrapper's way (a `data`
+        # kwarg) as well as the framework's way (`set_data` on the action);
+        # this side needs them on the action, so fold the kwarg in.
+        if data:
+            action.set_data(data)
         return self._agent._exchange(("step", action))
 
 

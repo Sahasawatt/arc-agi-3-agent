@@ -66,9 +66,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   nobody chose (`results/click-probe.txt`). Consequences already measured: dc22's "63
   single clicks all answer zero changed cells" was 63 un-aimed clicks — aimed, exactly two
   of its 35 components respond, n=129 and n=97 (`results/dc22-click.txt`); bp35's whole
-  second verb is the click (`results/breadth-recon.md` §bp35 fifth pass). The one-line fix
-  is gated (17-game sweep) and `kaggle/adapter.py:83`'s proxy `step(self, action)` must
-  widen with it or the bundle breaks on the first click.
+  second verb is the click (`results/breadth-recon.md` §bp35 fifth pass). **Fixed** —
+  `compete.py` now sends the coordinates both ways and `kaggle/adapter.py`'s proxy `step`
+  accepts the kwarg (without that the bundle breaks on the first click). The fix is
+  measured **INERT on the sweep**: all 17 games identical to the digit, mean 6.320%
+  (`results/sweep-click-aimed.log`, and `sweep_diff.py`'s positive control fails on
+  purpose because nothing differs). It executes — dc22's own run emits 41 poke-clicks and
+  survives — but `poke-click` picks the SMALLEST unprobed object first and dc22's two live
+  targets are 40 and 47 cells, so the rung never reaches them. That ordering is the next
+  lever, and it is its own gated change.
 - **cn04's complex action kills the RUN when the click is malformed** (673/2,000 actions
   died mid-run). Guard in the play loop: a click answered with `obs=None` retires the
   clicker for the run, level-resets, plays on with the keyboard. Keep the guard — a click

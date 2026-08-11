@@ -1962,8 +1962,16 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
 
         before = obs
         if isinstance(value, tuple):
+            # Both, because the two transports read the coordinates from
+            # different places: the local wrapper builds its ActionInput from
+            # its OWN `data` kwarg and never looks at the action
+            # (local_wrapper.py:234), so `set_data` alone arrives empty and a
+            # game reading data['x'] answers KeyError — which is the crash
+            # this file blamed on cn04 for three months. The Kaggle adapter
+            # reads `action.data`. Measured both ways, same coordinates, one
+            # invocation: results/click-probe.txt.
             clicker.set_data({"x": value[1], "y": value[2]})
-            obs = env.step(clicker)
+            obs = env.step(clicker, data={"x": value[1], "y": value[2]})
         else:
             obs = env.step(by_value[value])
         spent_at_level += 1
