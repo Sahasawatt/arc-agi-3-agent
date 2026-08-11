@@ -1,0 +1,12 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 06:33:44 | INFO | Got anonymous API key: d3bd6b51-eac0-4053-9b46-184c555f30c3
+2026-08-11 06:33:44 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 06:33:45 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 06:33:45 | INFO | Created new scorecard: 0a57dab3-a032-4567-bc8b-1202f656b564
+2026-08-11 06:33:46 | INFO | Successfully fetched metadata for game sb26
+2026-08-11 06:33:46 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+A5 x70: GAME_OVER at press 64; net change outside bar = 0
+A7 x70: ran out; net change outside bar = 0
+5,7 alternating x35: ran out; net change outside bar = 0
+A7 x17 then A5: ran out; net change outside bar = 0
+A5 x17 then A7: ran out; net change outside bar = 0

@@ -1210,6 +1210,7 @@ minimal action sequences — what a planner produces and a language model does n
 | `haul.py` | whole-game driver for the carry family (`wa30`): grab the crate the piece is facing, carry it, drop it into the frame |
 | `maze.py` | whole-game driver for the fixed-pitch maze family (`tu93`): read the wall lattice off the frame and walk a notched heading-piece to the goal block |
 | `dial.py` | whole-game driver for the combination-lock family (`tr87`): read which phase each station is asked for, and dial them all there |
+| `skewer.py` | whole-game driver for the skewer family (`sk48`): thread the wall blocks onto the machine's woven arm in the HUD's order |
 | `sigs.py` | every shipped driver signature against every playable game's reset frame — the check before another driver is wired |
 | `play.py` | the autonomous loop — discover, search object sequences, tour a kind, sweep every reachable square, keep what clears a level |
 | `solver.py` | walkable map from a single frame, BFS, multi-waypoint routing with an action budget |
@@ -1685,3 +1686,41 @@ The signature is the first that is **not disjoint from every other**: `cover`'s 
 tr87 too (it fires on four games and engages one). The wiring settles it by asking `dial`
 first, and `sigs.py` now checks that ordering for every contested game rather than checking
 disjointness it no longer has (`results/sig-sweep.txt`).
+
+
+## sk48: the skewer family (2026-08-11)
+
+A machine rides a vertical track and extends a woven two-row arm sideways; three 4x4
+blocks hang on the right wall, and the bottom HUD draws the goal as a picture: the arm
+fully out with the blocks threaded on it in order. Extending until the braid reaches a
+block THREADS it — it rides the arm from then on — and the level ends the instant the
+last recipe block is pierced. No delivery trip. Level 1: **14 actions against a baseline
+of 61**, found by `bfs_solve.py` over the real engine and replay-verified forward-only
+(`results/sk48-bfs.txt`, `sk48-verify.txt`); the driver `skewer.py` clears it in 24, the
+same capped score.
+
+The hand model that preceded the search got two things confidently wrong, both from the
+repo's oldest trap family — a reading taken from a part of a thing, or while something
+covered it. Blocks "sliding along a dispenser queue" were blocks riding the arm, read at
+misjudged x-offsets; a block "dropping off" when the machine moved was a refused vertical
+move (a threaded block against the wall blocks travel — one retract clears it). The BFS
+line embarrassed both misreadings in fourteen presses.
+
+The braid is period three (`112112`), not a cell-by-cell alternation — the first braid
+detector found nothing on the exact board it was written from. The driver's other three
+lessons, each measured before it cleared the level: controls are learned BY NEED, not
+upfront (three of six actions are dead from the reset state — the roster's no-op trap);
+the room floor is LATCHED once per level (with the arm's tip pressed against a block, the
+cell past the tip is the block, and deriving the floor from it reads the wrong room); and
+a fully extended arm SPLITS the room's floor in two, so the room is flooded from both
+sides of the arm and unioned.
+
+**Level 2 is a rearrange puzzle wearing the same machine**: four blocks in one row, and
+the recipe order (8, 12, 9, 14) is nearly the reverse of the row order the geometry
+forces. Ploughing through threads all four and does not win. Whatever reorders them is
+unmeasured — its own project, like tu93's level 3.
+
+sb26, probed the same session, is the opposite outcome and is written up in
+`results/breadth-recon.md`: every input channel measured dead at every reachable state —
+clicks swallowed before the game logic (they do not even tick the clock), the free action
+silent at all 64 bar lengths, the burn action a pure timer. A wall, filed behind dc22.

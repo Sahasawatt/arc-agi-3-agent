@@ -1,0 +1,37 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 06:30:51 | INFO | Got anonymous API key: b0da1cdf-607b-426b-8f56-c93656eeddee
+2026-08-11 06:30:51 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 06:30:52 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 06:30:52 | INFO | Created new scorecard: 0f1a27c5-6fb7-4bc5-ad6f-d6eca634e209
+2026-08-11 06:30:53 | INFO | Successfully fetched metadata for game sb26
+2026-08-11 06:30:53 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+
+== ACTION5 (complex=False) ==
+  0:    1 cells  x[63-63] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  1:    1 cells  x[62-62] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  2:    1 cells  x[61-61] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  3:    1 cells  x[60-60] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  4:    1 cells  x[59-59] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  5:    1 cells  x[58-58] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  6:    1 cells  x[57-57] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+  7:    1 cells  x[56-56] y[53-53]  2->3:1  state=NOT_FINISHED lvl=0
+
+== ACTION6 (complex=True) ==
+  0: no change  state=NOT_FINISHED lvl=0
+  1: no change  state=NOT_FINISHED lvl=0
+  2: no change  state=NOT_FINISHED lvl=0
+  3: no change  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5: no change  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7: no change  state=NOT_FINISHED lvl=0
+
+== ACTION7 (complex=False) ==
+  0: no change  state=NOT_FINISHED lvl=0
+  1: no change  state=NOT_FINISHED lvl=0
+  2: no change  state=NOT_FINISHED lvl=0
+  3: no change  state=NOT_FINISHED lvl=0
+  4: no change  state=NOT_FINISHED lvl=0
+  5: no change  state=NOT_FINISHED lvl=0
+  6: no change  state=NOT_FINISHED lvl=0
+  7: no change  state=NOT_FINISHED lvl=0

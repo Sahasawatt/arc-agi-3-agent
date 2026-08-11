@@ -1345,3 +1345,71 @@ must exactly overlap the colour-14 cells, or merely become adjacent, by
 watching one level-2 approach frame-by-frame instead of inferring it from
 the transition).
 
+
+## sb26 level 1 is a measured wall: every input channel is dead at every reachable state (2026-08-11)
+
+Board (`results/sb26-found.txt`): four framed boxes across the top in colour
+order 9, 14, 11, 15; a machine at y24-35 whose slot row holds four 2x2
+colour-2 marks; four solid 4x4 blocks at the bottom in the different order
+14, 15, 9, 11; a full-width colour-2 row at y53. Actions `[5, 6, 7]`,
+baseline 18 for level 1 -- it reads like "click the bottom blocks in the top
+row's order", and it is not:
+
+- **ACTION5 is a pure timer burn**: one cell of the y53 row per press,
+  right to left, GAME_OVER at press 64, nothing else ever changes
+  (`sb26-p4.txt`).
+- **ACTION7 is free and silent**: 70 presses burn nothing and change
+  nothing, alone or interleaved with burns (`sb26-p4.txt`), and one to
+  three presses after k burns for EVERY k in 0..63 neither win nor change a
+  cell (`sb26-p5.txt`).
+- **Clicks are dead EVERYWHERE at EVERY state**: a stride-2 full-grid sweep
+  (1,024 spots, one episode each) changes zero cells (`sb26-p3.txt`); the
+  block/box/machine spots re-clicked at every bar length in one episode
+  never answer either, and a click does not even tick the clock -- so it is
+  swallowed before the game logic, not rejected by it (`sb26-p6.txt`).
+- Click sequences over the bottom blocks in both plausible orders: nothing
+  (`sb26-p3.txt`).
+- `obs.frame` holds exactly one layer at every state seen (`sb26-p6.txt`),
+  so no animation channel is being missed.
+
+Open: what a human's first effective input on this level even is. The next
+instrument would be reading the engine's action schema for sb26 specifically
+(does its complex action want data keys other than x/y?) -- but that borders
+the answer key; the honest next step is the same as dc22's: back of the
+queue.
+
+## sk48 FALLS: a skewer machine, and the win is threading the recipe in order (2026-08-11)
+
+Board (`results/sk48-found.txt`): a machine rides a vertical track (step 6),
+its 2-row woven arm (`112112`/`211211`, period THREE -- not a cell-by-cell
+alternation) extends right; three 4x4 blocks sit against the right wall (8 at
+y19-22, 9 at y25-28, 14 at y31-34); the bottom HUD draws the machine with the
+arm out and the blocks threaded on it in order 8, 14, 9. Actions
+`[1, 2, 3, 4, 6, 7]`: 1/2 = track up/down, 4/3 = extend/retract, clock at y53
+burns one cell per THREE actions (~192-action life), 6/7 unused.
+
+- **Piercing**: extending until the braid reaches a block threads it; the
+  block then rides the arm (retract pulls it along) and rides the machine
+  vertically. The win fires ON the pierce of the last recipe block -- no
+  delivery trip (`sk48-p5.txt`, frame-by-frame).
+- **BFS found the line a hand model missed**: 14 actions vs baseline 61
+  (`sk48-bfs.txt`, `bfs_solve.py` at depth 40 with the clock row masked;
+  replay-verified forward-only in a fresh process, `sk48-verify.txt`). The
+  hand model had invented a "dispenser queue" (blocks sliding left after a
+  grab) out of misread x-offsets -- the blocks were riding the arm; and read
+  a refused vertical move as a block "dropping off". Both wrong readings are
+  the occlusion/part-of-a-thing trap family again.
+- **The rung is `skewer.py`** -- signature: one live braid pair + solid 4x4
+  blocks both inside the arm's room and outside it (the HUD picture);
+  measured against all seventeen reset frames, sk48 alone
+  (`sig-sweep.txt`). Controls learned by need (three of six actions are
+  dead from reset -- the no-op trap), floor latched per level (with the tip
+  pressed against a block the cell past it is the BLOCK), room flooded from
+  both sides of the arm (fully extended it SPLITS the floor in two). Clears
+  level 1 in 24 actions, score-capped same as the 14-line
+  (`sk48-skewer1.txt`).
+- **Level 2 is the same machine with a REARRANGE puzzle**: four blocks in
+  one row (recipe [8, 12, 9, 14] against row order 14, 9, 12, 8 from the
+  machine); ploughing straight through threads all four in the wrong order
+  and does not win. The mechanic that reorders them is unmeasured -- its own
+  project, like tu93's level 3.

@@ -35,6 +35,8 @@ from maze import Maze
 from maze import signature as maze_signature
 from dial import Dial
 from dial import signature as dial_signature
+from skewer import Skewer
+from skewer import signature as skewer_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1739,6 +1741,11 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # driver is asked FIRST below; that ordering is the whole reason tr87's
     # trace is the only one that moves.
     dial = Dial(values) if dial_signature(np.array(obs.frame)[-1]) else None
+    # The skewer family (`skewer.py`). Its signature — one live 2-row braid
+    # arm plus solid 4x4 blocks both inside the arm's room (the stock) and
+    # outside it (the HUD's goal picture) — is sk48 alone of the seventeen
+    # at reset (`results/sig-sweep.txt`).
+    skewer = Skewer(values) if skewer_signature(np.array(obs.frame)[-1]) else None
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1879,6 +1886,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if cv is None and maze is not None:
             cv = maze.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "maze"
+        if cv is None and skewer is not None:
+            cv = skewer.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "skewer"
         if cv is not None:
             psrc, value, plan, expect, trip = dsrc, cv, [], [], []
         elif plan:

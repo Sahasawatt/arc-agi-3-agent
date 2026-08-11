@@ -5,9 +5,9 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **10/17 games with a level, mean 6.156%**
-(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-dial.log  ⚠️ PENDING — the sweep for tr87's wiring; if it has not been read yet, read it
+Clear ≥1 level in EVERY game. Standing: **11/17 games with a level, mean 6.320%**
+(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · sk48 2.778 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-skewer.log (sweep_diff vs sweep-dial.log, control sk48: 16/17 identical to the digit, PASS)
 
 ## THE PATTERN THAT WORKS — four games have fallen to it, follow it
 
@@ -28,7 +28,7 @@ unless it reports `exhausted=True` AND the depth covers a whole life.** Not rule
 
 ## GATE
 
-Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`discover.py`/`gate.py` =
+Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`skewer.py`/`discover.py`/`gate.py` =
 full 17-game sweep before commit, per-game, no game loses a level ← CLAUDE.md.
 
 ```bash
@@ -42,33 +42,42 @@ The third argument is the positive control — it refuses to report "identical" 
 SEEN a difference in the game the change was aimed at. Hardcoding it worked for exactly one
 comparison and then fired on the next.
 
-Values that must not move ← results/sweep-dial.log:
+Values that must not move ← results/sweep-skewer.log:
 - ls20 **7/7** `[23, 45, 99, 178, 292, 209, 526]` · re86 **5/8** `[31, 56, 66, 80, 188]`
-- tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sp80 `[16]` · wa30 `[43]` · ar25 `[173]`
-  · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]`
-- pytest **308 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
+- tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sk48 **1/8** `[24]` · sp80 `[16]`
+  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]`
+- pytest **330 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
 
 Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
 
-1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sk48, sb26, g50t. Prefer ones
-   with no complex action; the click-driven ones are a different problem.
-2. **tr87 level 2 — same family, different geometry.** `dial.py` clears level 1 in 28
+1. **Next 0-level game.** Remaining: dc22, ka59, sc25, bp35, sb26, g50t — and the walls
+   have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
+   sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
+   Fresh ground: **sc25** (metronome game, br-sc25-*.txt exist) and **bp35** (2-layer
+   frame, A7 does something big at the bottom rows, cover-sig false positive). Run the
+   pattern on bp35 first; sc25's election problem is a known repo-wide blocker.
+2. **sk48 level 2 — the rearrange puzzle.** `skewer.py` clears L1 (1/8 `[24]`); level 2
+   has four blocks in ONE row, recipe [8,12,9,14] vs forced row order 14,9,12,8 —
+   ploughing through threads all four and does NOT win ← breadth-recon §sk48. Find the
+   reorder mechanic (unload? re-pierce partial? push out the far side?). `bfs_solve` from
+   a cleared-L1 process is the cheap instrument (deepcopy after the L1 line, then search).
+3. **tr87 level 2 — same family, different geometry.** `dial.py` clears level 1 in 28
    actions and correctly declines level 2 ← results/tr87-l2.txt: SEVEN stations rather
    than five, and the hint band sits on its OWN lattice offset (band x18-45 against
    stations at x8,15,...,50), so a hint no longer names a station by POSITION -- which is
    the assumption level 1's reading rests on. Its top region also loses the (icon, block)
    tiles the level-1 combination is read from. Find what names a station there before
    writing any code; the driver's reading is otherwise geometry-free and should transfer.
-3. **tu93 level 3 — a MOVING hazard, its own project.** The driver is wired and clears
+4. **tu93 level 3 — a MOVING hazard, its own project.** The driver is wired and clears
    2/9 `[31, 14]` (5.946%, ← results/sweep-dial.log). It stops at level 3 because the only
    route to that goal passes a cell patrolled by a moving colour-8 body, and `maze.py` has
    no phase model — it blacklists a square only after dying there ← results/tu93-death.txt.
    Same class of mechanic ls20's levels 6-7 needed (`gate.mover_period` / `route_moving`
    are the built precedent). ⚠️ **tu93's GAME_OVER is NOT budget exhaustion** — it fires
    with 60 of 64 bar cells left, on collision ← results/tu93-budget-trace.txt.
-4. g50t's open contradiction ← results/breadth-recon.md §g50t · re86 L6 · cn04 L2 trigger ·
+5. g50t's open contradiction ← results/breadth-recon.md §g50t · re86 L6 · cn04 L2 trigger ·
    ar25 walls-during-planning.
 
 ## TRAPS — each has cost this repo a real session, most of them twice

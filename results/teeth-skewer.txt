@@ -1,0 +1,18 @@
+== teeth proof for test_skewer.py (skewer.py mutated, restored byte-identical) ==
+baseline: 22 passed <- results/pytest-skewer1.txt
+
+M1  target iterates the STOCK order instead of the recipe order
+E        +    and   array([[5, 5, 5, ..., 5, 5, 5],\n       [5, 5, 5, ..., 5, 5, 5],\n       [5, 5, 5, ..., 5, 5, 5],\n       ...,\n       [5, 5, 5, ..., 5, 5, 5],\n       [5, 5, 5, ..., 5, 5, 5],\n       [5, 5, 5, ..., 5, 5, 5]], shape=(64, 64)) = board(arm_y=32, pierced=(8,))
+
+test_skewer.py:165: AssertionError
+=========================== short test summary info ===========================
+FAILED test_skewer.py::test_act_targets_in_recipe_order_not_row_order - asser...
+1 failed, 21 passed in 1.36s
+
+M2  pierced() polarity inverted (braid-left check reads 'not in')
+=========================== short test summary info ===========================
+FAILED test_skewer.py::test_act_extends_once_aligned - assert 2 == 4
+FAILED test_skewer.py::test_act_targets_in_recipe_order_not_row_order - asser...
+FAILED test_skewer.py::test_act_retracts_when_a_vertical_press_is_refused - a...
+FAILED test_skewer.py::test_act_done_once_every_recipe_block_is_threaded - as...
+4 failed, 18 passed in 1.21s

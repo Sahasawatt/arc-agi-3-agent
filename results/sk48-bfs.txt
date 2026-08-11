@@ -1,0 +1,10 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 06:42:24 | INFO | Got anonymous API key: 5fd773af-8353-4b43-b7f7-e946b4dbc7f3
+2026-08-11 06:42:24 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 06:42:25 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 06:42:25 | INFO | Created new scorecard: e2e12546-e009-423e-b98d-6f6e9c31a71a
+2026-08-11 06:42:26 | INFO | Successfully fetched metadata for game sk48
+2026-08-11 06:42:26 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+
+sk48: win=[1, 1, 1, 4, 4, 4, 4, 3, 2, 2, 4, 3, 1, 4]
+  len=14 expanded=1385 states=2099 deaths=0 deepest=13 exhausted=False t=124s

@@ -903,7 +903,7 @@ sources, including a retraction of the "5× human median" action cap that is not
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
 loop).
 
-Five **whole-game drivers** hang off the play loop, all wired the same way: constructed once
+Six **whole-game drivers** hang off the play loop, all wired the same way: constructed once
 if their own signature matches the reset frame, asked first every round, and answering None
 the moment they run out of ideas so the rungs take the level back. `cover` drives the
 framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
@@ -914,11 +914,12 @@ biggest strictly bigger than the rest and wearing an interior colour none of the
 `maze` drives the fixed-pitch maze family (tu93, signature = EXACTLY one notched 3x3 window,
 8 cells of one colour and the ninth a second); `dial` drives the combination-lock family
 (tr87, signature = two 7-row station strips plus a top region whose (icon, block) pairs name
-at least two of the stations).
+at least two of the stations); `skewer` drives the skewer family (sk48, signature = one live
+2-row braid arm plus solid 4x4 blocks both inside the arm's room and outside it).
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the
-wiring scopes a driver to one game. `sigs.py` runs all five SHIPPED predicates over all
+wiring scopes a driver to one game. `sigs.py` runs every SHIPPED predicate over all
 seventeen reset frames in one invocation (`results/sig-sweep.txt`) and is the check to run
 before adding a sixth. Two things it exists to enforce:
 

@@ -1,0 +1,84 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 06:30:13 | INFO | Got anonymous API key: 8dfce639-0ed4-45cd-85e6-64381363befe
+2026-08-11 06:30:13 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 06:30:14 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 06:30:14 | INFO | Created new scorecard: 893abe3e-1943-485b-bf08-cbdfc6d9dbda
+2026-08-11 06:30:14 | INFO | Successfully fetched metadata for game bp35
+2026-08-11 06:30:14 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+game: bp35
+actions: [3, 4, 6, 7] complex: [6]
+baseline_actions: [21, 48, 44, 38, 33, 87, 86, 131, 163]
+frame shape: (2, 64, 64)
+colour census: {0: 64, 3: 178, 5: 1894, 9: 6, 10: 1805, 11: 2, 14: 147}
+  layer 0: colours [0, 3, 5, 9, 10, 11, 14]
+  layer 1: colours [0, 3, 5, 9, 10, 11, 14]
+background colour: 5
+board dump (hex chars, bg='5'):
+  y= 0 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y= 1 55355555355553eee353eee353eee35aaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y= 2 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y= 3 5555555555555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y= 4 5355555355555eeeee5eeeee5eeeee5aaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y= 5 55553555553553eee353eee353eee35aaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y= 6 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y= 7 5535555535555535555535555535555aaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y= 8 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y= 9 5555555555555555555555555555555aaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=10 5355555355555355555355555355555aaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=11 5555355555355555355555355555355aaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=12 5555555555555555555555555555555555555555555555555555555555555555
+  y=13 55355555355555355555355555355553eee353eee353eee353eee35535555535
+  y=14 5555555555555555555555555555555eeeee5eeeee5eeeee5eeeee5555555555
+  y=15 5555555555555555555555555555555eeeee5eeeee5eeeee5eeeee5555555555
+  y=16 5355555355555355555355555355555eeeee5eeeee5eeeee5eeeee5355555355
+  y=17 55553555553555553555553555553553eee353eee353eee353eee35555355555
+  y=18 5555555555555555555555555555555555555555555555555555555555555555
+  y=19 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=20 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=21 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=22 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=23 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=24 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=25 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=26 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=27 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=28 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=29 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=30 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y=31 5535555535555535555535555535555535555535555aaaaa5535555535555535
+  y=32 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y=33 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y=34 5355555355555355555355555355555355555355555aaaaa5355555355555355
+  y=35 5555355555355555355555355555355555355555355aaaaa5555355555355555
+  y=36 5555555555555555555555555555555555555555555aaaaa5555555555555555
+  y=37 5535555535555aaaaaa55955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=38 5555555555555aaaaaa599b5aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=39 5555555555555aaaaaa599b5aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=40 5355555355555aaaaaa55955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=41 5555355555355aaaaaaa555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=42 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=43 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=44 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=45 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=46 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=47 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=48 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=49 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=50 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=51 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=52 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=53 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=54 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=55 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=56 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=57 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=58 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y=59 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y=60 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=61 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y=62 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y=63 0000000000000000000000000000000000000000000000000000000000000000
+replay identical: True (11 frames)
+step rate: 5042/s  (0.06s for 300)
+2026-08-11 06:30:16 | INFO | Successfully fetched metadata for game bp35
+second env same start: True

@@ -1,0 +1,25 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-11 06:31:58 | INFO | Got anonymous API key: 4da3124f-37db-4a8a-9f1e-9321a5d45fa5
+2026-08-11 06:31:58 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-11 06:31:59 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-11 06:31:59 | INFO | Created new scorecard: 4dd6b517-63ab-417d-81ce-1fe775550213
+2026-08-11 06:32:00 | INFO | Successfully fetched metadata for game sb26
+2026-08-11 06:32:00 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+click bottom e(14)   (20,58): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click bottom f(15)   (28,58): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click bottom 9       (36,58): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click bottom b(11)   (44,58): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click top 9          (21,3): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click top e          (28,3): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click top b          (35,3): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click top f          (41,3): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0
+click machine slot   (32,29): no change  state=NOT_FINISHED lvl=0
+  then ACTION7: no change  state=NOT_FINISHED lvl=0

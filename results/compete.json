@@ -133,11 +133,15 @@
   },
   {
     "game": "sk48",
-    "levels": 0,
+    "levels": 1,
     "of": 8,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
+    "actions": [
+      24
+    ],
+    "baseline": [
+      61
+    ],
+    "environment_score": 2.778
   },
   {
     "game": "tr87",
