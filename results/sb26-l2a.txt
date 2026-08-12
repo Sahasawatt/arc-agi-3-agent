@@ -1,0 +1,23 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:57:41 | INFO | Got anonymous API key: 89386dd8-8d1b-47d3-8b4e-a9c5cc7005bf
+2026-08-12 16:57:41 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:57:42 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 16:57:42 | INFO | Created new scorecard: dc3ce12c-63a8-4fa5-86e0-2577833830b4
+2026-08-12 16:57:44 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 16:57:44 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+recipe [12, 15, 8, 9, 14, 11, 6]
+stock  {8: 10, 15: 17, 14: 24, 12: 31, 6: 38, 9: 45, 11: 52}
+upper slots [(22, 22), (28, 22), (40, 22)]
+lower slots [(22, 36), (28, 36), (34, 36), (40, 36)]
+2026-08-12 16:57:45 | INFO | Successfully fetched metadata for game sb26
+== A upper then lower ==
+  A5: n=    1 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+2026-08-12 16:57:46 | INFO | Successfully fetched metadata for game sb26
+== B lower then upper ==
+  A5: n=    1 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+2026-08-12 16:57:47 | INFO | Successfully fetched metadata for game sb26
+== C global left-to-right ==
+  A5: n=    1 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED

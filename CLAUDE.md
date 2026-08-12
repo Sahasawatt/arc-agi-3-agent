@@ -946,7 +946,13 @@ object big enough to be a button) and clicks as well, so it carries the same rul
 drives the load-the-machine family (sb26, signature = a recipe row and a stock row wearing
 the SAME colours in another order, with one slot mark per block -- the set equality is what
 separates it from sk48, whose rows read the same shape with different colours) and finds the
-action that RUNS the loaded machine by trying the plain ones rather than assuming it.
+action that RUNS the loaded machine by trying the plain ones rather than assuming it. Its
+slot order is the MACHINE PATH, not a row scan: on a two-machine board the upper row runs
+left to right with the whole lower row spliced in where the connecting pipe interrupts it —
+found by exhausting all 5,040 slot assignments on level 2 with the insertion order pinned to
+the recipe, which was sound only because A5 was first measured position-pure while A7 is an
+UNDO (the game keeps an insertion stack, so a frame-deduped search would have merged states
+that differ in history — the sp80 hidden-state law).
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the

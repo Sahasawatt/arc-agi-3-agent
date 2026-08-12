@@ -1,0 +1,22 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:59:17 | INFO | Got anonymous API key: 5d6cdcb2-4e61-43ec-b8dd-97c292282edd
+2026-08-12 16:59:17 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:59:18 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 16:59:18 | INFO | Created new scorecard: ca03bdbf-d155-4e4e-b5c0-41621a6bc1e0
+2026-08-12 16:59:19 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 16:59:19 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+== full load, then A7 A7 A5 A5 ==
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+  A5: n=    1 lvl=1 st=NOT_FINISHED
+  A5: n=    1 lvl=1 st=NOT_FINISHED
+2026-08-12 16:59:21 | INFO | Successfully fetched metadata for game sb26
+== full load, then A7 x4 ==
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+  A7: n=   32 lvl=1 st=NOT_FINISHED
+== upper 3 then A5, lower 4 then A5 ==
+2026-08-12 16:59:22 | INFO | Successfully fetched metadata for game sb26
+  after upper 3, A5: n=    1 lvl=1
+  after lower 4, A5: n=    1 lvl=1 st=NOT_FINISHED

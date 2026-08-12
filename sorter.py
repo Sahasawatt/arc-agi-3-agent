@@ -77,24 +77,43 @@ def read(g):
     recipe = [t[2] for t in top[1]]
     if len(recipe) < 3 or len(set(recipe)) != len(recipe):
         return None
-    # the slot row: the row with the most equal-width marks of one colour
-    slot_row, slots = None, []
+    # Slot rows: every distinct band of colour-2 marks in the middle third.
+    # Level 1 has one machine; level 2 has TWO, three slots up and four down,
+    # joined by a colour-14 pipe -- so slots are collected across rows, not
+    # from the single row with the most marks.
+    rows = []
     for y in range(h // 3, 2 * h // 3):
         marks = [t for t in rows_of(g, y) if t[2] == SLOT_COLOUR]
-        if len(marks) >= len(recipe) and len(marks) > len(slots):
-            slot_row, slots = y, marks
-    if slot_row is None:
+        if len(marks) >= 2 and (not rows or y > rows[-1][0] + 2):
+            rows.append((y, [(t[0] + t[1]) // 2 for t in marks]))
+        elif len(marks) >= 2 and rows and len(marks) > len(rows[-1][1]):
+            rows[-1] = (y, [(t[0] + t[1]) // 2 for t in marks])
+    if not rows:
         return None
-    return {"recipe": recipe, "stock": stock, "slot_row": slot_row,
-            "slots": [(t[0] + t[1]) // 2 for t in slots],
+    if len(rows) == 1:
+        order = [(x, rows[0][0]) for x in rows[0][1]]
+    else:
+        # The recipe's order walks the MACHINE PATH: the upper row left to
+        # right, with the whole lower row spliced in where the pipe
+        # interrupts it (found by exhausting all 5,040 slot assignments on
+        # level 2 -- the winner was the 34th, results/sb26-l2-dfs.txt). The
+        # pipe is the colour-14 column between the two slot rows.
+        (uy, uxs), (ly, lxs) = rows[0], rows[-1]
+        between = [x for y in range(uy + 2, ly - 1)
+                   for x in np.nonzero(g[y] == 14)[0]]
+        pipe_x = int(np.median(between)) if between else (uxs[-1] + 1)
+        order = ([(x, uy) for x in uxs if x < pipe_x]
+                 + [(x, ly) for x in lxs]
+                 + [(x, uy) for x in uxs if x > pipe_x])
+    return {"recipe": recipe, "stock": stock, "order": order,
             "stock_row": bot[0]}
 
 
 def loaded(g, b):
-    """How many slot columns now hold something other than the mark colour."""
+    """How many of the ordered slots hold something other than the mark."""
     n = 0
-    for x in b["slots"]:
-        if int(g[b["slot_row"], x]) != SLOT_COLOUR:
+    for x, y in b["order"]:
+        if int(g[y, x]) != SLOT_COLOUR:
             n += 1
     return n
 
@@ -110,7 +129,7 @@ def signature(g):
     if g is None or g.ndim < 2 or g.size == 0:
         return False
     b = read(g)
-    if not b or len(b["recipe"]) < 3 or len(b["slots"]) < len(b["recipe"]):
+    if not b or len(b["recipe"]) < 3 or len(b["order"]) < len(b["recipe"]):
         return False
     return set(b["recipe"]) == set(b["stock"])
 
@@ -153,14 +172,14 @@ class Sorter:
             b["stock"] = live["stock"]     # the stock row empties as it loads
         n = loaded(g, b)
 
-        if n < len(b["slots"]) and n < len(b["recipe"]):
+        if n < len(b["order"]) and n < len(b["recipe"]):
             colour = b["recipe"][n]
             if colour not in b["stock"]:
                 self.done = True
                 return None
             if self.holding:
                 self.holding = False
-                x, y = b["slots"][n], b["slot_row"]
+                x, y = b["order"][n]
             else:
                 self.holding = True
                 x, y = b["stock"][colour], b["stock_row"]

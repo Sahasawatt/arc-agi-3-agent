@@ -1,0 +1,19 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 17:00:54 | INFO | Got anonymous API key: 227496ed-d783-4c3a-9bef-44ddb00a952b
+2026-08-12 17:00:54 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 17:00:55 | INFO | Successfully fetched 25 environment(s) from API
+== does (34,22) take a block? ==
+2026-08-12 17:00:55 | INFO | Created new scorecard: 8954cbf5-9bd0-4b4a-8f61-70aca6b78aaf
+2026-08-12 17:00:57 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 17:00:57 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+  select 12, click(34,22): n=20
+2026-08-12 17:00:58 | INFO | Successfully fetched metadata for game sb26
+  pipe-as-slot: upper x22,28,34, pipe x34? no -- upper 4 incl pipe, lower 3: A5 n=    1 lvl=1
+2026-08-12 17:00:59 | INFO | Successfully fetched metadata for game sb26
+  lower L2R then upper R2L: A5 n=    1 lvl=1
+2026-08-12 17:01:00 | INFO | Successfully fetched metadata for game sb26
+  upper R2L then lower R2L: A5 n=    1 lvl=1
+2026-08-12 17:01:02 | INFO | Successfully fetched metadata for game sb26
+  global right-to-left: A5 n=    1 lvl=1
+2026-08-12 17:01:03 | INFO | Successfully fetched metadata for game sb26
+  lower from the pipe outward: 34,28,40,22 then upper 28,22,40: A5 n=    1 lvl=1

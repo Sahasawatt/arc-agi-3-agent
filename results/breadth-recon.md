@@ -1765,3 +1765,29 @@ different rows (the recon note says "every row tried" but predates the aimed
 click); (b) whether the ring travelling with the piece can be handed back --
 click the EMPTY ring left in the corridor was n=0, but only from two standing
 positions; (c) sc25-style: the win may simply not involve the slots.
+
+### sb26 LEVEL 2 FALLS -- the recipe walks the MACHINE PATH (2026-08-12)
+
+L2 board: seven recipe boxes, seven stock blocks, and TWO machines -- three
+slots up, four down, joined by a colour-14 pipe. Loading in recipe order was
+correct but every hand-guessed slot mapping was silent, and A5 turned out to
+be an all-or-nothing oracle. Two instruments settled it:
+
+- **A7 is UNDO** -- it pulls the most recently placed block back to stock,
+  one per press (`results/sb26-l2d.txt`, cells diffed). So the game keeps an
+  insertion stack, which put frame-dedup search off the table (two states
+  with one frame can differ in history -- the sp80 hidden-state law).
+- **A5 is position-pure**: the same assignment loaded in two insertion
+  orders answers identically (`results/sb26-l2-dfs.txt` soundness lines).
+  That licence is what made the search sound: pin the insertion order to the
+  recipe, exhaust WHICH SLOT each colour takes -- 7! = 5,040 leaves, winner
+  at the 34th (`sb26_l2_dfs.py`).
+
+The winning order is geometric: **upper row left to right, with the whole
+lower row spliced in where the pipe interrupts it** -- U22, U28, [pipe] L22,
+L28, L34, L40, U40. Replayed forward-only twice, identical: level 2 in 15 of
+its own actions (`results/sb26-l2-solve.txt`).
+
+`sorter.py` now reads slot rows across machines and orders them by that
+path; the driver clears both levels in 24 actions (`results/sorter-try5.txt`)
+and sb26 smokes at 2/8 `[9, 15]`, 8.333%.
