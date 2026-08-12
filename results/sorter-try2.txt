@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 05:19:06 | INFO | Got anonymous API key: 758c9aeb-36a0-4b40-8dfe-6e837e05590a
+2026-08-12 05:19:06 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 05:19:07 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 05:19:07 | INFO | Created new scorecard: 0502a1d3-52cd-4e00-9dc9-ea4632ad5607
+2026-08-12 05:19:09 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 05:19:09 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+signature: True read: {'recipe': [9, 14, 11, 15], 'stock': {14: 19, 15: 27, 9: 35, 11: 43}, 'slot_row': 29, 'slots': [22, 28, 34, 40], 'stock_row': 57}
+  i= 0 click(35,57)   n=   20 lvl=0 st=NOT_FINISHED
+  i= 1 click(22,29)   n=   53 lvl=0 st=NOT_FINISHED
+  i= 2 click(19,58)   n=   20 lvl=0 st=NOT_FINISHED
+  i= 3 click(28,29)   n=   53 lvl=0 st=NOT_FINISHED
+  i= 4 driver answered None
+levels: 0 at []

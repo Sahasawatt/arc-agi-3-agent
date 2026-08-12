@@ -41,6 +41,8 @@ from tape import Tape
 from tape import signature as tape_signature
 from bridge import Bridge
 from bridge import signature as bridge_signature
+from sorter import Sorter
+from sorter import signature as sorter_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1764,6 +1766,13 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # `tape`: only where the game has a complex action.
     bridge = (Bridge(values) if clicker is not None
               and bridge_signature(np.array(obs.frame)[-1]) else None)
+    # The load-the-machine family (`sorter.py`). Its signature — a recipe row
+    # and a stock row wearing the SAME colours in another order, with one slot
+    # mark per block — is sb26 alone of the seventeen at reset
+    # (`results/sig-sweep-sorter.txt`; the set equality is what separates it
+    # from sk48, whose rows read the same shape with different colours).
+    sorter = (Sorter(values) if clicker is not None
+              and sorter_signature(np.array(obs.frame)[-1]) else None)
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1908,6 +1917,12 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             else:
                 cv = bridge.act(np.array(obs.frame)[-1], obs.levels_completed)
                 dsrc = "bridge"
+        if cv is None and sorter is not None:
+            if clicker is None:
+                sorter = None
+            else:
+                cv = sorter.act(np.array(obs.frame)[-1], obs.levels_completed)
+                dsrc = "sorter"
         if cv is None and cover is not None:
             cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "cover"

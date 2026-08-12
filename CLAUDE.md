@@ -923,7 +923,7 @@ sources, including a retraction of the "5× human median" action cap that is not
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
 loop).
 
-Eight **whole-game drivers** hang off the play loop, all wired the same way: constructed once
+Nine **whole-game drivers** hang off the play loop, all wired the same way: constructed once
 if their own signature matches the reset frame, asked first every round, and answering None
 the moment they run out of ideas so the rungs take the level back. `cover` drives the
 framed-box family (re86, signature = a cell ringed by eight identical cells); `swap` drives
@@ -942,7 +942,11 @@ that ceiling) and is the first driver that drives with CLICKS, so it is built on
 game has a complex action and is dropped if that clicker is ever retired; `bridge` drives
 the toggle-and-bridge family (dc22, signature = a play area and a panel with different
 background colours, two identically sized framed markers in the play area, and a panel
-object big enough to be a button) and clicks as well, so it carries the same rule.
+object big enough to be a button) and clicks as well, so it carries the same rule; `sorter`
+drives the load-the-machine family (sb26, signature = a recipe row and a stock row wearing
+the SAME colours in another order, with one slot mark per block -- the set equality is what
+separates it from sk48, whose rows read the same shape with different colours) and finds the
+action that RUNS the loaded machine by trying the plain ones rather than assuming it.
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the

@@ -5,9 +5,9 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **13/17 games with a level, mean 6.731%**
-(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-bridge.log (sweep_diff vs sweep-tape.log, control dc22: 16/17 identical to the digit, PASS)
+Clear ≥1 level in EVERY game. Standing: **14/17 games with a level, mean 6.894%**
+(ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · sb26 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-sorter.log (sweep_diff vs sweep-bridge.log, control sb26: 16/17 identical to the digit, PASS)
 
 ## THE PATTERN THAT WORKS — five games have fallen to it, follow it
 
@@ -39,7 +39,7 @@ unless it reports `exhausted=True` AND the depth covers a whole life.** Not rule
 ## GATE
 
 Any change to `compete.py`/`cover.py`/`swap.py`/`haul.py`/`maze.py`/`dial.py`/`skewer.py`/
-`tape.py`/`bridge.py`/`discover.py`/`gate.py` =
+`tape.py`/`bridge.py`/`sorter.py`/`discover.py`/`gate.py` =
 full 17-game sweep before commit, per-game, no game loses a level ← CLAUDE.md.
 
 ```bash
@@ -53,10 +53,10 @@ The third argument is the positive control — it refuses to report "identical" 
 SEEN a difference in the game the change was aimed at. Hardcoding it worked for exactly one
 comparison and then fired on the next.
 
-Values that must not move ← results/sweep-bridge.log:
+Values that must not move ← results/sweep-sorter.log:
 - ls20 **7/7** `[23, 45, 99, 178, 292, 209, 526]` · re86 **5/8** `[31, 56, 66, 80, 188]`
 - tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sk48 **1/8** `[24]` · sp80 `[16]`
-  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]` · bp35 `[20]` · dc22 `[25]`
+  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]` · bp35 `[20]` · dc22 `[25]` · sb26 `[9]`
 - pytest **330 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
 
 Recon-only work needs no sweep.
@@ -64,7 +64,7 @@ Recon-only work needs no sweep.
 ## QUEUE (highest value first)
 
 0. **Kaggle submission — READY, needs the human.** The FULL agent (compete.play,
-   rungs + all eight drivers) runs unchanged on a worker thread behind a queue-backed
+   rungs + all nine drivers) runs unchanged on a worker thread behind a queue-backed
    proxy env: `kaggle/adapter.py` + `kaggle/bundle.py` -> generated `kaggle/my_agent.py`
    (rebuild after ANY module change). Verified through the official starter kit's own
    harness: **ls20 7/7 WIN 43.59%**, per-level transitions identical to the local sweep
@@ -136,7 +136,14 @@ Recon-only work needs no sweep.
    the start square is what made this level look unsolvable. Level 2 is where it now
    stops (it already finds that board's two buttons).
 
-4. **Next 0-level game.** Remaining: ka59, sc25, sb26, g50t — and the walls
+4. **sb26 LEVEL 1: SHIPPED — `sorter.py` is the ninth driver.** 1/8 `[9]` against a
+   baseline of 18, sweep clean (16/17 identical, mean 6.731% -> 6.894%,
+   results/sweep-sorter.log), sigs PASS, pytest 330. The click is half a DRAG (select a
+   stock block, click a slot); loaded in the recipe row's order, ACTION5 runs the machine
+   — the action §sb26 called a pure timer burn, measured on an empty machine because no
+   click could land. The driver finds the run button by TRYING the plain actions.
+
+5. **Next 0-level game.** Remaining: ka59, sc25, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
    sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
    Fresh ground: **sc25** (metronome game, br-sc25-*.txt exist; its election problem is a
