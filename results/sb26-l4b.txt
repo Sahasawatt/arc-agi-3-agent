@@ -1,0 +1,21 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 02:42:56 | INFO | Got anonymous API key: 81e9aa7d-addd-400a-8043-271b847588c6
+2026-08-13 02:42:56 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 02:42:57 | INFO | Successfully fetched 25 environment(s) from API
+== E1: are the pre-loaded blocks selectable? ==
+2026-08-13 02:42:57 | INFO | Created new scorecard: a9853953-8819-4a11-a2fa-515d282b831d
+2026-08-13 02:42:59 | INFO | Successfully fetched metadata for game sb26
+2026-08-13 02:42:59 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+  click(19,22) b upper: n=20
+2026-08-13 02:43:00 | INFO | Successfully fetched metadata for game sb26
+  click(25,22) 8 upper: n=20
+2026-08-13 02:43:01 | INFO | Successfully fetched metadata for game sb26
+  click(26,36) e middle: n=0
+
+== E2/E3: do the bottom-row slots take a block? ==
+2026-08-13 02:43:03 | INFO | Successfully fetched metadata for game sb26
+  6 -> left 22-mark: n=33 y53-60 x9-61 lvl=3
+2026-08-13 02:43:05 | INFO | Successfully fetched metadata for game sb26
+  c -> middle 22-mark: n=33 y53-60 x23-61 lvl=3
+2026-08-13 02:43:07 | INFO | Successfully fetched metadata for game sb26
+  9 -> e44e frame: n=20 y56-61 x50-55 lvl=3

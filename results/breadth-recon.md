@@ -1909,3 +1909,39 @@ run-button hunt now happens once per level.
 
 Driver clears all three known levels in 39 actions (`sorter-try7.txt`) and
 answers None cleanly on level 4.
+
+### sb26 level 4: the pre-load is a decoy, and 5,160 assignments are dead (2026-08-13)
+
+L4 arrives mid-loaded: recipe b,8,e,9,6,c,f; b and 8 sit in the upper
+machine, e in the middle one, and the bottom row holds 6,c,f,9 plus two
+colour-2 holders and an e44e frame (`results/sb26-l4a.txt`).
+
+Measured, in order:
+
+- **The driver read the two pre-loaded blocks as pipes** (width-4 runs in
+  the row above the slot row -- exactly where pipes live) and built a
+  nonsense order; it answers None safely but its L4 geometry is wrong.
+- **A7 unwinds the game's own pre-load**: 8 returns to the bottom holder at
+  x31, then b to x10, then the stack is EMPTY -- so e is a FIXTURE of the
+  middle machine, not a placed block, and the bottom row's two 22-holders
+  are b's and 8's home squares (`sb26-l4c.txt`). The pre-load is therefore
+  part of the PUZZLE, not part of the solution's prefix.
+- The pre-loaded blocks are selectable (b, 8 answer the 20-cell border);
+  the middle machine's e is not (n=0). The bottom holders accept blocks;
+  the e44e frame does not (`sb26-l4b.txt`).
+- **Assignment search is exhausted twice**: with b,8 left where the game
+  put them, all P(5,4)=120 placements of 9,6,c,f (`sb26-l4-dfs.txt`); and
+  after unwinding, all P(7,6)=5,040 placements of b,8,9,6,c,f with the
+  insertion order pinned to the recipe (`sb26-l4-dfs2.txt`). No win in
+  either. Three hand-built "machine path" lines with an invisible pipe
+  between U25 and U31 are also silent (`sb26-l4d.txt`).
+
+So L4 falsifies one of the assumptions the first three levels licensed.
+The candidates, in order of likelihood: **insertion ORDER matters here**
+(L2's position-purity was measured on L2 alone, and a search over both
+order and slots is 6! x P(7,6) -- needs a smarter oracle, not brute force);
+A5 must be pressed mid-sequence (per machine?); or the win reads something
+the frame shows that the slot model does not (the e44e frame's role is
+still unexplained). Next instrument: measure order-dependence directly --
+pick ONE full assignment, load it in several insertion orders, and diff
+the A5 answers; any difference collapses the space to order-search.
