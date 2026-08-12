@@ -1,0 +1,26 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:08:01 | INFO | Got anonymous API key: ffc63f1d-6593-4518-9a23-88a6cf060782
+2026-08-12 16:08:01 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:08:02 | INFO | Successfully fetched 25 environment(s) from API
+== A: kick, don't follow, park somewhere ==
+2026-08-12 16:08:02 | INFO | Created new scorecard: 4bdf767d-35ed-4c49-af19-3573e174102c
+2026-08-12 16:08:03 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:08:03 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  park left slot interior    : piece=(13, 34) dot=(43, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:08:04 | INFO | Successfully fetched metadata for game ka59
+  park the piece's own ring  : piece=(19, 31) dot=(43, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:08:06 | INFO | Successfully fetched metadata for game ka59
+  park the dot's old ring    : piece=(28, 31) dot=(43, 31) lvl=0 st=NOT_FINISHED
+
+== B: carrying, bump every right-slot wall ==
+2026-08-12 16:08:07 | INFO | Successfully fetched metadata for game ka59
+  bump north into the slot's south wall : piece=(46, 22) dot=None lvl=0
+  bump east into its west wall          : piece=(49, 28) dot=None lvl=0
+  bump west into its east wall          : piece=(43, 28) dot=None lvl=0
+  bump south into its north wall        : piece=(46, 31) dot=None lvl=0
+
+== D: ferried, hold through a full timer ==
+2026-08-12 16:08:08 | INFO | Successfully fetched metadata for game ka59
+  GAME_OVER #1 at extra action 94; resetting on
+  GAME_OVER #2 at extra action 194; resetting on
+  end: lvl=0 deaths=2 st=NOT_FINISHED

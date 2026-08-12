@@ -1,0 +1,18 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:03:01 | INFO | Got anonymous API key: de3365e4-9ed4-48c9-8a95-d43ca2abb337
+2026-08-12 16:03:01 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:03:03 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 16:03:03 | INFO | Created new scorecard: 75c72aac-3dad-4081-99f9-119cc89b9f57
+2026-08-12 16:03:04 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:03:04 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  LEFT slot  + just stand            : piece=(13, 34) dot=None lvl=0 st=NOT_FINISHED
+2026-08-12 16:03:05 | INFO | Successfully fetched metadata for game ka59
+  LEFT slot  + click the piece       : piece=(13, 34) dot=None lvl=0 st=NOT_FINISHED
+2026-08-12 16:03:06 | INFO | Successfully fetched metadata for game ka59
+  LEFT slot  + click the slot centre : piece=(13, 34) dot=None lvl=0 st=NOT_FINISHED
+2026-08-12 16:03:07 | INFO | Successfully fetched metadata for game ka59
+  RIGHT slot + just stand            : piece=(31, 31) dot=None lvl=0 st=NOT_FINISHED
+2026-08-12 16:03:08 | INFO | Successfully fetched metadata for game ka59
+  RIGHT slot + click the piece       : piece=(31, 31) dot=None lvl=0 st=NOT_FINISHED
+2026-08-12 16:03:09 | INFO | Successfully fetched metadata for game ka59
+  RIGHT slot + click the slot centre : piece=(31, 31) dot=None lvl=0 st=NOT_FINISHED

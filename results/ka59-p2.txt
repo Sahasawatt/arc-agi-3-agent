@@ -1,0 +1,29 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:01:33 | INFO | Got anonymous API key: a7807c42-2172-4152-a8e9-552bc26ec2fb
+2026-08-12 16:01:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:01:34 | INFO | Successfully fetched 25 environment(s) from API
+== E5: teleport targets across the map ==
+2026-08-12 16:01:34 | INFO | Created new scorecard: ffdeb334-6a74-4f3b-b924-0bd3332b81dc
+2026-08-12 16:01:36 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:01:36 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  (12,25) left room, open floor       : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:37 | INFO | Successfully fetched metadata for game ka59
+  (27,31) corridor (the dot's own ring): n=  3 piece (19, 19, 31, 31) -> (28, 28, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:38 | INFO | Successfully fetched metadata for game ka59
+  (35,31) ON the colour-15 bar        : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:39 | INFO | Successfully fetched metadata for game ka59
+  (46,35) right room, open floor      : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:40 | INFO | Successfully fetched metadata for game ka59
+  (46,28) right slot interior         : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:41 | INFO | Successfully fetched metadata for game ka59
+  (12,34) left slot interior          : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:42 | INFO | Successfully fetched metadata for game ka59
+  ( 5,10) void outside the rooms      : n=  1 piece (19, 19, 31, 31) -> (19, 19, 31, 31) lvl=0 st=NOT_FINISHED
+
+== E7: park in each slot -- is standing there the level? ==
+2026-08-12 16:01:43 | INFO | Successfully fetched metadata for game ka59
+  teleport to left slot: piece (19, 19, 31, 31) lvl=0
+    after nudges: lvl=0 st=NOT_FINISHED
+2026-08-12 16:01:44 | INFO | Successfully fetched metadata for game ka59
+  teleport to right slot: piece (19, 19, 31, 31) lvl=0
+    after nudges: lvl=0 st=NOT_FINISHED

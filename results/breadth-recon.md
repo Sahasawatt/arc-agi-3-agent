@@ -1728,3 +1728,40 @@ with a complex action swept at reset, one fresh episode per component):
 ka59 answers two clicks of 3 cells each, sc25 answers NONE of its 22
 components, and g50t has no complex action at all -- so of the four remaining
 zero-level games, only ka59's walls could still be a click artefact.
+
+### ka59: the click is a PICKUP-AND-FERRY, the right room falls open, and the win is still unmeasured (2026-08-12)
+
+Probes `ka59_p1..p8` -> `results/ka59-p1.txt` .. `ka59-p8.txt`. What the aimed
+click adds to the standing model:
+
+- **The click answers only when aimed at the grey dot or its ring, and it
+  moves the PIECE onto the dot's square** -- not a general teleport (seven
+  other targets across the map answer nothing, `ka59-p2.txt`).
+- **The dot is CONSUMED by that click**: it is gone from the frame even after
+  the piece steps away (`ka59-p3.txt`), and the piece then walks with its
+  ring travelling around it -- n=18-19 cells per move against 8-9 bare
+  (`ka59-p6.txt`) -- which reads as a carried state.
+- **The right room is reachable for the first time in the campaign**: kick
+  the dot east (it flies to its invariant landing at (43,31), across the
+  colour-15 bar), then click the landing -- the piece follows it over. The
+  74-state keyboard BFS was the state space of a game whose second verb had
+  never landed.
+- The whole right room was walked from inside (`ka59-p6.txt`): open floor,
+  the hollow slot, no new objects, no colour-5 anywhere.
+
+Measured dead, one fresh episode each: standing in either slot with or
+without the carry, clicking every distinctive target from the carried state
+(all n<=1, `ka59-p7.txt`), bump-dropping against every right-slot wall,
+kick-without-follow with the piece parked in the left slot / either ring, and
+holding through two full timers in the right room -- the 100-action death
+fires there too (`ka59-p8.txt`).
+
+Open, sharper than before: the drop verb, if one exists, is none of {stand,
+click self, click destination, bump}; and the win may need the dot IN a slot,
+which no measured verb can do -- the kick lands it at (43,31) invariantly and
+the click eats it. The next instruments: (a) does a SECOND kick geometry
+exist -- kick the dot north/south within the corridor by approaching on
+different rows (the recon note says "every row tried" but predates the aimed
+click); (b) whether the ring travelling with the piece can be handed back --
+click the EMPTY ring left in the corridor was n=0, but only from two standing
+positions; (c) sc25-style: the win may simply not involve the slots.

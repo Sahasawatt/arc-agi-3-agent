@@ -1,0 +1,16 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:00:53 | INFO | Got anonymous API key: b209e088-3243-4d18-9276-92f609de6a02
+2026-08-12 16:00:53 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:00:55 | INFO | Successfully fetched 25 environment(s) from API
+== E1: one aimed click on the dot ==
+2026-08-12 16:00:55 | INFO | Created new scorecard: e3caa3ae-7f44-4708-a89b-ca567ded88f2
+2026-08-12 16:00:56 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:00:56 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  dot at (28, 28, 31, 31), piece at (19, 31)
+  click(28,31): n=3 changed [(19, 31, 0, 4), (28, 31, 5, 0), (63, 63, 4, 0)]
+  dot now None lvl=0
+
+== E2: walk the dot by clicking, 12 presses ==
+2026-08-12 16:00:57 | INFO | Successfully fetched metadata for game ka59
+  press 0: click(28,31) n=  3 dot (28, 28, 31, 31) -> None lvl=0 st=NOT_FINISHED
+  press 1: dot gone

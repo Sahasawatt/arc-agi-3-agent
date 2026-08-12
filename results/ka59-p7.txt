@@ -1,0 +1,38 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:06:37 | INFO | Got anonymous API key: fe7dfbfb-086a-4078-8352-fabcebf8577c
+2026-08-12 16:06:37 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:06:38 | INFO | Successfully fetched 25 environment(s) from API
+== drop sweep, standing at the landing (43,31) ==
+2026-08-12 16:06:38 | INFO | Created new scorecard: 2d08c179-958b-4c36-8de3-c92acf319cfc
+2026-08-12 16:06:39 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:06:39 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  (46,28) right slot interior           : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:40 | INFO | Successfully fetched metadata for game ka59
+  (47,26) right slot top wall           : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:41 | INFO | Successfully fetched metadata for game ka59
+  (25,31) the empty ring in the corridor: n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:42 | INFO | Successfully fetched metadata for game ka59
+  (12,34) left slot interior            : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:43 | INFO | Successfully fetched metadata for game ka59
+  (35,31) the colour-15 bar             : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:44 | INFO | Successfully fetched metadata for game ka59
+  (50,35) right room open floor         : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+2026-08-12 16:06:45 | INFO | Successfully fetched metadata for game ka59
+  (12,25) left room open floor          : n=  0 piece (43, 31) -> (43, 31) dot=None lvl=0
+
+== drop sweep, standing IN the right slot ==
+2026-08-12 16:06:47 | INFO | Successfully fetched metadata for game ka59
+  (46,28) right slot interior           : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:48 | INFO | Successfully fetched metadata for game ka59
+  (47,26) right slot top wall           : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:49 | INFO | Successfully fetched metadata for game ka59
+  (25,31) the empty ring in the corridor: n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:50 | INFO | Successfully fetched metadata for game ka59
+  (12,34) left slot interior            : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:51 | INFO | Successfully fetched metadata for game ka59
+  (35,31) the colour-15 bar             : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:52 | INFO | Successfully fetched metadata for game ka59
+  (50,35) right room open floor         : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+2026-08-12 16:06:54 | INFO | Successfully fetched metadata for game ka59
+  (12,25) left room open floor          : n=  1 piece (46, 28) -> (46, 28) dot=None lvl=0
+

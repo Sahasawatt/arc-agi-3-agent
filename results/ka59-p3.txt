@@ -1,0 +1,15 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 16:02:21 | INFO | Got anonymous API key: 7a5595f5-e418-4913-b860-d27fb3b16f07
+2026-08-12 16:02:21 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 16:02:22 | INFO | Successfully fetched 25 environment(s) from API
+== E8: click onto the dot, then step off in each direction ==
+2026-08-12 16:02:22 | INFO | Created new scorecard: 93090509-5ead-4911-b088-15885d9d049f
+2026-08-12 16:02:23 | INFO | Successfully fetched metadata for game ka59
+2026-08-12 16:02:23 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+  UP   : piece (28, 31) -> (28, 31)  dot (28, 31) -> None  lvl=0 st=NOT_FINISHED
+2026-08-12 16:02:24 | INFO | Successfully fetched metadata for game ka59
+  DOWN : piece (28, 31) -> (28, 31)  dot (28, 31) -> None  lvl=0 st=NOT_FINISHED
+2026-08-12 16:02:26 | INFO | Successfully fetched metadata for game ka59
+  LEFT : piece (28, 31) -> (25, 31)  dot (28, 31) -> None  lvl=0 st=NOT_FINISHED
+2026-08-12 16:02:27 | INFO | Successfully fetched metadata for game ka59
+  RIGHT: piece (28, 31) -> (31, 31)  dot (28, 31) -> None  lvl=0 st=NOT_FINISHED
