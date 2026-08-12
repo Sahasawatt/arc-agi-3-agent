@@ -93,18 +93,42 @@ def read(g):
     if len(rows) == 1:
         order = [(x, rows[0][0]) for x in rows[0][1]]
     else:
-        # The recipe's order walks the MACHINE PATH: the upper row left to
-        # right, with the whole lower row spliced in where the pipe
-        # interrupts it (found by exhausting all 5,040 slot assignments on
-        # level 2 -- the winner was the 34th, results/sb26-l2-dfs.txt). The
-        # pipe is the colour-14 column between the two slot rows.
+        # The recipe's order walks the MACHINE PATH -- a depth-first walk of
+        # the machine TREE. Level 2: one pipe, one lower machine, the whole
+        # lower row spliced in at the pipe (found by exhausting all 5,040
+        # slot assignments, winner the 34th, results/sb26-l2-dfs.txt).
+        # Level 3: TWO pipes into two framed sub-machines, and each pipe
+        # splices in only ITS OWN box's slots (first guess from the tree
+        # reading, confirmed forward-only twice with a reversed-order
+        # control, results/sb26-l3c.txt). A pipe is a hollow non-slot frame
+        # sitting in the upper machine's slot band; its box is the lower
+        # slots nearest it in x -- colour cannot be the key, because level
+        # 2's pipe is colour 14 over a colour-8 machine.
         (uy, uxs), (ly, lxs) = rows[0], rows[-1]
-        between = [x for y in range(uy + 2, ly - 1)
-                   for x in np.nonzero(g[y] == 14)[0]]
-        pipe_x = int(np.median(between)) if between else (uxs[-1] + 1)
-        order = ([(x, uy) for x in uxs if x < pipe_x]
-                 + [(x, ly) for x in lxs]
-                 + [(x, uy) for x in uxs if x > pipe_x])
+        # A pipe's SOLID top edge sits one row above the slot row -- on the
+        # slot row itself the pipe reads as two width-1 wall runs (e44e) and
+        # a width filter drops it, which is what broke level 2 the first
+        # time this walk was generalised (results/sorter-try6.txt: L1 then
+        # None). The machine's own frame shows as width-1 wall cells there
+        # too, so a 3..8 width band keeps pipes and drops both.
+        pipes = []
+        for t in rows_of(g, uy - 1):
+            if t[2] != SLOT_COLOUR and 2 <= t[1] - t[0] <= 7:
+                pipes.append((t[0] + t[1]) // 2)
+        if not pipes:
+            pipes = [uxs[-1] + 1]
+        # assign each lower slot to its nearest pipe
+        homes = {px: [] for px in pipes}
+        for x in lxs:
+            px = min(pipes, key=lambda p2: abs(p2 - x))
+            homes[px].append(x)
+        order = []
+        walk = sorted(uxs + pipes)
+        for x in walk:
+            if x in homes:
+                order += [(lx, ly) for lx in sorted(homes[x])]
+            else:
+                order.append((x, uy))
     return {"recipe": recipe, "stock": stock, "order": order,
             "stock_row": bot[0]}
 
@@ -147,6 +171,7 @@ class Sorter:
         self.geo = None            # the level's fixed geometry, read once
         self.holding = False       # a stock block is selected
         self.runs = []             # plain actions not yet tried on a full load
+        self.runs_spent = False    # the run-button hunt happens once per level
         self.done = False
 
     def act(self, g, lvl):
@@ -185,8 +210,14 @@ class Sorter:
                 x, y = b["stock"][colour], b["stock_row"]
             return ("click", x, y, (x, y, x, y))
 
-        # every slot is full: find the action that runs the machine
-        if not self.runs:
+        # Every slot is full: find the action that runs the machine -- ONCE.
+        # Refilling the list unconditionally is an infinite loop when the
+        # order is wrong: the last plain action tried was A7, which is UNDO,
+        # so the load drops by one, the driver reloads it, and the pair
+        # repeats forever (measured: ~2,000 actions of it on level 3 before
+        # the tree order was found, results/sb26-l3a.txt).
+        if not self.runs_spent:
+            self.runs_spent = True
             self.runs = list(self.plain)
         if self.runs:
             return self.runs.pop(0)

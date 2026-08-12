@@ -203,14 +203,18 @@
   },
   {
     "game": "sb26",
-    "levels": 1,
+    "levels": 3,
     "of": 8,
     "actions": [
-      9
+      9,
+      15,
+      15
     ],
     "baseline": [
+      18,
+      28,
       18
     ],
-    "environment_score": 2.778
+    "environment_score": 16.667
   }
 ]

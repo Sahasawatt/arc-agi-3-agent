@@ -1881,3 +1881,31 @@ as keying on it.
 
 bp35 L2 and dc22 L2 are now both walls with their shape measured; sb26's L3
 is unexplored and its driver generalised once already.
+
+### sb26 LEVEL 3 FALLS -- the machine path is a TREE walk (2026-08-13)
+
+L3's board (`results/sb26-l3b.txt`, clean dump): seven recipe boxes, seven
+stock blocks at the BOTTOM, an upper machine with three slots and TWO pipes,
+and two framed sub-boxes below it -- a colour-14 frame holding two slots and
+a colour-9 frame holding two. The pipes' frames wear the sub-boxes' colours,
+but colour is not the rule (level 2's pipe is colour 14 over a colour-8
+machine); x-nearness is.
+
+The order that wins -- first guess, straight from the tree reading, two
+identical forward-only runs, reversed-order control silent
+(`results/sb26-l3c.txt`): **walk the upper row left to right, and at each
+pipe splice in that pipe's OWN box's slots**: U21, [e-pipe -> E19, E25],
+U33, [9-pipe -> N38, N44], U45. Level 3 in 15 of its own actions.
+
+`sorter.py` generalised: pipes are read from the row ABOVE the slot row
+(on the slot row itself a pipe is two width-1 wall runs and any width
+filter drops it -- the first generalisation broke level 2 exactly there,
+`sorter-try6.txt`), each lower slot homes to its nearest pipe in x, and the
+order is the depth-first walk. The driver also had an INFINITE LOOP fixed
+in the same change: on a wrong full load it tried every plain action, and
+the last one is A7 = UNDO, so the load dropped by one, it reloaded, forever
+(~2,000 actions of it on the first L3 contact, `sb26-l3a.txt`). The
+run-button hunt now happens once per level.
+
+Driver clears all three known levels in 39 actions (`sorter-try7.txt`) and
+answers None cleanly on level 4.

@@ -952,7 +952,15 @@ left to right with the whole lower row spliced in where the connecting pipe inte
 found by exhausting all 5,040 slot assignments on level 2 with the insertion order pinned to
 the recipe, which was sound only because A5 was first measured position-pure while A7 is an
 UNDO (the game keeps an insertion stack, so a frame-deduped search would have merged states
-that differ in history — the sp80 hidden-state law).
+that differ in history — the sp80 hidden-state law). The general form is a depth-first walk
+of the machine TREE: level 3 has TWO pipes into two framed sub-boxes and each pipe splices
+in only ITS OWN box's slots, homed by x-nearness, never by frame colour (level 2's pipe is
+colour 14 over a colour-8 machine). Pipes are read from the row ABOVE the slot row — on the
+slot row itself a pipe is two width-1 wall runs and a width filter drops it, which broke
+level 2 on the first generalisation. The run-button hunt happens ONCE per level: trying the
+plain actions on every wrong full load loops forever, because the last one tried is A7 and
+undoing one block re-opens the load branch (~2,000 actions of that measured on the first
+level-3 contact, `results/sb26-l3a.txt`).
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the

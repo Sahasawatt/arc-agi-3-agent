@@ -5,9 +5,9 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **14/17 games with a level, mean 7.221%**
-(ls20 43.629 · re86 41.477 · sb26 8.333 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-sorter2.log (sweep_diff vs sweep-sorter.log, control sb26: 16/17 identical to the digit, PASS)
+Clear ≥1 level in EVERY game. Standing: **14/17 games with a level, mean 7.711%**
+(ls20 43.629 · re86 41.477 · sb26 16.667 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-sorter3.log (sweep_diff vs sweep-sorter2.log, control sb26: 16/17 identical to the digit, PASS)
 
 ## THE PATTERN THAT WORKS — five games have fallen to it, follow it
 
@@ -53,10 +53,10 @@ The third argument is the positive control — it refuses to report "identical" 
 SEEN a difference in the game the change was aimed at. Hardcoding it worked for exactly one
 comparison and then fired on the next.
 
-Values that must not move ← results/sweep-sorter2.log:
+Values that must not move ← results/sweep-sorter3.log:
 - ls20 **7/7** `[23, 45, 99, 178, 292, 209, 526]` · re86 **5/8** `[31, 56, 66, 80, 188]`
 - tu93 **2/9** `[31, 14]` · tr87 **1/6** `[28]` · sk48 **1/8** `[24]` · sp80 `[16]`
-  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]` · bp35 `[20]` · dc22 `[25]` · sb26 **2/8** `[9, 15]`
+  · wa30 `[43]` · ar25 `[173]` · cn04 `[131]` · m0r0 `[53]` · cd82 `[1306]` · bp35 `[20]` · dc22 `[25]` · sb26 **3/8** `[9, 15, 15]`
 - pytest **330 passed** — run redirected to a file and READ THE FILE (rtk rewrites pytest).
 
 Recon-only work needs no sweep.
@@ -136,7 +136,12 @@ Recon-only work needs no sweep.
    the start square is what made this level look unsolvable. Level 2 is where it now
    stops (it already finds that board's two buttons).
 
-4. **sb26 LEVELS 1+2: SHIPPED — `sorter.py` reads the MACHINE PATH.** 2/8 `[9, 15]`,
+4. **sb26 LEVELS 1+2+3: SHIPPED — the machine path is a TREE walk.** 3/8 `[9, 15, 15]`,
+   16.667% (sweep-sorter3.log, 16/17 identical, mean 7.221% -> 7.711%). L3 = two pipes
+   into two framed sub-boxes; each pipe splices in only ITS OWN box's slots, homed by
+   x-nearness never colour; pipes read from the row ABOVE the slot row; run-button hunt
+   once per level (the A7-undo infinite loop is fixed) ← breadth-recon §sb26 L3. Level 4
+   is unseen; the driver answers None there cleanly. The L2 story, kept: 2/8 `[9, 15]`,
    8.333% (sweep-sorter2.log, 16/17 identical, mean 6.894% -> 7.221%). Level 2's slot
    order is the upper row L2R with the whole lower row spliced in at the pipe — found by
    exhausting 5,040 slot assignments with insertion order pinned to the recipe, sound

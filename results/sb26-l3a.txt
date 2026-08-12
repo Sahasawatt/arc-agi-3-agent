@@ -1,0 +1,174 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 23:53:16 | INFO | Got anonymous API key: 343e0fc2-b8ce-446a-877f-1229383af9e3
+2026-08-12 23:53:16 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 23:53:17 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 23:53:17 | INFO | Created new scorecard: 664b8eac-dda9-43f8-89f2-d3ce001f17f0
+2026-08-12 23:53:19 | INFO | Successfully fetched metadata for game sb26
+2026-08-12 23:53:19 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+i= 23 A5             n=  769 lvl=2
+i= 24 click(52,57)   n=   20 lvl=2
+i= 25 click(19,23)   n=   53 lvl=2
+i= 26 click(17,57)   n=   20 lvl=2
+i= 27 click(19,35)   n=   53 lvl=2
+i= 28 click(24,57)   n=   20 lvl=2
+i= 29 click(25,35)   n=   53 lvl=2
+i= 30 click(31,57)   n=   20 lvl=2
+i= 31 click(37,35)   n=   53 lvl=2
+i= 32 click(45,57)   n=   20 lvl=2
+i= 33 click(43,35)   n=   53 lvl=2
+i= 34 click(38,57)   n=   20 lvl=2
+i= 35 click(31,23)   n=   53 lvl=2
+i= 36 click(10,57)   n=   20 lvl=2
+i= 37 click(43,23)   n=   53 lvl=2
+i= 38 A5             n=    1 lvl=2
+i= 39 A7             n=   32 lvl=2
+i= 40 click(10,57)   n=   20 lvl=2
+i= 41 click(43,23)   n=   53 lvl=2
+i= 42 A5             n=    1 lvl=2
+i= 43 A7             n=   32 lvl=2
+i= 44 click(10,57)   n=   20 lvl=2
+i= 45 click(43,23)   n=   53 lvl=2
+i= 46 A5             n=    1 lvl=2
+i= 47 A7             n=   32 lvl=2
+i= 48 click(10,57)   n=   20 lvl=2
+i= 49 click(43,23)   n=   53 lvl=2
+i= 50 A5             n=    1 lvl=2
+i= 51 A7             n=   32 lvl=2
+i= 52 click(10,57)   n=   20 lvl=2
+i= 53 click(43,23)   n=   53 lvl=2
+i= 54 A5             n=    1 lvl=2
+i= 55 A7             n=   32 lvl=2
+i= 56 click(10,57)   n=   20 lvl=2
+i= 57 click(43,23)   n=   53 lvl=2
+i= 58 A5             n=    1 lvl=2
+i= 59 A7             n=   32 lvl=2
+i= 60 click(10,57)   n=   20 lvl=2
+i= 61 click(43,23)   n=   53 lvl=2
+i= 62 A5             n=    1 lvl=2
+i= 63 A7             n=   32 lvl=2
+i= 64 click(10,57)   n=   20 lvl=2
+i= 65 click(43,23)   n=   53 lvl=2
+i= 66 A5             n=    1 lvl=2
+i= 67 A7             n=   32 lvl=2
+i= 68 click(10,57)   n=   20 lvl=2
+i= 69 click(43,23)   n=   53 lvl=2
+i= 70 A5             n=    1 lvl=2
+i= 71 A7             n=   32 lvl=2
+i= 72 click(10,57)   n=   20 lvl=2
+i= 73 click(43,23)   n=   53 lvl=2
+i= 74 A5             n=    1 lvl=2
+i= 75 A7             n=   32 lvl=2
+i= 76 click(10,57)   n=   20 lvl=2
+i= 77 click(43,23)   n=   53 lvl=2
+i= 78 A5             n=    1 lvl=2
+i= 79 A7             n=   32 lvl=2
+i= 80 click(10,57)   n=   20 lvl=2
+i= 81 click(43,23)   n=   53 lvl=2
+i= 82 A5             n=    1 lvl=2
+i= 83 A7             n=   32 lvl=2
+i= 84 click(10,57)   n=   20 lvl=2
+i= 85 click(43,23)   n=   53 lvl=2
+i= 86 A5             n=    1 lvl=2
+i= 87 A7             n=   32 lvl=2
+i= 88 click(10,57)   n=   20 lvl=2
+i= 89 click(43,23)   n=   53 lvl=2
+i= 90 A5             n=    1 lvl=2
+i= 91 A7             n=   32 lvl=2
+i= 92 click(10,57)   n=   20 lvl=2
+i= 93 click(43,23)   n=   53 lvl=2
+i= 94 A5             n=    1 lvl=2
+i= 95 A7             n=   32 lvl=2
+i= 96 click(10,57)   n=   20 lvl=2
+i= 97 click(43,23)   n=   53 lvl=2
+i= 98 A5             n=    1 lvl=2
+i= 99 A7             n=   32 lvl=2
+i=100 click(10,57)   n=   20 lvl=2
+i=101 click(43,23)   n=   53 lvl=2
+i=102 A5             n=    1 lvl=2
+i=103 A7             n=   32 lvl=2
+i=104 click(10,57)   n=   20 lvl=2
+i=105 click(43,23)   n=   53 lvl=2
+i=106 A5             n=    1 lvl=2
+i=107 A7             n=   32 lvl=2
+i=108 click(10,57)   n=   20 lvl=2
+i=109 click(43,23)   n=   53 lvl=2
+i=110 A5             n=    1 lvl=2
+i=111 A7             n=   32 lvl=2
+i=112 click(10,57)   n=   20 lvl=2
+i=113 click(43,23)   n=   53 lvl=2
+i=114 A5             n=    1 lvl=2
+i=115 A7             n=   32 lvl=2
+i=116 click(10,57)   n=   20 lvl=2
+i=117 click(43,23)   n=   53 lvl=2
+i=118 A5             n=    1 lvl=2
+i=119 A7             n=   32 lvl=2
+i=120 click(10,57)   n=   20 lvl=2
+i=121 click(43,23)   n=   53 lvl=2
+i=122 A5             n=    1 lvl=2
+i=123 A7             n=   32 lvl=2
+i=124 click(10,57)   n=   20 lvl=2
+i=125 click(43,23)   n=   53 lvl=2
+i=126 A5             n=    1 lvl=2
+i=127 A7             n=   32 lvl=2
+i=128 click(10,57)   n=   20 lvl=2
+i=129 click(43,23)   n=   53 lvl=2
+i=130 A5             n=    1 lvl=2
+i=131 A7             n=   32 lvl=2
+i=132 click(10,57)   n=   20 lvl=2
+i=133 click(43,23)   n=   53 lvl=2
+i=134 A5             n=    1 lvl=2
+i=135 A7             n=   32 lvl=2
+i=136 click(10,57)   n=   20 lvl=2
+i=137 click(43,23)   n=   53 lvl=2
+i=138 A5             n=    1 lvl=2
+i=139 A7             n=   32 lvl=2
+i=140 click(10,57)   n=   20 lvl=2
+i=141 click(43,23)   n=   53 lvl=2
+i=142 A5             n=    1 lvl=2
+i=143 A7             n=   32 lvl=2
+i=144 click(10,57)   n=   20 lvl=2
+i=145 click(43,23)   n=   53 lvl=2
+i=146 A5             n=    1 lvl=2
+i=147 A7             n=   32 lvl=2
+i=148 click(10,57)   n=   20 lvl=2
+i=149 click(43,23)   n=   53 lvl=2
+i=150 A5             n=    1 lvl=2
+state=GameState.GAME_OVER
+
+level now: 2
+== board ==
+  y 0 4444444555555555555555555555555555555555555555555555555554444444
+  y 1 444444458888885eeeeee5ffffff5bbbbbb566666659999995cccccc54444444
+  y 2 444444458555585e5555e5f5555f5b5555b565555659555595c5555c54444444
+  y 3 444444458555585e5555e5f5555f5b5555b565555659555595c5555c54444444
+  y 4 444444458555585e5555e5f5555f5b5555b565555659555595c5555c54444444
+  y 5 444444458555585e5555e5f5555f5b5555b565555659555595c5555c54444444
+  y 6 444444458888885eeeeee5ffffff5bbbbbb566666659999995cccccc54444444
+  y 7 4444444555555555555555555555555555555555555555555555555554444444
+  y18 4444444444444400044444444444444444444444444444400044444444444444
+  y19 4444444444444408888888888888888888888888888888888044444444444444
+  y20 4444444444444408444444444444444444444444444444448044444444444444
+  y21 4444444444444448444444444444444444444444444444448444444444444444
+  y22 444444444444444844888844eeee44999944999944cccc448444444444444444
+  y23 444444444444444844888844e44e44999944944944cccc448444444444444444
+  y24 444444444444444844888844e44e44999944944944cccc448444444444444444
+  y25 444444444444444844888844eeee44999944999944cccc448444444444444444
+  y26 4444444444444448444444444444444444444444444444448444444444444444
+  y27 4444444444444408444444444444444444444444444444448044444444444444
+  y28 4444444444444408888888888888888888888888888888888044444444444444
+  y29 4444444444444400044444444444444444444444444444400044444444444444
+  y31 444444444444444eeeeeeeeeeeeeeee449999999999999999444444444444444
+  y32 444444444444444e44444444444444e449444444444444449444444444444444
+  y33 444444444444444e44444444444444e449444444444444449444444444444444
+  y34 444444444444444e44eeee44ffff44e44944bbbb446666449444444444444444
+  y35 444444444444444e44eeee44ffff44e44944bbbb446666449444444444444444
+  y36 444444444444444e44eeee44ffff44e44944bbbb446666449444444444444444
+  y37 444444444444444e44eeee44ffff44e44944bbbb446666449444444444444444
+  y38 444444444444444e44444444444444e449444444444444449444444444444444
+  y39 444444444444444e44444444444444e449444444444444449444444444444444
+  y40 444444444444444eeeeeeeeeeeeeeee449999999999999999444444444444444
+  y58 4444444444224444422444442244444224444422444442244444224444444444
+  y59 4444444444224444422444442244444224444422444442244444224444444444
+
+read(): None
+signature: False
