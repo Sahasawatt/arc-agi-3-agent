@@ -1829,6 +1829,15 @@ Measured, each with its run:
   scrolled until the door room sits just above the piece row, and the piece
   is nowhere.
 
+- **The full-shaft carve dies too** (`bp35-l2g.txt`): both bands cleared in
+  one column from a distance, walk back in -- the arrival ride fires
+  (n=1586) and the piece is gone, same terminal frame family as the other
+  three deaths. So "rides stop at the first block" does not rescue a longer
+  shaft; whatever the ride does past one room is lethal REGARDLESS of what
+  was cleared, and the next instrument has to read the DEATH itself
+  (layer 0 of the frame -- L1's probes saw mid-animation positions there)
+  before any more lines are spent.
+
 Open: the safe clear order -- rides stop AT blocks, so the shaft must be
 carved to stop the piece exactly one room short of danger each time, which
 makes this a planning puzzle over clear-sets, not a walk. The 11-0-11 marks
