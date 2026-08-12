@@ -1,0 +1,26 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 20:26:27 | INFO | Got anonymous API key: 8032af4a-4779-47ba-951c-34964035ad05
+2026-08-12 20:26:27 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 20:26:28 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 20:26:28 | INFO | Created new scorecard: 726300fa-c997-4bfe-af20-97e805708c2f
+2026-08-12 20:26:29 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:26:29 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+button (52, 22) press 0: n=129
+    0-> 3  x0-0 y63-63
+    4-> 7  x16-19 y32-51
+    7-> 4  x8-27 y40-43
+button (52, 22) press 1: n=129
+    0-> 3  x1-1 y63-63
+    4-> 7  x8-27 y40-43
+    7-> 4  x16-19 y32-51
+
+2026-08-12 20:26:30 | INFO | Successfully fetched metadata for game dc22
+button (52, 40) press 0: n=25
+    0-> 3  x0-0 y63-63
+    4-> 9  x4-7 y32-39
+    9-> 4  x8-11 y28-31
+button (52, 40) press 1: n=25
+    0-> 3  x1-1 y63-63
+    4-> 9  x8-11 y28-31
+    9-> 4  x4-7 y32-39
+

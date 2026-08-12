@@ -1,0 +1,63 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 20:29:42 | INFO | Got anonymous API key: 67c3cba9-7a8c-4d93-9ecc-04e08dd0d4a0
+2026-08-12 20:29:42 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 20:29:43 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 20:29:43 | INFO | Created new scorecard: f9468016-fadd-4b10-ac7c-a0479918831f
+2026-08-12 20:29:44 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:44 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+52 targets
+2026-08-12 20:29:46 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:47 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:48 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:49 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:50 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:51 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:52 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:54 | INFO | Successfully fetched metadata for game dc22
+  (52,22) colour  6 size  47: n= 129 y32-63 x0-27 lvl=1
+2026-08-12 20:29:55 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:56 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:57 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:29:59 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:00 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:01 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:02 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:03 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:04 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:05 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:06 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:08 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:09 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:10 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:12 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:13 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:14 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:15 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:16 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:17 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:19 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:20 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:21 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:22 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:23 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:24 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:25 | INFO | Successfully fetched metadata for game dc22
+  (52,40) colour  9 size  47: n=  25 y28-63 x0-11 lvl=1
+2026-08-12 20:30:26 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:27 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:28 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:29 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:30 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:31 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:32 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:33 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:34 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:35 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:36 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:37 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:38 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:39 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:40 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:41 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:30:43 | INFO | Successfully fetched metadata for game dc22
+responders: 2

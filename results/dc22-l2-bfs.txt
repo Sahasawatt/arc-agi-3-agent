@@ -1,0 +1,13 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 20:27:23 | INFO | Got anonymous API key: c82e44a8-08cc-4cf4-8239-efc224ce21a7
+2026-08-12 20:27:23 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 20:27:24 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 20:27:24 | INFO | Created new scorecard: b14ed12d-02e9-46df-a457-2cce137675b0
+2026-08-12 20:27:25 | INFO | Successfully fetched metadata for game dc22
+2026-08-12 20:27:25 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+BFS from level 1
+  expanded=100 frontier=15 depth=9
+  expanded=200 frontier=20 depth=15
+  expanded=300 frontier=12 depth=26
+  expanded=400 frontier=5 depth=39
+expanded=405 states=405 found=NO

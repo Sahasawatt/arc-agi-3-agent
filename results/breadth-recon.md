@@ -1846,3 +1846,33 @@ room alive. Cheap next instruments: ride #1 bare (survivable), then from
 the pocket clear sideways and STAY within the band, working horizontally
 toward the side chute at x25-29 WITHOUT stepping into it; and dump what
 distinguishes the three doors from the mid room before approaching.
+
+### dc22 level 2: two toggles, a 405-state graph, and no win inside it (2026-08-12)
+
+The bridge driver clears L1 and stalls on L2 after pressing both panel
+buttons from one spot (`results/dc22-l2a.txt`). What the level holds:
+
+- the piece starts at the BOTTOM (x17-19, y53-55) and the twin marker sits
+  at the TOP (x20-23, y12-15); between them a horizontal colour-8 band
+  (y24-27), a colour-9 column, a colour-7 column and a colour-6 bar.
+- **both L2 buttons are PURE TOGGLES**, measured cell-by-cell twice each
+  (`dc22-l2b.txt`): (52,22) swaps colour 7 between a vertical column
+  (x16-19, y32-51) and a horizontal bar (x8-27, y40-43); (52,40) swaps
+  colour 9 between (x4-7, y32-39) and (x8-11, y28-31). Press twice =
+  byte-identical board.
+- that purity makes frame-dedup BFS SOUND here (unlike sb26's stack), and
+  the search exhausts: **405 states over {4 walks, 2 buttons}, depth <= 40,
+  no win** (`dc22-l2-bfs.txt`).
+- a full component click-sweep on the L2 board finds NOTHING beyond the two
+  buttons (`dc22-l2c.txt`, 52 targets, 2 responders).
+
+⚠️ Weigh this against ka59: its "74 reachable states, no level-up" was also
+an honest exhaustion, of a game whose second verb had never landed. Here the
+click-sweep says there is no unlanded click; what the graph cannot rule out
+is a verb that is not a click and not a walk -- a position-gated button
+effect that only differs beyond depth 40, or a mechanic (falling?) that
+presents as GAME_OVER and was pruned. The five frontier nodes at depth 39
+were cut by the cap; a rerun at depth 80 costs minutes and closes that hole.
+
+bp35 L2 and dc22 L2 are now both walls with their shape measured; sb26's L3
+is unexplored and its driver generalised once already.
