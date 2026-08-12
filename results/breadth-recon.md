@@ -1868,11 +1868,16 @@ buttons from one spot (`results/dc22-l2a.txt`). What the level holds:
 
 ⚠️ Weigh this against ka59: its "74 reachable states, no level-up" was also
 an honest exhaustion, of a game whose second verb had never landed. Here the
-click-sweep says there is no unlanded click; what the graph cannot rule out
-is a verb that is not a click and not a walk -- a position-gated button
-effect that only differs beyond depth 40, or a mechanic (falling?) that
-presents as GAME_OVER and was pruned. The five frontier nodes at depth 39
-were cut by the cap; a rerun at depth 80 costs minutes and closes that hole.
+click-sweep says there is no unlanded click. The depth-80 rerun
+(`dc22-l2-bfs80.txt`) closes two of the holes at once: **512 states (the
+depth-40 cap had hidden 107), zero terminal transitions, no win** -- so
+nothing in the graph even dies, and "a fall pruned as GAME_OVER" is refuted.
+What remains outside the instrument is TIME: the y63 step counter is masked
+out of the state key (it advances every action, so keying on it makes every
+state unique), and a mechanic gated on it -- stand somewhere for N steps --
+would be invisible to this search by construction. That is the sp80
+hidden-state law from the third side: masking a counter is as much a claim
+as keying on it.
 
 bp35 L2 and dc22 L2 are now both walls with their shape measured; sb26's L3
 is unexplored and its driver generalised once already.
