@@ -1791,3 +1791,39 @@ its own actions (`results/sb26-l2-solve.txt`).
 `sorter.py` now reads slot rows across machines and orders them by that
 path; the driver clears both levels in 24 actions (`results/sorter-try5.txt`)
 and sb26 smokes at 2/8 `[9, 15]`, 8.333%.
+
+### bp35 level 2: a clear-order puzzle, and three of its rules measured (2026-08-12)
+
+Probes from the driven L1 (`bp35_l2a..e` runs -> `results/bp35-l2a.txt` ..
+`bp35-l2e.txt`). The board: the piece starts under TWO full seven-block
+bands, above them an open mid room, above that a top room holding three
+colour-15 doors with 11-0-11 marks -- colours `tape.mark()` deliberately
+ignores (15 is the flood, 11 the heading, 0 the counter), which is why the
+driver wanders 2,202 actions there.
+
+Measured, each with its run:
+
+- **A ride into an uncleared room KILLS.** Click the block over the piece
+  (ride #1) lands the piece in a pocket inside the lower band; riding again
+  puts it inside the upper band's blocks and the run is GAME_OVER
+  (`bp35-l2c.txt`, n=1569). L1 never taught this because its rooms were
+  empty. So on this board a ride must be PREPARED -- the destination
+  cleared first.
+- **Every block here clears, including ones over the piece's own column in
+  higher bands** (n=31/37/36, `bp35-l2d.txt`) -- the L1 reading "a click on
+  a higher block over the piece answers n=1" does not transfer.
+- **Clearing can OPEN a chute, and walking into it is a ride with a death
+  on the other end**: after clearing (27,33) a vertical open column stood
+  at x25-29 beside the pocket (`bp35-l2e.txt` BEFORE frame), and the
+  sideways step A4 into it fired a 1,561-cell tape event, the piece
+  materialised nowhere, GAME_OVER. The walk itself is the trigger -- the
+  L1 law "arriving at a chute column rides" -- but here the chute was
+  MANUFACTURED by the clear, and its far end was not survivable.
+
+Open: the safe clear order. The level reads as "carve a survivable shaft
+through two bands, ride it, then pick the right of three doors" -- the
+11-0-11 marks under the doors are presumably the ask, and nothing has
+reached the top room alive yet. Next instruments: clear a full column of
+BOTH bands off to one side (never adjacent to the piece), walk under it,
+ride once; and read what distinguishes the three doors before standing
+under any of them.

@@ -1,0 +1,34 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 19:28:48 | INFO | Got anonymous API key: 883b3c8e-a0b4-452b-a46b-07e6a1ba1669
+2026-08-12 19:28:48 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 19:28:49 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 19:28:49 | INFO | Created new scorecard: fe048acd-fde9-4103-9db5-f627c4e2e42d
+2026-08-12 19:28:50 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 19:28:50 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+L2 start piece=(20, 21, 37, 40)
+click(21,27)   n=   31 piece=(20, 21, 37, 40) lvl=1 st=NOT_FINISHED   <- clear band-2 over own column (expect n=1 if p14 law holds)
+click(27,27)   n=   37 piece=(20, 21, 37, 40) lvl=1 st=NOT_FINISHED   <- clear band-2 right
+click(27,33)   n=   36 piece=(20, 21, 37, 40) lvl=1 st=NOT_FINISHED   <- clear band-1 right
+A4             n= 1561 piece=None lvl=1 st=GAME_OVER   <- step right into the cleared column
+== rows 25-45 ==
+  y25 5535555535555535555535555535555535555aaaaaaaaaaaaaaaaa5535555535
+  y26 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y27 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y28 5355555355555355555355555355555355555aaaaaaaaaaaaaaaaa5355555355
+  y29 5555355555355555355555355555355555355aaaaaaaaaaaaaaaaa5555355555
+  y30 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y31 55355555355555fff5a5fff5a5fff55535555aaaaaaaaaaaaaaaaa5535555535
+  y32 55555555555555fff5a5fff5a5fff55555555aaaaaaaaaaaaaaaaa5555555555
+  y33 55555555555555fff5a5fff5a5fff55555555aaaaaaaaaaaaaaaaa5555555555
+  y34 53555553555555fff5a5fff5a5fff55355555aaaaaaaaaaaaaaaaa5355555355
+  y35 55553555553555b0b5a5b0b5a5b0b55555355aaaaaaaaaaaaaaaaa5555355555
+  y36 555555555555555555a55555a555555555555aaaaaaaaaaaaaaaaa5555555555
+  y37 5535555535555aaaaaaaaaaaaaaaaa5535555aaaaaaaaaaaaaaaaa5535555535
+  y38 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y39 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y40 5355555355555aaaaaaaaaaaaaaaaa5355555aaaaaaaaaaaaaaaaa5355555355
+  y41 5555355555355aaaaaaaaaaaaaaaaa5555355aaaaaaaaaaaaaaaaa5555355555
+  y42 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y43 5535555535555aaaaaaaaaaaaaaaaa5535555aaaaaaaaaaaaaaaaa5535555535
+  y44 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y45 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555

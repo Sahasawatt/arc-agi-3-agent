@@ -1,0 +1,77 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-12 19:25:33 | INFO | Got anonymous API key: a13b6c98-4fca-475d-8fc6-bac8921ff8b8
+2026-08-12 19:25:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-12 19:25:35 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-12 19:25:35 | INFO | Created new scorecard: fc090da9-aa17-420c-8511-28d84ede879e
+2026-08-12 19:25:36 | INFO | Successfully fetched metadata for game bp35
+2026-08-12 19:25:36 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+L1 done, lvl=1, piece_x=14
+== L2 raw ==
+  y 0 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y 1 5535555535555535555535555535555535555aaaaaaaaaaaaaaaaa5535555535
+  y 2 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y 3 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y 4 5355555355555355555355555355555355555aaaaaaaaaaaaaaaaa5355555355
+  y 5 5555355555355555355555355555355555355aaaaaaaaaaaaaaaaa5555355555
+  y 6 5555555555555555555555555555555555555aaaaaaaaaaaaaaaaa5555555555
+  y 7 55355555355555fff5a5fff5a5fff55535555aaaaaaaaaaaaaaaaa5535555535
+  y 8 55555555555555fff5a5fff5a5fff55555555aaaaaaaaaaaaaaaaa5555555555
+  y 9 55555555555555fff5a5fff5a5fff55555555aaaaaaaaaaaaaaaaa5555555555
+  y10 53555553555555fff5a5fff5a5fff55355555aaaaaaaaaaaaaaaaa5355555355
+  y11 55553555553555b0b5a5b0b5a5b0b55555355aaaaaaaaaaaaaaaaa5555355555
+  y12 555555555555555555a55555a555555555555aaaaaaaaaaaaaaaaa5555555555
+  y13 5535555535555aaaaaaaaaaaaaaaaa5535555aaaaaaaaaaaaaaaaa5535555535
+  y14 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y15 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y16 5355555355555aaaaaaaaaaaaaaaaa5355555aaaaaaaaaaaaaaaaa5355555355
+  y17 5555355555355aaaaaaaaaaaaaaaaa5555355aaaaaaaaaaaaaaaaa5555355555
+  y18 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y19 5535555535555aaaaaaaaaaaaaaaaa5535555aaaaaaaaaaaaaaaaa5535555535
+  y20 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y21 5555555555555aaaaaaaaaaaaaaaaa5555555aaaaaaaaaaaaaaaaa5555555555
+  y22 5355555355555aaaaaaaaaaaaaaaaa5355555aaaaaaaaaaaaaaaaa5355555355
+  y23 5555355555355aaaaaaaaaaaaaaaaa5555355aaaaaaaaaaaaaaaaa5555355555
+  y25 55355555355553eee353eee353eee353eee353eee353eee353eee35535555535
+  y26 5555555555555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5555555555
+  y27 5555555555555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5555555555
+  y28 5355555355555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5355555355
+  y29 55553555553553eee353eee353eee353eee353eee353eee353eee35555355555
+  y31 55355555355553eee353eee353eee353eee353eee353eee353eee35535555535
+  y32 5555555555555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5555555555
+  y33 5555555555555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5555555555
+  y34 5355555355555eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5eeeee5355555355
+  y35 55553555553553eee353eee353eee353eee353eee353eee353eee35555355555
+  y37 5535555535555aaaaaa55955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y38 5555555555555aaaaaa599b5aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y39 5555555555555aaaaaa599b5aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y40 5355555355555aaaaaa55955aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y41 5555355555355aaaaaaa555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y42 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y43 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y44 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y45 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y46 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y47 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y48 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y49 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y50 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y51 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y52 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y53 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y54 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y55 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y56 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y57 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y58 5355555355555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5355555355
+  y59 5555355555355aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555355555
+  y60 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+  y61 5535555535555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5535555535
+  y62 5555555555555aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa5555555555
+
+== actions at L2 start, one each on a fresh L2 ==
+2026-08-12 19:25:37 | INFO | Successfully fetched metadata for game bp35
+  A3: n=   47 x 14->14 lvl=1 st=NOT_FINISHED
+2026-08-12 19:25:39 | INFO | Successfully fetched metadata for game bp35
+  A4: n=   47 x 14->14 lvl=1 st=NOT_FINISHED
+2026-08-12 19:25:40 | INFO | Successfully fetched metadata for game bp35
+  A7: n=    1 x 14->14 lvl=1 st=NOT_FINISHED
