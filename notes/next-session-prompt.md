@@ -143,7 +143,15 @@ Recon-only work needs no sweep.
    — the action §sb26 called a pure timer burn, measured on an empty machine because no
    click could land. The driver finds the run button by TRYING the plain actions.
 
-5. **Next 0-level game.** Remaining: ka59, sc25, g50t — and the walls
+5. **ka59 REOPENED — the click is a pickup-and-ferry** ← breadth-recon §ka59 2026-08-12.
+   The aimed click moves the piece ONTO the dot (consuming it); kick east then click the
+   landing crosses the bar, so the 74-state BFS was the state space of a game missing its
+   second verb. Right room walked from inside: nothing new. Still unmeasured: the DROP —
+   dead so far are stand/click-self/click-destination/bump/two-timers. Next instruments in
+   the recon note. sc25's clicks are truly dead (0 of 22 components answer ←
+   click-sweep-all.txt) and g50t has no complex action, so their walls stand unchanged.
+
+6. **Next 0-level game.** Remaining: ka59, sc25, g50t — and the walls
    have piled up: dc22 (sealed room, click sequences), ka59 (74-state BFS exhausted),
    sb26 (EVERY channel dead ← breadth-recon §sb26), g50t (search says L1 unwinnable).
    Fresh ground: **sc25** (metronome game, br-sc25-*.txt exist; its election problem is a
