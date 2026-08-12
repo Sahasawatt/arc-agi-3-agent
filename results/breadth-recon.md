@@ -1820,10 +1820,20 @@ Measured, each with its run:
   L1 law "arriving at a chute column rides" -- but here the chute was
   MANUFACTURED by the clear, and its far end was not survivable.
 
-Open: the safe clear order. The level reads as "carve a survivable shaft
-through two bands, ride it, then pick the right of three doors" -- the
-11-0-11 marks under the doors are presumably the ask, and nothing has
-reached the top room alive yet. Next instruments: clear a full column of
-BOTH bands off to one side (never adjacent to the piece), walk under it,
-ride once; and read what distinguishes the three doors before standing
-under any of them.
+- **Pre-carving makes even ride #1 lethal** (`bp35-l2f.txt`): clear the
+  band-2 block over the piece FIRST and the very ride that was survivable
+  bare now kills (n=1576) -- because a ride runs TO THE FIRST BLOCK, not one
+  room (L1's own E13 law: clearing the block over the chute doubled the
+  trip). The pocket only exists if the block above it is still there. All
+  four deaths (l2c, l2d, l2f x2) end in the same frame family: the tape
+  scrolled until the door room sits just above the piece row, and the piece
+  is nowhere.
+
+Open: the safe clear order -- rides stop AT blocks, so the shaft must be
+carved to stop the piece exactly one room short of danger each time, which
+makes this a planning puzzle over clear-sets, not a walk. The 11-0-11 marks
+under the three doors are presumably the ask; nothing has reached the top
+room alive. Cheap next instruments: ride #1 bare (survivable), then from
+the pocket clear sideways and STAY within the band, working horizontally
+toward the side chute at x25-29 WITHOUT stepping into it; and dump what
+distinguishes the three doors from the mid room before approaching.
