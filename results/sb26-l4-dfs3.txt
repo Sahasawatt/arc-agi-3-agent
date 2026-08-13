@@ -1,0 +1,14 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 03:08:35 | INFO | Got anonymous API key: cc32cb12-6bbd-4d1e-b5bb-08399400cf59
+2026-08-13 03:08:35 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 03:08:36 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 03:08:36 | INFO | Created new scorecard: 0e2d5839-0cf5-4b44-be21-81956e3c8f20
+2026-08-13 03:08:37 | INFO | Successfully fetched metadata for game sb26
+2026-08-13 03:08:37 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+searching P(7,4)=840 incl. bottom holders
+  tried 200
+  tried 400
+  tried 600
+  tried 800
+assignments tried: 840
+EXHAUSTED, no win.

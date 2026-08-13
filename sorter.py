@@ -69,6 +69,15 @@ def read(g):
     bot = band(g, 2 * h // 3, h, 1)
     if top is None or bot is None:
         return None
+    # Read the stock from the band's TOP edge: a HOLLOW block (level 4's
+    # e44e -- a real, placeable block) reads as two width-1 wall runs on its
+    # interior rows and as a solid run on its top edge.
+    while bot[0] - 1 > 2 * h // 3 and rows_of(g, bot[0] - 1):
+        cand = [t for t in rows_of(g, bot[0] - 1) if t[2] != SLOT_COLOUR]
+        if len(cand) >= len([t for t in bot[1] if t[2] != SLOT_COLOUR]):
+            bot = (bot[0] - 1, rows_of(g, bot[0] - 1))
+        else:
+            break
     # The empty holder a loaded block leaves behind is drawn in the SLOT
     # colour, so it reads as stock and the recipe filtered against it loses
     # every colour already placed -- which is what stopped the driver after
@@ -105,30 +114,28 @@ def read(g):
         # slots nearest it in x -- colour cannot be the key, because level
         # 2's pipe is colour 14 over a colour-8 machine.
         (uy, uxs), (ly, lxs) = rows[0], rows[-1]
-        # A pipe's SOLID top edge sits one row above the slot row -- on the
-        # slot row itself the pipe reads as two width-1 wall runs (e44e) and
-        # a width filter drops it, which is what broke level 2 the first
-        # time this walk was generalised (results/sorter-try6.txt: L1 then
-        # None). The machine's own frame shows as width-1 wall cells there
-        # too, so a 3..8 width band keeps pipes and drops both.
-        pipes = []
-        for t in rows_of(g, uy - 1):
-            if t[2] != SLOT_COLOUR and 2 <= t[1] - t[0] <= 7:
-                pipes.append((t[0] + t[1]) // 2)
-        if not pipes:
-            pipes = [uxs[-1] + 1]
-        # assign each lower slot to its nearest pipe
-        homes = {px: [] for px in pipes}
-        for x in lxs:
-            px = min(pipes, key=lambda p2: abs(p2 - x))
-            homes[px].append(x)
+        # Where a child machine splices into the upper row is its own
+        # CENTROID in x -- no pipe detection at all. Levels 2 (pipe at 34,
+        # machine centred 32), 3 (two boxes centred 22.5 and 40.5) and 4
+        # (box centred 31.5, pipe invisible) all agree; the earlier
+        # pipe-reading misread level 4's two PRE-LOADED blocks as pipes,
+        # since a placed block is exactly a width-4 run in the pipe's row.
+        # Child boxes: cluster the lower slots by their gaps -- slots more
+        # than 8 apart belong to different boxes.
+        groups = [[lxs[0]]]
+        for x in lxs[1:]:
+            if x - groups[-1][-1] > 8:
+                groups.append([])
+            groups[-1].append(x)
+        marks = [(sum(gr) / len(gr), gr) for gr in groups]
         order = []
-        walk = sorted(uxs + pipes)
-        for x in walk:
-            if x in homes:
-                order += [(lx, ly) for lx in sorted(homes[x])]
+        events = sorted([(float(x), "u", x) for x in uxs]
+                        + [(cx, "g", gr) for cx, gr in marks])
+        for _, kind, val in events:
+            if kind == "u":
+                order.append((val, uy))
             else:
-                order.append((x, uy))
+                order += [(x, ly) for x in val]
     return {"recipe": recipe, "stock": stock, "order": order,
             "stock_row": bot[0]}
 
@@ -172,6 +179,8 @@ class Sorter:
         self.holding = False       # a stock block is selected
         self.runs = []             # plain actions not yet tried on a full load
         self.runs_spent = False    # the run-button hunt happens once per level
+        self.unwound = False       # A7-unwind of game-placed blocks, once
+        self.unwinding = 0
         self.done = False
 
     def act(self, g, lvl):
@@ -197,6 +206,19 @@ class Sorter:
             b["stock"] = live["stock"]     # the stock row empties as it loads
         n = loaded(g, b)
 
+        # Level 4 opens with blocks the GAME already placed. They unwind
+        # with A7 (LIFO, back to their stock holders) and are part of the
+        # puzzle, not of the answer's prefix -- with them unwound, every
+        # recipe colour is back in stock (the recipe's e is the HOLLOW
+        # block; the middle machine's solid e is a fixture with no slot
+        # mark, so it sits outside `order` entirely) and the plain
+        # recipe-order load works. Unwind once, one press per filled slot.
+        if not self.unwound:
+            self.unwound = True
+            self.unwinding = n
+        if self.unwinding > 0:
+            self.unwinding -= 1
+            return 7
         if n < len(b["order"]) and n < len(b["recipe"]):
             colour = b["recipe"][n]
             if colour not in b["stock"]:

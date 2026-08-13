@@ -953,14 +953,22 @@ found by exhausting all 5,040 slot assignments on level 2 with the insertion ord
 the recipe, which was sound only because A5 was first measured position-pure while A7 is an
 UNDO (the game keeps an insertion stack, so a frame-deduped search would have merged states
 that differ in history — the sp80 hidden-state law). The general form is a depth-first walk
-of the machine TREE: level 3 has TWO pipes into two framed sub-boxes and each pipe splices
-in only ITS OWN box's slots, homed by x-nearness, never by frame colour (level 2's pipe is
-colour 14 over a colour-8 machine). Pipes are read from the row ABOVE the slot row — on the
-slot row itself a pipe is two width-1 wall runs and a width filter drops it, which broke
-level 2 on the first generalisation. The run-button hunt happens ONCE per level: trying the
-plain actions on every wrong full load loops forever, because the last one tried is A7 and
-undoing one block re-opens the load branch (~2,000 actions of that measured on the first
-level-3 contact, `results/sb26-l3a.txt`).
+of the machine TREE, and the splice point needs NO pipe detection at all: **a child machine
+splices into the upper row at its own x-centroid** — level 2 (pipe at 34, machine centred
+32), level 3 (two framed sub-boxes centred 22.5 and 40.5, each splicing only its own slots)
+and level 4 (box centred 31.5, pipe invisible) all agree, and the earlier pipe reader had
+misread level 4's two pre-loaded blocks as pipes, since a placed block IS a width-4 run in
+the pipe's row. Three more rules came from level 4 (`results/sb26-l4-solve.txt`): a level
+can open with blocks the GAME placed — they unwind with A7 (LIFO, back to their stock
+holders) and are part of the puzzle, so the driver unwinds them at level entry, one press
+per filled slot; the stock is read from its band's TOP edge, because a HOLLOW block (level
+4's e44e, a real placeable block and the level's eighth) reads as two width-1 wall runs on
+its interior rows and solid on its top edge — the assignment search that lacked it
+exhausted 6,000 leaves for nothing, and a solid block of the same colour inside a machine
+with no slot mark is a fixture that sits outside the order entirely. The run-button hunt
+happens ONCE per level: trying the plain actions on every wrong full load loops forever,
+because the last one tried is A7 and undoing one block re-opens the load branch (~2,000
+actions of that measured on the first level-3 contact, `results/sb26-l3a.txt`).
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the
@@ -984,6 +992,10 @@ upper bounds from a dev mode the competition does not offer.
 ## The Kaggle bundle
 
 `kaggle/bundle.py` builds `kaggle/my_agent.py` -- the single-file submission agent the
+official starter kit splices into the notebook. Its MODULES list must name every driver
+`compete` imports, in dependency order: the three 2026-08 drivers (`tape`, `bridge`,
+`sorter`) were added 2026-08-13, and a bundle built without a module `compete` imports
+dies at exec with an ImportError on Kaggle, not locally. It is the single-file agent the
 official starter kit splices into the Kaggle notebook. It embeds every module
 (zlib+base64, registered in `sys.modules` BEFORE exec or dataclasses break) and runs
 `compete.play` unchanged on a worker thread behind a queue-backed proxy env
