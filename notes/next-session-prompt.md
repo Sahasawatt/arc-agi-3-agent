@@ -70,8 +70,7 @@ Recon-only work needs no sweep.
    Desktop\ARC-AGI-3-Kaggle-Starter (venv + framework set up; token in .kaggle/, NOT in
    git). Check score: `kaggle competitions submissions -c arc-prize-2026-arc-agi-3`.
    Quota 5/day. Windows gotcha paid twice: slim_framework + play_local both write/print
-   cp1252 — re-encode vendor agents/__init__.py to utf-8 after setup. Original checklist:
-   The FULL agent (compete.play, The FULL agent (compete.play,
+   cp1252 — re-encode vendor agents/__init__.py to utf-8 after setup. Original checklist: The FULL agent (compete.play,
    rungs + all nine drivers) runs unchanged on a worker thread behind a queue-backed
    proxy env: `kaggle/adapter.py` + `kaggle/bundle.py` -> generated `kaggle/my_agent.py`
    (rebuild after ANY module change). Verified through the official starter kit's own

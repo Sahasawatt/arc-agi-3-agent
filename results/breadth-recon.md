@@ -1945,3 +1945,29 @@ the frame shows that the slot model does not (the e44e frame's role is
 still unexplained). Next instrument: measure order-dependence directly --
 pick ONE full assignment, load it in several insertion orders, and diff
 the A5 answers; any difference collapses the space to order-search.
+
+### sb26 LEVEL 4 FALLS -- the hollow block was the missing piece (2026-08-13)
+
+The wall broke on a re-read of one old measurement. `sb26-l4b.txt` E3 had
+recorded "9 -> e44e frame: n=20" as *the frame does not take a block* -- but
+n=20 is the SELECTION border, so that click had actually selected the frame:
+**the hollow e in the bottom row is a real, placeable block**, the level's
+eighth. With it in the pool the recipe's colours all exist in stock (its e
+means the hollow block; the middle machine's solid e is a fixture with no
+slot mark), the eight slots and eight blocks match, and the assignment
+search that had exhausted 6,000 leaves without it finds the winner at leaf
+17 of 120 (`sb26-l4-dfs4.txt`): hollow-e at U31, then 9,6 in the middle
+box, c,f at U37,U43. Forward-only twice, identical; a control with hollow-e
+and c swapped is silent (`sb26-l4-solve.txt`). Level 4 in 11 of its own
+actions.
+
+The generalisation that came out is SIMPLER than the pipe reading: **a
+child machine splices into the upper row at its own x-centroid** -- level
+2 (pipe 34, centroid 32), level 3 (22.5 / 40.5), level 4 (31.5, pipe
+invisible) all agree, and the pipe detector had misread level 4's two
+pre-loaded blocks as pipes anyway (a placed block IS a width-4 run in the
+pipe's row). `sorter.py` now: unwinds game-placed blocks with A7 at level
+entry (one press per filled slot; LIFO back to their holders), reads stock
+from the band's top edge (a hollow block is solid there), and orders slots
+by the centroid splice. Driver clears all four levels in 54 actions
+(`sorter-try8.txt`) and answers None on level 5.
