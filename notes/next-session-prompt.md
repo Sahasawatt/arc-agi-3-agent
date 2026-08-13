@@ -84,8 +84,15 @@ Recon-only work needs no sweep.
    hidden games is an open question — the sample LEARNS which actions move
    frames, our mop-up is uniform random. Next lever if score still trails:
    replace the mop-up with a frame-change-weighted chooser (goose's trick,
-   ~30 lines). Resubmit steps: copy already at starter kit agent/my_agent.py
-   → `make submit` → Save & Run All → Submit. Quota 5/day.
+   ~30 lines). RESUBMIT STATE 2026-08-13 20:45: kernel v2 (budgeted adapter) pushed + run
+   COMPLETE, but the CLI submit answered 400 — the error BODY (dug out via a
+   requests spy; the CLI swallows it) says the real quota: **1 submission per
+   day per team, NOT 5**; v1 used today's. Resets midnight UTC = 07:00 Thai.
+   Ready-to-run after reset (from Desktop\ARC-AGI-3-Kaggle-Starter):
+   `KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe
+   competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet
+   -k sahasawatt/arc-prize-2026-arc-agi-3-starter -v 2 -m "time-budgeted
+   adapter v2"`.
 
 0. **Kaggle: SUBMITTED 2026-08-13, ref 55479472, status PENDING at submit time** —
    kernel sahasawatt/arc-prize-2026-arc-agi-3-starter v1, bundle rebuilt WITH
@@ -93,7 +100,7 @@ Recon-only work needs no sweep.
    harness ls20 7/7 in 1,376 actions ← results/kaggle-ls20-v3.txt. Starter kit lives at
    Desktop\ARC-AGI-3-Kaggle-Starter (venv + framework set up; token in .kaggle/, NOT in
    git). Check score: `kaggle competitions submissions -c arc-prize-2026-arc-agi-3`.
-   Quota 5/day. Windows gotcha paid twice: slim_framework + play_local both write/print
+   Quota 1/day (measured from the 400 body). Windows gotcha paid twice: slim_framework + play_local both write/print
    cp1252 — re-encode vendor agents/__init__.py to utf-8 after setup. Original checklist: The FULL agent (compete.play,
    rungs + all nine drivers) runs unchanged on a worker thread behind a queue-backed
    proxy env: `kaggle/adapter.py` + `kaggle/bundle.py` -> generated `kaggle/my_agent.py`
