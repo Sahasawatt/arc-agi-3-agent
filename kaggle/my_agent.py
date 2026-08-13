@@ -142,6 +142,8 @@ class MyAgent(Agent):
         self._worker = None
         self._dead = False
         self._t0 = None          # first choose_action call, this game's clock
+        self._stats = {}         # mop-up bandit: value -> [tries, changes]
+        self._last = None        # (value, frame bytes) of the last mop-up pick
         if MyAgent._run_start is None:
             MyAgent._run_start = time.time()
         random.seed(0xA5C ^ hash(self.game_id) % (1 << 30))
@@ -215,8 +217,34 @@ class MyAgent(Agent):
                         ga.set_data(payload.data or {"x": 32, "y": 32})
                     return ga
                 self._dead = True     # play returned or timed out
-        # Random mop-up keeps the framework loop legal until the game clock
-        # ends the game (is_done); it affords thousands of engine steps.
+        # Mop-up keeps the framework loop legal until the game clock ends
+        # the game (is_done); it affords thousands of engine steps.  Not
+        # uniform: a per-action bandit weighted by HOW OFTEN the action
+        # changed the frame (the sample that owns the baseline cluster
+        # learns exactly this) -- weight (changes+1)/(tries+2), so an
+        # action the board ignores decays and one that moves things gets
+        # picked.  The click, where the game has one, is a candidate too
+        # (value 0 stands for it) and aims at a random cell.
         if latest_frame.state in (GameState.NOT_PLAYED, GameState.GAME_OVER):
+            self._last = None
             return GameAction.RESET
-        return BY_VALUE[random.choice(self._values(latest_frame))]
+        fb = np.asarray(latest_frame.frame, dtype=np.int8).tobytes() \
+            if latest_frame.frame else b""
+        if self._last is not None:
+            v0, fb0 = self._last
+            st = self._stats.setdefault(v0, [0, 0])
+            st[0] += 1
+            st[1] += fb != fb0
+        cands = self._values(latest_frame)
+        if any(int(getattr(a, "value", a)) == 6
+               for a in latest_frame.available_actions or []):
+            cands = cands + [0]
+        w = [(self._stats.get(v, [0, 0])[1] + 1)
+             / (self._stats.get(v, [0, 0])[0] + 2) for v in cands]
+        pick = random.choices(cands, weights=w)[0]
+        self._last = (pick, fb)
+        if pick == 0:
+            ga = BY_VALUE[6]
+            ga.set_data({"x": random.randrange(64), "y": random.randrange(64)})
+            return ga
+        return BY_VALUE[pick]

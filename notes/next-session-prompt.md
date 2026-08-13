@@ -82,17 +82,20 @@ Recon-only work needs no sweep.
    7.3h. UNPROVEN: the budgets are sized by arithmetic, not measured on a
    110-game run; and whether 180s of play beats 240s of goose-style play on
    hidden games is an open question — the sample LEARNS which actions move
-   frames, our mop-up is uniform random. Next lever if score still trails:
-   replace the mop-up with a frame-change-weighted chooser (goose's trick,
-   ~30 lines). RESUBMIT STATE 2026-08-13 20:45: kernel v2 (budgeted adapter) pushed + run
+   frames, our mop-up is uniform random. DONE 2026-08-13 21:45: the mop-up is
+   now a frame-change bandit — weight (changes+1)/(tries+2) per action, the
+   click included as a candidate aiming at a random cell; unit-driven 400
+   rounds, responders picked 274/400, click path exercised (pytest 330,
+   bundle v3 pushed as kernel version 3). SUBMIT v3, not v2, at the reset.
+   RESUBMIT STATE 2026-08-13 20:45 (superseded by v3 above): kernel v2 (budgeted adapter) pushed + run
    COMPLETE, but the CLI submit answered 400 — the error BODY (dug out via a
    requests spy; the CLI swallows it) says the real quota: **1 submission per
    day per team, NOT 5**; v1 used today's. Resets midnight UTC = 07:00 Thai.
    Ready-to-run after reset (from Desktop\ARC-AGI-3-Kaggle-Starter):
    `KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe
    competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet
-   -k sahasawatt/arc-prize-2026-arc-agi-3-starter -v 2 -m "time-budgeted
-   adapter v2"`.
+   -k sahasawatt/arc-prize-2026-arc-agi-3-starter -v 3 -m "time-budgeted
+   adapter + frame-change bandit mop-up"`.
 
 0. **Kaggle: SUBMITTED 2026-08-13, ref 55479472, status PENDING at submit time** —
    kernel sahasawatt/arc-prize-2026-arc-agi-3-starter v1, bundle rebuilt WITH

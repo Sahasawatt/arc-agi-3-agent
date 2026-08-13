@@ -1018,6 +1018,17 @@ on every int (map `{int(a.value): a}`), and the adapter's per-round timeout must
 the slowest planning round (level-6 rounds think for minutes; 120s killed the worker
 mid-run and the random fallback's 5/7 looked like a logic bug).
 
+The adapter budgets by CLOCKS, not actions (2026-08-13, after v1 scored 0.11 against
+the sample's 1.56 cluster): `compete.play` gets PLAY_SECONDS of wall time per game (the
+queue-get timeout shrinks with the slice, superseding the per-round-timeout rule above
+for Kaggle runs -- long planner rounds are deliberately truncated there), then a mop-up
+spends the rest until GAME_SECONDS ends the game via `is_done`, with RUN_SECONDS (8h)
+draining the whole run's tail the way the official sample does. The mop-up is a
+frame-change bandit, not uniform random: weight `(changes+1)/(tries+2)` per action,
+click included as a candidate aiming at a random cell. Submission quota is **1/day per
+team** -- the CLI's bare `400` hides that; the reason lives in the response body (dig it
+out with a requests spy on `Session.send`).
+
 ## Git
 
 Branch `master`, remote `Sahasawatt/arc-agi-3-agent` (public, MIT-0 — the competition requires
