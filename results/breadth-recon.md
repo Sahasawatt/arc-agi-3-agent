@@ -1971,3 +1971,29 @@ entry (one press per filled slot; LIFO back to their holders), reads stock
 from the band's top edge (a hollow block is solid there), and orders slots
 by the centroid splice. Driver clears all four levels in 54 actions
 (`sorter-try8.txt`) and answers None on level 5.
+
+### sb26 level 5, first look: duplicate recipe colours and two hollow 9s (2026-08-13)
+
+One dump only (`results/sb26-l5a.txt`, board reached by the driver's 54-action
+L1-L4 run). What breaks each assumption the driver carries:
+
+- **The recipe has DUPLICATE colours**: nine boxes reading 6,e,8,8,e,8,8,b,f
+  (8 four times, e twice). `read()` rejects any recipe with duplicates -- a
+  rule that was load-bearing on L1-L4 -- so the driver answers None before
+  trying anything.
+- **Stock is eight blocks including TWO hollow 9s** (9-frames with hollow
+  interiors, the L4 hollow-e shape), and the recipe names NO 9 at all.
+- Slots: five upper, three lower in a single colour-9-framed child box --
+  eight slots for eight blocks, so the count closes; what is open is the
+  MAPPING. Duplicate colours make "insertion pinned to the recipe" ambiguous
+  (four 8-entries against two solid-8 blocks), and the hollow 9s must stand
+  for something -- the L4 precedent says a hollow block is a real block, and
+  the frame colour of L4's hollow-e matched the recipe entry it filled, so
+  the hollow 9s matching the CHILD BOX's frame colour may be the hint.
+- Next instruments, in order: (a) greedy load with exact-colour matching
+  along the machine path, hollow-9s tried in the two plausible roles (as the
+  extra 8s / as the extra e), A5 per arm -- four arms; (b) if silent, the
+  assignment space is small enough to exhaust once the insertion-order
+  question is settled the L4 way (A7-unwind first to check for pre-loads --
+  none were visible in the dump); (c) the recipe row may also need re-reading
+  -- nine boxes over eight slots means at least one box is not an entry.

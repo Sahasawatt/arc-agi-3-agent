@@ -143,7 +143,13 @@ Recon-only work needs no sweep.
    the start square is what made this level look unsolvable. Level 2 is where it now
    stops (it already finds that board's two buttons).
 
-4. **sb26 LEVELS 1+2+3: SHIPPED — the machine path is a TREE walk.** 3/8 `[9, 15, 15]`,
+4. **sb26 L5 = the next wall, first-look recon done** ← breadth-recon §sb26 L5
+   2026-08-13: the recipe has DUPLICATE colours (6,e,8,8,e,8,8,b,f — read() rejects
+   duplicates so the driver Nones out), stock is eight blocks including TWO hollow 9s
+   while the recipe names no 9, slots are 5+3=8 so the count closes and the MAPPING is
+   the puzzle. Instruments queued in the recon note (greedy colour-match arms first;
+   the hollow-frame-colour-matches-its-child-box hint). Levels 1-4 SHIPPED, 4/8
+   `[9,15,15,15]` 27.778% — the tree-walk story: 3/8 `[9, 15, 15]`,
    16.667% (sweep-sorter3.log, 16/17 identical, mean 7.221% -> 7.711%). L3 = two pipes
    into two framed sub-boxes; each pipe splices in only ITS OWN box's slots, homed by
    x-nearness never colour; pipes read from the row ABOVE the slot row; run-button hunt
