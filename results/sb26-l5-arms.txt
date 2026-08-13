@@ -1,0 +1,50 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 18:13:36 | INFO | Got anonymous API key: 8e8a78ac-4feb-4459-9ee5-ca349ce622ab
+2026-08-13 18:13:36 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 18:13:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 18:13:37 | INFO | Created new scorecard: 13f71c72-e224-4f93-9f40-e9b89c6a87f8
+2026-08-13 18:13:38 | INFO | Successfully fetched metadata for game sb26
+2026-08-13 18:13:38 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+at level 5 after 54 driver actions
+  fresh A7 #1: n=0
+  fresh A7 #2: n=0
+arm [9h=8, child after U31]
+    6 -> (19, 22): pick n=20 drop n=53 lvl=4
+    e -> (25, 22): pick n=20 drop n=53 lvl=4
+   8a -> (31, 22): pick n=20 drop n=53 lvl=4
+   8b -> (25, 36): pick n=20 drop n=53 lvl=4
+  9h1 -> (31, 36): pick n=20 drop n=53 lvl=4
+  9h2 -> (37, 36): pick n=20 drop n=53 lvl=4
+    b -> (37, 22): pick n=20 drop n=53 lvl=4
+    f -> (43, 22): pick n=20 drop n=53 lvl=4
+  A5: n=1 lvl=4 state=NOT_FINISHED
+arm [9h=8, child before U31]
+    6 -> (19, 22): pick n=20 drop n=53 lvl=4
+    e -> (25, 22): pick n=20 drop n=53 lvl=4
+   8a -> (25, 36): pick n=20 drop n=53 lvl=4
+   8b -> (31, 36): pick n=20 drop n=53 lvl=4
+  9h1 -> (37, 36): pick n=20 drop n=53 lvl=4
+  9h2 -> (31, 22): pick n=20 drop n=53 lvl=4
+    b -> (37, 22): pick n=20 drop n=53 lvl=4
+    f -> (43, 22): pick n=20 drop n=53 lvl=4
+  A5: n=1 lvl=4 state=NOT_FINISHED
+arm [9h=e, child after U31]
+    6 -> (19, 22): pick n=20 drop n=53 lvl=4
+    e -> (25, 22): pick n=20 drop n=53 lvl=4
+   8a -> (31, 22): pick n=20 drop n=53 lvl=4
+   8b -> (25, 36): pick n=20 drop n=53 lvl=4
+  9h1 -> (31, 36): pick n=20 drop n=53 lvl=4
+    b -> (37, 36): pick n=20 drop n=53 lvl=4
+    f -> (37, 22): pick n=20 drop n=53 lvl=4
+  9h2 -> (43, 22): pick n=20 drop n=53 lvl=4
+  A5: n=1 lvl=4 state=NOT_FINISHED
+arm [9h=e, child before U31]
+    6 -> (19, 22): pick n=20 drop n=53 lvl=4
+    e -> (25, 22): pick n=20 drop n=53 lvl=4
+   8a -> (25, 36): pick n=20 drop n=53 lvl=4
+   8b -> (31, 36): pick n=20 drop n=53 lvl=4
+  9h1 -> (37, 36): pick n=20 drop n=53 lvl=4
+    b -> (31, 22): pick n=20 drop n=53 lvl=4
+    f -> (37, 22): pick n=20 drop n=53 lvl=4
+  9h2 -> (43, 22): pick n=20 drop n=53 lvl=4
+  A5: n=1 lvl=4 state=NOT_FINISHED

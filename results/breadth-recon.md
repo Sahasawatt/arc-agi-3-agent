@@ -1997,3 +1997,50 @@ L1-L4 run). What breaks each assumption the driver carries:
   question is settled the L4 way (A7-unwind first to check for pre-loads --
   none were visible in the dump); (c) the recipe row may also need re-reading
   -- nine boxes over eight slots means at least one box is not an entry.
+
+### sb26 FALLS COMPLETELY -- the hollow block is a SUBROUTINE CALL (2026-08-13)
+
+Levels 5-8 all fell in one session, and the mechanic they teach is one idea
+deepening: **a hollow stock block is a REFERENCE to the box wearing its frame
+colour, and the recipe is a box's contents flattened, references expanding
+recursively.**
+
+- **L5** (instruments (a)+(b) above): the four greedy arms all load cleanly
+  and A5 answers a single cell -- which `sb26-l5-cell.txt` shows is just the
+  y53 TIMER advancing, identical for a plausible arm and an absurd control,
+  so there is no feedback channel. The 10,080 distinct assignments (8 blocks,
+  two colour-pairs interchangeable) with insertion pinned to the machine path
+  were then exhausted the L2 way: winner at leaf 1,211 (`sb26-l5-dfs.txt`),
+  forward-only twice + swapped control (`sb26-l5-solve.txt`). The winning
+  shape: recipe [6,e,8,8,e,8,8,b,f] = upper row [6, 9h, 9h, b, f] where each
+  hollow-9 expands to the child 9-box's content (e,8,8) -- loaded ONCE,
+  called twice. Soundness check (one assignment, two insertion orders, same
+  A5 answer) passed before the search ran.
+- **L6** (first try, no search): recipe [9,b,b,c,f,f,e,6,6], four boxes --
+  8-framed root with three slots, and e/9/c-framed boxes each carrying one
+  FIXTURE block and two slots. Root = [h9, hc, he]; each expansion = fixture
+  + slots: (9,b,b),(c,f,f),(e,6,6). The generalised reader cleared it on its
+  first run -- strong validation of the grammar.
+- **L7**: nesting two deep, [8,9,e,b,e,9,8] (a palindrome) = 8-box
+  [8, ref9, 8] -> 9-box [9, ref-e, 9] -> e-box [e, (b), e]. Three new facts:
+  HOLLOWNESS IS PER-RUN not per-colour (stock holds two solid 9s AND a
+  hollow 9); a fixture may sit mid-box wearing a foreign colour (the b
+  between the e-box's slots); boxes stack outside the middle third (y16 and
+  y42 on a 64-high board). Wall-pair grouping replaced gap-grouping: a
+  width-1 run is a wall, width>=3 a fixture, and two slots 12 apart with a
+  fixture between them are one box when the same walls enclose them.
+- **L8** (two variants seen -- BOARDS ARE RANDOMISED PER EPISODE): the
+  recipe row is written TWICE (two identical bands, y1-6 and y8-13) and
+  means the concatenation -- two unrollings of an INFINITE expansion.
+  Variant 1: 8-box [8, b, ref9, ref8] SELF-REFERENCING, 9-box fixtures-only
+  (c,9,e,f), stock just h8+h9 with six empty holders. Variant 2: mutual
+  recursion, 8-box [8,b,c,ref9] / 9-box [9,e,f,ref8], six solids + h8 + h9.
+  Matching is therefore PREFIX match against the truncated unrolling. The
+  final reader enumerates block-to-slot assignments (multiset perms, engine
+  untouched -- flatten is pure computation) and tries every box as root,
+  unpointed boxes first; a slotless box nothing points at is a wall
+  artifact (0-cornered frame rows read as walls around one long run) and
+  gets dropped, or it steals the root.
+
+Driver clears ALL EIGHT levels in 123 actions, state WIN
+(`sb26-drive7.txt`). pytest 330 green. sb26 done: 4/8 -> 8/8.

@@ -1,0 +1,25 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 18:16:15 | INFO | Got anonymous API key: 3fa8dd1f-22b3-4ee1-9615-b4c0bc067cb5
+2026-08-13 18:16:15 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 18:16:16 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 18:16:16 | INFO | Created new scorecard: b18d421d-868b-45ca-a2bd-0d7e27a485e3
+2026-08-13 18:16:18 | INFO | Successfully fetched metadata for game sb26
+2026-08-13 18:16:18 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+at level 5 after 54 driver actions
+  soundness path order: A5 n=1 lvl=4
+  soundness reversed: A5 n=1 lvl=4
+  assignments tried: 240
+  assignments tried: 480
+  assignments tried: 720
+  assignments tried: 960
+  assignments tried: 1200
+assignments tried: 1211
+WIN assignment (class -> slot):
+    6 -> (19, 22)
+   9h -> (25, 22)
+   9h -> (31, 22)
+    e -> (25, 36)
+    8 -> (31, 36)
+    8 -> (37, 36)
+    b -> (37, 22)
+    f -> (43, 22)

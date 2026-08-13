@@ -968,7 +968,18 @@ exhausted 6,000 leaves for nothing, and a solid block of the same colour inside 
 with no slot mark is a fixture that sits outside the order entirely. The run-button hunt
 happens ONCE per level: trying the plain actions on every wrong full load loops forever,
 because the last one tried is A7 and undoing one block re-opens the load branch (~2,000
-actions of that measured on the first level-3 contact, `results/sb26-l3a.txt`).
+actions of that measured on the first level-3 contact, `results/sb26-l3a.txt`). Levels
+5-8 (all cleared 2026-08-13, WIN in 123 actions, `results/sb26-drive7.txt`) added the
+DUPLICATE-RECIPE grammar: **a hollow block is a REFERENCE to the box wearing its frame
+colour, and the recipe is a box's contents flattened in x order, references expanding
+recursively** — one child called twice (L5, found by exhausting the 10,080 assignments,
+`sb26-l5-dfs.txt`), fixtures inside expansions (L6), nesting two deep with per-RUN
+hollowness — the stock holds solid 9s beside a hollow 9 (L7), and a doubled recipe row
+meaning two unrollings of a SELF- or mutually-referencing box, matched as a PREFIX (L8,
+two randomised variants). The reader finds boxes by wall pairs (width-1 run = wall,
+width>=3 = fixture, colour-2 pair = slot), drops unpointed slotless boxes as frame
+artifacts (they steal the root), and solves by enumerating block-to-slot assignments
+against a pure-computation flatten — the engine is never stepped during the solve.
 
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the

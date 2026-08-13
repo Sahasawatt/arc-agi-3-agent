@@ -1,0 +1,22 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 18:19:38 | INFO | Got anonymous API key: 6da4b26d-5732-486c-9d46-cfcd5edaf6c9
+2026-08-13 18:19:38 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 18:19:39 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 18:19:39 | INFO | Created new scorecard: e3877a87-43e1-4979-a349-72e1a82e194a
+2026-08-13 18:19:40 | INFO | Successfully fetched metadata for game sb26
+2026-08-13 18:19:40 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+winner #1: lvl=5 state=NOT_FINISHED
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 18:19:42 | INFO | Got anonymous API key: 866d9a9b-4bc8-416b-8827-bf3751453f2c
+2026-08-13 18:19:42 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 18:19:43 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 18:19:43 | INFO | Created new scorecard: 2cad0c45-d598-4407-8e43-a8b554f7ebd3
+2026-08-13 18:19:44 | INFO | Successfully fetched metadata for game sb26
+winner #2: lvl=5 state=NOT_FINISHED
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 18:19:46 | INFO | Got anonymous API key: 67ba8dc0-ed13-4130-b8f1-06e7385ccf1e
+2026-08-13 18:19:46 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 18:19:47 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 18:19:47 | INFO | Created new scorecard: b68e31c5-7241-4e69-8dda-d4a99a193fc3
+2026-08-13 18:19:48 | INFO | Successfully fetched metadata for game sb26
+control (e<->8 swapped): lvl=4 state=NOT_FINISHED
