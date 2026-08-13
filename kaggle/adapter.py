@@ -16,6 +16,7 @@ from __future__ import annotations
 import queue
 import random
 import threading
+import time
 from typing import Any
 
 import numpy as np
@@ -90,9 +91,24 @@ class _Proxy:
 
 
 class MyAgent(Agent):
-    """compete.play on a worker thread; this class is only the pipe."""
+    """compete.play on a worker thread; this class is only the pipe.
 
-    MAX_ACTIONS = 2600   # play's own budget is 2000; resets and slack on top
+    Budgeted by CLOCKS, not by actions -- the first submission scored 0.11
+    against a baseline cluster at ~1.56 (the official sample), and the
+    sample's shape explains the gap: it sets MAX_ACTIONS = inf, bounds the
+    whole run with an 8-hour is_done clock, and spends thousands of cheap
+    actions per game, while this adapter capped itself at 2,600 actions of
+    slow thinking.  So: `play` gets a wall-time slice per game, a cheap
+    random mop-up gets the remainder (it can afford thousands of engine
+    steps), a per-game clock ends the game, and a global clock drains
+    whatever remains as time runs out.  Sized for the hidden set: 110 games
+    x GAME_SECONDS ~ 7.3h inside the sample's own 8h envelope."""
+
+    MAX_ACTIONS = 200_000          # the real bounds are the clocks below
+    PLAY_SECONDS = 180             # compete.play's thinking slice per game
+    GAME_SECONDS = 240             # play + random mop-up, then is_done
+    RUN_SECONDS = 8 * 3600 - 300   # global drain, same envelope as the sample
+    _run_start = None              # stamped once by the first game's agent
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -103,6 +119,9 @@ class MyAgent(Agent):
         #                          its resulting frame is owed to the worker
         self._worker = None
         self._dead = False
+        self._t0 = None          # first choose_action call, this game's clock
+        if MyAgent._run_start is None:
+            MyAgent._run_start = time.time()
         random.seed(0xA5C ^ hash(self.game_id) % (1 << 30))
 
     # -- worker side ------------------------------------------------------
@@ -120,7 +139,13 @@ class MyAgent(Agent):
 
     # -- framework side ---------------------------------------------------
     def is_done(self, frames: list[FrameData], latest_frame: FrameData) -> bool:
-        return latest_frame.state is GameState.WIN
+        if latest_frame.state is GameState.WIN:
+            return True
+        now = time.time()
+        if (MyAgent._run_start is not None
+                and now - MyAgent._run_start > self.RUN_SECONDS):
+            return True
+        return self._t0 is not None and now - self._t0 > self.GAME_SECONDS
 
     def _values(self, latest_frame) -> list[int]:
         out = []
@@ -133,6 +158,8 @@ class MyAgent(Agent):
     def choose_action(
         self, frames: list[FrameData], latest_frame: FrameData
     ) -> GameAction:
+        if self._t0 is None:
+            self._t0 = time.time()
         if latest_frame.available_actions:
             self._avail = [int(getattr(a, "value", a))
                            for a in latest_frame.available_actions]
@@ -143,27 +170,31 @@ class MyAgent(Agent):
             self._rep.put(_Obs(latest_frame))
             self._pending = False
         if not self._dead:
-            try:
-                # ls20's level-6 patrol planner legitimately thinks for
-                # minutes on one round -- a 120s timeout here killed the
-                # worker mid-level and handed the rest to the random
-                # fallback (measured: fps 6.9 -> 1.7 at count ~660, levels
-                # 6-7 never played). The timeout is only a backstop against
-                # a true hang; Kaggle's own wall clock bounds the run.
-                kind, payload = self._req.get(timeout=1800)
-            except queue.Empty:
-                kind = "done"
-            if kind == "reset":
-                self._pending = True
-                return GameAction.RESET
-            if kind == "step":
-                self._pending = True
-                ga = BY_VALUE[payload.value]
-                if ga.is_complex():
-                    ga.set_data(payload.data or {"x": 32, "y": 32})
-                return ga
-            self._dead = True     # play returned or timed out: budget spent
-        # Fallback keeps the framework loop legal until MAX_ACTIONS.
+            # play's slice is PLAY_SECONDS of wall time.  The get timeout
+            # shrinks with it, so one long planner round (ls20's patrol
+            # thinks for minutes) cannot overrun the slice; on expiry the
+            # worker is parked mid-block (daemon thread, never joined) and
+            # the cheap random mop-up spends the rest of the game clock.
+            left = self.PLAY_SECONDS - (time.time() - self._t0)
+            if left <= 0:
+                self._dead = True
+            else:
+                try:
+                    kind, payload = self._req.get(timeout=left)
+                except queue.Empty:
+                    kind = "done"
+                if kind == "reset":
+                    self._pending = True
+                    return GameAction.RESET
+                if kind == "step":
+                    self._pending = True
+                    ga = BY_VALUE[payload.value]
+                    if ga.is_complex():
+                        ga.set_data(payload.data or {"x": 32, "y": 32})
+                    return ga
+                self._dead = True     # play returned or timed out
+        # Random mop-up keeps the framework loop legal until the game clock
+        # ends the game (is_done); it affords thousands of engine steps.
         if latest_frame.state in (GameState.NOT_PLAYED, GameState.GAME_OVER):
             return GameAction.RESET
         return BY_VALUE[random.choice(self._values(latest_frame))]

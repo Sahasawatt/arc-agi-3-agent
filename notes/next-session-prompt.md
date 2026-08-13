@@ -5,9 +5,9 @@ This brief is meant to be reused. Update the GOAL numbers and the QUEUE after ev
 
 ## GOAL
 
-Clear ≥1 level in EVERY game. Standing: **14/17 games with a level, mean 8.365%**
-(ls20 43.629 · re86 41.477 · sb26 27.778 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
-← results/sweep-sorter4.log (sweep_diff vs sweep-sorter3.log, control sb26: 16/17 identical to the digit, PASS)
+Clear ≥1 level in EVERY game. Standing: **14/17 games with a level, mean 12.613%**
+(sb26 100.0 WHOLE GAME · ls20 43.629 · re86 41.477 · tu93 5.946 · sp80 4.762 · tr87 4.762 · dc22 4.762 · sk48 2.778 · bp35 2.222 · wa30 2.222 · m0r0 1.526 · cn04 0.233 · ar25 0.095 · cd82 0.008)
+← results/sweep-sorter5.log (sweep_diff vs sweep-sorter4.log, control sb26: 16/17 identical to the digit, PASS; sb26 4/8 → 8/8 WIN in 123 actions)
 
 ## THE PATTERN THAT WORKS — five games have fallen to it, follow it
 
@@ -62,6 +62,30 @@ Values that must not move ← results/sweep-sorter4.log:
 Recon-only work needs no sweep.
 
 ## QUEUE (highest value first)
+
+0a. **Kaggle SCORED: 0.11 vs baseline cluster ~1.56 — diagnosis done, budgeted
+   adapter READY, resubmit awaits the user.** ref 55479472 scored publicScore
+   0.11 (unit = % of levels over the 110 hidden games). The leaderboard's
+   thick cluster at 1.56-1.61 is the official sample "Stochastic Goose"
+   (CNN frame-change learner, NOT pure random), top is 2.70 — so v1 lost to
+   the sample. Cause, read from the sample's own source
+   (Desktop\ARC-AGI-3-Kaggle-Starter\reference\stochastic-goose\): it sets
+   MAX_ACTIONS = float('inf') and bounds the RUN with an 8h clock in
+   is_done, while our adapter self-capped at 2,600 actions of SLOW thinking
+   (play's wander burns minutes/game; 110 games would also graze the kernel
+   wall clock). Fix implemented 2026-08-13 in `kaggle/adapter.py` (bundle +
+   starter-kit copy rebuilt, pytest 330, smoke ls20 L1 in 61 actions):
+   per-game clocks — play gets PLAY_SECONDS=180 of wall time (queue-get
+   timeout shrinks to the slice), then cheap random mop-up until
+   GAME_SECONDS=240 ends the game via is_done, global RUN_SECONDS=8h-300s
+   drains the tail; MAX_ACTIONS=200_000 is now just a backstop. 110×240s ≈
+   7.3h. UNPROVEN: the budgets are sized by arithmetic, not measured on a
+   110-game run; and whether 180s of play beats 240s of goose-style play on
+   hidden games is an open question — the sample LEARNS which actions move
+   frames, our mop-up is uniform random. Next lever if score still trails:
+   replace the mop-up with a frame-change-weighted chooser (goose's trick,
+   ~30 lines). Resubmit steps: copy already at starter kit agent/my_agent.py
+   → `make submit` → Save & Run All → Submit. Quota 5/day.
 
 0. **Kaggle: SUBMITTED 2026-08-13, ref 55479472, status PENDING at submit time** —
    kernel sahasawatt/arc-prize-2026-arc-agi-3-starter v1, bundle rebuilt WITH
@@ -143,12 +167,18 @@ Recon-only work needs no sweep.
    the start square is what made this level look unsolvable. Level 2 is where it now
    stops (it already finds that board's two buttons).
 
-4. **sb26 L5 = the next wall, first-look recon done** ← breadth-recon §sb26 L5
-   2026-08-13: the recipe has DUPLICATE colours (6,e,8,8,e,8,8,b,f — read() rejects
-   duplicates so the driver Nones out), stock is eight blocks including TWO hollow 9s
-   while the recipe names no 9, slots are 5+3=8 so the count closes and the MAPPING is
-   the puzzle. Instruments queued in the recon note (greedy colour-match arms first;
-   the hollow-frame-colour-matches-its-child-box hint). Levels 1-4 SHIPPED, 4/8
+4. **sb26 DONE — WHOLE GAME, 8/8, WIN in 123 actions (2026-08-13, sweep-sorter5.log
+   PASS 16/17 identical, pytest 330, PENDING COMMIT).** L5-L8 all fell to one idea:
+   a hollow block is a REFERENCE to the box wearing its frame colour, recipe = a
+   box's contents flattened, refs expanding recursively — L5 child called twice
+   (winner at leaf 1,211 of the 10,080-assignment DFS, sb26-l5-dfs/solve.txt), L6
+   fixtures in expansions, L7 nested 2-deep + per-RUN hollowness + wall-pair box
+   grouping, L8 doubled recipe row = 2 unrollings of a SELF/mutually-referencing
+   box, PREFIX-matched (boards randomise per episode — two L8 variants measured).
+   Solver = enumerate block→slot assignments against a pure flatten, engine never
+   stepped; drop unpointed slotless boxes (frame artifacts steal the root).
+   Full story ← breadth-recon §sb26 FALLS COMPLETELY + CLAUDE.md drivers paragraph.
+   The L1-L4 story, kept: Levels 1-4 SHIPPED, 4/8
    `[9,15,15,15]` 27.778% — the tree-walk story: 3/8 `[9, 15, 15]`,
    16.667% (sweep-sorter3.log, 16/17 identical, mean 7.221% -> 7.711%). L3 = two pipes
    into two framed sub-boxes; each pipe splices in only ITS OWN box's slots, homed by
