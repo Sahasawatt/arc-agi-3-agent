@@ -23,6 +23,24 @@ points, ready to continue rather than re-derive:
   root each call) and the `transfer_multi_match` tie-break resolved before any null counts.
 - **Nothing is ungated, nothing is half-applied**: no driver `.py` was edited on disk all session,
   the tree is still the wave-11 gate, pytest 330.
+- ⚠️ **The committed explanation for Kaggle v8's 0.01 is UNSUPPORTED — do not quote it.**
+  `kaggle/adapter.py`'s docstring says *"the mop-up is actively harmful relative to `compete.play`"*,
+  and that is an inference from one score, not a measurement. **Measured today** (`kaggle_yield_probe.py`,
+  a shadow-module patch of `compete.py` printing wall-clock at every level-up — the file on disk is
+  untouched, so no sweep): on **ls20**, the only local game the GENERIC rungs clear with no driver and
+  therefore the honest proxy for the hidden 110, levels land at
+  **0.8s · 2.4s · 6.4s · 16.1s · 47.8s** — **5 of 7 inside 60 seconds**. The run was then killed at a
+  900s cap with levels 6 and 7 still unreached, so **they need >850 further seconds** (level 6 is the
+  patrol planner that "thinks for MINUTES on one round"). **With `GAME_SECONDS = 240` those two levels
+  are unreachable under EVERY variant** — so v8 (60s), v7 (180s) and v9-lite (240s) all score ls20 at
+  **5 levels. The play-slice change is worth ZERO levels here.**
+  Both standing explanations predict a PROPORTIONAL loss and the score fell **ten-fold** (0.10 → 0.01),
+  so neither survives. The untested candidate that fits a 10x drop is **the run not finishing**: v8's
+  other change was a per-`(frame-hash, action)` `_qstate` table accumulating across 110 games and
+  thousands of frames each, against a notebook memory ceiling — and a kernel that dies partway scores
+  zero for every game after it. Same shape as the `deepcopy(env)` frontier that hit **6.3 GB at 12,000
+  nodes** today: *a per-unit cost measured cheap is a claim about TIME, never about SPACE.*
+  Next step, cheap and decisive: measure `_qstate`'s growth rate per game locally.
 
 
 **Nothing landed and nothing needs a sweep — the tree is unchanged and still gated at wave-11.**

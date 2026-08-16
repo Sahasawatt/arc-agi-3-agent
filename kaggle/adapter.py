@@ -109,8 +109,34 @@ class MyAgent(Agent):
     v8's only behavioural change was handing the mop-up roughly three times
     more clock (a 60s `play` slice on games no driver signature claims, versus
     v7's 180s) and making its bandit state-aware -- and it scored TEN TIMES
-    WORSE.  So the mop-up is actively harmful relative to `compete.play`, not
-    a cheap way to spend leftover time, and the claim-gated short slice is
+    WORSE.
+
+    ⚠️ CORRECTED 2026-08-16: the sentence that used to sit here -- "so the mop-up
+    is actively harmful relative to `compete.play`" -- was an INFERENCE FROM ONE
+    SCORE presented as a measurement, and it is now refuted.  Measured with
+    `kaggle_yield_probe.py` (a shadow-module patch of `compete.py` printing wall
+    clock at every level-up; the file on disk is untouched, so it costs no sweep)
+    on **ls20**, the only local game the GENERIC rungs clear with no driver and
+    therefore the honest proxy for the hidden 110: levels land at 0.8s, 2.4s,
+    6.4s, 16.1s and 47.8s -- **five of seven inside sixty seconds** -- and levels
+    6 and 7 were still unreached when the probe was killed at 900s.  With
+    GAME_SECONDS = 240 those two are unreachable under every variant, so v8's 60s
+    slice, v7's 180s and v9-lite's 240s all score ls20 at FIVE.  **The slice is
+    worth zero levels here**, and a ten-fold score drop cannot come from a change
+    that costs nothing on the one game we can measure it on.
+
+    So the cause of v8's 0.01 is UNKNOWN, and both stated explanations are dead:
+    a proportional loss cannot produce 10x.  The shape that fits is a run that
+    did not finish or a worker that died silently -- this repo has a recorded
+    case of exactly that ("a 120s timeout killed the worker and the silent 5/7
+    that resulted had no error anywhere"), and the same day this note was written
+    the committed bundle was found to be embedding a STALE mirror.py.  A
+    module/bundle mismatch produces per-game crashes, a random fallback, and no
+    error at all.  v9-lite reverting v8's two additions is therefore a TEST as
+    much as a fix: if it returns to ~0.10 the cause was inside v8 without our
+    having to name it; if it stays at 0.01 the difference lies elsewhere.
+
+    The claim-gated short slice is
     withdrawn: `play` owns the whole game clock on every game, claimed or not,
     and the mop-up exists only to keep the framework loop legal after `play`
     returns or dies.  Its bandit is back to v7's per-action global prior; the
