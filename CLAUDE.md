@@ -1128,7 +1128,28 @@ official starter kit splices into the Kaggle notebook. It embeds every module
 (`kaggle/adapter.py`). Verified through the starter kit's harness: ls20 7/7 at 43.59%,
 driver games identical to compete.py (`results/kaggle-ls20-v2.txt`, `kaggle-local*.txt`).
 **Rebuild the bundle after any change to the modules it embeds** -- it is a build
-artifact, never hand-edited. Two mechanics that cost a run each: `GameAction(v)` raises
+artifact, never hand-edited.
+⚠️ **That rule was violated and it cost real score** (2026-08-16): the committed bundle was
+still embedding an OLD `mirror.py`, so the submission agent carried **none of ar25's `L3_LINE`
+or `L4_LINE`** -- the two levels the campaign had just won (1/8 -> 4/8, 2.778% -> 27.778%). A
+rebuild changed exactly one line, the `mirror` payload. **A stale bundle scores the old level
+count with nothing in the logs to explain why**, so rebuild-then-exec is the gate, not a habit.
+**`kaggle_bundle_check.py` is that gate**, and it must be run with the starter kit on the path:
+
+```bash
+PYTHONPATH=<starter>/vendor/ARC-AGI-3-Agents ./.venv/Scripts/python.exe kaggle_bundle_check.py
+```
+
+It asserts, in order: the bundle exec's in a fresh namespace · every module named in
+`bundle.py`'s MODULES reaches `sys.modules` (the ImportError-on-Kaggle case a forgotten
+`roller` caused on v8) · all fourteen drivers are present by name · the agent class exists ·
+every driver still exposes `signature()`. Without the `PYTHONPATH` it fails at step 1 with
+`ModuleNotFoundError: No module named 'agents'` -- an environment fault, not a bundle fault.
+⚠️ **Do NOT name a standalone check `*_test.py` or `test_*.py`.** The first version of this file
+was `kaggle_exec_test.py`; pytest collected it by NAME, imported it, hit its `SystemExit(1)`,
+and answered with an INTERNALERROR that took the suite from **330 passed to "no tests ran"**.
+The failure reads as an empty suite, not as a broken test. Use `*_check.py`, `probe_*.py`, or
+the existing `<game>_<tag>.py` convention. Two mechanics that cost a run each: `GameAction(v)` raises
 on every int (map `{int(a.value): a}`), and the adapter's per-round timeout must dwarf
 the slowest planning round (level-6 rounds think for minutes; 120s killed the worker
 mid-run and the random fallback's 5/7 looked like a logic bug).
