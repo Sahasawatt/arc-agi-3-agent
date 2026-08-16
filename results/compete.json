@@ -1,27 +1,33 @@
 [
   {
     "game": "ar25",
-    "levels": 1,
+    "levels": 4,
     "of": 8,
     "actions": [
-      173
+      15,
+      25,
+      40,
+      29
     ],
     "baseline": [
-      32
+      32,
+      50,
+      75,
+      37
     ],
-    "environment_score": 0.095
+    "environment_score": 27.778
   },
   {
     "game": "cn04",
     "levels": 1,
     "of": 6,
     "actions": [
-      131
+      14
     ],
     "baseline": [
       29
     ],
-    "environment_score": 0.233
+    "environment_score": 4.762
   },
   {
     "game": "dc22",
@@ -37,11 +43,15 @@
   },
   {
     "game": "ka59",
-    "levels": 0,
+    "levels": 1,
     "of": 7,
-    "actions": [],
-    "baseline": [],
-    "environment_score": 0.0
+    "actions": [
+      11
+    ],
+    "baseline": [
+      28
+    ],
+    "environment_score": 3.571
   },
   {
     "game": "ls20",
@@ -72,12 +82,12 @@
     "levels": 1,
     "of": 6,
     "actions": [
-      53
+      27
     ],
     "baseline": [
       30
     ],
-    "environment_score": 1.526
+    "environment_score": 4.762
   },
   {
     "game": "re86",
@@ -109,15 +119,17 @@
   },
   {
     "game": "sp80",
-    "levels": 1,
+    "levels": 2,
     "of": 6,
     "actions": [
-      16
+      16,
+      7
     ],
     "baseline": [
-      39
+      39,
+      58
     ],
-    "environment_score": 4.762
+    "environment_score": 14.286
   },
   {
     "game": "bp35",
@@ -153,53 +165,73 @@
   },
   {
     "game": "tr87",
-    "levels": 1,
+    "levels": 2,
     "of": 6,
     "actions": [
-      28
+      28,
+      30
     ],
     "baseline": [
-      54
+      54,
+      58
     ],
-    "environment_score": 4.762
+    "environment_score": 14.286
   },
   {
     "game": "tu93",
-    "levels": 2,
+    "levels": 9,
     "of": 9,
     "actions": [
       31,
-      14
+      14,
+      19,
+      17,
+      29,
+      28,
+      14,
+      21,
+      29
     ],
     "baseline": [
       19,
-      16
+      16,
+      34,
+      42,
+      123,
+      80,
+      14,
+      23,
+      111
     ],
-    "environment_score": 5.946
+    "environment_score": 100.0
   },
   {
     "game": "wa30",
-    "levels": 1,
+    "levels": 2,
     "of": 9,
     "actions": [
-      43
+      43,
+      70
     ],
     "baseline": [
-      71
+      71,
+      119
     ],
-    "environment_score": 2.222
+    "environment_score": 6.667
   },
   {
     "game": "cd82",
-    "levels": 1,
+    "levels": 2,
     "of": 6,
     "actions": [
-      1306
+      6,
+      11
     ],
     "baseline": [
-      55
+      55,
+      8
     ],
-    "environment_score": 0.008
+    "environment_score": 10.514
   },
   {
     "game": "sb26",

@@ -2044,3 +2044,3767 @@ recursively.**
 
 Driver clears ALL EIGHT levels in 123 actions, state WIN
 (`sb26-drive7.txt`). pytest 330 green. sb26 done: 4/8 -> 8/8.
+
+### ka59 FALLS -- the click was a SWAP all along, and the detectors were colour-blind (2026-08-13)
+
+Level 1 in 14 driver actions; `ferry.py` is the tenth driver. The chain that
+broke it, because each probe's failure taught the next one's instrument:
+
+- **Movement is a 3-cell lattice step, and it checks only the LANDING cell**
+  (`ka59-p11.txt`: every direction moves exactly 3; `ka59-p14.txt`: pressing
+  south at (13,31) lands the piece INSIDE the "closed" left box at (13,34),
+  stepping over the wall). Both slot boxes are enterable; three days of
+  probes had treated them as sealed.
+- **The kick has a flight cap of ~15 cells, passes over the colour-15 bar,
+  and is clamped by outer walls** (28->43 east over the bar; 19->10 west
+  into the wall). The corridor is a dead-end arm (x24-32 exists only on
+  rows 30-32), so the east kick is the ONLY reachable one at spawn -- the
+  north/south/west kick geometries do not exist there.
+- **The aimed click is a SWAP, not a consume** (`ka59-p16.txt`, the probe
+  that finally did a full-colour census per press): the piece teleports to
+  the dot's square and the dot -- RECOLOURED 5 -> 4, the boxes' own colour
+  -- lands on the piece's old square. Every earlier probe searched colour 5
+  only, so the swapped dot vanished from their reads and "the click
+  consumes the dot" went unchallenged into three probe generations.
+- **The win: 4-dot in one box, piece in the other** (`ka59-p18.txt`,
+  verified twice + floor control in `ka59-solve.txt`): kick the dot east,
+  stand inside the left box, click the dot (the swap places the 4-dot in
+  the box and teleports the piece across the bar), walk into the right box.
+  Level fires the moment the piece lands inside.
+
+Driver notes: geometry (bar + boxes) is cached per level -- a travelling
+ring parks against a box wall and occludes it from a live read (the landed
+dot's ring erased the right box; the piece's own ring erased the left one
+mid-walk); the piece/dot reads are cluster-centroid with spread <= 2,
+because animation frames smear the piece over 2-4 cells. Signature: piece
+in a 14-ring + 5-dot in a 14-ring + full-height 15-bar + two closed 4-boxes
+= ka59 alone (`sig-sweep-ferry.txt`, VERDICT PASS).
+
+Level 2 (`ka59-l2.txt`): a different animal -- THREE dots of different
+shapes (1x2, 2x1, 2x2), four boxes of different interior sizes on both
+sides of a vertical bar, piece bottom-right. Smells like size-matching the
+swaps into the right boxes; the driver answers None there cleanly (its
+exactly-one-object read rejects the multi-dot board).
+
+### Agent-fleet night (2026-08-13/14): six games probed in parallel, one fell, four walls got their true shape
+
+Six sonnet subagents ran the measured-probe loop per game (scripts `<game>_q*.py`,
+results `results/<game>-q*.txt`), main thread verified evidence files and
+integrated. Round counts: sc25 x5, g50t x3, bp35 x4, dc22 x2, ka59-L2 x2, tu93 x1.
+
+- **tu93 L3 FELL** (see the maze L3 playbook in `maze.py`): deepcopy BFS found a
+  19-action line (q7), forward-only verified twice + one-action-short control
+  (q8, re-run by the main thread in `tu93-q8-main.txt`). Hazards = three
+  notched-3x3 pieces (body 8, notch 15); the killing one JUMPED onto the cell
+  the piece was stepping into, reactive not clock-driven (q6); the y63 budget
+  row burns ~1-2 cells/action and its GAME_OVER is distinct from hazard death
+  (q5); GAME_OVER resets scope to the CURRENT level (q8). Caveat kept: the
+  agent's claim that bare-Maze driving dies mid-L2 contradicts the sweep's
+  [31,14] -- artifact of driving outside compete.play; not acted on.
+- **sc25's "clicks are dead" was FALSE** -- three days of probes never aimed at
+  the southern half. The board is two puzzles: a rigid 4x4 two-tone block in a
+  corridor it can never pass (footprint never changes; N/S only flip the
+  colour halves in place -- q9; round 1's "(+4,0) from N/S" was a discover.py
+  multi-object aliasing artifact, settled q11), and **box B: a 3x3 grid of
+  independent 2-state click-toggles** (q12/q13). 4-edges-all-14 = a penalty
+  event that wrecks the piece (q14). The full 2^9 pattern space (480
+  non-penalty patterns, Gray-code walk, 13 lives, 549 actions) contains NO win
+  (q16) -- box B is closed as the win mechanism. Only EDGE-block clicks burn
+  the x62-63 death timer (4 cells/click). Open: box A (click-inert so far),
+  piece-x-pattern interactions.
+- **g50t's phantom mechanic found and closed**: recall-after-travel toggles a
+  2-state indicator (q5; round 1 read one half of the cycle as a "permanent +4
+  shift") -- inert w.r.t. reachability. The old exhaustive BFS's key was SOUND
+  (source-read q: p3/p5 mask only the clock row). The wall's final shape (q8/q9):
+  the gate's opening is MOMENTARY -- it reverts the instant the piece steps off
+  (38,8), the gate room is a dead end so stepping off is mandatory, and with the
+  segment hypothetically held open a 13-waypoint path reaches the goal box. The
+  78-action baseline vs 0-wins-in-130-BFS contradiction stands, now narrowed to
+  "what could hold the opening".
+- **bp35 L2's death and budget law**: a ride is a tape scroll; a killing ride
+  BURIES the piece (its cells painted over by unconverted block texture
+  scrolling through, q2). Only the near band rides (far-band clicks just clear,
+  q5). The ride budget is ONE PER LIFE (q8) -- but the board fully REVERTS on
+  every reset (byte-for-byte, two episodes, q9), so no multi-life ladder
+  exists: L2 must fall within one life, one ride. Bonus: the piece's sprite
+  paints background over adjacent floor, so room extents read ~5 cells short
+  when measured with the piece next to the boundary (q7/q8).
+- **dc22 L2 CLOSED as measured-unsolvable under the current action model**: the
+  timer row y63 is a pure decoupled life-clock (~190 actions, q3), toggles are
+  clock-phase-invariant (q5), and an exhaustive joint (position x toggle-bits)
+  BFS -- the exact blind spot hypothesised for the old 512-state exhaustion --
+  fully exhausts with no path (q9). No third button exists (q10); the void gap
+  and goal cell are click-inert (q11). De-prioritised.
+- **ka59 L2**: ring-size == box-interior-size matching discovered (dot0
+  3x6<->box1, dot1 6x3<->box3, dot2 6x6<->box0; box2 3x3 matches the PIECE --
+  standing in it empty-handed recolours it and clears the dotless spawn ring,
+  q17). The click-swap needs NO proximity (q4) and does NO size validation
+  (q16). But the left region (box0/box1) is unreachable: flood-fill over the
+  3-cell lattice from all four occupancy phases never crosses the moat (q20),
+  so every reachable placement was made (q15/q18) and the level does not
+  complete. Parked pending a new verb. A walk() bug in ka59_solve.py (edge-
+  triggered levels_completed) was found and worked around by the agents --
+  ferry.py does not share that code.
+
+### Agent-fleet wave 2 (2026-08-14 early hours): two more fell, two walls shaped
+
+- **cn04 FELL — driver #11 `claw.py`**: ACTION5 = quarter-turn, moves = 3-cell,
+  and the game sets a TRAP — the wrong handedness (1 rotate, not 3) gives the
+  identical tip-to-tip vector and renders the same "docked" third colour
+  without winning. The 14-action line (rotate x3, down x7, right x4) verified
+  twice per process, cross-process by the main thread (`cn04-q11-main.txt`),
+  with truncation AND false-dock controls. Sweep: cn04 [131] -> [14], 0.233 ->
+  4.762% (`sweep-claw.log`, 16/17 identical, control cn04). L2 is a four-shape
+  jigsaw (12 pads, `cn04-q12.txt`) — untouched.
+- **tr87 L2 FELL — dial.py playbook**: the L2 station-naming scheme is the
+  four hint-labelled icon groups FLATTENED IN HINT-BAND X ORDER (not the top
+  region's row-band order — that hypothesis failed cleanly first), block-counts
+  1/3/2/1 summing to exactly the 7 stations. Verified x3 + a per-station
+  wrong-phase control; main thread re-verified the 58-action line
+  (`tr87-verify-main.txt`, winner x2 = lvl 2, one-short control = lvl 1). The
+  30-action L2 segment ships as a playbook in dial.py (one data point for the
+  convention; generalise at L3). NOTE: the agent's later probe scripts
+  (q13-q19) were run inline and exist only as results files.
+- **sk48 L2 wall shaped**: retract does NOT keep the tether (it snaps mid-drag
+  and strands the block where the arm was — a third outcome vs both round-1
+  hypotheses), a re-plowed block re-pierces at its OWN original slot, and the
+  arm is one continuous strip built outward from the housing — so first-contact
+  order is structurally fixed at row order and REORDER IS IMPOSSIBLE with the
+  four live verbs. All-four-pierced-at-once does not win. Deep BFS (sound per
+  its own two checks) is 2x rounds of ~40 min, both stuck near depth 16,
+  frontier growing — not exhausted. Refuted across rounds: LIFO-unload, clicks,
+  second entrance, touch-order-without-retract, reorder-via-retract.
+- **re86 L6 wall shaped**: reach-elasticity re-verified on a second axis
+  (square DOWN-compress conserves sum 36 AND persists after walking away —
+  the first valid persistence result), but the plus COLLAPSES 48 -> 24 on
+  LEFT-compress at this wall face (discontinuous, permanent, reproduced at two
+  offsets), and its redistribution grows DOWN at RIGHT's expense — so the
+  needed (3,3,18,18) profile at centre (12,9) was never reached; boxes never
+  consumed. Round 2's "unmapped NW obstacle" was refuted by a clean static
+  dump (only the wall + the pen exist); the anomalies were real shape-edge
+  geometry. Next lever: find a compression route for the plus that avoids the
+  LEFT-collapse face.
+- dc22 L2 (closed), sc25 (box-B space exhausted), g50t (momentary gate),
+  bp35 (one-life-one-ride, board reverts), ka59 L2 (left side unreachable) —
+  see the wave-1 section above.
+
+### Agent-fleet wave 3 (2026-08-14 ~03:00): three more fell, one driver bug found by its own book
+
+- **ar25 FELL — driver #12 `mirror.py`**: a colour-10 wall splits the board;
+  the colour-5 player and colour-4 MIRROR sprite move in lockstep (vertical
+  same, horizontal OPPOSITE — the old CLAUDE.md trap note "ar25 answers
+  ACTION3 with right" was reading the mirror, not the player). Win = drive
+  the mirror onto the static colour-11 target; ONE axis exact suffices.
+  15-action line [down x10, left x5], verified x2 + 3 controls, main-thread
+  re-verified (`ar25-verify-main.txt`). Sweep [173] -> [15], 0.095 -> 2.778%.
+- **m0r0 FELL — driver #13 `twin.py`**: two 5x5 pieces on SHARED controls in
+  non-mirrored halves; the win is piece A reaching one specific coarse cell.
+  27-action joint-BFS line, verified x3 + 3 controls, main-thread re-verified
+  (`m0r0-verify-main.txt`). Sweep [53] -> [27]. L2 = same mechanic, 4px step,
+  colour-8 checkerboard patches unexplained.
+- **sp80 L2 FELL — swap.py playbook**: the aimed click is a MAGAZINE-FREE
+  control transfer to any colour-8 body — a verb the old exhaustive 39k-state
+  BFS structurally never had (it predates the click transport fix). Re-running
+  the same BFS recipe with click edges found the win at ~5k expansions: the
+  win is gated on TWO bodies' positions at once (80-body parked right x2 AND
+  block1 walked right x3), refuting every single-body map. Line
+  [4,4,click(13,17),4,4,4,5] verified x2 + 3 controls, main-thread re-verified
+  (`sp80-verify-main.txt`). Sweep sp80 1/6 -> 2/6. Also closed: L1's win is a
+  literal level-complete, not a hidden control-transfer.
+- **wa30 L2 = haul.py's own bookkeeping bug, precisely caught**: L2 grew an
+  AUTONOMOUS CONVEYOR (one un-slotted crate at a time turns ring 4->5, slides
+  4 cells per player action toward a slot, x-aligns then y-aligns, settles,
+  reverts) and haul.py's `self.filled` is asserted at plan-commit and never
+  re-checked — at the reproducible stuck frame two "filled" slots were live-
+  empty and two conveyor-filled slots were "free": livelock at action 105
+  (`wa30-q9.txt`). Fixed in `_slots()`: keep the latched book AND drop slots
+  that read occupied on the live board, excluding any slot the piece
+  overlaps (the oscillation trap the latch was guarding against). The fix
+  swept clean (no regression) but did not yet clear L2 — the conveyor
+  interplay needs its own line. Also: haul.py's "NOT wired" docstring is
+  stale, and the solid colour-12 4x4 at (24,36) is WALKABLE, not an obstacle.
+
+### Agent-fleet wave 4 (2026-08-14 ~05:00-08:00): tu93 L4 fell; five walls got measurably harder shapes
+
+- **tu93 L4 FELL — maze.py SCRIPTS table**: BFS 515 expansions -> 17-action line,
+  forward-verified x2 + one-short control on the 81-action combined line
+  (`tu93-q9.txt`, main-thread re-run `tu93-q9-main.txt`). maze.py's playbook
+  generalised to a per-level SCRIPTS dict gated on (x0,y0,body) hazard spawns;
+  L4 adds a new hazard skin (body 12, notch 15). Smoke: 4 levels in 80 actions.
+  PENDING the next sweep (goes into the wave-5 gate).
+- **tr87 L3 (3 rounds, parked)**: station IDs via hint-offset -3 are almost
+  surely right; the 49-combo ambiguous-pair brute, offset +4, pairing rules
+  (column-alignment, ignore-icons e1/e2), and the 5-station theory (49/49,
+  stations 8/50 untouched) are ALL refuted; nearest-LEFT and row-below rules
+  don't even cover 7 stations. The icon->block TARGET assignment rule is the
+  hidden piece. Next: hybrid coverage rule, sweep station 8 jointly,
+  shape-canon check, order-dependence (`tr87-q23..q26.txt`).
+- **sp80 L3 (2 rounds + r3 in flight)**: model overturned — FIRE from a block
+  = unconditional return-to-driven (position-free); FIRE from driven = grabs
+  block2 only inside castle0's zone, once; CLICK = universal control-grab any
+  time. 12 x-left compositions + seeded BFS (4808 nodes) failed; block1/driven
+  (w=24) can never reach castle2-left (clamp 40). Y-axis, right/centre
+  alignment, closing-fire = r3 (`sp80-q13..q23.txt`).
+- **cn04 L2 (4 rounds, parked)**: TWO instrument bugs corrected — reset()
+  re-scopes after any L2 action (blind L1 replays corrupt state), which had
+  faked both "randomized per process" AND the "first-press jump" (L2 is
+  DETERMINISTIC; first presses are clean 3-cell steps). Pad ownership
+  0:2/9:2/11:4/14:4. The whole docking family is now exhausted: the one
+  same-shape pad-pair candidate, sequential singles, hidden flags, wide arm,
+  boundary-interlock across ALL FOUR distinct A5 silhouettes (A5 cycles 4
+  different cell-sets, not 2 — states 0/2 and 1/3 share bboxes only), and the
+  socket/concavity fit (0%). Colour-3 = transient overlap indicator, no
+  persistence. Wall = non-geometric (`cn04-q20..q44-summary.txt`).
+- **m0r0 L2 (3 rounds, parked)**: checker bands are Y-band hazards firing
+  from every column and direction (silent both-pieces respawn); B is Y-locked
+  to A with X mirrored, and r1's "B boxed to 3 cells" was a DFS bug (A's
+  un-mirrored deltas) — B's true region is 37 cells, fully covered, no win;
+  the joint space is ONE DIAGONAL (rowA==rowB, colA+colB==14, 0 exceptions).
+  Clicks inert at 7 targets. Next: exhaustive clicks across both mapped
+  regions (`m0r0-q37..q40.txt`).
+- **ar25 L2 (3 rounds, parked)**: A4x5 aligns the player's true bbox EXACTLY
+  onto the colour5 dock (the dock paints OVER the player — the "wall
+  occlusion" was false); position space exhausted, no win. A5 scatters the
+  colour0 markers but they oscillate between two 8/4-cell subsets (7% of the
+  dock's 116 empty cells — slot-fill refuted). New unexplained: an aimed
+  dock-centre click changes 21 cells elsewhere; A5x5-then-A4 leaves player -3
+  and frozen. Third colour5 component = a top-right A5-press clock
+  (`ar25-q12..q15.txt`).
+
+Wave-4 addendum (sp80 r3, `sp80-q24..q29.txt`): placement is 2D (all four
+bodies step 4 cells on A1-A4) BUT a hard y=16 ceiling bars every body from
+the castle band (y4-11) — castle-adjacency in any form (left/right/centre/
+raise) is structurally dead. Click-back-then-fire adds nothing (auto-return
+already covers it). Seeded BFS grew to 6532 nodes with no plateau and no
+win. New unexplored mechanic: two bodies overlapping can GAME_OVER outside
+of FIRE. Next levers: block-RELATIVE offsets (never castle-keyed), a
+multi-hour BFS, block2-as-final-actor.
+
+### Agent-fleet wave 5 close-out (2026-08-14 morning)
+
+- **tu93 SOLVED WHOLE — 9/9, GameState.WIN** (driver: maze.py SCRIPTS L3-L9,
+  WIN at 201 actions in-driver; sweep 22.222 -> 100.0). Levels 5-9 each fell
+  to the same loop (determinism check, dedup-soundness fork, deepcopy BFS,
+  forward-verify x2 + one-short control) — `tu93-q10..q14.txt`, main-thread
+  re-verified `tu93-win-main.txt`. Gate lesson: the L8 spawn-gate written
+  from the agent's hand census FAILED in-driver; the driver's own
+  notched_all read differs — gates were re-measured through the driver's
+  eye (instrumented run) and pinned to THOSE censuses. The gate must match
+  the eye that reads it.
+- **cd82 L1 decoded + driver #14 roller.py**: the piece is a tumbling
+  roller (same action twice = no-op; alternation required) — the visible
+  correlate of the "hidden state" that made the generic engine burn 1,306
+  actions revisiting one object 22x. ACTION5 paints the wedge of the target
+  facing the roller; L1 = below + x-aligned = [3,2,3,2,4,5], verified x2 +
+  no-align control (`cd82-q13..q16.txt`, main `cd82-verify-main.txt`).
+  Sweep [1306] -> [6]. L2 = same mechanic + third colour + diagonal split
+  (`cd82-q14.txt`) — next lever queued.
+- **wa30 L2's true wall = a 70-action level clock**: every life GAME_OVERs
+  at exactly action 70 (11 lives byte-identical, two movement patterns);
+  the conveyor delivers at most 2 of 5 crates in that budget hands-free
+  (`wa30-q11..q13.txt`). Next: haul-carry + conveyor combined under 70.
+- **ka59 L2 closed harder**: colour-14 is a halo not a wall; full boundary
+  scan = min moat thickness 9 (no 3-step crossing anywhere); board
+  deterministic across episodes (`ka59-q21..q23.txt`). Left boxes
+  unreachable under the verb set, period.
+- **re86 L6 physics revised again**: the up/down collapse keys on centre-y
+  inside the wall's y-span at ANY x (refutes round 3's box-proximity
+  story); pen extent + an (6,39) marker-vanish anomaly unresolved
+  (`re86-q16..q19.txt`).
+- **sk48 exhaust** (r3): hash-only dedup proven sound; 800k-node BFS run —
+  final verdict in `sk48-q14.txt` (the agent's completion report is
+  pending; read the file before citing exhaustion).
+- **Kaggle**: v7 scored 0.10 (vs v1 0.11, baseline 1.56) — drivers are
+  ~irrelevant on the hidden 110; adapter v8 (pushed, kernel v8) adds a
+  claim-gated play slice (unclaimed games: 60s play, rest to mop-up) and a
+  STATE-AWARE bandit ((frame-hash, action) table with global prior;
+  unit-driven: per-state learning 239 vs 67). Submit v8 at the next 07:00.
+
+### wa30 L2 FELL at the probe level (2026-08-14 ~09:40) — in-driver integration incomplete
+
+The 68-action L2 line is PROVEN (agent wave-6: unmodified Haul to 5/6 filled
+at tick 51, then FREEZE to harmless [1,2,3,4] cycling and the conveyor
+delivers the last crate; clear registers at action 68 of the 70-action level
+clock; verified twice byte-identically + a 67-action control that fills 6/6
+but does not register — `wa30-q20..q23*.txt`, main-thread re-run
+`wa30-q22-main.txt`). Root cause of Haul's old self-regression measured: a
+QUEUED grab planned in the open matures into lifting a crate the conveyor
+has since parked in a slot — Haul's `self.filled` only records its OWN
+drops. haul.py got two safe additions (a pick-target guard that drops a
+stale grab plan, and an idle-instead-of-surrender branch while un-slotted
+crates remain) — pytest 330, no sweep regression — but the in-driver replay
+still stalls (`wa30-haul-drive*.txt`, done latched with filled=3 and one
+in-frame crate visible): per-level books go stale across the 70-action
+deaths (Haul has no fresh-life detector the way swap/maze do). NEXT: add a
+fresh-life reset (crate-count jump ⇒ board reverted ⇒ clear filled/queue)
+plus freeze-at-5/6, then sweep. L3's entry frame is already captured in
+`wa30-q22.txt` tick=68 (8x16 frame, 6 crates).
+
+### sc25 CLOSED for the campaign (2026-08-14 ~12:30) — a completeness proof, not a sample
+
+Round 7's full-grid flood fill (every one of 4096 cells) finds exactly 22
+connected components, all classifying into the four known structures (timer
+stripe, corridor/piece/target box, box A, box B) — ZERO unknown components
+(`sc25-q21.txt`). Target-box interior + border: 0/34 clicks respond
+(`sc25-q22.txt`). Combined with box B's 480/480 toggle exhaust, box A's
+100/100 click sweep, the timer/top-region probes, and the piece's rigid
+4-row footprint against a 2-row gap, every visible component is
+individually refuted. Round 6 also CORRECTED the timer model: the x62-63
+stripe burns on a general per-action clock (~60% rate) — no click type is
+free (`sc25-q20.txt`). The win trigger, if any, is a combinatorial joint
+state with no visible correlate. sc25 stays 0/6 until a genuinely new verb
+idea arrives.
+
+### g50t CLOSED for the campaign (2026-08-14 ~12:40) — live-exhausted, not heuristic-exhausted
+
+Round 5's exhaustive live DFS pressed all four directions at every reachable
+lattice cell: the region is EXACTLY 12 cells (the heuristic's 11 + the gate
+room; the round-4 decorative-icon false wall was the only one). The west
+segment opens only while standing at (38,8) and reverts on the FIRST press
+of any departure (censused per press over the full 8-press route). Action
+space = 5, no click. The goal box is >4 lattice steps beyond the only
+(dead) route (`g50t-q14..q16.txt`). The 78-action-baseline contradiction
+stands unexplained but every avenue in the current verb set is
+live-refuted. g50t stays 0/7 pending a genuinely new idea (e.g. revert
+keyed on something other than displacement).
+
+### bp35 L2 CLOSED for the campaign (2026-08-14 ~12:50) — pure reel arithmetic, no bypass in 6 rounds
+
+Round 6 refuted the last three instruments: ACTION7 is an ordinary -6
+leftward move (the "L1 shaft-ride" premise was a misreading of the
+deepcopy-corrupted bfs log; the L1 solve line never presses 7); the door
+marks (colour-0 at y11) are inert to distance clicks singly and in
+sequence; the floor's colour set pre/post-ride is exactly the terrain set —
+no hidden win-mark (`bp35-q13..q16.txt`). With rounds 1-5 (ride = 6-row
+reel shift, ONE per life, doors 26 rows = 4-5 shifts away and recurring as
+decoration, pre-clear cascade lethal, board reverts per life), bp35 L2 =
+doors unreachable within a life under every tested verb. Loose thread
+recorded: A3 pitch measured -5 vs A7's -6. bp35 stays 1/9.
+
+### cd82 L3 PARKED on an impossibility proof (2026-08-14 ~13:30)
+
+The legend's four target regions are 43/35/12/10 cells; every producible
+wedge is 50 (flat) or 55 (diamond) and the terminal paint always shows its
+full mask — so NO order/colour/station assignment of the known verbs can
+reproduce the target (`cd82-q37/q48.txt`). Seventeen candidate mechanisms
+are measured dead across three rounds, including: five drag payload forms
+(the SDK's ComplexAction schema has no second point; the unvalidated local
+data path passes extras through and the game ignores them), legend
+eyedropper, colour-11, repeat/timing variants, ring topology (8x4
+brute-force table: closed, no 9th station), partial-paint boundaries
+(pure-function wedges), the census window (verified against raw frame;
+the out-of-window colour cells are a selection-preview tint on the roller
+itself), and ACTION7 (does not exist in this game's action space).
+cd82 stays 2/6; the sub-50-cell paint verb, if any, leaves no trace in
+anything probed so far.
+
+### m0r0 L2 CLOSED for the campaign (2026-08-14 ~14:30)
+
+Round 4 swept clicks across both pieces' full safe regions (30/33 of A,
+~24/37 of B before an API resource limit; the pattern is 100% null
+throughout) — no click anywhere moves a piece, changes a colour, resets or
+wins; the only diff is a global per-action counter tick reproduced by a
+plain no-op, so "clicks are position-gated" is refuted (`m0r0-q41/q42`).
+The diagonal invariant's MEETING cell (colA=colB=7) is confirmed
+unreachable: column 7 is wall on every row except 11-12, which sit behind
+an always-resetting hazard band from both sides (`m0r0-q44`). One
+mid-sweep "unexpected reset" was retracted as a DFS bookkeeping artifact
+after a clean two-run re-test with a stop-short control (`m0r0-q43`) —
+worth remembering as the shape of a false positive. Only unexamined
+surface left: whether ACTION6's data payload accepts more than {x,y}
+(the same question cd82 answered NO for its own engine path). m0r0 stays
+1/6.
+
+### cn04 L2 CLOSED on geometry (2026-08-14 ~15:00) — the mover was the missing variable, and it changed nothing
+
+Round 5 found the mechanic three rounds of geometry had been missing:
+**ACTION6 click SELECTS which shape you control** (it recolours to the mover
+colour; the previous mover reverts), each moves in 3-cell steps, selection
+is exclusive and re-clickable (`cn04-q47/q48`). Round 6 therefore redid the
+entire search with every shape as mover: 119 single-pad placements (4 movers
+x 4 rotation states x every own-pad→pad pairing) and 48 best-per-group
+boundary-interlock placements out of 855 candidates, ALL driven live — zero
+wins (`cn04-q55..q58`). Multi-select persistence was verified first (a moved
+shape keeps its position under its own colour when another is selected,
+`q59`), then a live 3-phase composition assembled all four shapes into a
+structurally-verified single connected mass — still no win (`q60`). Also
+settled: colour4 is an action-budget bar (~1 cell per 3 actions, never
+recovers), which explains the varying counts round 4 read as a docking
+signal (`q46`). cn04 stays 1/6; every geometric hypothesis across five
+rounds is exhausted, and the remaining candidates are non-geometric.
+
+### ar25 L2 FALLS — the mark grants LEVEL 1's control scheme for one move (2026-08-14 ~15:20)
+
+Nine rounds, and the door was a verb nobody had composed: an aimed click on
+the DOCK's centre column (52,24) places a "mark" that grants exactly ONE
+subsequent action under LEVEL 1's control scheme — which carries the
+VERTICAL that unmarked L2 does not (unmarked: only ±6 horizontal) — and a
+click on the WALL's centre (37,31) toggles the mark off, restoring normal
+movement. So mark → step → untoggle is a CYCLE that walks the piece three
+cells south at a time. Two unmarked left presses first put the piece in the
+colour-11 shadow's own x-range (3-17); without that alignment the descent
+freezes at y=27. Eight cycles cross the wall and clear the level: 40 actions
+from reset, verified twice + a one-action-short control
+(`ar25-q30/q31.txt`, main-thread `ar25-l2-verify-main.txt`), in-driver via
+mirror.py's L2_LINE at i=39 twice. Corrections banked along the way: the
+round-4 "click_x is a free variable, any column reachable" claim was false
+(click_x is not a variable at all; only two trigger points exist); the
+round-4 "WIN at press 64" was a false positive from `state != NOT_FINISHED`
+also matching GAME_OVER; and "vertical is unreachable" — believed for five
+rounds — was only ever true UNMARKED.
+
+### re86 L6: enclosure, centre-landing and scenery contact all inert (2026-08-14 ~15:30)
+
+Round 8 tested the reframed hypotheses from round 7's geometry closure:
+driving the ring's hollow interior to strictly contain each box (4/4
+colour-9, 3/4 colour-11), driving the plus inside the ring, landing each
+shape's CENTRE exactly on its own-colour boxes (all 8 — survivable, which
+refutes cover.py's generic "centre on a frame cell is GAME_OVER" for
+own-colour pairs, and consumes nothing), pressing into the colour-1 wall
+(refused 13 cells early — the arm tip, not the centre, is what the refusal
+checks) and along the bottom bar, and three two-shape arrangements. ~150
+live presses, no level change (`re86-q39..q42.txt`). Also measured: a
+blocked press is still charged budget. Unresolved: a ±1 off-lattice jitter
+in the ring's tracked centre near dense colour-11/colour-1 regions, most
+likely `at()`'s first-pixel heuristic rather than real movement.
+
+### sk48 L2: the pierce is an EXTEND-ARRIVAL event, so the touch order really is forced (2026-08-15, main thread)
+
+The agent-fleet round-4 report (`sk48-q20.txt`) reproduced the known wall — L2's stock is four
+blocks on one row at x=30,36,42,48 wearing `[14, 9, 12, 8]`, the recipe display below reads
+`[8, 12, 9, 14]`, and `touch_order == list(reversed(recipe))`. It also, without meaning to,
+exposed the one state nobody had ever pressed anything from: the driver reaches
+`pierced={8,12,9,14 all True}` at action 8 of level 2 and then **gives up with the state still
+NOT_FINISHED**. That is sb26's law wearing sk48's clothes — a loaded machine needs the action
+that RUNS it, and sb26's driver had to FIND that action by trying the plain ones. Three probes,
+all from the fully loaded state, all with the load asserted before the probe and a noop baseline
+measured alongside:
+
+- **No plain action runs it** (`sk48-q21.txt`). Each of A1/A2/A3/A4/A7 pressed 1x/2x/3x from its
+  own `deepcopy` of the loaded env: every arm stays `levels_completed=1`, `NOT_FINISHED`. They
+  are not inert — A1/A2 move 305 cells, A3 20 per press, A7 4 per press — they just do not
+  complete anything. The parent frame was re-read after every child and asserted byte-identical.
+- **No click anywhere runs it** (`sk48-q22.txt`). All **4,096** cells swept with an aimed click
+  (`env.step(action, data={"x","y"})`, the transport CLAUDE.md records as the only one the games
+  read), each from its own deepcopy: **0 clicks changed a single cell**, 0 levelled up, 0 won,
+  0 answered `obs=None`. This is a completeness proof for single clicks from that state, not the
+  fourteen hand-chosen targets of `sk48-q2.txt`.
+- **The verb map, measured at L2 ENTRY rather than at full extension** (`sk48-q23.txt`), is what
+  reframes the wall. The arm does not start beside the blocks: it starts at rows **44/45** with
+  its tip at **x=16**, far below the stock row (y=25). A1 lifts the machine **6 rows per press**
+  (44 → 38 → 32 → 26), A4 extends the tip **6 columns per press**, A3 retracts it, and at entry
+  A2 and A7 are exact no-ops. So the driver's rise-then-extend crosses the blocks left to right
+  because that is the order it chose, not obviously because it is the only one.
+
+**The hypothesis that follows, and its refutation** (`sk48-q24.txt`): extend FIRST along the empty
+row 44 until the tip is past x=48, THEN lift into the block row — now the only direction the tip
+can travel across the blocks is leftward under A3, which is `8, 12, 9, 14`, the recipe in order.
+Three arms off one deepcopy'd entry state, with the known behaviour as the control:
+
+    A (control) rise x3 then extend  ->  pierces 14, 9, 12, 8 at tips 34/40/46/52, lvl stays 1
+    C  extend to tip 52 on row 44, then rise into rows 26/27, STOP  ->  pierced = [] 
+    B  extend to tip 52, rise, then retract 16 -> 52 across every block  ->  pierced = []
+
+The control reproduces `[14, 9, 12, 8]` exactly, so the instrument is sound. Arms C and B pierce
+**nothing at all**. That is the real mechanic and it is stronger than the thing it refutes:
+**a block is pierced only when an EXTEND press lands the tip on it.** An arm that is already long
+when it arrives in the row pierces nothing (C), and retracting back across four blocks pierces
+nothing (B) — the `Skewer.pierced` detector agrees, since what it reads is braid arriving on the
+block's LEFT. So the touch order is not an artifact of the driver's choice: rightward extend is
+the only piercing motion, and block 8 at x=48 can never be first.
+
+Together with `sk48-q21/q22`, L2 is now a wall with a measured shape rather than a search that
+ran out of time: the load is reachable and complete, and from it every plain action and every one
+of 4,096 clicks is a no-op. What is NOT proven is that no longer sequence exists — the deep BFS
+runs (`sk48-q4/q11/q14.txt`) explicitly report `exhausted=False` at depth ~19 against a ~192-action
+life. **sk48 L2 is PARKED**, and the next lever is not another verb hunt: it is either a
+full-life search or a mechanic no game in this campaign has shown yet.
+
+### wa30 L3: an AUTONOMOUS CONVEYOR delivers two crates by itself, and the driver livelocks chasing a third it is already carrying (2026-08-15, agent fleet round 5 + main thread)
+
+L3's board is a much bigger version of L2's: an 8x16 frame (84 empty interior cells, ring 9,
+inner 2) at (52,24), three to four times L1's twenty-cell frame, plus five 4x4 crates (ring 4,
+inner 9) at (32,32), (32,12), (20,20), (12,44), (8,16). The level is NOT randomised — the reset
+frame and the whole 113-action L1+L2 prefix are byte-identical across two independent processes,
+with a positive control proving the equality check can fail (`wa30-q40..q42.txt`). So a fixed
+line is the right target in principle.
+
+**The new mechanic, and it is not L2's conveyor.** A colour-12 4x4 "cursor" slides 4 cells LEFT
+along row y=12 on every player action, whatever the action was and wherever the piece is. When it
+reaches a crate it flips that crate's ring 4 -> 5 ("activated"), and the crate then slides 4 cells
+per player action toward the frame **on its own** (`wa30-q43.txt`). Idling — pressing only
+directions, never GRAB — therefore delivers **2 of the 5 crates hands-off**, the two sitting on or
+near the cursor's sweep path, after which it stalls for the rest of a life (`wa30-q45.txt`).
+L3's life clock is **99 actions**, measured identically three times, against L2's 70.
+
+**Where the driver stops.** Warm-started exactly as `compete.play` does — one `Haul` carried
+through L1 -> L2 -> L3, `dirs` learned on L1 and never re-learned — it clears L1 in 43 and L2 in
+70, then on L3 manually delivers ONE crate beyond the conveyor's two, reaching three filled slots
+`{(52,24), (52,32), (56,32)}` within ~85 actions, and never adds a fourth: flat across **2,500
+actions and 23 life-boundary resets** in one run and reproduced in a second
+(`wa30-q46/q49/q50.txt`). What it does instead is re-plan a pickup for a crate near (28,28) whose
+position **drifts by 4 cells between successive plans** — that is a third crate the cursor has
+also activated and is carrying, and the pick/carry cycle never converges.
+
+Two readings were refuted along the way, both worth keeping:
+
+- **The 63 -> 75 rise in the frame's interior count is NOT piece occlusion.** The piece's bbox
+  never overlaps the frame's bbox in that run, and the non-overlapping readings alone still show
+  the rise (`wa30-q47.txt`). It is the delivered crate's own multi-tick transit animation passing
+  through the frame's bounding box — the thing `_confirm_delivered`'s transit note already names.
+- **"The whole-board colour-2 census goes flat at 51" is the wrong metric**, and it is the one an
+  earlier round reported. It mixes the frame's true interior with the moving rail and cursor's own
+  colour-2 pixels, and it describes the IDLE condition (no GRAB at all), which is not how the
+  driver plays. The real wall is 3 slots of N via `crates()`, not 51 cells.
+
+Also refuted: the stall being the life clock (`filled` is flat at the same three slots across 23
+resets; idling stalls at two well before any boundary) and the stall being "no reachable crates"
+(two to three loose crates are present every stalled round, including the one being chased).
+
+**A latent driver bug found on the way, flagged not fixed** (`wa30-q48.txt`): a COLD-started
+`Haul` — one built fresh at L3 rather than carried from L1 — hits `_slots()`'s `sy = ... or 1`
+fallback, because no `dy != 0` entry exists in `dirs` at that call. The slot lattice degrades to
+1-cell pitch and produces overlapping origins like (52,24)/(52,25)/(52,26)/(52,27), which one
+delivered crate then retires wholesale. Real campaign play always warm-starts one `Haul` across
+the whole game, so this never fires in a sweep — but any probe that constructs a driver at a
+level boundary is measuring that bug rather than the game.
+
+**Next lever** (not yet run): instrument `_slots()` and `_walk()` on a warm-started run to decide
+whether the fourth-slot livelock is L2's pick-target GRAB guard firing on a conveyor-moved target
+or the carrying branch clearing `pick_target` mid-delivery. The fix, if it is the former, is a new
+guard shaped like the one `haul.py` already carries for L2 — *a crate under active conveyor
+transit is not a crate to chase manually* — and it is a driver change, so it needs a full sweep
+with wa30 as the positive control.
+
+### ar25 L3 OPENS: the pegs are CLICK-SELECTABLE PIECES, and selection redirects every movement verb (2026-08-15, main thread)
+
+The fleet's round-8 report shaped L3 as a piston puzzle: a 3-row colour-10 wall that A1 lifts and
+A2 lowers three rows a press, A7 undoing one such press, **A3 and A4 inert**, and two static
+colour-5 "peg" objects built of stacked 3x3 rings that nothing moved. Its ruled-out list included
+"clicking peg centres produces zero state change". Three main-thread runs turned that inside out.
+
+**`ar25-q50.txt` — the plain-action channel, closed completely.** Every reachable piston position
+(drive A1 to the top edge and A2 to the bottom: **21 distinct positions**, rows (0,2) through
+(60,62)) crossed with all six plain actions, each arm off its own deepcopy, parent re-read and
+asserted byte-identical after every one. Nothing levels up, and A3/A4 change **zero cells at every
+single position** — the sample-based "A3/A4 are inert" is now a complete statement.
+
+**`ar25-q51.txt` — 86,016 clicks, and the by-product is the finding.** All 4,096 cells swept at all
+21 positions. No click completes the level (the completeness proof the hand-chosen target lists
+could not give), but **2,457 arms changed a cell — 117 at every position** — and they are not
+scattered: x=12-14/y=21-28 and x=45-56/y=27-28, which is exactly where the two pegs are. The pegs
+were always interactive; the earlier probe aimed at each blob's CENTROID, and a peg built of
+stacked 3x3 rings has a hole there.
+
+**`ar25-q52.txt` — what a peg click IS.** The 117 responsive cells form exactly **two connected
+parts** (63 cells at rows 21-32/x12-23, 54 at rows 27-32/x45-56). One click changes ~27 cells,
+mostly 0 -> 9, spread across x 1-61 — it draws something board-wide, it does not tint the peg.
+Clicking the same part **twice is a no-op** (press 2 reproduces press 1 exactly). Clicking A then B
+lands on B-alone's board and B then A on A-alone's, differing in 13 cells: **the last click wins**.
+Idempotent, mutually exclusive, last-one-wins is not a dial — it is a SELECTOR.
+
+**`ar25-q53.txt` — and the selector reassigns the controls.** Same six actions, three conditions:
+
+    condition   A1    A2    A3    A4    A5   A7
+    none       397   334     0     0    28    0      <-- reproduces q50 exactly
+    selA        73    73    73    73    14    0
+    selB        73    73    37    37    27    0
+
+With nothing selected, A1/A2 move the 3-row piston (397/334 cells) and A3/A4 are dead. **With a peg
+selected, A3 and A4 wake up**, and A1/A2 stop moving the piston: all four change 73 cells, which is
+a peg-sized object moving. So level 3's grammar is *click a peg to take control of it, then the
+four direction verbs drive THAT peg* — the piston was never the level's piece, and "A3/A4 are
+inert" was a statement about the unselected condition, measured 21 times and true in all of them.
+
+L3 is therefore a two-piece placement puzzle in the same family as L1 and L2 (where the win docks
+the MIRROR on a colour-11 target with one axis exact), with four static colour-11 objects mirrored
+top and bottom across the piston's start row as the candidate targets. Not yet solved: no arm here
+won, including holding a selection through the piston's entire A1 x16 / A2 x4 range. What is now
+open is a SEARCH over two pieces x four directions, which is a completely different problem from
+the one the level looked like an hour ago.
+
+### Two proposed driver patches, both measured before landing — one rejected, one held (2026-08-15)
+
+Both came from agent-fleet diagnoses that were right about the CAUSE and untested about the FIX.
+Each was applied TEXTUALLY to a copy of the driver's source, exec'd as a shadow module, and driven
+against the unpatched original in the same run — so `dial.py` and `haul.py` were never edited and
+no sweep was spent on either.
+
+**wa30 / `haul.py` — REJECTED, it breaks level 1** (`results/wa30-q70.txt`). The diagnosis is
+sound: `act()`'s queue-drain never checks that a popped queued action moved the piece, so a step
+refused by terrain `_walk`'s BFS never modelled lets the rest of a 13-step plan fire from the wrong
+square and the trailing GRAB drops the crate outside every slot (`wa30-q60..q65.txt`). The proposed
+guard — on a refused step with a queue outstanding, clear `queue`/`pick_target`/`claim` — was
+reasoned to be regression-free from the absence of refusals in unpatched L1/L2 runs. Measured:
+
+    unpatched   L1 at 43, L2 at 113 cumulative, max filled slots 4
+    patched     ZERO levels cleared, 3,000 actions burned, max filled slots 0
+
+Haul's own pickup approach *presses into refusals on purpose* (`act` already special-cases the GRAB
+with its `still`/`inside` checks), so a blanket "refusal means the plan is stale" kills every
+delivery. The diagnosis survives; the guard has to exclude the deliberate-refusal cases. **An
+argument that a patch cannot regress is not a measurement of whether it does** — this one cost a
+two-minute A/B and would otherwise have cost a 100-minute sweep and a broken driver.
+
+**tr87 / `dial.py` — VERIFIED CORRECT, and HELD because it is inert** (`results/tr87-q80.txt`).
+Two fixes: `read_board`'s top-region boundary becomes "the last row before the hint band drawn in
+any of the four tile colours" instead of a row-majority walk (which halts one row INTO content on a
+dense board — L2 row 4, L3 row 7 — while L1's rows 34-39 are a solid block of a FIFTH colour, which
+is why naively widening to `hint - 1` made L1 worse); and `top_pairs` becomes a full 7x7 border
+scan with proximity dedupe and greedy nearest pairing, instead of a row-band scan that overwrites
+its one icon and one block per band. Measured across all three levels:
+
+    level   old top_end/pairs/combo    new top_end/pairs/combo
+      1        33 /  6 /  5               28 /  6 /  5     <-- combination dicts EQUAL, not just equal-sized
+      2         3 /  0 /  0               28 /  6 /  0
+      3         6 /  0 /  0               28 /  8 /  0
+
+L1 = 28 actions and L2 = 58 cumulative under BOTH readers, and L1's combination dict compares `==`
+to the shipped one. The reader is strictly better — L2 and L3 go from zero readable pairs to six
+and eight — but `combination()` still returns `{}` on both, because L3's icons match no station
+hint under any transform (independently re-derived through the fixed instrument), so the level
+count does not move: **plain 2, patched 2**. Landing it now would spend a full sweep on a
+byte-identical outcome, which is the same call the repo already made for the four inert `ls20`
+wirings. The patch text is in `tr87_q80.py` and lands with whatever finally decodes L3 — the named
+next lever being to build each station's full 7-phase room deck by dialing and match the top BLOCKS
+against the decks, inverting the documented icon-identifies/block-targets roles.
+
+### ar25 LEVEL 3 FALLS — the piston is a PRECONDITION behind a one-way door (2026-08-15)
+
+Level 3 is a third machine, unrelated to L1's lockstep mirror and L2's mark/untoggle cycle, and it
+resisted three complete sweeps for one reason: **the control surface the win depends on becomes
+unreachable the moment you engage the pieces.**
+
+The grammar, measured (`ar25-q50/q51/q52/q53/q80.txt`): with nothing selected, A1/A2 drive the
+3-row colour-10 piston (397/334 cells) and A3/A4 are dead at **every one of its 21 reachable rows**.
+The two colour-5 "pegs" are click-SELECTORS — 117 responsive cells forming exactly two connected
+parts, idempotent, mutually exclusive, last-click-wins — and the instant one is clicked, all four
+direction verbs drive THAT PEG (73 cells) and A3/A4 wake up. Selection is a **one-way door**: a
+background click, clicking the same peg, clicking the other peg, A5 and A7 all leave the peg
+selected, and the piston cannot move at all while a peg is held.
+
+So the piston's row has to be chosen **before the first peg click**, and every search that started
+by clicking a peg was a slice at the entry row. That is why the following are all measured dead and
+all irrelevant: each peg driven over its ENTIRE reachable grid alone at the entry row (324 + 360
+cells, `q57`), the same at **all 21 piston rows** (14,364 cells, `q61`), and the full peg-A x peg-B
+joint grid of **116,640 states** at the entry row (`q58`). Also dead: both pegs docked bbox-exact on
+their size-matched targets at the entry row (`q55`/`q56`), and A5 pressed up to three times after
+every such dock (`q59`).
+
+The win wants both pegs docked on their **size-matched** targets — peg A is 12x12 (63 cells) and
+bbox-matches only the two 12x12 targets, peg B is 6x12 and matches only the two 6x12 ones — with
+the piston parked at rows 27-29. The 40-action level-3 line: **A1 x7** (piston up, nothing
+selected), click (13,31) to take peg A, **A2 x7 + A4 x7** onto (42,53,33,44), click (51,29) to take
+peg B, **A2 x5 + A3 x12** onto (42,47,9,20).
+
+**Main-thread verified before wiring** (`ar25-q90.txt`): two independent fresh-Arcade replays of the
+full 80-action line (L1's 15 + L2's 25 + these 40) reach `levels_completed == 3` at action index 79;
+a one-action-short control stops at level 2; and a control that drops **only the seven piston
+presses**, leaving every dock and click identical, also stops at level 2 — which is what makes the
+precondition load-bearing rather than incidental. In-driver via `mirror.Mirror`: levels cleared at
+i=14 / 39 / 79, twice. pytest 330. Gating sweep: `results/sweep-wave10.log`, control ar25.
+
+The transferable shape, and it is worth checking elsewhere: **a win can depend on a control surface
+that the puzzle's own main objects lock you out of, so the order of engagement is part of the
+solution.** A search that begins by touching the pieces can be exhaustive and still never see it.
+
+### cd82 L3 stays a WALL — but the round replaced a sampled impossibility proof with an exhaustive one, and exposed an instrument trap (2026-08-15)
+
+Re-opened with the lens that had just cracked ar25 L3 (a win gated on a control surface the pieces
+lock you out of). It does not apply here, and the reason is now measured rather than assumed
+(`results/cd82-q300..q303.txt`).
+
+**The instrument trap first, because it is the transferable half.** A naive click sweep on cd82
+reports **all 4,096 cells as responsive** — every click changes exactly one cell, `(63,63)` toggling
+4 <-> 5, which is a universal per-action counter tick (the same shape CLAUDE.md already records for
+m0r0's "global per-action counter reproduced by a plain no-op"). A change-detector cannot see past
+it. Worse, the inverse error is just as easy: **the state a click sets can be invisible until a VERB
+reads it** — cd82's colour selection changes nothing on the board, it changes what the next ACTION5
+paints. So a click-then-LOOK sweep answers the wrong question in both directions, and the sweep that
+means something is **click-then-ACT**: click the cell, then press each verb, and compare against the
+same verb pressed with no click.
+
+Redone that way, cd82 L3 has exactly **6 responsive 5x5 icon boxes** (colours 0, 8, 9, 11, 12, 14;
+colour 15 is the L3 default) and every other cell — the paint block, the roller, the legend, all
+4,041 of them — is click-inert. The colour selection is **stateless and fully reversible**
+(A -> B -> A is byte-identical to A alone, double-click is idempotent) and has **zero effect on
+ACTION1-4** (tumble bboxes identical selected vs unselected). So there is no one-way door here; the
+cd82 click mechanism is a reversible parameter, not a precondition. Colour 0 at all 8 ring stations
+still paints the established 50/55-cell wedge — the sub-50 verb the size argument requires does not
+exist on the click axis either.
+
+The round also caught a miscalibrated coordinate in an earlier probe: `cd82_q49.py`'s
+`ICONS[0]=(26,5)` sits in a dead 7-cell gap between the real colour-0 button (x21-25) and colour-12
+(x33-37), so any earlier conclusion drawn through it was aimed at nothing.
+
+**Verdict: WALL, sharper than before.** The round-2 impossibility proof rested on partial samples of
+the verb axis; the click axis and the condition axis are now exhaustive. What remains unswept is
+state that a single-life deepcopy fan-out structurally cannot see — order- or time-dependent state
+across MULTIPLE lives, or a very long action count — so the next probe on this game has to be a long
+continuous live run, not another fan-out from a fresh L3 entry.
+
+### sk48's click wall survives the sharper instrument — 20,480 click-then-ACT arms, zero (2026-08-15)
+
+The cd82 round above showed that a click-then-LOOK sweep answers the wrong question in both
+directions: a per-action counter can make every cell read as responsive, and a click that sets real
+state can read as inert because nothing on the board changes until a VERB reads it. `sk48-q22.txt`
+was a click-then-LOOK sweep, so its "no click does anything" was, strictly, "no click changes the
+board" — a weaker claim than the section above it made.
+
+Re-run properly (`results/sk48-q30.txt`): from L2's fully loaded state, every one of the 4,096 cells
+clicked and then **each of the five plain verbs pressed**, each arm off its own deepcopy, compared
+against a stated no-click baseline for that verb — **20,480 arms, zero verb-outcome differences,
+zero level-ups, zero wins**. Negative control (click (0,0) then A1) matches the baseline; the parent
+env is byte-identical after the sweep. So the click channel on sk48 L2 really is dead, not merely
+invisible, and the wall stands as written.
+
+Worth keeping as the general rule: **"clicking changed nothing" is a claim about the RENDERER until
+you have pressed a verb afterwards.** The cheap form is one baseline per verb plus a click-then-act
+sweep; it costs 5x the arms and it is the difference between a measurement and a phrasing.
+
+### tr87 L3 CLOSED for the campaign — ten rounds, three disjoint alphabets, and every channel measured dead (2026-08-15)
+
+The level was reopened because `dial.py`'s reader was demonstrably broken on it (`combination()` returned
+`{}`), and it closes with the reader FIXED and the level still unsolved — which is the useful result,
+because it separates "we could not read the board" from "the board does not say what we assumed".
+
+**The reader fix works and is verified inert** (`tr87-q80.txt`, patch text in `tr87_q80.py`, not
+applied): with it, L3's top region yields **8 (icon, block) pairs** where the shipped reader yields
+zero, while L1's combination dict compares `==` to the shipped one and L1/L2 still clear in 28 and 58.
+
+**What the fixed instrument then showed, and it is structural.** Building all seven stations' FULL
+seven-phase decks by actually dialing (114 actions, one life, zero deaths, every station returned to
+its own entry phase) proves the seven decks are **one shared 7-cycle `G,A,E,D,B,C,F` at per-station
+phase shifts** (8→0, 15/22/43→6 and byte-identical, 29→5, 36→2, 50→4). So "a block's shape names its
+station" is not underdetermined — it is **impossible by construction**: every block matches every
+station at some phase. Entry letters are `8=A, 15=G, 22=G, 29=F, 36=D, 43=G, 50=C`; the eight blocks
+decode to `G,D,C,B,B,A,C,F` with **E absent entirely**.
+
+Then the same treatment on the icons, which no instrument had ever compared against each other:
+the ten icons canonicalise to exactly **7 distinct shapes** — the label-sized number — and all three
+cross-checks come back **fully disjoint**: icon ∩ room = 0, hint ∩ room = 0, icon ∩ hint = 0. Three
+mutually disjoint seven-symbol vocabularies coexist on this board. Both channels share one odd shape
+on the same eight pairs: six of seven letters used, two doubled, one entirely excluded (`E` on the
+block side, `a` on the icon side, the latter sitting only at the structurally unpaired orphan tile).
+
+**Everything tried, and refuted.** Shape-identifies-station (three variants: icon-vs-hint under full
+dihedral+polarity with min Hamming 5-15 of 25; block-vs-deck; icon-vs-icon). Position-encodes-station
+(three variants — reading-order under all eight drop candidates, exact `block_x`, row-band grouping —
+all refuted OFFLINE against a free self-consistency gate: any correct rule must leave stations
+8/29/36/50, already unique at A/F/D/C, correct at **zero** presses; exact-x additionally conflicts at
+station 15 and would displace station 29). And finally the top-region-is-irrelevant nulls, all live
+(`tr87-q95.txt`): mere presence at all seven stations (65 actions), every station moved off its entry
+phase (14), all seven driven to a common letter (20), and all six anchor+B/E all-distinct
+permutations (9-12 each) — **none wins**, across nine fresh lives with **zero deaths**, so every
+failure is the hypothesis being wrong rather than a clock expiring.
+
+Two process notes worth more than the negative result. The self-consistency gate — *does the rule
+leave the already-correct stations untouched* — killed three rules offline for the price of zero live
+actions; a rule that has to move something already right is wrong, and that is checkable before
+spending anything. And when asked for an icon-side rule, the round **declined to fabricate one**: a
+drop-3 combinatorial search with no independent justification is guess-and-run wearing a hypothesis's
+clothes, and reporting the finding was the correct output.
+
+**Next session: stop looking at the top region and the room alphabet.** The two channels this
+campaign has never examined for L3 are the CLAMP (whether where it is parked matters when some other
+condition fires) and the room windows' RAW pixel content — colour and position detail that `canon`
+deliberately discards, and which shape-matching therefore throws away by design.
+
+### ar25 LEVEL 4 FALLS — the same law, and the decoration that looked like the mechanic (2026-08-15)
+
+Level 4 is a fourth distinct machine and it obeys level 3's law in new clothes. Two
+click-selectable colour-5 pistons (a full 4,096-cell sweep finds exactly two responsive
+components) translate 3 cells a press in **all four** directions once selected, stopped only by
+the board edges — they collide with nothing, not the colour-11 scenery and not each other.
+Selection itself is switchable here, last click wins, unlike L3's peg. But **clicking any piston
+permanently forfeits A1/A2 control of the colour-10 wall**, and A7 undoes a movement press and
+never a selection. So the wall's row at the moment of the FIRST click is the precondition again:
+of its **18 reachable rows exactly ONE** — six down-presses — makes the dock complete the level,
+and the identical dock is measured dead at the other seventeen (`ar25-q119.txt`). The dock
+geometry had been right on the first pass and failed for want of that one row.
+
+**The trap worth keeping is the thing that led there.** The two colour-4 blocks riding the wall
+look exactly like a mechanic: their count walks **18 → 117 → 0** as the wall descends, and one UP
+press appears to destroy them permanently. On level 1 colour-4 IS the mirror sprite that has to be
+docked, so a colour-4 mechanic would have been entirely in character. Two of the first round's own
+bullets contradicted each other — "a rendering artifact" and "permanently lost, never recovers" —
+and a rendering artifact does not survive its cause being undone. Read per-CELL instead of by
+count, it resolves: colour-4 is a reversible artifact keyed purely to the wall's row, and pressing
+down after the "kill" returns the exact count (`ar25-q115..q118.txt`). Decoration. But chasing the
+contradiction is what enumerated the wall's rows, which is where the real precondition was.
+
+Line (29 actions): wall DOWN x6 with nothing selected, click (18,40) to take piston B and dock it
+x-only, click (19,22) to take piston A and dock it x-only. Main-thread verified
+(`ar25-q130.txt`): two independent fresh-Arcade replays reach `levels_completed == 4` at action
+index 108 of the full 109; a one-action-short control stops at level 3; and a control dropping
+**only the six wall presses** — same docks, same clicks, same order — also stops at level 3.
+
+**ar25 is now 4 of 8**, `[15, 25, 40, 29]`, from 1 of 8 this morning. Gating: L3 by
+`sweep-wave10.log` (ar25 2/8 → 3/8, 16 of 17 identical, no game loses a level, mean 21.297% →
+21.787%), L4 by `sweep-wave11.log`.
+
+**The generalisable rule, now seen twice on the same game:** *a win can depend on a control
+surface that engaging the puzzle's own pieces locks you out of, so the ORDER of engagement is part
+of the solution.* A search that begins by touching the pieces can be exhaustive — 116,640 states
+on L3, all 18 wall rows crossed with the dock on L4 — and still never see it. The cheap test is to
+ask, of every condition found: **is this a one-way door?** If yes, it has to be set first, and it
+belongs in front of the search rather than inside it.
+
+### ar25 L5: a five-round WALL, and three corrections that each invalidated the round before (2026-08-15)
+
+Level 5 does not fall, but the round is worth reading for the corrections rather than the search.
+Each one was found by the agent testing its own previous conclusion, and each retroactively voided
+an earlier reading.
+
+**Correction 1 — the "lethal cell" was the life budget.** A raster over S's reachable rectangle
+died at action 128 and, replayed press-by-press, pinned a coordinate; that read as a positional
+hazard. Rebuilt as a BFS with **one deepcopy per node** and GAME_OVER children marked lethal and
+dropped, S's full **289-cell rectangle came back entirely safe — including the exact coordinate**.
+The real mechanism is a **real-move budget of ~127 non-blocked presses per life**; a 200x
+single-verb probe survived because that verb hits its own wall in ~12 steps and the remaining ~188
+presses are blocked no-ops, which do not consume it. The original raster also only checked for WIN,
+never for death, so once it died every later reading was taken on a board that had reset to level 1
+— "294 presses" meant nothing about location.
+
+**Correction 2 — W's position space is 2D, not 1D.** Every round had measured W's SELECTED
+horizontal range (A3=3, A4=17) at one row. Its UNSELECTED vertical range (A1=5, A2=15) had never
+been measured, and the row survives the select transition: **441 positions, not 21**. All 441 were
+then swept with S untouched — W alone never wins. The same probe showed W's unselected drive moves
+the **whole comb rigidly** (ladder plus horizontal band), not the isolated ladder an earlier
+horizontal-only test had concluded.
+
+**Correction 3 — colour 4 is universal occlusion paint.** A clean bump profile over 21 W rows
+(0 at the extremes, plateau 99/151 at rows −3..−6) with S frozen, zero sensitivity to S's
+horizontal position, and an exact non-sticky round trip all read as *a vertical overlap gauge
+between the comb and S*. Then the one untested crossing — W's selected column at a non-zero row
+with S at a non-default phase — sent colour 4 to **243 while colour 5 stayed flat at 151**: the comb
+had slid onto a **fourth static colour-10 object** (bbox ≈ (0,62,0,11)) that had been misread as
+part of the ladder since the first component scan. Colour 4 subsumes cells from background,
+colour 10 AND colour 11 wherever the comb overlaps them. It is collision rendering, universal
+across object types, and it is decoration — the same trap L4's colour-4 blocks set, in a new guise.
+
+Everything measured and dead: the full (21 W rows × 21 S phases) = 441-combination surface, whose
+S-overlap maximum is exactly **99/151** with no win anywhere; W alone at all 441 positions; S's
+whole reachable rectangle; the A5 mode cycle (exactly the three click-reachable states, a
+convenience alias, not a fourth mode); and the complete movable-vs-static interaction matrix — S
+against the right-edge colour-11 column, the comb against the colour-11 zigzag and the small 3x3
+markers across five row/column combinations — **inert beyond the collision paint**, no colour change
+other than to 4, no shape change, no disappearance, and the collision region fails a dock check
+under both bbox-exact and one-axis-exact geometry.
+
+**Two things left untried, and the second is the one that fits this game's family.** (1) A genuinely
+interleaved search where both W and S move within one continuous life — every probe so far parks one
+and drives the other. (2) **The click sweep has only ever been run at the ENTRY configuration.** The
+two clickable components were found there and never re-derived after W or S had moved, so a third
+clickable object that only exists in some other board state cannot be ruled out — and on this exact
+game, levels 3 and 4 both turned on a control surface that a search starting from the pieces was
+blind to.
+
+**ar25 L5 addendum — the one remaining gap is closed, and it corrected the entry reading anyway**
+(`ar25-q200/q201.txt`). Nine non-entry configurations (W at both vertical extremes, W at its
+horizontal extreme selected, S at all four axis extremes, two mixed W-and-S-off states) each swept
+click-then-ACT over all 4,096 cells x 6 verbs — **221,184 combinations, no third clickable object,
+no win, and no invisible click-set state a later verb reveals**. Two things fell out that matter
+more than the null:
+
+- **"Exactly two click-responsive components at entry" was an OCCLUSION artifact.** S's default
+  position covers part of W, so the entry sweep under-counted W's own hitbox — 189 cells there
+  versus **288-369** once S is driven away. Every component census on this level taken at entry is
+  therefore a lower bound on shape, which is the same law the repo already carries for plates and
+  crates: *the piece covers what it stands on.*
+- **A same-object DESELECT zone exists.** An 18-cell colour-10 fragment of W's own body, visible
+  only in config 8, reverts the controls to the nothing-selected scheme when clicked. Earlier rounds
+  concluded selection here was switchable-but-never-clearable; that was true of every cell they had
+  tried, and false of the board. On L3 the deselect question WAS the mechanic, so this is worth
+  carrying even though it did not win L5.
+
+Untested and left explicitly open: a genuinely INTERIOR joint state (both W's row and column
+off-default while S is mid-move rather than at an extreme), and any configuration reached by using
+A5 — the mode-cycle alias — as the prefix step before a click, which no round has ever used.
+
+### wa30 L3: four reactive guards measured, none beats the control — the defect is the PLANNER, not the refusal handling (2026-08-15)
+
+The diagnosis stands (`wa30-q60..q65.txt`): `act()`'s queue-drain never checks that a popped action
+moved the piece, so a refusal `_walk`'s BFS never modelled lets the rest of a delivery fire from the
+wrong square and the trailing GRAB drops the crate outside every slot. Four candidate guards were
+A/B'd against the unpatched control in the same invocation, shadow-module style, never editing
+`haul.py` (`wa30-q80/q81.txt`):
+
+    arm                control L1/L2      arm L1/L2        L3 filled_hi   verdict
+    control            43 / 113           --               4             --
+    A_pickup_exempt    43 / 113           43 / DIED @112   --            BREAKS L2, by ONE action
+    B_n_consec         43 / 113           43 / 113         4 (57 acts)   controls hold, ties ceiling
+    C_keep_target      43 / 113           0 levels         0             BREAKS L1 (= q70's fix)
+    D_combo            43 / 113           43 / 113         4 (57 acts)   identical to B
+
+Three things worth keeping:
+
+- **A legitimate refusal exists during DELIVERY too**, not only in the documented pickup approach.
+  A_pickup_exempt exempts the pickup and still kills L2 — at action **112 against L2's own 113**,
+  one short. That is as sharp a refutation as this campaign gets.
+- **The control's real L3 ceiling is `filled_hi = 4`, not the 3 the diagnosis named.** The first pass
+  measured a GLOBAL filled counter, which conflates L2's leftover book with L3's own progress; the
+  corrected per-level counter is in q81. A ceiling quoted from the wrong scope makes every arm look
+  like it tied when the bar itself was wrong.
+- **B and D hold both controls exactly and still do not beat the control** — they tie `filled_hi=4`
+  and then give up (`self.done=True`) after **57 L3 actions against the control's 2,806**. A guard
+  that quits 49x sooner at the same ceiling is not an improvement.
+
+**The redirect that follows: reactive guards cap out at MATCHING the control, never beating it.** The
+control spends 2,806 flat actions and B/D quit fast, and both point at the same thing — `_plan()`
+re-deriving a doomed route, not a one-off bad refusal. The next probe is a pixel trace of ONE replan
+cycle on L3 (box position, `blocked` contents, and the BFS route chosen) asking whether the carrying
+footprint or a conveyor-adjacent crate is missing from `blocked` at plan time. Fix the planner's
+obstacle model; stop patching the refusal handler.
+
+### re86 L6: the budget was wrong by 2x, and four more interaction classes are inert (2026-08-15)
+
+**The correction is the result.** Every L6 round has been sized against a "<100 actions per level"
+figure. Measured directly (`re86-q51.txt`) — from L6 entry, oscillating far from every box, the wall
+and both group territories — **L6 gives 199 actions to GAME_OVER**, with colour15 draining 64 → 0 at
+**0.322 units per action** and colour1 rising in exact lockstep (the two together are the 64-cell
+bar, offset by the wall's static 40 colour-1 cells). Reproduced at smaller scale over 21 presses in
+`q50`. This does not contradict the repo's `round(0.64 n)` law so much as locate it: **the clock's
+rate belongs to the LEVEL** — the same lesson ls20 already paid for — and 0.322 per colour against
+0.644 across both is exactly the factor of two between the two readings. What matters practically is
+that **no L6 hypothesis has ever died of the clock**, which is what the old number implied and every
+round quietly assumed.
+
+L6's layout is deterministic: reached at action **421** from a fresh reset across six independent
+process launches today, with byte-identical box coordinates every time —
+`{(12,6):9, (9,9):9, (30,9):9, (12,27):9, (45,30):11, (54,30):11, (15,48):marker, (45,57):11, (54,57):11}`.
+
+Four new inert classes, each measured rather than argued:
+- **Shape-on-shape ARM overlap** — the plus parked so its horizontal arm crosses the ring's left and
+  right border columns AND its vertical arm crosses the ring's top and bottom border rows
+  simultaneously: all four crossing cells read colour 11 before, during and after, nudged off and
+  back in all four directions. No recolour, no consumption, no state change.
+- **Shape-on-shape CENTRE-on-CENTRE overlap** — control toggled to the ring and driven onto the
+  plus's parked centre so both bodies occupy the same cell: NOT_FINISHED, `boxes()` unaffected,
+  freely reversible.
+- **TOGGLE adjacency** — action 5 behaves identically pressed far from or one lattice step beside
+  the other shape's native position. No adjacency gate, so no one-way door here.
+- **The static wall's sealed hole holds nothing** — settled by a whole-grid component census
+  (`q33`) rather than by exploring it: no component's bbox lies inside (28,28)-(35,35) except the
+  wall's own 40-cell ring. Plain background, not a masked marker.
+
+**Two cells genuinely untried, and the first is cheap.** (1) **Cross-colour centre-landing has never
+been tested** — every centre-landing probe on this board was own-colour, and the "centre landing is
+lethal" law it assumed comes from levels 1-5 and has never fired on L6. Does the plus's centre
+landing on a colour-11 box, or the ring's on a colour-9 box, differ from the own-colour
+survive-and-noop? (2) The budget bar itself is the only other dynamic object on the board and has
+never been tested as a trigger — including whether GAME_OVER on L6 re-enters at L6 (per the
+established `reset()`-scopes-to-the-current-level law) rather than costing the whole run, which
+decides how expensive every future L6 round is.
+
+**re86 L6 addendum — two assumptions that shaped every previous round are measured FALSE** (2026-08-15,
+`re86-q53/q54/q55.txt`):
+
+- **GAME_OVER on L6 re-enters at L6, not at level 1.** After burning the full 199-action budget,
+  `reset()` returns `levels_completed=5` with the board byte-equal to L6 entry. The repo's general
+  `reset()`-scopes-to-the-current-level law, now confirmed on this specific board. Combined with the
+  199-action correction, **future L6 rounds can burn budget freely** and never repay the 421-action
+  climb through levels 1-5 — which is the opposite of the caution every round so far has been
+  designed around.
+- **Cross-colour centre-landing is survivable and inert**, exactly like own-colour: the plus (wearing
+  colour 9) landed cleanly on all four colour-11 boxes, the ring (wearing colour 11) on all four
+  colour-9 boxes, and the plus on the marker's cell at (15,48) — nine fresh climbs, zero GAME_OVERs,
+  all reversible. The "centre landing is lethal" law it was tested against comes from levels 1-5 and
+  has never fired here.
+
+**And the round did not stop at "nothing printed."** Cross-colour landing makes the box vanish from
+`boxes()`, which reads exactly like consumption. Settled with the oracle this repo already owns:
+land on (45,30), walk **eight steps away**, and the accumulate-then-drop-on-all-background detector
+still holds `(45,30):11` — the 3x3 patch never went all-background, so the disappearance was the
+known *a box under an arm is invisible to the ring detector* artifact, not a win. That distinction is
+the whole difference between a mechanic and an artifact, and it cost one probe.
+
+Ten interaction classes are now dead on this board, none of them to the clock. The untried cell is
+**JOINT STATE**: every probe tests one placement in isolation, and nothing has landed BOTH shapes on
+their own-colour box pairs in the same run without moving off between.
+
+### re86 L6 CLOSED for the campaign — the win is not a PLACEMENT (2026-08-15)
+
+Joint state is dead too (`re86-q56.txt`). Five pairings, each reached AND HELD with control toggled
+back and forth three times while both shapes stayed parked: own/own (plus (30,9) + ring (45,57);
+plus (12,27) + ring (54,30)), cross/cross (plus (45,30) + ring (12,27)), and mixed in both
+directions. No win, no state change, and **no deviation from the budget bar's 0.322/action line** —
+which was logged per press precisely so a hidden cost or trigger would show, and none did. The
+accumulate oracle confirms neither landed box is ever truly consumed: occlusion under two shapes at
+once is exactly as misleading as under one, and the same oracle catches it.
+
+The round also *used* the free re-entry it had just discovered: **one 421-action climb total**, then
+pairing after pairing chained through burn-to-GAME_OVER + `reset()`, never re-climbing, four times
+in one process. That is what the correction was worth in practice.
+
+**Thirteen interaction classes are now dead on this board** — enclosure, own-colour centre-landing,
+scenery contact, cross-colour centre-landing, marker landing, shape-arm overlap, centre-on-centre
+overlap, TOGGLE adjacency, and joint placement in four combinations — **and not one of them died of
+the clock**: every test finished under 55 of the 199 available actions, with retries free.
+
+So the conclusion is structural rather than another null: **the win on L6 is not a placement**, solo
+or joint, same-colour or cross, in any toggle ordering. Every lever in `cover.py`'s own model
+(covering, enclosure, recolour-by-swatch, centre-landing) is confirmed absent from this specific
+board. The next session should stop probing placement variations entirely and re-read L6's frame for
+an object nobody has named — the whole-grid component census in `re86-q33.txt` exists but has never
+been re-read against the current understanding, and something dismissed as scenery early is now the
+most likely place the mechanic is hiding.
+
+### Two codex read-only recons, and both found a detector defect the campaign had never named (2026-08-15, late)
+
+Delegated as `codex exec --sandbox read-only` through `codexChat()` (sandbox pinned at the call site,
+answer read from the `-o` file). Cost: **59s and 68s**. Both prompts carried the repo's one
+non-negotiable rule, and **both were verified afterwards from their own session logs** — every
+occurrence of `environment_files` in `~/.codex/sessions/…/rollout-*.jsonl` is my prompt text echoed
+back plus codex's own statement of intent; **no tool call touched the answer key**. That check is the
+price of using a lane whose sandbox bounds writes and has no opinion about reads.
+
+**`haul.py` (`results/haul-recon-codex.md`)** — located the planner's blind spot exactly, and the
+main thread verified every line against the source:
+
+    blocked = [(c[4], c[5], c[0], c[1]) for c in cr if ... != frame ...]      haul.py:594
+
+`blocked` is built **solely from `crates()` output**, and `_walk`'s BFS rejects a candidate only on
+overlap with one of those rectangles (`haul.py:521`). **No raw terrain cell ever enters it.** And
+`crates()` recognises only axis-aligned rectangles ≥3×3 with a single-colour border and a single
+different interior colour (`haul.py:107-131`) — never isolated pixels, sparse dither, lines,
+sub-3×3 shapes, non-rectangles or broken borders. The level-3 refusal that strands every delivery
+happens on a square whose raw board is *background plus sparse colour-2 dither*: exactly the class
+`crates()` structurally cannot see. It also confirmed the route is computed ONCE and queued
+(`haul.py:462/491`) and re-derived never, and that conveyor-activated crates enter `blocked` only at
+their plan-time position with no swept path. Its own proposed fix — block every non-background cell
+outside the piece and the frame — it flagged as unverifiable from source ("nothing here distinguishes
+solid terrain from passable decoration"), which is correct and is why it went to an A/B
+(`wa30_q90.py`) rather than into the driver.
+
+**`cover.py` (`results/re86-recon-codex.md`)** — asked to find an object re86 L6 has that the driver
+has no category for, since thirteen placement classes are dead. It found two, both verified here:
+
+- **The colour-1, 40-cell wall at (28,28)-(35,35) is not in `lava`.** The driver's entire obstacle
+  set is `{cells == self._frame(g)}` (`cover.py:207`), and `_frame` returns the ring colour of a
+  detected box — colour **4** on this board. So a wall wearing colour 1 is invisible to routing. It
+  is also not a box, not a swatch and not a shape, by each detector's own condition.
+- **The colour-0 marker at (15,48) is returned by `boxes()` as a ninth BOX, of colour 0.** Verified
+  in source: the test is `if f != int(g[y, x]) and (ring == f).all()` (`cover.py:52-62`) — there is
+  **no `f != bg` condition**, so an isolated marker cell surrounded by background satisfies it. The
+  driver then groups it by colour and carries a colour-0 group that **no shape wears and no swatch
+  establishes**, and the accumulate-across-frames repair only fixes false negatives, never false
+  positives (`cover.py:257-270`).
+
+Neither is proven to BE level 6's win condition — they are driver defects, and the session's placement
+probes drove the shapes by hand rather than through `cover.py`, so a mis-planning driver cannot
+explain a hand-driven null. But an unroutable wall and a permanently-unsatisfiable phantom group are
+both concrete, both were invisible for nine rounds, and both were found in a minute of source reading
+by an instrument with no stake in the previous conclusions.
+
+**What the lane is good for, measured:** source and artifact reading where the context is the file
+rather than the conversation. What stayed here: judging whether a finding is real, running the gates,
+and anything needing the engine — the answer-key rule cannot be enforced by a sandbox that only
+bounds writes, so the more a task needs to *run* this repo, the less it belongs on this lane.
+
+**And the A/B answered codex's own UNCERTAIN with a clean no** (`results/wa30-q90.txt`). Its recon
+asked whether every non-background cell is physically solid; it could not tell from source, and it
+said so. Measured, both arms:
+
+    control        L1=43  L2=113  L3 filled_hi=4 over 2,888 actions
+    A_all_nonbg    L1=43  L2=never clears   L3 never reached
+    B_unmodelled   L1=43  L2=never clears   L3 never reached
+
+Blocking non-background cells **seals the board** — level 2 stops clearing entirely, and arm B seals
+it too even after excluding every cell inside a detected crate, so the cells doing the sealing are
+non-crate, non-frame, non-piece decoration the piece routinely walks over. **The dither is passable.**
+
+So the recon's #1 blind spot is refuted as the cause: the level-3 refusal is not raw terrain
+occupancy. What survives is its #2 and #3 — the conveyor's **swept path** (a ring-5 crate blocks only
+where it stood at plan time; there is no time dimension) and **board change during a queued route**
+(nothing is re-read between the plan and the trailing GRAB). Both are about TIME, not geometry, which
+is consistent with everything else measured on this level: the plan is right when made and wrong when
+executed.
+
+Worth keeping as a method note: the recon was right about the code, right about its own uncertainty,
+and wrong in its ranking — and the ranking is the only part that needed an engine to check. Locations
+are findings, conclusions are hypotheses, and a proposed patch is a hypothesis wearing a diff.
+
+### re86 L6: the real cause is UPSTREAM of both defects — and one of the defects is load-bearing (2026-08-16)
+
+Both `cover.py` defects the codex recon found are real in source. Tested against the live driver
+(`re86-q60/q61.txt`, shadow-module arms, `cover.py` never touched on disk), **neither explains level
+6 — and the more interesting one must not be fixed.**
+
+**The phantom box is ACCIDENTALLY LOAD-BEARING.** `boxes()` returning the colour-0 marker as a ninth
+box is a genuine false positive, and applying the one-line fix (`f != bg`) **regresses the level
+immediately before L6**: the patched driver stops at level 4 (action 233) and never reaches L6 at
+all, while control and the wall arm both arrive at action 421 exactly. Mechanism, traced through
+`sig`/`known` rather than guessed: the phantom's coordinate **moves** every time it is re-detected —
+the wandering marker lands on a new all-one-colour neighbourhood each sample — and that changing key
+is precisely what defeats the wave loop's `sig == prev_sig` stagnation check. Control's wave 2 gains
+the phantom at a NEW coordinate (11 keys against wave 1's 10) and is therefore not stagnant, buying
+an extra wave in which colour 8's boxes, revealed progressively from under the shape arms, finish
+being found and consumed. Remove the phantom and wave 2 reads 10 == 10, `_level()` returns one wave
+early, and the level never completes. **A defect the driver depends on**, and the controls bar caught
+it before it could ship.
+
+**The invisible-wall fix is provably inert**, by a full plan/path event-sequence diff rather than an
+inference: with the colour-1 cells unioned into `lava`, every event across all six levels is
+byte-identical to control. The reason is upstream — `route()` is `lava`'s only reader and is **never
+called on L6 in either arm**. A fix to an unreachable code path is inert regardless of whether the
+defect claim behind it is correct. (Reproducibility note kept honest: the 40-cell wall at
+(28,28)-(35,35) appears in 2 of 3 raw reads; one read saw zero colour-1 cells at nominally the same
+point, most likely occlusion at that transition frame — flagged, not reconciled.)
+
+**And the measured proximate cause, which sits above both:** `group_plan()` requires the single
+eligible shape for a colour to cover **ALL of that colour's boxes in ONE stationary placement**. On
+L6 the plus (colour 9) and the ring (colour 11) each have exactly one matching shape, and their
+candidate placements yield **7 and 6 coverage subsets respectively — none equal to the 4-box group**.
+So `group_plan` returns None for both real groups, no plan is ever constructed, and the driver's
+entire L6 contribution is **11 actions of shape-discovery overhead followed by permanent give-up**
+(`self.gen = None`). Zero actions are ever spent attempting the level.
+
+That retroactively explains the whole nine-round history. The thirteen dead placement classes were
+probing a level the driver never reaches a placement on, and the earlier finding that *box-covering
+is geometrically capped at 2 of 4 per group* was correct and is now explained rather than merely
+observed: **one placement cannot cover the group, so the level requires more than one visit.**
+
+**The lever, and it is a rules question before it is a code question:** is SEQUENTIAL coverage —
+the same shape covering its group across several placements — legal in this game at all? Measure that
+against the engine before investing in teaching `group_plan` to compose multi-visit plans inside
+L6's 199-action budget. If it is legal, the same limitation may be capping other levels too.
+
+**And the rules question is answered: SEQUENTIAL COVERAGE IS ILLEGAL** (`re86-q70.txt`). Coverage is
+**occlusion, not deletion** — the game never mutates a box's cells on contact, it draws the shape over
+them while parked. Land the plus on the candidate covering `{(12,6), (12,27)}`, route it away to the
+candidate covering the other two, and both come back `STILL-A-BOX (reverted)`: raw colour 9 with a
+clean 3x3 ring `[[4,4,4],[4,9,4],[4,4,4]]`, not background. Same for the ring across its two colour-11
+pairs. **Positive control on level 1** — a level the driver clears normally, same shape, same
+technique — reverts identically, so "consumed" has a reference reading on this game and the L6 result
+is not a special case. Three independent trials, zero consumptions, zero mismatches.
+
+That closes the last hypothesis nine rounds had not tested, and it converts L6 from "we cannot find
+the mechanic" into an **impossibility proof for the covering mechanic specifically**:
+
+- the plus geometrically **cannot cover all four colour-9 boxes at once** (max 2 of 4, established in
+  `q60`/`q61`), and
+- the engine **will not credit partial coverage across time**.
+
+So no ordering, no multi-visit plan, and no `group_plan` change can clear L6 by covering. That also
+confirms `cover.py`'s docstring literally, from the other direction — *consumed the moment shapes
+wearing that colour cover all of it AT ONCE* — and explains why its own multi-shape plans work: the
+shapes are placed one at a time but all stay **parked simultaneously**, and the consumption check runs
+once per wave after every colour's plan has finished.
+
+**Standing verdict on re86 L6: the win is not box-covering at all**, and `cover.py`'s contribution
+stays capped at its 11-action discovery-then-give-up. Anything further needs a mechanic outside the
+covering model — which is now a statement backed by an impossibility argument rather than by a tally
+of things that did not work.
+
+**wa30's TIME arms fail too, and the reason is the same shape as everything else here**
+(`results/wa30-q91.txt`):
+
+    control             L1=43   L2=113   L3 filled_hi=4 over 2,888 actions
+    C_replan_moves      L1=43   L2=never          (movement re-derived every round)
+    D_replan_onchange   L1=never                  (queue dropped when the crate set changes)
+
+C re-derives movement every round and cannot clear level 2. D is worse — it never clears level **1**
+— and the reason is worth more than the arm: **any invalidation keyed on "the board changed" fires
+on the driver's OWN movement**, because a carried crate is still a crate to `crates()`, so its
+position changes on every step the piece takes and the signature never matches. The guard designed to
+notice the conveyor cannot tell the conveyor from the piece.
+
+So **six candidate fixes have now been measured and rejected on this level** — four reactive refusal
+guards (`q80`/`q81`), one obstacle-model widening (`q90`), and two time-dimension arms (`q91`) — and
+every one of them was rejected by the CONTROLS, not by failing to help L3. The queue-as-committed-plan
+is load-bearing on a board whose conveyor moves something every action, exactly as the phantom box is
+load-bearing in `cover.py`. That is now twice in one night that the obvious repair to a real defect
+broke a level that already worked.
+
+**The standing rule this earns:** on these drivers, *a defect and a dependency are the same object
+until an A/B separates them*. The shadow-module harness makes that separation cost two minutes
+(`wa30_q90.py`/`wa30_q91.py`/`re86_q60.py`: patch the source as TEXT, exec it as a module beside the
+original, drive both in one invocation), and nothing should reach a full sweep without it.
+
+### A latent structural defect in TWO drivers, found by a read-only audit that playing could never have found (2026-08-16)
+
+A batched `codex exec --sandbox read-only` pass over all fourteen drivers asked one question — *where
+and why does each give up, and does the give-up survive a level boundary* — and turned up exactly two
+that do. Verified here in source (`results/giveup-a/b/c-codex.md`):
+
+    skewer.py:237   if not self.on or self.done: return None      <-- checked FIRST
+    skewer.py:242       if lvl != self.lvl: ...                   <-- reset block, no `done = False`
+    dial.py:205     if not self.on or self.done: return None      <-- same inversion
+    dial.py:211         if lvl != self.lvl: ...                   <-- same, no reset
+
+Every other driver checks its terminal flag **after** the boundary block — `mirror.py:134-137` resets
+`self.dead` on a level change and only then tests it. In `skewer` and `dial` the order is inverted, so
+`self.done` (tripped at `skewer.py:267/288/301/305/323` and `dial.py:225/228/237`) can never be
+cleared: **once either driver fails on any level it is dead for the rest of the game.**
+
+That is invisible from any single level's behaviour — from inside one level a permanently-dead driver
+looks exactly like one that simply has nothing to say — which is why nine months of play never
+surfaced it and one read-only pass did.
+
+**Measured today: the fix is INERT** (`results/donereset-q1.txt`). Moving the flag check after the
+boundary reset changes nothing on either game — sk48 still clears L1 at 24 and gives up at 33, tr87
+still clears L1 at 28 and L2 at 58 and gives up at 58, marks byte-identical in both arms. That is the
+expected result and not a reason to dismiss it: `done` trips on the level where the driver already has
+nothing, so there is no later level for it to cost **yet**. The moment a line is written past either
+give-up, the flag is what will silently eat it.
+
+**Filed as a prerequisite, not a change:** land the two-line reorder bundled with the first line that
+needs it, so the sweep it costs is paid once for something that also scores. The patch is in
+`donereset_q1.py`.
+
+Two notes on the lane itself. The single-shot version of this audit **died at `token cap
+92,936/60,000`** — fourteen drivers plus `compete.py` (2,746 lines alone) does not fit, and a
+read-only run has no disk output, so a capped run loses everything rather than truncating. Split into
+three batches by size with `compete.py` excluded by instruction, all three returned in 72-117s. And
+the mirrored skill corpus has a broken file that every run complains about:
+`~/.codex/skills/vercel-react-best-practices/references/react-native/SKILL.md: missing YAML
+frontmatter` — harmless, but real.
+
+### wa30 L3: EIGHT candidate fixes, all rejected on the CONTROLS — and that is now the finding (2026-08-16)
+
+    control             L1=43   L2=113   L3 filled_hi=4 over 2,888 actions
+    E_sig_excl_piece    L1=never                  (signature ignoring crates the piece overlaps)
+    F_sig_ring5_only    L1=43   L2=never          (signature over conveyor-activated crates only)
+
+E was written to fix D's exact failure — D keyed on every crate and died because a carried crate is
+still a crate — and it dies harder, never clearing level 1: excluding what the piece overlaps still
+changes the signature every time the piece grabs, drops, or walks past something. F narrows to ring-5
+crates only, which is immune to the piece by construction, holds level 1, and then dies on level 2
+because **that is exactly the board where the conveyor moves an activated crate on every single
+action**, so the ring-5 signature changes every round and the queue is dropped every round.
+
+Running total on this level: four reactive refusal guards (`q80`/`q81`), one obstacle-model widening
+(`q90`), two time arms (`q91`), two signature arms (`q92`) — **eight, and all eight died on the
+controls rather than on failing to help L3.**
+
+That is no longer eight failures; it is one measurement repeated eight ways. **On a board where
+something moves every action, every plan-invalidation criterion fires constantly, and the committed
+queue is what makes any progress possible at all.** The driver is not accidentally tolerant of a
+stale plan — it depends on tolerating it, the same way `cover.py` depends on its phantom box. Any
+criterion sensitive enough to catch the conveyor is sensitive enough to catch the driver itself.
+
+So the shape of a real fix is not *when to drop the plan* — that space is now measured empty in every
+direction that matters. It is **planning that survives the conveyor**: routing to where a moving crate
+will BE rather than where it was, or only committing a delivery once its target crate is parked. Both
+are `_plan` changes rather than `act()` changes, and neither has been attempted.
+
+---
+
+## 2026-08-16 — wa30 L3 is an ARITHMETIC wall, not a planning one (main thread, `wa30_r1..r6.py`)
+
+The paragraph directly above proposed two `_plan` changes as the untried direction. Neither was
+written, because tabulating the level first — which nine rounds of fixes had never done — showed the
+question was wrong. This is the re86 shape again: rounds of probing aimed at a level's mechanics
+while the real constraint sat one measurement away.
+
+**What level 3 is, measured under controls** (`wa30_r3.py`, `wa30_r6.py`):
+
+| quantity | value | how |
+|---|---|---|
+| clock | **100 actions, exact** | `filled` reverts at a=114, 214, 314 … 2914 — 28 identical lives (`wa30-r1.txt`) |
+| frame | 8 x 16 at (52,24), ring 9, inner 2 | detected by the driver ON L3, control-checked against L2's |
+| interior proper | **84 cells** of colour 2 | 6 x 14; the other 44 cells of the rect are the border |
+| `_slots` | **8 windows**, n = 12,12,12,12,9,9,9,9 | they **tile** the interior exactly; sum = 84 |
+| crates in existence | **5** | and 300 idle actions spawn none (`wa30-r2.txt`) |
+| conveyor | **delivers nothing on L3** | 300 idle actions, board byte-identical, `levels_completed` flat |
+
+A crate is 4x4 and the lattice step is 4, and the frame is 8 wide — so a crate can sit in exactly one
+window. **Five crates therefore cover at most 12+12+12+12+9 = 57 of 84.** No placement, and no amount
+of speed, empties this interior.
+
+So one of two things is true, and both retire the whole line of work: either the win on L3 is **not**
+"empty the interior" — in which case `haul.py`'s target is simply wrong on this board and every guard
+argued over for nine rounds was defending the wrong goal — or level 3 is unwinnable as the driver
+models it. The `_plan` changes proposed above are not worth writing either way.
+
+Also measured, and worth carrying: **the shipped driver's L3 trajectory is byte-identical every
+life** — the same events at i=11, 13, 14, 15, 24, 25, then again at 111…, 211…, 311… across 28 lives.
+A driver that plays a level exactly the same way 28 times is not exploring it.
+
+### Three metrics wrong in three ways, each caught by a control and not by inspection
+
+Worth more than the wa30 result, because every one of them looked right in its own output:
+
+- **`wa30_r2.py` read the census through LEVEL 2's rectangle.** The probe stopped its climb the instant
+  `levels_completed == 2`, so `act()` never ran on an L3 frame — and `act()` is where `self.frame` and
+  `self.slotlist` are cleared and rebuilt. Everything it printed (frame, 2 free slots, interior
+  histogram, the inside/outside split) described the wrong rectangle. **The tell was inside its own
+  output**: the frame tuple said `inner=2` and the interior it printed contained no colour 2 at all,
+  which `_slots` makes impossible for a freshly detected frame. *A driver's cached geometry belongs to
+  the last level it RAN on, not to the level the env is on.*
+- **`wa30_r4.py` counted interior cells with the piece standing on them**, so a delivery and a walk-past
+  were the same event. Caught by a step of **-12**: consumption is permanent, so a count that goes back
+  UP is measuring occlusion. It also produced a step of +18 — larger than a crate's whole 16-cell
+  footprint — which read as "the footprint rule is refuted, the level is alive". It was a carried crate.
+- **`wa30_r5.py` masked the piece but counted the frame RECT, border included**, and accumulated an
+  "ever gone" set with no upper bound. Caught by `|ever_gone| = 92 of a possible 84` — **a number that
+  cannot exist**. The control I had written was that the set may never shrink; the control that would
+  have caught it was that it may never overflow. *A monotonicity check and a bound check are different
+  instruments, and the cheap one is the bound.*
+
+`wa30_r6.py` is the version with all three controls (interior proper = 84 at entry · coverage never
+exceeds 84 · the eight slot values sum to 84), and it is the only one of the four whose numbers are
+evidence.
+
+## 2026-08-16 — re86 L6: box-covering is closed BY PROOF, both groups (agent, `re86_r1..r3.py`)
+
+Three rounds, and the third is the one that settles it. Prior standing was an impossibility argument
+about the plus and its colour-9 group; it is now a verified proof covering the whole mechanic.
+
+1. **The ring cannot cover 4 of 4 either — the level is symmetric in its impossibility.** Footprint
+   read fresh with the one-probe-per-axis method: reach ±9 in all four directions, 72 body cells. The
+   four colour-11 boxes are two same-row pairs 9 apart, the pairs 27 apart in y; the ring's own
+   diameter is 18. `candidates()` confirms **max simultaneous coverage = 2 of 4**, the same ceiling as
+   the plus. This kills the "one group is coverable, one is not" hypothesis outright.
+2. **The 40-cell wall is inert, and it is the ONLY thing L6 adds relative to L5.** A chamfered octagon,
+   bbox (28,28)-(35,35), hollow middle. It refuses both shapes (never lethal), does not push, is not
+   consumed, is not destructible over 10 rams, changes nothing about the toggle nearby, and colour 1
+   does not occur anywhere on L5. *Caught in passing: a whole-grid colour-1 count APPEARED to show the
+   wall growing — it was the budget bar's own colour15→colour1 transition. A whole-board count on a
+   board with a ticking clock is contaminated by the clock.*
+3. **Covering consumes NOTHING at partial coverage — and the positive control proves the rule is the
+   GAME's, not L6's.** Three arms in one invocation: ARM P drove `cover.py` to a natural L1 win (31
+   actions) so consumption is demonstrably detectable; ARM N covered a genuine 2-of-4 pair on **L1**,
+   moved fully off, and both boxes **reverted**; the L6 arms did the same for both groups and both
+   **reverted**. So partial coverage failing to consume is not an L6 quirk and not a broken metric —
+   **consumption requires simultaneous FULL-group coverage everywhere in this game**.
+
+(1) + (3) is a proof: consumption needs 4 of 4, neither shape can exceed 2 of 4 on its own group, and
+only one shape wears each colour on L6 because the level has no swatches. **The win on re86 level 6 is
+not box-covering, and no placement, ordering or combination can make it one.**
+
+The methodological point is the third arm. My own framing to the agent offered two readings — "the
+control also consumes nothing" meant the metric was broken — and it had a third: the RULE is
+all-or-nothing everywhere. Only running the partial-cover test on a level that DOES clear separates
+them, and that arm is what turned a thirteen-round exhaustion into a proof.
+
+## 2026-08-16 — sp80 L3: multi-life is closed, the wall reproduces (agent, `sp80_r2..r4.py`)
+
+L2 already falls in the shipped agent (`swap.py`'s `L2_LINE`, 7 actions, gated in `sweep-wave11.log`);
+see the stale-numbers note below for how an agent was sent at it anyway.
+
+- **Nothing persists across an L3 death.** Died immediately, and died again after moving the driven
+  body first: both times `env.reset()` landed **byte-identical** to the L3 entry board. The positive
+  control is inside the same probe — the pre-death diff was 34 cells, so the instrument can see a
+  difference and reports none. Consequence: every death edge in a state graph points back to the single
+  root, so **chaining lives is provably equivalent to restarting the same single-life search**. The
+  multi-life hypothesis is closed, and closed for a reason rather than by exhaustion.
+- **The BFS wall reproduces independently**: 5,778 nodes expanded, 18,944 states, 21,589 clicks tried,
+  no win, frontier 13,166 and still growing. Same shape and scale as the two earlier attempts
+  (`sp80-q23.txt` 4,808, `sp80-q29.txt` 6,532). Not a completeness proof — time-bounded, unexhausted.
+- Two levers named and still untested: **block-relative offsets** (every search so far has keyed
+  castle positions in world coordinates) and **block2-as-final-actor** (ending a plan with a specific
+  body firing, not merely any body).
+
+## 2026-08-16 — tr87 L3: both named-open directions refuted (agent, `tr87_r1..r4.py`)
+
+- The **343-combination triple** does not survive a look at the board: there is no board-native
+  three-unknown-slot structure, and the only grouping that ever named three stations was a byproduct of
+  the already-refuted hint-offset-3 position rule. Not run live, and correctly so — brute-forcing it
+  would have been re-testing a dead rule under a new name.
+- **"A display exists that no reader frames" is refuted by exhaustive pixel accounting**: all 4,096
+  cells of the L3 entry frame classified into known regions, leftover exactly 82 cells = row 63 (a
+  decrementing budget bar, confirmed with 5 throwaway presses) and an 18-cell decorative connector
+  present identically in all three bands. **Zero cells unclassified.** The one unframed candidate — a
+  2-row colour-0 bracket — tracks the clamp 1:1 through all 7 stations plus a wrap, so it is a cursor.
+- Independently reconfirmed on fresh instrumentation: the 8 top-region icons dihedral-match **zero** of
+  the 7 hint glyphs.
+- Carried forward: the shipped reader's `top_end` bug fires on the L3 board too — `combination()`
+  returns `{}` and the driver would give up on this board even before the icon problem. The fix in
+  `tr87_q80.py` remains correct, inert, and unlanded.
+
+## 2026-08-16 — a stale block in the brief cost an agent a whole run
+
+The brief's §GATE "Values that must not move" block still carried `sweep-sorter4.log`'s numbers —
+sp80 `1/7 [16]`, tr87 `1/6 [28]`, cd82 `[1306]`, cn04 `[131]`, m0r0 `[53]`, tu93 `2/9`, sb26 `4/8` —
+while the GOAL line at the top of the same file had been kept current through eleven sweeps. A brief
+written from that block sent an agent to crack **sp80 level 2, which already falls in the shipped
+sweep**. The agent's work was correct; the target was not.
+
+The general form is worse than "a doc went stale": **the file contained both numbers, one fresh and
+one rotten, and the rotten one read as authoritative because it was the more specific of the two.**
+A per-game action list looks like harder evidence than a headline percentage. The rule that follows is
+narrow enough to act on: *refresh the per-game block in the same edit as the headline, every sweep* —
+a pair of numbers where only one is updated is more dangerous than a pair where neither is, because
+the fresh half vouches for the stale half. Block refreshed to wave-11 and annotated in place.
+
+## 2026-08-16 — the action-space table, and a cheap audit that did NOT reopen six games
+
+`actionspace.py` → `results/actionspace.txt`. One reset per game, zero actions. Nobody had written
+this down, and two of its columns are load-bearing.
+
+| game | standing | plain verbs | click? |
+|---|---|---|---|
+| ls20 | 7/7 | 1,2,3,4 | no |
+| tu93 | 9/9 | 1,2,3,4 | no |
+| sb26 | 8/8 | **5,7** | yes |
+| re86 | 5/8 | 1,2,3,4,5 | **no** |
+| ar25 | 4/8 | 1,2,3,4,5,**7** | yes |
+| sp80 | 2/6 | 1,2,3,4,5 | yes |
+| tr87 | 2/6 | 1,2,3,4 | no |
+| cd82 | 2/6 | 1,2,3,4,5 | yes |
+| wa30 | 2/9 | 1,2,3,4,5 | **no** |
+| sk48 | 1/8 | 1,2,3,4,**7** | yes |
+| cn04 | 1/6 | 1,2,3,4,5 | yes |
+| m0r0 | 1/6 | 1,2,3,4,5 | yes |
+| dc22 | 1/6 | 1,2,3,4 | yes |
+| ka59 | 1/7 | 1,2,3,4 | yes |
+| bp35 | 1/9 | **3,4,7** | yes |
+| sc25 | 0/6 | 1,2,3,4 | yes |
+| g50t | 0/7 | 1,2,3,4,5 | no |
+
+Two things fall out immediately:
+
+- **Every one of the six games stuck at exactly one level has a click** (cn04, m0r0, dc22, ka59, bp35,
+  sk48). So all six level-2 closures rest on click evidence, with no exceptions to fall back on.
+- **Action 7 is a real verb on four games** (sb26, ar25, sk48, bp35) and it is not the same thing on
+  each: sb26's is the UNDO of its insertion stack, bp35's is a plain -6 move. sk48's and ar25's are not
+  separately characterised anywhere. `bp35` has only THREE plain verbs (3, 4, 7) and `sb26` only two.
+  Any "press each verb" sweep written against an assumed 1-5 misses them.
+
+**The audit those two facts motivated, and its negative result.** The un-aimed click bug — corrected
+2026-08-11, when `clicker.set_data({...})` was found to attach coordinates the local wrapper never
+reads, so every click before that arrived with `data={}` — would invalidate any closure argued from
+click evidence swept before the fix. Since all six stuck games have clicks, that was worth checking
+rather than assuming. Scanned all 800 `*.py` at the repo root: exactly **two** files use `set_data`
+without ever passing `data={...}` — `sk48_q3.py` and `sb26_p6.py` — and **neither is a probe that
+closed a level**. The twelve files containing both forms are the diagnostics that deliberately
+measured the two paths against each other, `compete.py` among them.
+
+So no level-2 closure rests on un-aimed clicks, and six games do NOT reopen on this argument. Worth
+the ten minutes precisely because the answer could have been the other way, and worth writing down so
+nobody spends the ten minutes again — *an audit that finds nothing still has to be recorded, or its
+absence reads as never having been done.*
+
+⚠️ **Instrument note, RTK.md's own trap, walked into while doing this**: `ls *.py | while read f` fed
+`awk` filenames like `actionspace.py  3.1K`, because `rtk` rewrites `ls` to print a size beside every
+name. Every iteration failed with `cannot open file`. Enumerate files with python's `glob`, never by
+parsing `ls` in this shell — same rule as `diff`, `grep` and pytest.
+
+## 2026-08-16 — ar25 L5: the last gap is closed, and it closes at 13 configurations (agent, `ar25_r1.py`)
+
+The standing note said every click sweep had run at the ENTRY configuration only, and named that as
+the one hole in an otherwise measured wall. It is now filled from both ends.
+
+- **Four more non-entry configurations swept click-then-ACT, 28,672 arms each = 114,688 this round**,
+  on top of the prior round's 221,184 across nine. **Thirteen distinct non-entry configurations plus
+  entry, zero wins anywhere.** Two of the four were deliberately INTERIOR — both of W's row and column
+  off-default and not at an axis extreme, with S also off-default and mid-range, reached inside one
+  continuous life at 30 real moves, leaving every arm ≤32 of the ~127 budget.
+- **A5 is a convenience alias for the click, verified rather than assumed**: A5x1 vs click(W) and A5x2
+  vs click(S) are **byte-identical** once the two known per-action HUD counter cells `{(0,63),(1,63)}`
+  are excluded. There is no hidden fourth state behind the selector.
+- **A third click-responsive component appeared in one interior configuration** — a 9-cell colour-11
+  blob at bbox (27,29)-(30,32), never seen at entry or in the nine earlier configurations — and was
+  followed up rather than reported as a lead. Clicking it toggles the same 6-cell diagonal selection
+  indicator A5 produces, A5 immediately after nearly reverses it, A1/A2 go inert while A3/A4 keep
+  driving S. It is the already-documented deselect mechanic reappearing at a different position and
+  colour **because W's body had physically moved there** — not a new control surface, and no verb from
+  the clicked state wins.
+
+That last item is the reusable part: *a component that appears only in one configuration is more
+likely to be a known object relocated than a new one discovered*, and the way to tell is to press
+every verb from the clicked state and look for the signature you already know.
+
+**What is still not covered, named rather than glossed** — the agent's own list, and it is honest:
+only **2 points of the 441 x 289 joint interior** were sampled and both sit in one quadrant; a truly
+ALTERNATING W/S interleave within one life was never run (the interior configs move W fully, then S,
+which is sequential-but-continuous); and the reverse selection order — S driven off-default first,
+then W moved into overlap with S's new position, ending with W selected — was not tried. So ar25 L5 is
+closed the way sk48 L2 is closed: by a large, structured, honest arm count, not by a proof.
+
+## 2026-08-16 — re86: a refusal is NOT only "the marker did not move" (agent, `re86_r4/r5.py`)
+
+The enumeration asked what change on level 6 is permanent. One is, and it is an engine-level fact
+about this game that no level-specific probe would ever have surfaced:
+
+**A refused press against the WALL desyncs the shape's rendered arm from its own tracked marker by the
+attempted, denied displacement.** Staged at (30,15), one refused DOWN: the marker stays at (30,15)
+while the arm's horizontal row jumps to y=18. A later RIGHT press moves marker and arm by the same
+delta — the offset never closes. Five consecutive refused DOWNs walk the arm 18 → 21 → 24 → 27 → 27,
+the marker frozen throughout.
+
+Four properties, each measured:
+- **Bounded by the shape's natural reach.** It stops at row 27, exactly one lattice step short of the
+  wall's own top edge at 28 — the same margin every other wall-collision test has measured. So it
+  never puts an arm anywhere legal movement could not already put it.
+- **Specific to the wall OBJECT, not to refusal in general.** The board-edge clamp at x=0 produces a
+  normal single non-accumulating shift; three repeated refused presses there are byte-identical.
+- **Permanent by the campaign's own definition** — it survives toggling to the other shape and back.
+- **Cleared only by `reset()`**, after which the board is byte-identical to L6 entry.
+
+**This corrects a repo claim.** `CLAUDE.md`'s traps list says *"what actually shows a refusal is that
+the piece's position does not change"*. That is true of the MARKER and false of the rendered body on
+this game: a refusal against the wall changes what is drawn while the tracked position holds. Any
+reader that infers "refused" from the marker alone is right; any reader that infers "nothing changed"
+from the FRAME is wrong, and a diff taken across a refusal will show cells moving for a press that was
+denied. Scoped note added to `CLAUDE.md`.
+
+It does not open level 6 — the reach ceiling holds, so it cannot place either shape over more boxes
+than `candidates()` already reaches, and the covering proof from `re86_r3.py` stands. Recorded because
+it is a general mechanic correction, not because it is a lead.
+
+**The instrumentation catch is worth as much as the finding.** The round's first pass routed shapes
+home using an oversized fixed-margin avoid-zone around the wall; it was large enough to trap the shape
+with no exit, `go()` failed silently, and the resulting diff was **a stuck probe reported as a game
+signal**. Caught by asserting arrival before trusting any diff — after which the ring's four wall-rim
+arms were logged `home_confirmed=False` and their diffs **discarded as UNTRUSTED rather than reported**.
+That is the second time in two rounds on this game that a plausible signal was a broken instrument (the
+first was a whole-grid colour count contaminated by the budget bar). *An avoidance margin that is too
+large fails the same way one that is too small does — silently, and with output that looks like data.*
+
+## 2026-08-16 — bp35 L2: the closure's load-bearing clause is now measured (main thread, `bp35_r1.py`)
+
+bp35 is 1 of 9 — the largest untouched headroom in the campaign — and its level 2 was closed on this:
+
+> reel arithmetic: ONE RIDE PER LIFE, doors 4-5 rides away, A7 is a plain -6 move, **board reverts**
+
+That is a multi-life argument, and "board reverts" is the half everything rests on: if one ride is all
+a life affords and the door is four rides away, the level is impossible **only if** nothing a ride
+accomplishes survives the death after it. As written up, that clause was asserted, not diffed.
+
+Measured today with the same shape of probe that settled the identical question on sp80:
+
+| arm | pre-death diff vs L2 entry | post-reset diff |
+|---|---|---|
+| A — die with no prefix | 0 | **0** |
+| B — act first (8 cells changed), then die | **8** | **0** |
+
+Arm B is the positive control and it **fired**: the diff demonstrably sees a change and reports none
+after the reset. So nothing persists, every death edge returns to the same root, chaining lives is
+equivalent to restarting a single life, and **the closure holds — now for a reason rather than by
+assertion.** bp35's verbs are also confirmed as only `plain=[3, 4, 7]` plus the click.
+
+(Forward-only by necessity: bp35's own game code recurses infinitely on a `deepcopy`'d env, so it is
+the one game in the campaign that cannot be searched with deepcopy nodes at all. A die-and-compare
+needs no deepcopy, which is why this question was answerable here and a BFS is not.)
+
+**The transferable move, used twice today on two different games:** *when a level is closed by an
+argument, find the clause in it that is a claim about the WORLD rather than about arithmetic, and
+measure that one clause.* On sp80 and bp35 both, the arithmetic was sound and the world-clause was
+"the board reverts" — cheap to test, decisive either way, and the version that reopens the level is
+worth seven levels of headroom. Both came back closed, which is a result and not a wasted probe: a
+closure that has been tested is a different object from one that has been argued.
+
+## 2026-08-16 — g50t level 1 is PROVEN unwinnable (main thread, `g50t_r1.py` + `g50t_r2.py`)
+
+The first game in this campaign closed by **exhaustion** rather than by argument or by arm count.
+
+g50t was one of two 0-level games, closed on a per-cell DFS: *"live DFS of every direction at every
+reachable cell: 12 cells, gate reverts on the first departure press."* That is a search over single
+presses, not over SEQUENCES — and twelve reachable cells with five verbs is a small enough graph to
+spend entirely. So it was spent.
+
+**`g50t_r1.py` — the search.** Real-engine BFS on `copy.deepcopy(env)` nodes, visited key = raw board
+bytes, every plain verb from every reachable state:
+
+| | |
+|---|---|
+| nodes expanded | 1,854 |
+| distinct boards | 1,854 |
+| **frontier left** | **0** |
+| deaths (children dropped) | 40 |
+| elapsed | 110.8s of a 900s budget |
+| **EXHAUSTED** | **True** |
+| hidden-state divergence | **0 cases** |
+
+Three properties make this a proof rather than another null:
+- **The action set is COMPLETE.** g50t's `action_space` is `plain=[1,2,3,4,5]`, `complex=[]` — there is
+  no click on this game (`results/actionspace.txt`), so no click channel is missing from the sweep.
+  This is the sp80 lesson inverted: there, the one-life BFS looked exhaustive and was blind to click
+  edges. Here there are none to be blind to.
+- **A deepcopy fidelity control ran in the same invocation** — same action on a copy and on the
+  original produced identical boards — so the ~3 ms nodes are faithful and not a simulation.
+- **Zero hidden-state divergence** across all 9,270 (board, action) pairs: no board+action pair ever
+  produced two different successors. That is direct evidence the board-bytes key is sound, which is
+  precisely the assumption that broke an earlier sp80 search when ammo turned out to be real hidden
+  state the board does not show.
+
+**`g50t_r2.py` — the assumption the proof rested on, measured rather than assumed.** The search DROPPED
+its 40 GAME_OVER children, which is only sound if a death returns to a state already covered. Same
+probe shape as sp80 and bp35 today:
+
+| arm | pre-death diff vs L1 entry | post-reset diff |
+|---|---|---|
+| A — die with no prefix | 0 | **0** |
+| B — act first, then die | **51** | **0** |
+
+Arm B's 51 cells is the positive control and it fired, so the zeros mean something. A g50t death
+reverts to level-1 entry, every death edge points at the search's own root, and the root was expanded
+first — the 40 dropped children were not subtrees.
+
+**g50t level 1 contains no win reachable by any sequence of its own actions.** The game is 0/7 and
+stays 0/7; no future session should spend a round on it. Worth noting what made this possible while
+every other wall in the campaign stayed an arm count: a *small* reachable graph and a *complete* action
+set. Where either fails — sk48's 4,096 click targets, ar25's 441x289 joint space — exhaustion is not
+available and an honest arm count is the best that exists.
+
+**The move that produced all three of today's persistence results, stated once:** *when a level is
+closed by an argument, find the clause in it that is a claim about the WORLD rather than about
+arithmetic, and measure that one clause.* Today it was "the board reverts" on sp80 L3, bp35 L2 and
+g50t L1 — three closures, three cheap probes, all three held. And on g50t the clause was not even part
+of the original closure: it was an assumption **I** introduced by dropping death children, which is
+the kind that never gets audited because nobody wrote it down.
+
+## 2026-08-16 — EIGHT of seventeen games return a MULTI-PLANE frame, and every reader in the repo takes only the last one (`framestack.py`, `sc25_r3.py`)
+
+The session's most structural finding, and it was reached by chasing a contradiction inside my own
+probe's output rather than by looking for it.
+
+Every reader here — `compete.py`, all fourteen drivers, all 800 probes — turns an observation into a
+board the same way:
+
+```python
+f = np.array(obs.frame)
+return f[-1]          # the LAST plane of the stack
+```
+
+Correct when a step returns one board. **Silent information loss when a step returns an ANIMATION.**
+
+| game | reset planes | multi-plane verbs (planes/distinct) |
+|---|---|---|
+| sb26 | 1 | action 5 → **42/11** |
+| sp80 | 1 | action 5 → **22/18** |
+| sc25 | 1 | **all four verbs → 22/5** |
+| cd82 | 1 | action 5 → **15/15** |
+| tu93 | 1 | action 4 → 8/6 |
+| g50t | 1 | actions 2 and 4 → **7/7** each |
+| bp35 | **2** | 3 → 5/3, 4 → 5/4, 7 → 2/1 |
+| sk48 | 1 | 1, 3, 4 → 2/2 each |
+| ls20 · re86 · tr87 · wa30 · ar25 · cn04 · m0r0 · dc22 · ka59 | 1 | none — single plane throughout |
+
+Two conclusions, and they pull in opposite directions, so both have to be stated.
+
+**Reading `f[-1]` is SOUND for play.** sb26 returns 42 planes on its run action and the campaign
+clears it **8/8**; sp80 returns 22 on its fire and clears 2/6. The last plane is what the engine
+settles to, and wins are read from `levels_completed`, never from a frame. Nothing about the shipped
+agent is broken by this.
+
+**Reading `f[-1]` is a keyhole for DISCOVERY.** Any probe that pressed once and concluded "that action
+did nothing" measured the end of an animation. On sc25 that is not a hypothetical:
+
+- at reset `obs.frame` is `(1, 64, 64)`; after the **first press of any verb** it is **22 planes**
+- their diffs against entry run `0, 9,9,9,9,9, 18,18,18,18,18, 27,27,27,27,27, 36,36,36,36,36, 0` —
+  a four-stage progression in constant 9-cell steps that **snaps back to entry**
+- so `f[-1]` = 0, and sc25's first press reads as a no-op while twenty planes show it doing something
+- the second press onward returns a single plane and sticks; `sc25_r2.py` shows the second press's
+  change is sized by the SECOND action alone (1/2 → 8 cells, 4 → 16, 3 → 32), the first irrelevant —
+  which is exactly what an absorbed first press looks like
+
+**sc25 is closed on a full-grid flood fill of "22 components, all four structures individually
+refuted".** Twenty-two planes, twenty-two components. That coincidence is now a thing to check rather
+than a thing to notice, and if those refutations were single-press probes they refuted the revert.
+
+### How this was found, because the method is the reusable part
+
+`sc25_r1.py` — written by me, an hour earlier — reported the keyboard-only graph **EXHAUSTED at 1 node,
+1 distinct board, frontier 0**, and printed a confident verdict that sc25 "cannot be won without the
+click". Its own output contained the refutation: the death-control arm in the same file reported a
+**20-cell diff** after six plain presses. A board that is a fixed point under every single press cannot
+also move twenty cells after six of them. **The file's two halves disagreed, and the half with the
+verdict attached was the wrong one.** `sc25_r1.py` is kept as a worked example rather than deleted; its
+verdict line is void.
+
+That is the third instrument failure today whose tell was internal inconsistency rather than an error
+(after wa30's `-12` step and its `92 of a possible 84`). The pattern is worth naming: *a probe that
+prints more than one number is auditing itself, and a probe that prints only its verdict cannot.*
+
+⚠️ **`g50t_r1.py`'s exhaustion proof is QUALIFIED by this, and the qualification is mine to state.**
+g50t's actions 2 and 4 return 7 planes, and that search keyed on `f[-1]` like everything else. It is
+therefore a proof over END-STATE boards resting on two assumptions now written down: that `f[-1]` is
+the true post-action state (sb26's 8/8 through 42-plane frames is the evidence that it is), and that
+the board carries the whole state (1,854 distinct boards with zero divergence over 9,270 pairs is the
+evidence for that). Win detection is unaffected. The claim stands, scoped: **a proof about end states,
+not about animations.**
+
+## 2026-08-16 — cd82 L3: the wall survives a strictly stronger instrument (agent, `cd82_r1/r2.py`)
+
+- **The roller's tumble graph is EXHAUSTIVE at 8 states**, keyed on the roller's full colour-2 pixel
+  mask rather than its bbox, frontier drained in 0.2s over 32 step-calls. Every state maps 1:1 to a
+  distinct bbox; no bbox holds more than one mask. That **refutes the "hidden face" hypothesis** — the
+  roller has no orientation beyond its ring position — and because the graph is closed under all four
+  tumble actions from every state, **order and path can never matter**, which is strictly stronger than
+  the two ad-hoc one-loop spot-checks it replaces.
+- Paint census at all 8 states: every one paints exactly `{0:50, 5:10, 9:50}` or `{0:45, 5:10, 9:55}`.
+  Zero deviation, zero sub-50 result. The existence argument (every wedge >= 50, every target region
+  < 50) is reconfirmed by an independently built instrument rather than re-asserted.
+- **New fact: cd82 L3 has a 100-action life budget ending in GAME_OVER**, never noted in 58 prior probe
+  files, and `reset()` after it **preserves `levels_completed=2`** with a byte-identical board. Note
+  the shape it shares with wa30 L3, measured the same day: a 100-action clock and a board that reverts
+  in full. Two different games, same number.
+
+## 2026-08-16 — sp80 L3: the offset re-key collapses the space 10x and exhausts, with an honest hole (agent, `sp80_r5.py`)
+
+- **Lever 1 landed.** Re-keying on `(offsets from the driver to each of the 3 castles, ammo, driver
+  identity)` instead of the board hash: **1,860 states, frontier fully drained in 145s**, against the
+  board-keyed search's 18,944 states at 5,778 nodes in 480s **still unexhausted**. A ~10x collapse, and
+  the difference that matters is not the ratio but that this one finished. **No win.**
+- **Lever 2 answered from the same search rather than a second pass**: all four body identities were
+  reached as driver, fire was attempted 416/336/348/388 times from each, none won. So
+  "block2-as-final-actor" is not the missing piece.
+- ⚠️ **It is not a completeness proof, and the gap is bigger than the search.** **2,987 transitions were
+  dropped as unmatchable** — 2,657 because a body's blob count came back != 4 (real occlusion: a body
+  walking onto another's screen position merges with it, the documented "occluded, not consumed"
+  mechanic) and 330 `multimove` cases whose mechanism is unidentified. **The dropped set outnumbers the
+  1,860 visited states.** Any win reachable only by walking one body over another is invisible to this
+  search. The instrument's own control is that `multidriver` ambiguity was **0 of 2,987** — whenever a
+  frame was matchable it was matched unambiguously, so the drops are the instrument refusing to guess
+  rather than guessing wrong.
+- Next lever, named: a search that walks THROUGH occlusion events on purpose.
+
+## 2026-08-16 — ka59 L2: THE MOAT IS CROSSED, and the closure was answering a different question (agent, `ka59_r1..r6.py`)
+
+The best result of the session, and it came from re-opening a level on a structural objection rather
+than from a new search. The closure read:
+
+> ka59 L2 (moat min thickness 9, no 3-step crossing)
+
+That is an argument about **walking**. ka59's click is a SWAP — the piece teleports to the dot and the
+dot lands on the piece's old square — so a verb that does not walk was never covered by it. The
+re-open asked one question: *does the closure's sweep cover the click?* It did not.
+
+**What was found — a KICK, never reported for this game before.** Walking into a dot from certain
+approach angles launches it a fixed distance, and the flight is **permeable to the moat and to the
+bar**. dot0 sits at x=34, close enough that a westward kick lands it at **x=19 — past the moat's far
+edge at 21**. Clicking a dot needs no proximity (already known), so clicking the relocated dot
+teleports the PIECE across. From there walking reaches box0's interior cleanly.
+
+Proven live, twice, with controls that fired: `ka59_r2.py` reproduced the eastward kick on a fresh
+clone before testing westward; `ka59_r3.py` hard-asserted the kick's reproduction before proceeding
+and then read `piece[0] = 19 < 21`. **box0 and box1 — previously "unreachable under every possible
+sequence of clicks and moves" — are now proven reachable and were both filled** (`ka59_r4/r5.py`).
+
+**The wall has changed kind: it is now the action budget.** The life ended in GAME_OVER at ~138 actions
+with box2 and box3 unconfirmed, because the greedy walker "routinely burns its full 40-80 action cap
+approaching a target it never exactly reaches". That is an engineering problem — the movement rule is
+a 3-cell lattice step checking only the landing cell, which is an exact BFS, the same shape as
+`haul.py`'s `_walk`. A precise router is the next lever, not a new mechanic.
+
+**Two corrections the round made to its own earlier reasoning, both worth more than a clean run:**
+- Part A argued from phase conservation that a kick was geometrically impossible. Part D then fired one
+  by accident (dot1 moved 15 cells east). The conclusion was **retracted rather than defended** — the
+  movement model has slides and redirects that break strict phase conservation, visible as an
+  unexplained `dy=-4` in `ka59-q7.txt` all along.
+- Clicks resolve to a **fixed canonical cell per dot object**, not to the literal pixel clicked — found
+  because a control that was supposed to reproduce a known landing did not, and six offset probes were
+  spent before anything else was trusted. A control that fails is not always an instrument failure;
+  here it was the finding.
+
+⚠️ **One inference in that report is not yet safe, and it is flagged for the next round.** The argument
+that dot1 and dot2 cannot also cross (41-15=26 and 44-15=29, both landing inside the 9-cell band,
+versus dot0's 34-15=19) assumes the flight distance is always 15. **The same report records flights of
+3 and 12 cells.** So the clearance arithmetic needs redoing against a measured distribution of flight
+distances, not a constant.
+
+Also still unknown: **`GameState.WIN` was never observed on L2**, so the level's actual win condition
+— all boxes, a subset, the piece somewhere — is unconfirmed. Filling what is reachable and reading
+`levels_completed` after each fill is what would settle it for free.
+
+## 2026-08-16 — what is actually IN the discarded planes (main thread, `planes_r1.py`)
+
+Follow-through on `framestack.py`, and it **narrows my own finding** rather than widening it. Opened
+the multi-plane verbs of the games that are still stuck plus the two whose conclusions leaned on
+`f[-1]`:
+
+| game | verb | plane series (diff vs entry) | reading |
+|---|---|---|---|
+| sk48 | 1 | 66 → **96** | a two-stage motion; `f[-1]` is the settled end |
+| sk48 | 3, 4 | 6 → **12** | the braid arm consuming in two steps, end state correct |
+| bp35 | 3, 4 | 35 → 39 → 47 → 47 → **47** | settles by plane 2, monotone, end correct |
+| cd82 | 5 (paint) | 1 → 41 → … → 209 → … → **51** | sweeps out, then colour 15 fills in; ends at 51 |
+| g50t | 2 | 0 → 12 → 22 → 28 → 38 → 48 → **48** | monotone, colour histogram never changes = pure movement |
+| sp80 | 5 (fire) | 82 → … → 706 → **2** | the projectile's whole flight, ending back at ~entry |
+| **sc25** | all four | 0 → 9 → 18 → 27 → 36 → **0** | **non-monotone: returns to entry** |
+
+**The keyhole only costs a conclusion where the animation is NON-MONOTONE — and that is sc25 alone.**
+Everywhere else the last plane is the settled end state, monotonically arrived at, and reading `f[-1]`
+loses only the intermediate rendering. Two specific worries are retired by this table:
+
+- **cd82's L3 impossibility premise survives.** Its argument is that every wedge is >= 50 cells while
+  every target region is < 50; if an intermediate paint plane were sub-50 the premise would have been
+  measured on the wrong plane. The paint's intermediate planes run 41 → 209, never below 50 except
+  plane 0's single HUD cell. The premise holds.
+- **`g50t_r1.py`'s exhaustion proof survives visibly**, not just by argument: action 2's planes rise
+  monotonically 0 → 48 and stop, so `f[-1]` = 48 is the settled state the BFS keyed on, and the colour
+  histogram is identical at every plane (pure movement, nothing created or consumed).
+
+sp80's is the most striking picture — action 5's 22 planes are the projectile's entire flight, ending
+at a board 2 cells from entry (the HUD) — but it costs nothing, because a shot that changes nothing
+IS a miss, and that is what the last plane correctly reports.
+
+*A finding that survives its own follow-through in narrowed form is worth more than one that stays
+large: the campaign has one game read through a keyhole, not eight.*
+
+## 2026-08-16 — cn04: colour3 is the WRONG-ANSWER signature, and the handedness axis does not exist (agent, `cn04_r1..r6.py`)
+
+Two results, one that changes how this game is read and one that closes a hypothesis in a single arm.
+
+**1. The true L1 win renders NO dock overlay.** Tracing every frame of the true win (rotate x3) against
+the false dock (rotate x1, identical translation math): **colour3 — the "docked" overlay every level-2
+experiment has chased — never appears in the true-win trace at all.** The board jumps straight to the
+L2 layout on the winning press. colour3 appeared only in the FALSE dock.
+
+Put beside the game's standing fact — *the wrong handedness gives the identical tip-to-tip vector and
+renders the same docked overlay without winning* — this makes colour3 **the signature of a coincidence
+that is WRONG**. A right-handed coincidence never renders it, because the level is already over. So
+every L2 round, including the ones that measured colour3 stacking additively (18, then 18+18=36, then
++9=45), was watching a counter of wrong answers accumulate. Confirmed directly in the L1 table below:
+`n_rot=1` gives colour3 **True**, win **False**; `n_rot=3` gives colour3 **False**, win **True**.
+
+**2. The pad-ASSIGNMENT axis I proposed does not exist — refuted on L1, structurally.** The hypothesis
+was that with two pads on the mover and two on the target there are two pairings, that pairing is what
+handedness means here, and that a harness which picks one implicitly would look exhaustive from inside.
+The code trace supported the premise: `cn04_q11_final.py`'s `derive()` does `sorted(pads)` on both
+lists and pairs by sorted index — one fixed assignment, never the swap. But driven live across both
+assignments and all four rotation states:
+
+| n_rot | assignment | self-consistent | colour3 | WON |
+|---|---|---|---|---|
+| 0 | A (sorted, incumbent) | no | — | — |
+| 0 | B (swapped) | no | — | — |
+| 1 | A | **yes** | **True** | False |
+| 1 | B | no | — | — |
+| 2 | A / B | no | — | — |
+| 3 | A | **yes** | **False** | **TRUE** |
+| 3 | B | no | — | — |
+
+**The swap is never self-consistent, and it cannot be**: with exactly two landmark points under a pure
+translation, `static[a] - moved[0] == static[b] - moved[1]` and its swap are conditions that are
+negatives of each other, so generically at most one can hold. Sorted order kept winning that check by
+geometry, not by the harness's arbitrary choice. Rotation changes the body SILHOUETTE — which is what
+actually separates the true win from the false dock — and does not touch which pairing is valid. So
+the axis is a derived fact of rotation, not a second free dimension, and neither harness could ever
+have missed a candidate there.
+
+The agent also hand-traced that the L2 own-pad-pair search (`cn04_q49_multi_mover_candidates.py`) loops
+both `(i,j)` source orders and both `(a,b)` target orders, so it was already covering both directed
+deltas — checked rather than assumed, since it is the same class of bug.
+
+**No L2 actions were spent.** The brief carried an explicit exit clause — validate on L1 first, and if
+it fails there say so cheaply — and it was used as written. *An exit clause only saves anything if the
+agent is willing to stop at it, and this is the case where one did.*
+
+cn04 L2 now stands at **191 live-driven placements and sequences across eight criteria**, plus four
+non-geometric classes refuted this session (clicking the dock overlay, holding to budget exhaustion
+while genuinely static and docked, cross-pair dock→undock→dock in both orders, and a 3-junction
+all-four-shapes assembly at colour3=45). The level rests.
+
+## 2026-08-16 — sc25's 22-plane animation, explained (agent, `sc25_r4/r5.py`)
+
+The keyhole is opened and what was behind it is a **title-screen flourish**, not a mechanic. Recorded
+in full because the shape of the answer is what makes the game's closure safe.
+
+**What the animation is.** Four of box B's own 9-cell colour-0 EDGE blocks — the ones
+`sc25_q16.py`'s 3x3-of-3x3 toggle grid has always modelled — flashing to colour 14 one at a time,
+cumulatively, then all snapping back together on the last plane:
+
+| plane(s) | what changed | cells |
+|---|---|---|
+| 0 | nothing (entry) | 0 |
+| 1-5 | edge block (49-51, 29-31): colour 0 → 14 | 9 |
+| 6-10 | + (54-56, 24-26) | 18 |
+| 11-15 | + (54-56, 34-36) | 27 |
+| 16-20 | + (59-61, 29-31) | 36 |
+| 21 | all four snap back to colour 0 | 0 (== entry) |
+
+Each stage is held for five identical planes (framerate padding), it is strictly additive, and it is
+**byte-identical across all four plain verbs AND the click** — 0 of 22 planes differ between them.
+
+**What triggers it, measured rather than inferred.** Not "the first press of a life", and not "an
+action that achieved nothing": the trigger is **the board before the action being byte-identical to
+the level's entry frame**. The decisive test walked the board off entry with two real presses
+(diff 32), then found a genuine mid-life no-op at press 7 — its stack is **single-plane**. A click on
+an inert cell shows the flourish on *both* clicks (the board never leaves entry either time), while a
+click on a real box-B edge cell shows it on click 1 and a persistent single-plane 9-cell commit on
+click 2. It also recurs identically after a mid-life `reset()` and after a real GAME_OVER + reset.
+
+**The 22/22 coincidence is explained, not a missed structure.** The animation's 36-cell peak is
+**exactly the union of 4 of the flood fill's own 22 components** — zero peak cells fall outside a
+pre-existing component. The closure's census is a static-state census and is unaffected.
+
+⚠️ **But it leaves one narrow, real exposure, and the agent found it in its own follow-through.**
+`sc25_q16.py`'s 480-state Gray-code closure walks its sequence across roughly **10-15 life-boundary
+rebuilds**, and each rebuild opens with one click from the reverted entry board — which is therefore
+**absorbed rather than committed**. That matters more than 15-of-479 sounds, because *a Gray code is a
+PATH*: a silently failed transition does not skip one state, it continues from a state the sweep
+believes it is not in, so one absorbed click can mislabel an arbitrarily long tail. Being chased now;
+the cheap first step is reading whether the rebuild loop reads its census back and retries.
+
+**The reusable part is the trigger's shape.** "Fires when the board equals the level's entry frame"
+is a condition no single-press probe can distinguish from "fires on the first press", and the two
+imply different things about every later press. Separating them cost one arm — a no-op taken from an
+off-entry board — and that arm is the whole difference between an explanation and a story. *When a
+cue seems keyed to an EVENT, check whether it is keyed to a STATE.*
+
+### Main-thread verification of the ka59 crossing (2026-08-16, `ka59_v1.py`)
+
+The campaign's rule is that an agent's summary is intent and the agent is the entity that may be
+wrong, so the session's biggest claim was re-derived here rather than relayed. What needed checking
+was not the positions — those carry their own evidence — but the BOUNDARY they are measured against,
+which the agent inherited from the very closure it was overturning.
+
+Re-derived from the level-2 board in the main thread: counting non-background cells per column,
+**x = 21..29 hold 64 each — the full height of the board** — while x = 15..20 hold 7 and x = 30+ hold
+31 to 37. So the moat is a solid **nine-column** band, exactly the thickness the original closure
+claimed, and it is now measured rather than quoted.
+
+Against that boundary the crossing is real: dot0 kicks from x=34 to **x=19**, the click swaps the
+piece from **x=37 to x=19**, and LEFT x4 then walks to x=7. Right side to left side, across all nine
+columns, confirmed.
+
+*The closure's arithmetic was never wrong. It was answering "can the piece WALK across nine columns",
+and the answer to that is still no.* What it did not cover was that this game has a verb which does
+not walk, and a second one — the kick — that nobody had found. **A closure is scoped to the verbs its
+author knew about, and that scope is invisible in the sentence it is written as.**
+
+## 2026-08-16 — CORRECTION to the sc25 trigger, and sc25 is CLOSED (agent, `sc25_r6.py`)
+
+**The entry above is wrong about the trigger and this supersedes it.** It records the flourish as
+firing when *"the board before the action is byte-identical to the level's entry frame"* — measured,
+written up as the reusable lesson, and refuted one round later.
+
+**The real rule: action-index 1 of the life is absorbed, regardless of type — verb or click — and
+everything from action-index 2 onward commits normally**, provided the action has a genuine target.
+
+The discriminator that separates them, which the earlier round did not run: press one plain verb
+(index 1, absorbed) and then **click a real box-B edge block as index 2**. Under "board == entry" that
+click must also be absorbed, because an absorbed verb leaves the board entry-equal. It is not — it
+commits immediately, single-plane, diff 9, first try. Corner block likewise.
+
+Why the earlier reading survived its own test: the decisive arm there was a genuine mid-life no-op
+taken from an off-entry board, and **both** rules predict a single plane for it. Index-1 and
+entry-equality coincide in every arm that had been run, so the two hypotheses were observationally
+identical until an arm was built where they disagree. *A hypothesis confirmed by every test so far can
+still be the wrong one of two that no test has yet separated — and the tell is not that the evidence
+is weak, it is that no arm has been designed to make the rivals disagree.*
+
+(One residual quirk, noted and not chased: a click on a DEAD cell re-shows the reveal indefinitely
+rather than settling into a flat single-plane no-op, because it never leaves the
+"nothing-has-happened-yet" state. It does not touch any real target, and `sc25_q16.py` never clicks
+one.)
+
+### And with the corrected rule, sc25's closure is SOUND — 0 of 479 transitions affected
+
+The exposure flagged in the previous entry — that `sc25_q16.py`'s 480-state Gray-code walk opens each
+of its life-boundary rebuilds with an absorbed click, and that a Gray code is a PATH so one silent
+failure mislabels an arbitrarily long tail — **does not exist**, for a reason nobody predicted:
+
+- **Every reset site in `sc25_q16.py` is immediately followed by a plain-verb "warmup" press**, before
+  any click fires (three sites reached in the historical run; a fourth only on a win event, which
+  never fired). The warmup consumes the life's one-time absorption slot, so every rebuild click and
+  every main-walk click happens at action-index >= 2. **No click in the file is ever the life's first
+  action.**
+- `do_rebuild` genuinely has no read-back retry — it logs `MISMATCH` and moves on — so the safety is
+  not error recovery, it is the warmup.
+- **Cross-checked against the historical run's own artifact**: `results/sc25-q16.txt` has **zero
+  `MISMATCH` lines** across all 13 life-boundary rebuilds and finishes `patterns_visited=480/480`. Had
+  a rebuild click been silently absorbed, the very next `cur == expect` check would have printed one.
+
+Two independent lines — the structural argument from the source and the recorded output of the run
+itself — and they agree. **sc25's box-B closure holds end to end; the game is retired.**
+
+*The safety was accidental.* Nothing in `sc25_q16.py` knew about an absorption rule that was only
+discovered today; the warmup press was there for some other reason and happened to be the exact
+countermeasure. Worth noticing rather than celebrating: the next probe written for this game will not
+have a warmup unless someone puts one there deliberately.
+
+## 2026-08-16 — absorption is sc25-ONLY, measured across all seventeen (`absorb_r1.py`)
+
+The sc25 rule — *action-index 1 of every life is absorbed, verb or click alike* — would be expensive
+if it were a family trait rather than a quirk: every scripted LINE on such a game would be off by one,
+every level-entry probe would silently waste its first action, and a level that dies on a clock would
+pay the tax **every life** (wa30 level 3 alone takes 28 lives in a 3,000-action run).
+
+Checked directly: each game, each plain verb, from a fresh reset, pressed twice, reading the settled
+board after each. Absorption looks like `diff1 == 0` with `diff2 > 0`.
+
+| verdict | games |
+|---|---|
+| **COMMITS on the first action** (16) | ls20, re86, tu93, tr87, sk48, sp80, wa30, ar25, cn04, m0r0, cd82, bp35, dc22, sb26, ka59, g50t |
+| **ABSORBED** (1) | **sc25** |
+| unclear | none |
+
+And across a real death, where it would actually accumulate: sc25 after GAME_OVER + reset gives
+press-1 diff **0**, press-2 diff **8** — **absorbed every life**, not merely at the start of the run.
+
+So no driver anywhere else is off by one, and the worry is retired for the cost of one probe. Worth
+recording precisely because the answer was the boring one: *the value of the check was never the
+chance it would fire, it was that a per-life off-by-one is invisible from inside any single game.*
+
+Note the per-verb columns also settle several small things for free — sk48's action 2 and action 7
+move nothing at all from the entry board (`2:0->0`, `7:0->0`), sb26's action 7 likewise (`7:0->0`,
+consistent with it being the UNDO on an empty stack), and g50t's actions 1, 3 and 5 move a single cell
+while 2 and 4 move 48 (`1:0->1`, `2:48->49`) — which is the HUD ticking versus real movement, and it
+is why `g50t_r1.py`'s graph was driven by two verbs' worth of real transitions.
+
+## 2026-08-16 — ka59 L2: budget was never the wall, and the real one is a SECOND moat (agent, `ka59_r7..r12.py`)
+
+The diagnosis from the previous round — "the wall is now the action budget" — is **refuted by its own
+fix**, which is the good outcome. An exact 3-lattice BFS router (`haul.py`'s `_walk` shape, adapted;
+only the found shortest path is ever replayed on the real trajectory, so exploration is free) reached
+dot0's kicking region in **3 actions where the greedy walker needed 50 and still missed**. The whole
+line then cost:
+
+| leg | actions | running |
+|---|---|---|
+| L1 → L2 entry (ferry driver) | 11 | 11 |
+| route to dot0 + kick west | 4 | 15 |
+| route to dot1 (avoiding dot0/dot2) + kick west | 10 | 25 |
+| route to box3 (avoiding dot2) | 5 | 30 |
+| click dot0 **from inside box3** (fills box3 AND crosses, for free) | 1 | 31 |
+| route to box0 | 3 | 34 |
+| click dot1 from inside box0 (fills box0) | 1 | 35 |
+| click dot2 (return trip) | 1 | 36 |
+| route to box2 | **not found** at 900 BFS nodes | 36 |
+
+**36 actions of a ~127-action clock, >90 to spare.** And `levels_completed` stayed at 1 through both
+fills, read after each — so two boxes is not the win.
+
+**The real wall: a SECOND, internal moat.** A colour-15 band **6 rows thick (y=24-29, full width
+x=0-21)** splits box1 (y=8-15) from box0 (y=41-48) inside the left region. None of the three dots'
+kicks, in the geometries tested, crosses it.
+
+**Kick geometry is now aimable, and the flight distance is emphatically not a constant:**
+
+| dot | approach | direction | distance |
+|---|---|---|---|
+| dot0 | from due east | **west** | **−15** (34 → 19) — clears the 9-column moat |
+| dot1 | from due east | **west** | **−24** (41 → 17) — clears it with margin |
+| dot1 | from due south | north | **−3** — nowhere near the 6-row band |
+| dot2 | same relative approach as dot0/dot1 | **east**, not west | — |
+
+So direction is a property of **approach geometry**, not of which button is pressed — and the earlier
+"dot1/dot2 cannot cross because 41−15=26 lands in the moat" arithmetic was wrong in exactly the way
+flagged: it assumed 15. dot1 goes −24.
+
+**Death semantics re-measured here rather than inherited**: 123 presses to exhaust the clock,
+GAME_OVER, `reset()` returns the board **byte-for-byte to L2 entry**, piece and all three dots — with
+the kick fired first as the positive control so the diff was shown able to fire. Matches sp80, bp35
+and g50t. The whole line must fit in one life.
+
+**What is open, in the order it is being chased**: (1) **box2's unreachability is undiagnosed** —
+router bug, node budget, or genuine obstruction were never separated, and a search that fails to find
+a path is worthless without a positive control; (2) **whether box1 is required at all** was never
+confirmed — if box2 completes the level the internal moat is irrelevant, which is why box2 comes
+first; (3) **chained kicks** (nobody has kicked an already-kicked dot, and dot1 sits at (17,34) after
+its −24 flight) and northward geometry on dot0/dot2, untested on a quantity already shown to vary by a
+factor of eight.
+
+## 2026-08-16 — ka59 L2: the PHASE LAW, box1 proven required, and a chained kick that crosses the internal band (agent, `ka59_r13..r16.py`)
+
+Three results, and the first is a law rather than a fact.
+
+**1. box2 was never obstructed — it was a PHASE MISMATCH.** The router found no route from (44,48) to
+box2 at 900 nodes and then none at 5,000, so the null was not a budget. A flood fill from (44,48) on
+the 3-lattice converged at **88 cells** — converged, far under any cap tried — with box2's interior
+absent. Comparing coordinates settled it: (44,48) mod 3 = **(2,0)**, box2's interior (52,52) mod 3 =
+**(1,1)** = **spawn's own phase**.
+
+> **Movement changes one axis by a multiple of 3 per press, so `(x mod 3, y mod 3)` is INVARIANT under
+> walking. The only verb that changes phase is the CLICK.**
+
+So box2 was reachable only from spawn's phase, and every dot-click in the earlier line had already
+moved the piece off it. **This makes the ORDER of clicks part of the solution** — the third game in
+this campaign where that is the whole puzzle, after ar25's levels 3 and 4, and the same lesson: *a
+one-way door belongs in FRONT of the search.* A failed path search is worthless without a positive
+control, and this one had one (the router re-deriving the known 3-action dot0 approach), which is what
+made "not a bug" believable before the phase arithmetic was even looked at.
+
+**2. box1 is REQUIRED, measured rather than inferred.** Visiting box2 first at spawn phase (17
+actions) and then running the kick/cross/fill line for box3 (dot0) and box0 (dot1): box2 visited,
+box3 filled, box0 filled, box1 empty → **still `NOT_FINISHED` at action 45**. Three of four is not the
+win.
+
+**3. A CHAINED kick crosses the internal band.** dot1 kicked west to (17,34) is still an active,
+unconsumed dot; approached from the south at its NEW position and pressed UP, **it kicks again** —
+(17,34) → (17,19), a −15 flight, crossing y=24 into the far side of the 6-row band. First confirmation
+that a kicked dot can be kicked a second time.
+
+**Flight table, and the distance varies by a factor of eight:**
+
+| dot | approach | direction | from → to | distance |
+|---|---|---|---|---|
+| dot0 | east side, near (36-39, 42-46) | west | (34,44) → (19,44) | **−15** |
+| dot1 | east side, region (48-52, 33-35) | west | (41,34) → (17,34) | **−24** |
+| dot1 | south, region (38-45, 36-43) | north | (41,34) → (41,31) | −3 |
+| dot1 (already crossed) | south of (17,34) | north, **chained** | (17,34) → (17,19) | **−15** |
+| dot1 | west side, walking toward it | east (accidental) | (41,34) → (56,34) | +15 |
+| dot2 | west side, walking toward it | east (accidental) | (44,47) → (59,47) | +15 |
+
+Consistent with the L1 reading that a kick is **slide-until-blocked**, not a fixed-distance teleport.
+
+**Still open**: routing from the chained-kick landing (19,38) to box1's interior (9-11, 9-14) is NOT
+FOUND at 1,500 nodes, and **phase is not the culprit this time** — (19,38) mod 3 = (1,2) matches
+box1's (1,2) exactly. Undiagnosed: obstruction, avoid-list interaction, or a still-larger cap. The
+box2 diagnostic (converged flood fill, print size and extent) is the obvious instrument and was not
+run. Also unassembled: no single life has yet done all of it — `r14` proved the three-target line in
+45 actions while `r15`/`r16` proved the chain with dot0 spent as a bare ferry and dot1 never clicked
+into any box. With ~127 actions of clock against 45 for three targets, **the budget is very unlikely
+to be the remaining wall**; the assembly is a sequencing problem under the phase law.
+
+## 2026-08-16 — ka59 L2: the full line assembles in 45 actions, and the wall is a THIRD phase mismatch (agent, `ka59_r17/r18.py`)
+
+**The zero-waste line now exists end to end** and runs inside one life: box2 visited at spawn phase
+(17 actions) → dot0 and dot1 both kicked west (35) → box3 filled by dot0 with a **free crossing**,
+because the click was made from inside box3 (41) → dot1 **chain-kicked north** from (17,34) to
+(17,19), clearing the 6-row internal band (44) → dot1 clicked, piece crosses to (18,19) for free (45).
+**45 actions of a ~127 clock.** `levels_completed` stayed at 1 throughout, consistent with box1 being
+required.
+
+**And box1 is blocked by the same law for the third time.** The flood fill from (19,38) converged at
+**70 cells** (x=1-19, y=32-60) under a 3,000-node cap with box1's interior absent — again not a budget
+problem. But the diagnosis is not "a wall": the piece's landing cell after the crossing is **(18,19),
+phase (0,1)**, while box1's centre (10,11) is **phase (1,2)**. Three mismatches now, in three
+different places, and they are one mechanic rather than three obstacles:
+
+> **The click swaps the piece onto the clicked dot's canonical cell, so the piece's post-crossing
+> PHASE is a property of where the DOT is. And the dot's position is set by the KICK.**
+
+So phase is not something that happens at the end of a crossing — it is a knob that gets set *before*
+clicking, by choosing where the dot is kicked to. That turns "find a route to box1" into "which
+reachable dot landing has a canonical cell of phase (1,2)?", which is an enumeration rather than a
+search. Direct evidence that the approach row is a real degree of freedom is already in the table:
+dot1's two westward flights differ, **−24 from one region and −3 from another**.
+
+⚠️ **The canonical cell is not always the dot's own coordinate** — the dot sat at (17,19) and the piece
+landed at **(18,19)**. Any phase arithmetic has to use the cell the PIECE lands on, measured, not the
+dot's.
+
+Two cheap questions that could make the enumeration unnecessary and have never been asked: **does box1
+need a DOT placed in it, or only a piece VISIT?** (box2 counted as *visited*, not filled, in the r14
+line — so a visit may be the whole requirement) and where box0 belongs in the final ordering, since
+r18's assembly dropped it while r14 had filled it.
+
+**Instrument debt, flagged and unpaid:** `bfs_route` overwrites `cur_env`/`cur_obs` on its
+None-return path — present since r10, harmless so far only because every call site after it either
+asserts or is a run's last leg. *A state-corrupting failure path inside the one routine every leg
+depends on is exactly the shape of bug that produces a confident wrong measurement*, and the next
+round will not necessarily be lucky.
+
+## 2026-08-16 — ka59 L2: the phase knob WORKS, and "fill all four boxes" is FALSIFIED (agent, `ka59_r19/r20.py`)
+
+**The knob works, and the mechanism is a conservation law rather than a heuristic.** dot0's west kick
+lands at **(19,44), phase (1,2)** — exactly box1's centre phase. Chain-kicking it north **preserves
+that phase**, because kick distances are multiples of 3 just like walking. Clicking it landed the
+piece at **(19,20), phase (1,2), confirmed live**, and box1's interior opened immediately — routed
+straight in, reaching (10,14) at action 59, after two flood fills had shown it unreachable from every
+earlier landing.
+
+> **A kick moves a dot without changing which phase-class it can hand the piece. So each dot has a
+> FIXED phase it can deliver, decided at its spawn, and the kick only chooses where along that class
+> it lands.**
+
+That is stronger than "phase is a knob": it constrains the dot→box assignment before any planning
+starts, and it is the third distinct place on this game where the ORDER of engagement turned out to be
+the puzzle (box2's spawn-phase-first requirement, the main moat, and now box1).
+
+**Phase / landing table:**
+
+| dot | event | landing | phase | note |
+|---|---|---|---|---|
+| dot0 | west kick | (19,44) | **(1,2)** | matches box1's own phase |
+| dot0 | + chain-kick north | (19,20)/(19,21) | **(1,2)** | preserved — the −24 flight is a multiple of 3 |
+| dot1 | west kick | (17,34)/(18,34) | dot's cell (2,1); **piece lands (18,34)/(18,19)** = (0,1) | canonical cell != dot's own coordinate, confirmed twice |
+| dot2 | untouched | (44,48) | (2,0) | |
+| box0 centre | — | (8,44) | (2,2) | south of the internal band |
+| box1 centre | — | (10,11) | **(1,2)** | |
+| box2 centre | — | (52,52) | (1,1) | = spawn's phase, which is why box2 must be visited FIRST |
+
+**And the win condition is now falsified rather than unknown.** Three arms in sequence, in one life:
+box1 **visited empty-handed** → still `NOT_FINISHED` (action 59); box1 **with a dot placed** → still
+`NOT_FINISHED` (60); and then the full zero-waste assembly — box2 visited, dot1 into box3, dot0 into
+box0, dot2 into box1, **all four targets satisfied with no dot spent as bare ferry fare** — **still
+`NOT_FINISHED` at action 64**, of a ~127 clock.
+
+**So "fill all four boxes" is not the win.** The most likely remaining reading, and the one nobody has
+run: **the pairing is SIZE-MATCHED**. The zero-waste routing happened to produce **dot0→box0 and
+dot2→box1**, which is the **reverse** of the recon's original ring-size guess (dot0↔box1,
+dot2↔box0). If this level pairs a dot to a box by an observable property, every line run so far has
+placed the right number of dots in the wrong boxes — which reads from outside exactly as it does:
+everything filled, nothing won.
+
+Being chased, in order: measure what actually distinguishes the dots and the boxes (if all three dots
+are identical in every readable respect the hypothesis dies for free), check whether the matched
+assignment is even **phase-feasible** from the table above before spending actions on it, then the
+remaining permutations. Plus two questions that are not about pairing at all: whether the PIECE must
+END somewhere specific (r20 left it at (44,48), wherever the last click put it), and whether **box2
+needs a DOT rather than the visit it has always been given** — box2 is the one target that has only
+ever been visited, and it is also the one that forced the entire spawn-phase-first ordering. *It would
+be characteristic of this level for the thing that looks like a free visit to be the requirement
+nobody tested.*
+
+Gap in the data, flagged: **dot2's kick geometry has never been cleanly measured** — only dot0 and
+dot1 have full kick+chain data, and dot2 is the dot a matched pairing may need to reposition.
+
+## 2026-08-16 — ka59 L2: the SIZE-MATCHED PAIRING is measured fact, and box2 matches the PIECE (agent, `ka59_r21..r23.py`)
+
+The recon's original ring-size guess is no longer folklore. Measured, zero extra actions: every dot's
+footprint is tiny (1x2, 2x1, 2x2) but each sits inside a **colour-14 HALO** whose bounding box matches
+one box's interior **exactly**, in orientation, with no dot matching two boxes:
+
+| dot | footprint | halo bbox | halo size | | box | outer bbox | interior | matches |
+|---|---|---|---|---|---|---|---|---|
+| dot0 | 1x2 | (33,42)-(35,47) | **3x6** | | box1 (top-left) | (8,8)-(12,15) | **3x6** | dot0 |
+| dot1 | 2x1 | (39,33)-(44,35) | **6x3** | | box3 (right) | (53,38)-(60,42) | **6x3** | dot1 |
+| dot2 | 2x2 | (42,45)-(47,50) | **6x6** | | box0 (bottom-left) | (5,41)-(12,48) | **6x6** | dot2 |
+| | | | | | **box2** (piece station) | (50,50)-(54,54) | **3x3** | **the PIECE itself** |
+
+**That last row answers a different question than the one being asked.** Three dots each match one
+box; the fourth box matches the PIECE. So box2 is the piece's own station, and "does the piece have to
+END somewhere" stops being a loose end and becomes the obvious fourth requirement — every run so far
+has left the piece wherever the last click happened to drop it.
+
+**The matched pairing was then run and still does not win**: box2 visited, box3 filled with dot1
+(matched), box0 filled with dot2 (matched), box1 reached and visited but not filled — dot0 spent as a
+pure bridge onto open floor. 64 actions, `levels_completed` 1. So visiting box1 is not enough even
+with the other two correctly matched.
+
+**The reported deadlock — 4 demands against 3 dots — rests on a premise that was stated and never
+measured**: that a dot clicked onto open floor is SPENT. Two readings, not the same object:
+- **consumed only when it lands in a BOX** → an open-floor click merely RELOCATES it, it stays
+  clickable, and there is no deadlock: cross via dot0, walk into box1, click dot0 again from inside.
+- **one click per dot, period** → the count holds.
+
+The round's own earlier data leans to the first — dot1 was kicked west, then **chain-kicked again from
+its new position while described as "an active, unconsumed dot"** — and clicks have no proximity
+requirement, so a dot's location never limits whether it can be clicked. One arm settles it: click a
+dot onto open floor, then click the same dot again. Being run now.
+
+If dots survive open-floor clicks the line is nearly written, and it is the natural reading of the
+table above: cross using whichever dot's phase serves, walk into each box, click its MATCHED dot from
+inside (proximity is irrelevant — only the PIECE has to be in the box), then walk to **box2** and
+stop. That would be the first line in this game's history satisfying all four property-table matches
+at once.
+
+If dots really are one-click-only, the named escape is a **third kick**: dot0 sits at (19,20)/(19,21)
+after its chain, and a third kick west from the east side might land it *inside* box1's interior
+(x9-11), so one click both crosses the piece and places dot0 correctly. Every chain so far stopped at
+two deep for no reason other than nobody trying a third.
+
+*The transferable point: a resource-counting impossibility argument is only as good as its consumption
+rule, and consumption rules are exactly the kind of premise that gets asserted in passing while the
+arithmetic around it gets all the scrutiny.*
+
+## 2026-08-16 — ka59 L2: dots are ONE-CLICK-ONLY (my hypothesis refuted), and a COMPOUND SWEEP nobody chased (agent, `ka59_r24/r25.py`)
+
+**The consumption question is settled against me.** I argued the 4-demands-vs-3-dots deadlock rested
+on an unmeasured premise and that a dot clicked onto open floor probably just relocates. It does not:
+kicked dot0 west, clicked it (piece → (19,44), dot0's cells gone from the dot list, the vacated cell
+reading plain floor colour 1), walked one step away, clicked the **identical coordinate** again — the
+piece did not move and no dot cells changed. **Dots are one-click-only.** The deadlock is real as
+reported.
+
+**But the arithmetic double-counts, and the correction is a trick the same agent used twice and then
+stopped using.** `r14` and `r20` both did it: clicking a dot **while standing inside a box** fills that
+box AND teleports the piece to wherever the dot is. So a click spent as *cargo* is simultaneously a
+free *ride*, and the count is not 4 demands against 3 dots — it is
+
+> **3 dots → 3 clicks → 3 boxes filled AND 3 crossings.**
+
+which is exactly enough, and turns a resource shortage into a **sequencing** problem. The plan follows
+from the measured tables: kick every dot into position FIRST, while the piece is still on the right
+side and everything is reachable; then box3 ← dot1 (piece lands where dot1 was pre-kicked, past the
+main moat), box0 ← dot2 (pre-kicked north of the internal band on phase (1,2), which a chained north
+kick preserves), box1 ← dot0 (pre-kicked toward box2, where the piece should end).
+
+**Two other results this round:**
+
+- **The third-kick escape is circular and dead.** Reaching "east of dot0's chained position (19,20)"
+  requires already being north of the internal band — which is the crossing dot0 itself was meant to
+  provide. Same circularity, one level deeper.
+- **A COMPOUND SWEEP: one kick moves TWO dots.** Approaching dot2 from the east with a route that
+  deliberately avoided dot0's cells, the first westward press relocated **both**: dot0
+  (34,44) → **(13,44)** and dot2 (44,47) → **(17,47)**, both past the moat. It reproduces the same
+  effect seen twice earlier in `r7`/`r9`, so it is **not an approach-path artifact** — and it was left
+  entirely untested. Two dots pre-positioned for one approach is precisely what a plan needing three
+  pre-kicked dots wants. What governs it — which dots move together, and whether each landing can be
+  steered — is the open question.
+
+Also still untested after five rounds: **whether box2 needs a dot or only a visit.** Under the
+sequencing plan box2 is where the piece ENDS, so a visit is what it would naturally get.
+
+*The reusable point, and it cuts against my own last message as much as for it: an impossibility
+argument built on counting requires both a consumption rule AND a correct accounting of what each
+expenditure BUYS. The consumption rule here was right and I doubted it; the accounting was wrong and
+nobody checked it, because a click that does two jobs looks like one job in a ledger.*
+
+## 2026-08-16 — ka59 L2: the phase argument becomes structural, and the fill-permutation space is exhausted (agent, `ka59_r26.py`)
+
+**The five premises, each measured, and together they say box1 cannot be correctly filled:**
+
+1. **box1's interior is walkable only from phase (1,2)** — two independent flood fills, both bounded
+   and converged (70 cells from (19,38); 88 cells from (44,48)), both excluding it.
+2. **Each dot's canonical click-phase is fixed by its own identity**: dot0 → **(1,2)**, dot1 → (0,1),
+   dot2 → (2,0).
+3. **Kicks preserve phase** — flight distances are multiples of 3, so a kick moves a dot only within
+   its own phase class. Re-confirmed this round.
+4. **Dots are one-click-only** (measured last round: second click on the identical coordinate does
+   nothing).
+5. **The halo↔interior size match is exact and one-to-one**: dot0 3x6 ↔ box1, dot1 6x3 ↔ box3,
+   dot2 6x6 ↔ box0, box2 3x3 ↔ the piece.
+
+From (1)+(2)+(3): the only click that can put the piece **into** box1 is a click on **dot0**. From (4):
+that click spends dot0. From (5): box1's correct occupant **is** dot0. So the click that grants access
+and the click that places the matched dot are the same click, and it cannot be both. **Under the
+measured model, box1 can never be correctly filled.**
+
+**And the fill-permutation space is exhausted**, which is what makes that a problem rather than a
+puzzle: box3 matched + box1 visited (59) · box3 matched + box1 filled mismatched, box0 empty (60) ·
+box3 + box0 both matched, box1 visited (r22, 64) · **all three boxes filled with all three dots, only
+box3 correct (r20, 64)**. Every reachable 2-of-3 and 3-of-3 combination has been run and none wins —
+so a pure "N dots placed" count is refuted too, and correctness is required somewhere the model cannot
+deliver it.
+
+**Conclusion: something in the model is wrong**, and re-sequencing inside it cannot find what. Same
+place re86 level 6 reached — every arrangement of the known mechanic refuted, so the mechanic is not
+the one.
+
+**The surface that has never been swept, and it is the obvious candidate**: every click in this game's
+history has been aimed at a **dot**. The whole model — swap, canonical cell, phase class, consumption
+— is built from those clicks. But the click is a general verb with 4,096 targets and **level 2 has
+never had a click sweep at all**. The structures the model currently treats as scenery are exactly the
+ones that carry its information: the boxes' interiors and frames, the **colour-14 halos** (the object
+that carries the size-matching, and never once clicked), the moat columns, the internal band, and box2
+itself. Being swept now, click-then-ACT.
+
+Also finally being run: **does box2 need a DOT or only a VISIT** — flagged three rounds running, one
+arm, and if box2 needs a dot then four boxes need four dots against three that exist, which would
+falsify the model outright.
+
+**Open and uninterpreted**: the COMPOUND SWEEP. One westward press near dot2 relocates dot0 as well,
+reproducibly, on routes built to avoid dot0 — seen in `r7`, `r9` and `r25`. It was set aside as moot
+for the phase plan (it cannot change dot2's y-phase) but its mechanism is unexplained, and an
+unexplained mechanic on a board whose model is known to be wrong is not a detail to leave lying.
+
+## 2026-08-16 — ka59 L2: CLOSED, STRUCTURAL — with the premise to attack named (agent, `ka59_r27/r28.py`)
+
+Both final surfaces came back empty and the level rests on a stated contradiction rather than on an
+arm count.
+
+- **The non-dot click sweep found nothing.** 19 candidates click-then-ACT (every box's frame and
+  interior corner, 2 halo cells per dot, 2 moat columns, 2 internal-band cells), each clicked on a
+  fresh deepcopy then diffed against the same presses with no click. **Box frames, box interiors, moat
+  columns and the internal band are all click-inert.** All six halo cells "responded" — and a direct
+  check killed it: clicking **(33,42)**, a colour-14 halo cell one cell outside dot0's own footprint,
+  lands the piece at **(34,44)**, dot0's exact canonical cell. That is the known dot-swap re-firing
+  through its proximity tolerance, not a new mechanic. *A response is not a new mechanism until you
+  check whether the old one explains it.*
+- **box2 needs neither a dot nor a visit — it wins nothing either way.** Walked in, clicked dot1 from
+  inside, dot1 consumed, piece moved, `levels_completed` still 1. The question flagged for three
+  rounds is answered and it does not open anything.
+
+### The closure, and the part worth keeping
+
+Five measured premises:
+
+1. **box1's interior is walkable only from phase (1,2)** — two bounded, converged flood fills exclude
+   it from every phase tried except the one dot0 delivers.
+2. **Each dot's canonical click-landing phase is fixed by identity** — dot0 (1,2), dot1 (0,1), dot2
+   (2,0), measured across every kick geometry tried.
+3. **Kicks preserve mod 3** — every measured flight (−15, −24, −3, +15, −15) divides evenly by 3; no
+   kick has ever shifted a dot's phase class.
+4. **Dots are one-click-only** — a second click on the coordinate a dot's marker vacated does nothing.
+5. **The halo↔interior size match is exact and exhaustive** — dot0 3x6↔box1, dot1 6x3↔box3, dot2
+   6x6↔box0, box2 3x3↔the piece; no other pairing exists.
+
+Together: the only click producing phase (1,2) is dot0's, and it is spendable once, so **no line can
+both deliver the piece to box1 and leave dot0 available to be correctly placed there.** Every fill
+combination reachable under these five has been run and lost.
+
+**What would have to be false — ranked, which is the actually useful output**: most attackable is
+**premise 2 or 3** — a single counter-example (one kick, one untried approach angle, any dot, landing
+off its "locked" phase class) collapses the deadlock immediately, because the corrected
+click-does-two-jobs plan otherwise writes itself from premise 5's tables. Next is **premise 1** — only
+two flood fills have ever run, both from origins dot0 or its chain produced, so a fill from a
+genuinely different phase is untried. **Premises 4 and 5 are the most solidly measured and the least
+likely to be wrong.**
+
+Left uncovered and worth naming: the sweep was 19 hand-picked cells, not the 4,096; the halo's full
+extent as a click target is unswept beyond two corners; "one-click-only" was measured for an
+open-floor click and *assumed* for a box-placed marker; and **the compound sweep is still
+uncharacterised** — whether it is steerable, and whether it could produce a phase dot0's own kicks
+cannot, which is precisely the counter-example premises 2 and 3 need.
+
+*This is the shape a stuck level should end in. Not "we tried a lot", but "here are five facts, here
+is the contradiction they force, and here is which one to break." A future session attacks a premise
+instead of re-deriving a board.*
+
+## 2026-08-16 — ka59: premises 2+3 HOLD under a real sweep, and the compound sweep is characterised (agent, `ka59_s1..s4.py`)
+
+The structural closure was handed a target — *break premise 2 or 3 and the whole deadlock collapses* —
+and the target survived a much harder instrument than the four scattered angles that produced it.
+
+**156 arms**: all 3 dots x all 4 approach sides x offsets −18..+18 in 3-cell steps (126 reachable, 30
+NOT FOUND), producing 28 distinct kick events. **Zero displacements not congruent to 0 mod 3.**
+
+| dot | approach | pressed | displacement | mod 3 |
+|---|---|---|---|---|
+| dot0 | east / west / south(wide) / north | west / east / north / south | −15 / +15 / −12 / +15 | (0,0) |
+| dot1 | east / west / south / north / chained-north | west / east / north / south / north | −24 / +15 / −3 / +15 / −15 | (0,0) |
+| dot2 | east / west / south / north | west / east / north / south | −27 / +15 / −12 / +12 | (0,0) |
+
+Premise 2 is not independently testable — it is a corollary of premise 3 plus each dot's fixed spawn
+phase — and the same data confirms it: every dot0 landing is phase (1,2). **The box1 deadlock stands**,
+and the next premise to attack is **1** (only two flood fills have ever run, both from origins dot0 or
+its chain produced).
+
+**The compound sweep is now characterised — the *what*, not the *why*.** It is real (verified by
+re-reading dot state immediately after routing, BEFORE the explicit press) and it is
+**approach/geometry-specific, not a fixed dot-pair property**:
+
+| trigger press | dots that move | displacements | mod 3 |
+|---|---|---|---|
+| dot2 west (east approach) | dot0 + dot2 | −21, −27 | (0,0) both |
+| dot0 east (west approach) | dot0 + dot2 | +15, +9 | (0,0) both |
+| dot1 south (north approach) | dot1 + dot2 | +15, +6 | (0,0) both |
+| dot2 north (south approach, wide) | dot2 + dot1 | −12, −3 | (0,0) both |
+
+**dot0 pairs with dot2 and dot1 pairs with dot2; dot0 and dot1 were never observed pairing directly.**
+Kicking dot0 alone does *not* move dot2 — the coupling is press-specific, not a standing bond. Every
+compound landing is mod3 = (0,0) for both members, so the sweep relocates two dots at once and never
+breaks phase. Mechanism uninterpreted: a domino along the flight path, or a shared launch-eligibility
+condition independent of proximity.
+
+⚠️ **An attribution bug was caught and fixed mid-round, and it would have manufactured findings.**
+`bfs_route`'s `avoid` parameter only forbids LANDING on a dot's cells, not passing near one — so a
+route can kick an unrelated dot **during pathfinding**, before the intended press. Re-running every arm
+that reported >=2 movers with the dot state re-read immediately after routing: 8 of 9 were genuine
+same-press compounds, **1 was a route-induced false positive**. *A probe whose own navigation can
+trigger the effect it measures needs a reading taken between the navigation and the trigger.*
+
+## 2026-08-16 — ar25 L5: two searches died on the KEY, and the third diagnosis is the ticker (main thread, `ar25_s1..s3.py`)
+
+Level 5 had never had a search — 25+ probe files and 335,872 click-then-ACT arms, all sampling.
+Exhaustion looked available because **A5 is a measured byte-identical alias for the click**, collapsing
+4,096 targets into one verb already in the plain set, so `[1,2,3,4,5,7]` is a complete action set.
+
+- **`ar25_s1.py`** — board-keyed BFS. Controls all passed: deepcopy fidelity, and **a death REVERTS**
+  with a 321-cell positive control firing, so dropping `GAME_OVER` children is sound. It did not
+  converge, and the growth curve is the tell: boards +1.73 per node expanded, frontier +0.73, **dead
+  straight** at branching six. *A search converging on a finite state space does not do that* — the key
+  was separating states that are the same, and the run was enumerating action SEQUENCES. Killed at
+  10,000 nodes rather than allowed to burn its budget to a guaranteed "not exhausted".
+- **`ar25_s2.py`** — same search with **row 63 masked**, on my theory that the known per-action HUD
+  counter (the two cells the A5-vs-click check had to exclude) was the ticker. **4,263 KEYS against
+  4,263 raw boards — the mask changed nothing.** Hypothesis refuted by its own instrument, cheaply.
+- **`ar25_s3.py` found it.** Pressing the same verb twice and intersecting the two deltas: **181 cells
+  change on BOTH presses, bbox (0,12)-(62,14), colour 9 at entry** — **a full-width, 3-row band that
+  advances every action.** That is the "moving comb" this level's own write-up names when it explains
+  colour 4 as occlusion paint. A board-derived key can never converge while the comb repaints part of
+  the board every action.
+
+Two facts fell out for free: **actions 3, 4 and 7 change NOTHING from the L5 entry state** (0 cells),
+while action 1 moves 318 cells, action 2 moves 345 and introduces colour 4, and action 5 moves 36.
+
+The comb is almost certainly deterministic and periodic, which makes the search tractable again —
+key on `(board with the comb's rows masked, comb phase)`, or on `(masked board, depth mod period)` if
+the comb advances with the action count, since BFS depth then fixes the phase. Being run.
+
+*Two failed searches, and the useful output of both was a growth CURVE rather than a result. A search
+that does not converge is telling you about your key, and the shape of the divergence says which
+hypothesis to test next — straight-line growth at full branching means "every child is novel", which is
+a statement about the state function, not about the game.*
+
+## 2026-08-16 — sp80: ⚠️ CORRECTION — `sp80_r5.py`'s "exhausted, no win" is a SUSPECTED FALSE NEGATIVE (agent, `sp80_s1..s5.py`)
+
+**This supersedes the sp80 entry above.** That entry recorded the offset re-key as the round's success:
+*1,860 states, frontier fully drained in 145s, versus the board-keyed search's 18,944 unexhausted.* The
+collapse was real. **The exhaustion was not, and the key is why.**
+
+I told this round to keep the offset re-key. That instruction was wrong, and the agent proved it rather
+than following it:
+
+> Keying on `(offsets from the driver to each castle, ammo, driver identity)` **omits the other three
+> bodies' absolute positions entirely** — and any of those bodies can itself have been driven and moved
+> earlier in the search. So two genuinely different boards, same driver position and ammo and identity
+> but different history for the other bodies, **alias to the same key**.
+
+**Proven live, and the positive control is what caught it.** Re-deriving level 2's known 7-action win
+by blind BFS: with the driver-relative offset key the search reported **full exhaustion at depth 7 with
+NO win**, while a scripted replay of the exact known winning line through the *identical* transition
+code succeeded with zero anomalies at every step. Switching the key to the **full absolute positions of
+all four bodies** made the blind BFS find the known win. So the instrument could not find a win it was
+standing on, and said "exhausted" while doing it.
+
+**Consequence: `sp80_r5.py`'s result is not a null about level 3, it is a null about that key** — and it
+is now suspect independently of the occlusion-drop problem it was already known to have.
+
+*The general form is worth more than the sp80 fact: a state key that omits part of the mutable state
+does not merely lose states, it MERGES them, and a merged search reports EXHAUSTION — the most
+confident possible negative — while silently pruning the answer. Only a positive control on a win you
+already possess can catch it, because every other symptom looks like a hard level.*
+
+### And the occlusion subgraph is recovered — 2,972 of 2,987
+
+The 2,987 dropped transitions were never a mystery about the game; they were a reading artifact, and
+two measurements settle it:
+
+- **Non-driven bodies provably never move** (all four arrows displace only the driven body, exactly
+  4px on its axis, clamped at edges).
+- **A covered body's visible bbox shrinks from the covered side** under partial occlusion, vanishes at
+  full overlap (blob count 4→3), and reappears correctly on separation — while the driver's own blob
+  stays undistorted, because it draws on top and is never itself occluded.
+
+So the fix is to stop re-reading them: a non-driven body's position is learned once from an unoccluded
+bootstrap and carried forward, and a transfer is resolved by matching the post-action colour-9 position
+against the four stored positions. That recovers **2,972 of the 2,987** (down to 15 unresolvable "no id
+matched" anomalies).
+
+**The 330 `multimove` cases are explained and were never real**: in all 8 sampled, the driver moved by
+its own known displacement AND a *static* body's reported x0 shifted one lattice step perpendicular —
+exactly the partial-occlusion pixel effect above, on a body sharing a row or column with the driver's
+new position. **Zero of the 8 were a second-order move.**
+
+**Where the search stands**: 25,644 states, 6,910 nodes expanded in 540s, **frontier 17,723 and still
+growing**, no win. A time-bounded null, explicitly not a proof, at ~12.8 nodes/s. Caveats the agent
+flagged rather than buried: 1,695 "transfer_multi_match" cases are resolved by a plausible but unproven
+heuristic (prefer the current/clicked id), and 15 "transfer_no_match" cases are unexplained and could
+be a third mechanism or a residual instrument gap.
+
+## 2026-08-16 — ar25 L5: an exhaustion at 21 states, HELD PENDING one reconciliation (agent `ar25_t1.py` + main-thread check `ar25_v1.py`)
+
+An agent reports level 5's reachable graph **EXHAUSTED at 21 distinct keys, divergence 0, no win** —
+which would be a proof and would close ar25's remaining four levels. It is recorded here as **held, not
+banked**, because the same report flags a contradiction it could not resolve, and a proof with an
+unexplained inconsistency in it is not a proof yet.
+
+**What the search established, and this part is solid:**
+- **THE COMB: step 3 rows per real press, 21 distinct phases, and it CLAMPS rather than wrapping** —
+  at phase 0 and phase 60 the press is itself blocked. Direction is verb-dependent (action 1
+  decrements, action 2 increments). **It does not advance on blocked presses** — measured directly,
+  action 3 pressed 60 times from entry, 0 of 60 produced any diff.
+- **A SECOND ticker, found by round-trip validation** (action1-then-action2 is net-zero yet did not
+  return to the entry key): two things bundled — a decorative colour-0 dash lattice flipping in place,
+  and **a second HUD counter at COLUMN 63** (colour 11→12, rows 0-2), the twin of the known row-63 one.
+- **A false lead chased and killed inside the round**: colour 11's total count drops by 1 per real
+  press regardless of direction, which looked like the band permanently eroding a target. Measuring the
+  target blob directly (207 cells, rows ~15-41, column 63 excluded) shows it never changes under any
+  action — the "erosion" was entirely the column-63 HUD tick.
+- Key validation was done properly: mask-keeps-signal PASS, **0 divergence over 21 nodes x 6 actions**,
+  and **21 distinct keys against 80 distinct raw boards** — so the mask collapses 80 semantically
+  identical boards into 21 real states rather than over-masking into a trivial graph.
+
+**The contradiction, which the agent flagged rather than glossed:** the campaign's standing L5 numbers
+are *W's position space is 441 (21x21)* and *S's reachable rectangle is 289*. A graph of 21 states
+cannot contain those. And **21 is exactly the number of band phases** — i.e. under this key nothing
+except the comb ever changes anywhere in the reachable graph.
+
+**Main-thread verification (`ar25_v1.py`), and it does not refute the result:** centroid and cell count
+of every colour on the RAW board, no mask, over 12 presses of each verb.
+- actions **3, 4 and 7: no colour's centroid moves at all**;
+- **colour 10 moves a lot but is PAINT** — count goes **288 → 328 under both action 1 and action 2**,
+  the same +40, centroid travelling in opposite directions: that is the band painting, not a piece;
+- **colour 11 moves 0.5-1.4px with its count falling** — the column-63 HUD tick the agent identified;
+- **no compact colour makes a clean rigid translation under any verb.**
+
+**So the search is not obviously wrong. It is unreconciled**, on two points that are one point seen
+twice: **colour 5 holds exactly 151 cells**, and the standing note reads *"the joint (W row x S phase)
+surface maxes at 99/151"* — that 151 is almost certainly this object, which makes colour 5 the thing
+every earlier round measured, and the agent **never once observed it move**. Meanwhile the search's
+action set includes A5, a measured byte-identical alias for the click, so selection should have been
+reachable inside it and movement after selection should have expanded the graph. It did not.
+
+Being settled now: identify W and S by driving `mirror.py`'s `L4_LINE` on **level 4**, where they
+demonstrably move, and matching the colour that translates rigidly; then check whether that colour is
+inside the band rows the key zeroes; then ask whether pressing A5 changes what any arrow subsequently
+does on L5 at all.
+
+*The rule this is being held to: an exhaustion proof is only as good as the claim that its key preserves
+every mobile object, and "mask keeps signal" proves that SOME signal survives — never that the PIECE
+does. The number that made this suspicious was not an error in the output; it was 21 matching another
+21 that had no reason to be the same.*
+
+## 2026-08-16 — sp80: a SECOND instrument correction, and the property it reveals (agent, `sp80_s6/s7.py`)
+
+**The 15 `transfer_no_match` anomalies were not a third mechanism. They were fallout from a bug in the
+search's own transition function**, found by reading the code rather than by chasing examples:
+
+> `sp80_s5.py`'s plain-action loop treated **FIRE (action 5) as pure movement**, always relabelling the
+> *current* driver's position — on a game whose own recorded model says **FIRE can TRANSFER control**
+> (return-to-driven from a block, or grab block2 inside castle0's zone).
+
+So every real FIRE-transfer silently corrupted the tracked state **and flagged nothing**. Fixed to
+resolve exactly like CLICK — match the post-action colour-9 position against all four stored positions
+— and re-running gives **0 no_match anomalies in 5,124 expansions / 17,249 states**.
+
+⚠️ **Blast radius: the previous round's headline (25,644 states, frontier 17,723, no win) was computed
+with this bug in place.** It is not superseded in the ordinary sense — it was measuring a **different
+transition function**. Nobody should quote it.
+
+**That is the second instrument correction on sp80 in two rounds** (the first being the offset key that
+merged states and reported exhaustion at depth 7 on a level whose win it was standing on), and both
+were caught by the agent's own checks rather than by the output looking wrong. Which is the property
+worth naming:
+
+> **On this search, every wrong version still runs to completion and still reports a number.** A merged
+> key reports EXHAUSTED. A corrupted transition reports states and a frontier. Neither errors, neither
+> stalls, neither produces a shape a reader would question. The only things that have ever caught them
+> are a positive control on a win already possessed, and reading the transition code against the game's
+> own documented model.
+
+**The multi_match fork is real, and small.** Running the corrected search twice for 200s with opposite
+tie-breaks: run A (prefer current driver) 30 multi_match events, 24 resolved by keeping current; run B
+(prefer other) 34 events, 0 kept current. Comparing reachable physical configurations with the driver
+label stripped: **3,704 states in common, 12 only in A, 1 only in B** — a ~0.35% fork, so the caveat
+does **not** dissolve. Honest qualifier from the agent: neither run exhausted, so part of that gap may
+be BFS-order or budget noise rather than true divergence.
+
+The long convergence run is being collected. The deciding instrument remains the growth curve, and it
+must be read **from the corrected run only** — the FIRE fix changes the transition function, so
+anything measured before it belongs to a different search.
+
+### sp80 L3 growth curve, from the FIRE-corrected run (2026-08-16, `sp80_s8.py`, partial)
+
+| expanded | states | frontier | d_states/2000 | d_frontier/2000 | anomalies | t(s) |
+|---|---|---|---|---|---|---|
+| 2,000 | 7,355 | 5,355 | 7,354 | 5,354 | 28 | 154 |
+| 4,000 | 13,518 | 9,518 | 6,163 | 4,163 | 102 | 310 |
+| 6,000 | 19,710 | 13,710 | 6,192 | 4,192 | 178 | 471 |
+| 8,000 | 25,829 | 17,829 | 6,119 | 4,119 | 206 | 629 |
+| 10,000 | 31,580 | 21,580 | 5,751 | 3,751 | 249 | 789 |
+| 12,000 | 36,788 | 24,788 | 5,208 | 3,208 | 306 | 954 |
+
+`d_frontier/2000` changes by −1191, +29, −73, −368, −543 over successive windows: **declining, and
+accelerating.** That is emphatically **not** the flat, straight-line signature that would mean the key
+still omits state — the shape that killed two earlier searches on this game and both searches on ar25
+level 5 today. **The key is sound; the space is merely large**, and saying so is itself a result after
+two rounds that diagnosed the opposite.
+
+Extrapolated forward from the table at ~12.6 nodes/s with the decline continuing at roughly 500 per
+window: the frontier **peaks near 36,700 at ~26,000 expanded** and falls from there. The 3,000s budget
+reaches roughly **38,000 expanded with a frontier still around 27,000** — so **the run will not
+exhaust**, and its ending must be reported as a curve plus an extrapolation rather than as a null.
+
+*A converging curve turns "we searched and found nothing" into "here is the node count at which this
+becomes a proof, and here is what it costs in wall-clock" — which is a decision a future session can
+actually make, rather than a number it has to re-derive.*
+
+## 2026-08-16 — the deepcopy frontier is a MEMORY wall, and it is repo-wide (main thread)
+
+The sp80 convergence run reported **6.3 GB RSS at 12,000 nodes expanded**, holding `deepcopy(env)`
+objects in its frontier. Its own growth curve projects a frontier peak near **36,700** at ~26,000
+expanded — roughly three times the current size, so **on the order of 20 GB**, on a 32 GB box that was
+also running a second agent's searches and the user's session.
+
+That run does not finish. It dies partway, having produced nothing beyond the checkpoints already
+collected, and it can swap the machine on the way there. Killed; the box came back clean (largest
+python process 0.08 GB, **14.6 GB free of 31.8 GB**).
+
+**The constraint is structural, not incidental to this run.** `copy.deepcopy(env)` is legal, faithful
+and ~3 ms — which is why this campaign uses it everywhere — but that measurement is about
+**expansion**, and it has been silently generalised into **storage**. `bfs_solve.py` and every ad-hoc
+search probe in the repo hold env objects in their frontier.
+
+Two fixes, both cheap to implement and neither free:
+- **Frontier of ACTION PATHS**, rebuilding the env by replay when a node is popped. Memory becomes
+  trivial. At depth ~20 replay costs ~60 ms against ~3 ms — a **~20x slowdown that must be priced into
+  any wall-clock estimate**, not waved away.
+- **Layer-by-layer BFS**: keep envs only for the layer being expanded, emit the next layer as paths,
+  rebuild once per layer. Memory bounds to one layer, and each node is replayed once rather than once
+  per pop.
+
+Added to `CLAUDE.md`'s traps list, because the next search written here will otherwise inherit the
+same shape.
+
+*The general form: a per-node cost measured once ("deepcopy is 3 ms, therefore deepcopy nodes are
+cheap") is a claim about TIME, and a search's frontier is a claim about SPACE. The first measurement
+does not license the second, and the failure it hides does not look like a slow run — it looks like a
+run that vanishes.*
+
+## 2026-08-16 — ar25 L5: the 21-state proof is RETRACTED, and the reason generalises (agent, `ar25_t2/t3.py`)
+
+**The hold was right.** `ar25_t1.py`'s "EXHAUSTED at 21 states, 0 divergence, no win" is withdrawn by
+its own author, and the root cause is the most transferable finding of the session.
+
+**What the key could not see: a BOARD-INVISIBLE SELECTION STATE with a period-3 cycle in the raw A5
+press count.** Measured at two band phases with two different arrow verbs:
+
+| `n mod 3` (A5 presses) | what the arrows do |
+|---|---|
+| 0 | move the **band**; the piece is held |
+| 1 | **nothing moves** — inert (and this phase looked "unselected" to the old key) |
+| 2 | move the **PIECE** by 3px (rows for 1/2, columns for 3/4); the band is held |
+
+Selection survives an intervening non-A5 action (`A5, A5, action3, action1` still moves the piece), so
+it is history, not board state — **nothing on the board says which phase you are in, so no
+board-derived key could ever have represented it.**
+
+**And the piece was identified properly rather than guessed**: driving `mirror.py`'s `L4_LINE` on
+**level 4**, where pieces demonstrably move, a colour-5 component of 48 cells translates rigidly by
+3px. At the L5 entry colour 5 splits into a 63-cell row-63 HUD line and an **88-cell blob at rows
+36-50, cols 42-56** — the piece. It becomes selectable exactly at `sel_phase == 2`, which lines up with
+the standing fact **A5x2 = click(S)**, so **colour 5 = S**. W was not found as a separate movable
+object; the best-supported hypothesis is that **W is the band itself** (driven by default at
+`sel_phase == 0`), whose 1-D phase range is exactly **21** — matching the 21 in "441 = 21x21" — but the
+second axis was not found, and this is flagged as a hypothesis, not a finding.
+
+### ⚠️ Why the divergence check read zero, and this is the part worth carrying to every search
+
+> **The `seen`-set collision dropped the node BEFORE its successors were ever computed, so the
+> divergence counter never got the chance to fire.**
+
+A divergence check that sits **downstream of a dedup** cannot detect a key that merges states, because
+the merge happens first. **Zero divergence under a merging key is not evidence of soundness — it is
+the merge working.** Every other control passed too: deepcopy fidelity, death-reverts, mask-keeps-
+signal, and 21 keys against 80 raw boards (so the mask was demonstrably not over-collapsing). *A full
+set of green controls, and the one thing none of them could see was the thing that was wrong.*
+
+The identical shape hit **sp80 the same day** under a completely different key — an offset re-key that
+merged states and reported exhaustion at depth 7 on a level whose win it was standing on. Two games,
+two keys, one failure mode: **a search cannot audit a state function from inside itself.** What caught
+it in both cases was external: on sp80 a positive control on a win already possessed; here a
+main-thread challenge to a number (21) that matched another 21 with no reason to.
+
+**The corrected key** — board with colour-0 dashes undone and colour-10 wall undone (deliberately NOT
+row-windowed, since a windowed mask could erase the piece whenever it sat in the band's rows), HUD row
+and column zeroed, plus `band_phase` **and `sel_phase`** carried through the BFS like depth (+1 mod 3
+iff the action is 5) — is validated by the two assertions that matter: `selected-then-action1` key
+**!=** `unselected-action1` key (the exact case the old key got wrong), and `A5x3-then-action1` key
+**==** `unselected-action1` key (the phase wraps).
+
+Re-run under it: **5,396 nodes, 6,712 distinct keys against 18,022 raw boards, frontier 1,316, 0
+divergence, no win, NOT exhausted** — budget-bound at 540s, not stuck. **A frontier of 1,316 is close**,
+and finishing it is the next step.
+
+## 2026-08-16 — sp80 L3: converging, priced, and handed over (agent, `sp80_s6..s9.py`)
+
+The round asked for a decision rather than a result, and produced one.
+
+- **The path-only frontier was cross-validated, not assumed**: `sp80_s9.py`'s states and frontier at
+  expanded 2,000 / 4,000 / 6,000 are **byte-identical** to the env-frontier run's (7,355/5,355 ·
+  13,518/9,518 · 19,710/13,710). Changing how nodes are stored changed nothing about which are visited.
+- **The replay cost is far below the worst case**: **11.31 nodes/s** against ~12.6-12.8 with envs —
+  a **10-12% slowdown, not 20x** — because replay is O(depth) and `MAX_DEPTH=40` bounds it near
+  120-160ms/node. Memory stays trivial by construction (a `seq`+`pos` tuple against a ~500KB deepcopy).
+- **The curve, corrected-transition only** (the pre-FIRE-fix curve is void): `d_frontier/2000` running
+  5354 → 4163 → 4192 → 4119 → 3751 → 3208, successive changes −1191, +29, −73, −368, −543. **Declining
+  and accelerating.**
+- **Priced**: peak frontier **30,000-37,000** around expanded **20,000-26,000**, total exhaustion on
+  the order of **40,000-55,000 expanded nodes ≈ 1-1.7 hours** of continuous, memory-safe background
+  compute. Explicitly an order-of-magnitude estimate off six curve points with a noisy second
+  derivative.
+- Named as missing: **checkpointing** — `sp80_s9.py` restarts from the L3 root each call, so a long run
+  should save the frontier and `seen` set between invocations rather than re-deriving the first 12,000
+  nodes.
+
+**Launched from the main thread** as `sp80_s10.py` (the same file with `TIME_BUDGET_S` 540 → 7200), in
+the background, where it survives across turns — unlike an agent's own background job, which dies with
+the agent.
+
+### ar25 L5, chained under the corrected key — and a stop condition I got wrong (2026-08-16, `ar25_t4.py`)
+
+| run | nodes expanded (cum.) | distinct keys (cum.) | frontier | elapsed |
+|---|---|---|---|---|
+| 1 | 4,614 | 5,720 | 1,106 | 500.1s |
+| 2 | 8,885 | 11,215 | 2,330 | 500.0s |
+
+Divergence **0** across both, deaths 0, raw boards 53,311 at the 8,885-node mark — **11,215 keys against
+53,311 raw, a 4.75x collapse**, and both `sel_phase` assertions re-asserted and printed at the top of
+every invocation rather than cited from the file that first proved them. The frontier is path-based and
+checkpointed, never an env object, per the 6.3 GB lesson from sp80 the same day.
+
+**I told the agent to stop if the frontier turned and climbed. That rule was wrong here, and it cost
+the run.** A climbing frontier is a valid end-of-search signal only *near* the end: in a BFS over a
+finite graph, distinct keys grow near-linearly and the frontier keeps widening until the exploration
+passes the largest shell — the new-keys-per-node ratio falls only as the search begins re-finding old
+states, i.e. near saturation. At **11,215 keys against the model's own ~18,000** (289 piece positions x
+21 band phases x 3 sel phases) the search is around **62% explored**, and a ratio of 1.24 → 1.29 is
+exactly what 62% looks like. It would be alarming at 95%.
+
+Resumed with a stop rule that can actually distinguish the two cases:
+1. **exhausted** — frontier 0 (the proof);
+2. **model refuted** — keys pass ~36,000 (2x predicted) with the ratio still >= ~1.2, which would mean a
+   second independently-movable object exists and the model is missing it;
+3. **budget** — four more chained blocks, then report the curve priced in nodes and wall-clock.
+
+*The general form: a termination heuristic borrowed from the END of a process is not valid at its
+MIDDLE, and the tell is that it fires while every soundness check is still green. I read "frontier
+climbing" as a symptom when it was a phase.*
+
+If condition 2 fires the next question is already framed. The game's own mechanic is *the player and a
+MIRROR sprite move in lockstep, vertical the same and horizontal opposite* — so there should be **two**
+sprites, and only one 88-cell colour-5 blob has been found. Either the mirror is derived from the piece
+(no extra state) or it is independently drivable (a great deal of extra state), and a space twice the
+predicted size is exactly what the second would look like.
+
+## 2026-08-16 — sp80 L3: the 2h run finished, and it REFUTES the exhaustion estimate (main thread, `sp80_s10.py`)
+
+Ran `sp80_s9.py` with `TIME_BUDGET_S` 540 → 7200 from the main thread, where a background job survives
+across turns. Completed cleanly, exit 0.
+
+| | |
+|---|---|
+| expanded | **72,684** |
+| elapsed | 7,200s at **10.09 nodes/s** |
+| states visited | **192,247** |
+| frontier | **118,643** |
+| replay cost | 1,403s = **19.5%** of wall-clock |
+| exhausted | **False** |
+| win | none |
+
+**The priced estimate was wrong, and by a lot.** The previous round extrapolated exhaustion at
+**40,000-55,000 expanded nodes ≈ 1-1.7 hours** from six curve points, explicitly labelled an
+order-of-magnitude figure. At **72,684 expanded the frontier is still growing** — 118,643 and climbing
+by ~2,683 per 2,000 nodes.
+
+Re-derived from the tail of the real curve: new-states-per-node runs 2.585 → 2.595 → 2.450 → 2.388 →
+**2.341**, declining roughly 0.06 per 2,000-node window. **The frontier stops growing when that ratio
+reaches 1.0**, which at the observed rate is ~45 more windows ≈ **90,000 more expanded nodes**, and the
+frontier peaks far above 118,643 before it drains. A realistic total is **on the order of 300,000-500,000
+expanded nodes ≈ 8-14 hours** of continuous compute, not one to two.
+
+*The lesson is about the extrapolation, not the agent that made it: six points with a visibly noisy
+second derivative supported a factor-of-ten error, and the estimate was labelled as such and believed
+anyway — by me, when I sized a 2-hour run from it. **A range quoted with its own caveat still gets
+spent as if it were the midpoint.** The honest form is to size the run from the pessimistic end, or to
+run until the ratio itself crosses a threshold rather than until a predicted node count.*
+
+**Anomalies at scale:** `transfer_no_match` **0** (the FIRE fix holds across 72k expansions — that is a
+strong confirmation), `driver_blob_count` **0**, and `transfer_multi_match` **3,730** — of which
+**2,254 had the driver id NOT among the matches**. That is the majority, so the tie-break heuristic is
+now load-bearing at a scale where the earlier 12-vs-1 fork measurement no longer bounds its effect.
+Any future run needs that resolved before its null means anything.
+
+Fire coverage by driver identity, tabulated: **all four ids reached and fired from** — 18,390 / 19,493
+/ 14,890 / 19,353. So "a specific body must fire last" stays refuted at this much larger scale.
+
+**Priced honestly for a future session**: exhaustion is an overnight job, not an afternoon one, and it
+needs checkpointing first (`sp80_s9/s10.py` restart from the L3 root each invocation) plus a decision
+on the multi_match tie-break. Whether that is worth an overnight run against the other open levers is
+a judgement call, not an obvious yes.
+
+## 2026-08-16 — operational: the weekly agent limit was reached
+
+The last agent (ar25 L5, chained BFS) terminated on `You've hit your weekly limit · resets 9pm
+(Asia/Bangkok)`. No further subagents this session. Its work is not lost — `ar25_t4.py` checkpoints a
+**path-based** frontier and has a `--report` mode that reproduces the curve from the checkpoint alone,
+so a future session resumes rather than re-derives. State at the cut: **8,885 expanded, 11,215 distinct
+keys, frontier 2,330, divergence 0**, against a model predicting ~18,000 states — roughly 62% explored,
+with the corrected key that represents `sel_phase`.
+
+## 2026-08-16 — delegating the probe-writing to codex: what worked, what the lane cannot do
+
+Claude's weekly agent limit was reached, so the fan-out moved to `codex exec` (ChatGPT subscription,
+zero Claude tokens). Three constraints were found by probing rather than assuming, and they decide the
+shape of every future codex round on this repo.
+
+**1. `codexReady()` → ok. Transport works: cwd resolves to `/mnt/c/Users/.../arc-agi-3-agent`.**
+
+**2. ⚠️ codex CANNOT RUN ANYTHING in this repo.** A smoke test asking it to run
+`./.venv/Scripts/python.exe -c "import sys; print(sys.version)"` returned
+`WSL ERROR: UtilBindVsockAnyPort:309: socket failed 1` — codex lives in WSL and the repo's venv is a
+**Windows** executable, unreachable across the interop boundary. So codex is a **writer only** here.
+That is the skill's own "a delegate that cannot run its tests writes tests that were never run",
+arriving as a hard platform fact rather than a discipline.
+
+**3. The forbidden-directory audit came back CLEAN, and was worth running.** The rollout log
+(`~/.codex/sessions/…/rollout-*.jsonl` inside WSL) showed 4 mentions of `environment_files`: two are my
+own prohibition text echoed in the prompt, one is codex stating it will not inspect it, and the tool
+calls contain a single `exec`. No read. *The sandbox bounds writes, never reads — so this audit is the
+only thing standing between a delegated run and a poisoned result, and it has to be run every time.*
+
+**Two wrapper failures, both instructive:**
+- **`codex-run.js` is not safe to run in parallel.** Two simultaneous invocations collided on a fixed
+  worktree name: `fatal: Unable to create '.git/worktrees/wt/index.lock': File exists`. The skill
+  recommends process-level parallelism as the default fan-out shape; this wrapper needs a unique
+  worktree name per run before that is available.
+- **`TOKEN_CAP` at 61,514 > 60,000 — and the file was written anyway.** `ka59_x1.py`, 9,324 bytes, was
+  sitting in the worktree. Exactly as the skill warns: the cap bites at the END, during self-review,
+  after the useful work is on disk. **Check the worktree before reading a non-`OK` status as nothing.**
+
+### The delegated probe: geometry verified, verdict VOID
+
+`ka59_x1.py` was well-shaped — a positive control, geometry derived from the board rather than
+hard-coded, an explicit nine-phase closure, a plain final verdict. It failed once on a runtime fact
+codex could not have known (`ferry.act()` returns a **tuple** for an aimed click, not an int — and
+clicks are ka59's whole mechanic, so it fired on the first round), which I fixed in the main thread.
+
+Then it ran, and **its geometry half is independently correct** — it re-derived, from the board alone,
+the same figures I had measured in the main thread hours earlier: **moat = full-height columns
+(21, 29)**, **internal band = full-width rows (24, 29)**, **box1 interior bbox (9,11)-(9,14)**.
+
+**And its verdict is void, refuted by its own printed intermediate.** It reported *all nine phases
+reach box1*, which would demolish premise 1 outright — but two lines above, it printed
+`piece anchor/size: (37, 55) / (1, 1)`. **A 1x1 piece.** Its `piece_shape` looks for colour 0, and a
+census confirms colour **0 has exactly one cell on the whole board**. It was flood-filling a point,
+which naturally reaches everything, so "YES" nine times is a property of the reader and not of the
+game. (The census also confirms **colour 5 is the three DOTS at sizes 4, 2, 2** — matching the agent
+table's 2x2, 1x2, 2x1 exactly — so the piece is neither.)
+
+**The correct next step is to use `ferry.py`'s own piece reader rather than guessing a colour**, which
+is what every campaign probe that worked has done.
+
+*The loop functioned exactly as designed: the delegate's LOCATIONS were findings and its CONCLUSION was
+a hypothesis, and the hypothesis died on a number the delegate itself printed. Worth noting how nearly
+it survived — the verdict was clean, confident, formatted as asked, and would have retracted a
+five-premise structural argument. What killed it was reading the two lines above the answer.*
+
+## 2026-08-16 — ka59 premise 1: CONFIRMED, and upgraded from "we looked" to a structural fact (`ka59_x2.py`)
+
+The level-2 closure named premise 1 as the most attackable of its five. It is now the most solid.
+
+**The walk graph on ka59 level 2 partitions into 27 connected components, and every component is
+PHASE-PURE** — each holds exactly one `(x mod 3, y mod 3)` class. That is the phase law appearing as
+graph structure rather than as an observation about particular flood fills.
+
+| landmark | position | component | phase |
+|---|---|---|---|
+| the piece | (37, 55) | **22** | (1, 1) |
+| box2 (the piece's own station) | centre (52, 52) | **22** | (1, 1) |
+| box1 | centre (10, 11) | 8 | **(1, 2)** |
+| box3 | centre (56, 40) | 25 | (2, 1) |
+| box0 | centre (8, 44) | 17 | — |
+
+So from the start the piece can walk to **box2 and nothing else**; every other box needs a click.
+
+**Premise 1 no longer rests on two flood fills that did not happen to find a way in.** box1's centre is
+at (10, 11), and 10 mod 3 = 1, 11 mod 3 = 2 — so its component is phase **(1,2)** by construction, and
+because components are phase-pure, a cell of phase (1,2) is reachable **only** from phase (1,2). The
+premise is structural.
+
+**A sharper fact than the closure had**: **box3 is on the SAME side of both barriers as the piece**
+(x=56 and x=37, both right of the moat at columns 21-29) **and is still unreachable** — component 25,
+phase (2,1), against the piece's 22, phase (1,1). *Phase alone separates them, with no barrier
+involved.* The moat and the internal band are not the only things partitioning this board; the lattice
+is.
+
+Both barriers re-derived here as controls: **moat = full-height non-background columns 21-29** and
+**internal band = full-width non-background rows 24-29** — matching the main-thread measurement from
+earlier today exactly.
+
+### Two errors on the way, and the second is mine
+
+- **The delegate's probe (`ka59_x1.py`) unioned the closures of EVERY walkable cell of a phase** and
+  then asked whether box1 was in the union. Cells *inside box1* are themselves walkable cells of some
+  phase, so the test was circular — box1 is reachable from box1 — and it answered YES nine times out of
+  nine. The union also hides disconnection: a phase that splits into three components still unions to
+  its own seed count, which is exactly the `closure == seeds` line its output showed for all nine.
+- **My first diagnosis of that was wrong too.** It printed `piece anchor/size: (37,55) / (1,1)` and a
+  census shows colour 0 holds exactly one cell, so I called it a 1x1-piece bug. But `ferry.py`'s own
+  `find_cell()` defines the piece as *"one cell, or a tight cluster"* — a single-cell piece is this
+  game's real shape. The bug was the union, not the reader.
+- **And my own probe failed its own control first**: `C2 piece start in walkable set: FAIL`, because
+  the piece's cell reads as non-background — it *is* the piece. A model that cannot place the piece
+  where it demonstrably stands is wrong, and the control is the only reason that surfaced before the
+  verdict did. Fixed by adding the piece's cell (and the dots' cells, which become ground once a swap
+  moves them) to the walkable set.
+
+*Three wrong answers in one probe chain, each caught by something printed above the verdict rather than
+by the verdict looking wrong. The delegate's circular union, my misdiagnosis of it, and my own model's
+missing cell — none of them errored, all three produced a clean confident result.*
+
+## 2026-08-16 — ka59 level 2, as ONE map (`ka59_x3.py`)
+
+With the phase-pure component partition from `ka59_x2.py`, the whole level reduces to a reachability
+table with no search in it. Computed from the board alone, all four controls passing (both barriers
+re-derived and non-empty; the piece's own cell walkable; 27 components; **every component phase-pure**):
+
+| region | components | contains |
+|---|---|---|
+| RIGHT | 18-26 (all nine phases) | **the piece starts here (22, phase (1,1))** · box3 · box2 |
+| LEFT-TOP | 0, 1, 2, 6, 7, 8, 12, 13, 14 | **box1** |
+| LEFT-BOTTOM | 3, 4, 5, 9, 10, 11, 15, 16, 17 | **box0** |
+
+Each box interior spans **all nine phases** of its own region (box1 18 cells, box3 18, box0 36, box2 9),
+so standing in a box is a question about REGION, not about phase.
+
+**Without kicks the piece cannot leave the right region at all** — the generous union over every
+component any dot's cells touch is exactly `[18..26]`. So box3 and box2 are fillable and **box1 and
+box0 are not**. That matches every measured result on this level and explains why the kick is a
+required mechanic rather than a shortcut.
+
+**And the gap this file declared in its own docstring is closed by its own numbers.** dot0 was measured
+kicked (34,44) → (19,44): `34 mod 3 == 19 mod 3 == 1`, so the flight **preserves phase and changes
+component**, carrying the dot from the right region into the left. That is the kick's entire function
+here — it is the only operation in the game that moves anything between regions.
+
+### The win line, as a skeleton the map forces
+
+A box is filled by standing **inside** it and clicking any dot: the dot lands on the piece's old cell
+(inside the box) and the piece teleports to where the dot was. **Clicks have no proximity requirement**,
+so the dot may be anywhere. Three dots, one click each, three boxes to fill, and the piece must finish
+in box2 (whose interior matches the piece — the fourth size-match).
+
+1. stand in **box3** (right region, reachable by walking) → click a dot **pre-kicked into the
+   left-bottom region** → box3 filled, piece crosses to that dot's position;
+2. walk into **box0** → click a dot **pre-kicked into the left-top region** → box0 filled, piece crosses;
+3. walk into **box1** → click the **third dot, still in the RIGHT region** → box1 filled, and the piece
+   teleports back across to the right;
+4. walk to **box2** and stop.
+
+Every kick happens first, while the piece is still on the right and everything is reachable.
+
+**What is left to compute is one table**: for each dot, the set of components it can be KICKED into
+(slide-until-blocked, phase preserved). The skeleton above is satisfiable iff that table contains a
+left-bottom component for one dot and a left-top component for another, with the third left in place.
+
+### Three wrong answers on the way to that map, none of which errored
+
+- **The delegate's probe unioned the closures of every walkable cell of a phase** and asked whether box1
+  was in the union — but cells *inside* box1 are themselves such cells, so the test was circular and
+  answered YES nine times of nine.
+- **My first diagnosis of that was also wrong**: I blamed a 1x1 piece reading, but `ferry.py`'s own
+  `find_cell()` defines the piece as *"one cell, or a tight cluster"*, so a single-cell piece is this
+  game's real shape. The bug was the union.
+- **Then my own probe tested each box's CENTRE**, and a 6x6 interior spans all nine phases — so a
+  centre's phase says nothing about whether the box can be entered. Its first verdict ("only box2 is
+  ever reachable") was void for that reason, and the corrected run says box3 is reachable too.
+
+*Each of the three produced a clean, confident, correctly-formatted verdict. What caught all three was a
+line printed above the answer — the seed count, the piece size, the interior cell count.*
+
+## 2026-08-16 — ka59 L2: an EXECUTABLE win candidate, built entirely from already-measured kicks (`ka59_x4.py`)
+
+Mapping the thirteen previously-measured kick landings onto the component partition closes the map.
+Every measured flight preserves phase (`from mod 3 == to mod 3`, checked per row) and several cross
+regions:
+
+| dot | regions it has been MEASURED to reach |
+|---|---|
+| dot0 | LEFT-BOTTOM (box0) · RIGHT |
+| **dot1** | LEFT-BOTTOM · **LEFT-TOP (box1)** · RIGHT |
+| dot2 | LEFT-BOTTOM · RIGHT |
+
+**dot1 is the only dot measured able to reach LEFT-TOP**, via the chained kick (41,34) → (17,34) →
+(17,19), landing in component 13.
+
+### The candidate line — satisfiable with no new search
+
+1. **Pre-kick, all while the piece is still on the right and everything is reachable:** dot1 west then
+   chained north → **(17,19), LEFT-TOP**; dot0 west → **(19,44), LEFT-BOTTOM**; leave dot2 in the RIGHT.
+2. stand in **box3** (right region, walkable from the start) → click **dot0** → box3 filled, piece
+   crosses to (19,44), LEFT-BOTTOM.
+3. walk into **box0** → click **dot1** → box0 filled, piece crosses to (17,19), LEFT-TOP.
+4. walk into **box1** → click **dot2** (still on the right — **clicks have no proximity requirement**)
+   → box1 filled, and the piece is thrown back to the RIGHT.
+5. walk into **box2** and stop.
+
+Four targets, three clicks, the piece ending in box2 — whose interior is the fourth size-match, the one
+that matches the PIECE.
+
+### Why this contradicts premise 5, and why that may be the point
+
+The size-match pairing is box1↔dot0, box3↔dot1, box0↔dot2. The line above pairs box3←dot0,
+box0←dot1, box1←dot2 — the wrong pairing on all three.
+
+**But the matched pairing is not reachable under the measured kicks.** It would require the piece to
+arrive in LEFT-TOP by clicking **dot2** (since box1 must be filled by dot0, the click that lands the
+piece in box1's region has to be a different dot), and **dot2 has never been measured reaching
+LEFT-TOP**. Only dot1 has.
+
+So exactly one of these is true, and both are testable:
+- **the pairing is required** → then the open question is whether **dot0 or dot2 can chain a second
+  kick north** from their LEFT-BOTTOM landing, which is the untested item an earlier round flagged in
+  its own "what I did not cover" (only dot1's chain was ever tried);
+- **the pairing is not required** → then the line above wins, and the reason `r20` failed with all
+  three boxes filled is not the pairing at all: **`r20` left the piece at (44,48)**, not in box2. *No
+  experiment on this level has ever controlled the fill set and the piece's final position at the same
+  time* — r20 controlled the fills and not the ending; r22 controlled the pairing and left box1 empty.
+
+Either way ka59 level 2 is now **one drive** from an answer rather than one insight, and the drive
+reuses machinery that already exists (`bfs_route` from the earlier rounds routes on the 3-lattice, and
+the kick approach geometry for both required kicks is recorded).
+
+*The reduction came from refusing three clean verdicts in a row — a delegate's circular union, my own
+misdiagnosis of it, and my own centre-instead-of-interior test — and each time the refutation was a
+number printed above the answer rather than anything wrong with the answer's shape.*
+
+## 2026-08-16 — ar25 L5: the position model is REFUTED by a factor of two (agent, `ar25_t4.py`, 7 chained runs)
+
+Seven chained 500s runs on the checkpointed, path-based, `sel_phase`-aware search:
+
+| run | expanded | distinct keys | frontier | Δkeys | ratio |
+|---|---|---|---|---|---|
+| 1 | 4,614 | 5,720 | 1,106 | 5,719 | 1.24 |
+| 2 | 8,885 | 11,215 | 2,330 | 5,495 | 1.29 |
+| 3 | 13,004 | 16,319 | 3,315 | 5,104 | 1.24 |
+| 4 | 17,067 | 21,337 | 4,270 | 5,018 | 1.24 |
+| 5 | 20,383 | 25,241 | 4,858 | 3,904 | 1.18 |
+| 6 | 24,000 | 29,536 | 5,536 | 4,295 | 1.19 |
+| 7 | 28,627 | **34,909** | 6,282 | 5,373 | 1.16 |
+
+Rate stable at 8-9 nodes/s. **Frontier grew every single run** (+1,224, +985, +955, +588, +678, +746) —
+a BFS past its widest shell shows the frontier *shrinking*, and that has not started in seven runs.
+**Divergence 0 and deaths 0 across all 28,627 expansions**, with C1 (deepcopy fidelity), C2
+(death-reverts, 321-cell positive control) and both `sel_phase` identities re-verified fresh at the top
+of every process. That discipline is what makes the number below mean something.
+
+**34,909 distinct keys against a model predicting 18,207** (289 piece positions x 21 band phases x 3
+sel phases) — **1.94x, and still climbing.** The position model is refuted.
+
+⚠️ **And the gate I wrote would not have fired**, which is the second stop rule I have gotten wrong on
+this game in two rounds. I set `MODEL_REFUTED` as "keys past ~36,000 **and** ratio still >= 1.2". The
+ratio clause was meant to separate *"the space is bigger than modelled"* from *"we are approaching
+saturation"* — but by run 7 the thing it gated on had already happened, and the clause was pure
+arithmetic standing in front of it (ratio 1.16, keys 1,091 short of a threshold I picked by eye).
+*A compound gate fires on its weakest clause, so every extra condition is a new way for a true verdict
+to be withheld — and the one that withholds it will look like diligence.*
+
+**What the missing state most likely is.** The game's own mechanic is *the player and a MIRROR sprite
+move in lockstep — vertical the same, horizontal opposite*. Only **one** movable object has ever been
+found on level 5 (the 88-cell colour-5 blob at rows 36-50, cols 42-56). A mirror strictly derived from
+the piece adds no state and the model would fit; it does not fit. The natural reading is that **the
+mirror is a second independently-positioned object whose lockstep BREAKS** — most obviously when one of
+the pair is blocked by a wall and the other is not — after which the state is a PAIR of coordinates and
+the space is roughly (piece x mirror x band phase x sel phase), which is millions and **not
+BFS-exhaustible at all**.
+
+Being tested now, and it needs no search: locate both objects by driving `L4_LINE` on level 4 and
+watching for two components translating together (one matching the piece's displacement, one opposite
+in x and equal in y), then try to decouple them against a wall and read whether their offset ever
+changes.
+
+Operational note: the checkpoint is **690 MB** and growing linearly with keys. The BFS is not being
+resumed while the mirror question is open.
+
+## 2026-08-16 — ka59 L2: the candidate line RAN, and failed at the step that reconfirms premise 2 (agent, `ka59_y1.py`)
+
+The map's win candidate was driven for real. It reached **2 of 4 targets in 39 of the ~127-action
+clock** and then failed, at exactly the place the premises predict — which makes it a confirmation
+rather than a dead end.
+
+| step | action# | piece | phase | result |
+|---|---|---|---|---|
+| L2 entry | 11 | (37,55) | (1,1) | dots at (34,44) (41,34) (44,47) |
+| kick dot0 west | 15 | (37,46) | (1,1) | dot0 → **(19,44)** |
+| kick dot1 west | 25 | (46,34) | (1,1) | dot1 → **(17,34)** |
+| enter box3 | 30 | (55,40) | (1,1) | |
+| **click dot0** | 31 | **(19,44)** | **(1,2)** | **box3 FILLED**, piece crossed |
+| chain-kick dot1 north | 34 | (19,38) | (1,2) | dot1 → **(17,19)** |
+| enter box0 | 38 | (10,42) | (1,0) | |
+| **click dot1** | 39 | **(18,19)** | **(0,1)** | **box0 FILLED**, only dot2 left |
+| route to box1 | — | **NO ROUTE** at 3,000 nodes | — | box1 needs phase (1,2) |
+
+`levels_completed` stayed at 1 through every click; no `GameState.WIN`. **No compound-sweep side
+effects on any of the three kicks** — each moved exactly its target.
+
+**Why it failed, and it is premise 2 verbatim**: clicking dot1 lands the piece at dot1's canonical
+cell, **(18,19), phase (0,1)** — not at the dot's own (17,19). box1 needs (1,2). *The assignment was
+mine and it was wrong: I had dot1 carrying the piece into box1's region, and dot1 cannot deliver that
+phase.* Only **dot0** has (1,2).
+
+**The agent also corrected the line's ORDER before it could run at all, and that correction is
+load-bearing**: the chain-kick's approach cell sits *past the moat*, and the region map says the piece
+cannot walk to any x<21 cell without a prior crossing. **So the crossing must come before the chain**,
+not before the crossing. My step 1 had asked for both kicks up front, which is not physically
+realisable.
+
+### The corrected line — dot0 CARRIES, it is never the cargo
+
+`r19` had already measured that **dot0's chain reaches phase (1,2) cleanly**. Combined with the above,
+the assignment writes itself:
+
+1. on the right: kick **dot0** west → (19,44); kick **dot1** west → (17,34); leave **dot2** in the RIGHT;
+2. box3 → click **dot1** → box3 filled, piece crosses to LEFT-BOTTOM;
+3. *now on the left*, chain-kick **dot0** north → **(19,20)/(19,21)**, phase **(1,2)**;
+4. box0 → click **dot0** → box0 filled, piece crosses to (19,20), phase (1,2);
+5. box1 → click **dot2** (still on the right — proximity is irrelevant) → box1 filled, piece thrown back RIGHT;
+6. walk into **box2** and stop.
+
+Four targets, three clicks, ending in box2, every landing already measured. Being driven now.
+
+**Both outcomes are decisive**, which is the point of running it:
+- **wins** → the size-match pairing was never required (this line violates it on all three), and the
+  earlier all-three-filled run failed because **it left the piece at (44,48)** instead of box2;
+- **loses with all four satisfied and the piece in box2** → the pairing IS required, and then the
+  deadlock is **formal**: box1's only phase-(1,2) access is dot0, and dot0 would have to be both the
+  vehicle and the cargo. That closes the level by proof rather than by exhaustion.
+
+## 2026-08-16 — ar25 L5: MIRROR NOT FOUND, and the 1.94x blowup is unexplained again (agent, throwaway probe)
+
+The mirror hypothesis is retired by measurement rather than left hanging.
+
+- **Colour-4 is absent from level 5 entirely.** `mirror.py`'s `signature()` ties colour-4 (45 cells) to
+  the reset frame; at level-4 entry it is present as two 9-cell blocks, and through `L4_LINE` it
+  fluctuates 9 → 63 → 9 → 27 → 45 → 54 → 63 purely as a function of the wall's row — never a sustained
+  one-directional displacement paired with a piston. **At level-5 entry its census is empty.**
+- **Level 4, where pistons demonstrably move, shows no lockstep companion either** — only the selected
+  piston (colour 5) shows a sustained matched displacement per press.
+- **Level-5 entry census**: one `c5, n=88, bbox=(36,50)-(42,56)` (the known piece), one static
+  `c11, n=189` (a target/marker, centroid stationary throughout), some small `c11`/floor regions.
+  Nothing sized or shaped like a second mover.
+- **Directional probe at `sel_phase=2`**: A1 → c5 only, d=(-3,0); A2 → c5 only, (+3,0); A3 → c5 only,
+  (0,-3); A4 → c5 only, (0,+3); **A7 → nothing moves.**
+- **The decisive test — a 30-press decoupling walk.** A3 pressed 30 times from the selected state.
+  Presses 0-13: the piece's x-centroid walks 47.9 → 8.9, exactly **-3.0 per press, 14 straight**, and
+  **no other component ever shows a matched displacement** (the `c11`/`c9` wobbles mid-walk are the
+  piece's own 88-cell body occluding the static target and floor, never tracking its vector). Press 13
+  → 14: the centroid stops — a hard stop. **Presses 14-29: `changed=[]` on every one; the frame is
+  byte-identical, press after press.**
+
+**There is no lockstep to break because there is no second body.** The piece was held against a wall
+for sixteen confirmed-dead presses and nothing appeared, tracked, lagged or diverged.
+
+⚠️ **So the 1.94x key blowup (34,909 against a model of 289 x 21 x 3 = 18,207) is open again**, and it
+is now the only thing between this search and either a proof or a decision to abandon BFS here. Three
+candidates, and the run to separate them is arithmetic rather than discovery — instrument a few
+thousand nodes to record the **piece centroid**, the **band phase** and the **sel_phase** per node, then
+compare `len(distinct) x len(distinct) x len(distinct)` against the distinct-key count:
+
+1. **the piece's reachable positions exceed 289** — the agent's own walk is suggestive, 14 consecutive
+   -3 presses is 42 cells of travel on one axis, and the 289 = 17x17 figure came from an old
+   click-sweep framing rather than from this action set;
+2. **`band_phase` has more than 21 values**;
+3. **the key carries something that is not state** — the key's transform undoes colour-0 dashes and the
+   colour-10 wall but **never touches colour-9 floor cells**, which were observed fragmenting between
+   frames. *Note the tension inside the agent's own data, which is exactly why this needs measuring:
+   sixteen byte-identical frames at the wall argue the floor does NOT flicker freely.* Both
+   observations are its own; only an instrumented run reconciles them.
+
+If the product matches the key count, the model simply had the wrong factors and exhaustion can be
+priced honestly. If the key count far exceeds it, **the key is separating states identical in all three
+factors — which would be the FOURTH key on this campaign today to do exactly that**, so it is the
+expected answer rather than a surprise, and the next step is to diff two raw boards that share all
+three factors and mask whatever differs.
+
+Explicitly held: **do not edit `key_of` on a hypothesis.** A key change invalidates the 690 MB
+checkpoint, so it is a one-way door and only gets walked through with the diff in hand.
+
+## 2026-08-16 — ka59 L2: ALL THREE BOXES FILLED, no win — and the fill model is now EXHAUSTED (agent, `ka59_y2.py`)
+
+The corrected line ran and did exactly what it was designed to do, up to the last step.
+
+| step | action# | piece | phase | note |
+|---|---|---|---|---|
+| L2 entry | 11 | (37,55) | (1,1) | |
+| kick dot0 west | 15 | (37,46) | (1,1) | dot0 → (19,44) |
+| kick dot1 west | 25 | (46,34) | (1,1) | dot1 → (17,34) |
+| enter box3 | 30 | (55,40) | (1,1) | |
+| **click dot1** | 31 | (18,34) | (0,1) | **box3 FILLED**, crossed |
+| chain-kick dot0 north | 43 | (18,49) | (0,1) | dot0 → **(19,20)** |
+| enter box0 | 47 | (8,46) | (2,1) | |
+| **click dot0** | 48 | (19,20) | **(1,2)** | **box0 FILLED**, crossed — the predicted phase |
+| enter box1 | 53 | (10,14) | (1,2) | **straight route, no search needed** |
+| **click dot2** | 54 | (44,48) | (2,0) | **box1 FILLED — all three** |
+| route to box2 | — | **NO ROUTE** | box2 needs (1,1) | |
+
+**54 of the ~127 clock. `levels_completed` stayed at 1 through every click. Zero compound-sweep side
+effects** — each kick moved exactly its target, re-read after every one.
+
+**The reassignment worked exactly as reasoned**: dot0 carried the piece to phase (1,2) and **box1 opened
+immediately, by a straight route, with no search** — after two earlier rounds had called it unreachable.
+
+### And step 6 is a structural wall, deduced rather than searched
+
+> **box2's interior is in component 22, phase (1,1) — the piece's own spawn phase. Walking preserves
+> phase. Only a click changes it, and only to that dot's fixed canonical phase: dot0→(1,2),
+> dot1→(0,1), dot2→(2,0), measured across a 156-arm sweep with zero exceptions. None of the three is
+> (1,1).**
+
+So once three dots are spent — which filling three boxes requires — **no walk can ever return the piece
+to box2, under any of the six dot→box assignments.** `r20` corroborates independently: it also ended at
+**(44,48)** after using dot2 last. The agent explicitly declined to re-run step 6 at a higher node cap,
+correctly, since the argument is deductive from premises already at zero counter-examples.
+
+### The fill model is exhausted, not merely unsolved
+
+| line | outcome |
+|---|---|
+| box2 visited first + all three boxes filled (unmatched) — `r20` | **no win**, ended (44,48) |
+| all three filled (different unmatched assignment), box2 not visited — `y2` | **no win**, ended (44,48) |
+| the size-matched pairing | **structurally impossible**: box1 is enterable only at phase (1,2), only dot0 delivers (1,2), box1 must be filled *by* dot0, and dots are one-click-only |
+
+**"Fill the boxes, visit box2" is not the win condition in any arrangement.** That closes a MODEL rather
+than a permutation — the same place re86 level 6 reached, and the right moment to stop optimising
+inside it.
+
+**The unswept surface is the click.** Every click in this game's history has been aimed at a **dot**,
+and the whole model — swap, canonical cell, phase class, one-click-only, the halo↔interior match — is
+built from those. One earlier round swept **19 hand-picked cells of 4,096** and found only the known
+dot-swap re-firing through its proximity tolerance; that is not a sweep. A real click-then-ACT sweep on
+a 3-cell lattice (~450 candidates, respecting the movement lattice) is running, prioritising the
+colour-14 halos in full, the box interiors and frames, the moat and the internal band, and **box2
+itself** — the one target never filled, whose interior matches the PIECE rather than any dot, and which
+now turns out to be unreachable after any complete fill line.
+
+## 2026-08-16 — ka59 L2: the click surface is INERT — a real sweep, and a real negative (agent, `ka59_y3.py`)
+
+**462 cells on a stride-3 lattice** (the movement lattice), click-then-ACT at every candidate, over the
+full 64x63 board — every halo in full, all four box interiors and frames, both moat columns, the
+internal band, and box2 inside and out. Zero real game actions spent: one reach-L2 sequence, then every
+candidate on a throwaway deepcopy of the fixed entry state.
+
+**8 of 462 respond, and all 8 are the same known mechanic.**
+
+| responsive cell | halo of | piece lands at |
+|---|---|---|
+| (39,33), (42,33) | dot1 | **(42,34)** = dot1's own cell |
+| (33,42), (33,45) | dot0 | **(34,44)** = dot0's own cell |
+| (42,45), (45,45), (42,48), (45,48) | dot2 | **(44,48)** = dot2's own cell |
+
+Every one lands the piece precisely on **its own dot's canonical cell** — the swap, re-triggered by
+clicking the halo rather than the dot. That generalises the earlier one-off `(33,42) → (34,44)`
+observation into the halo's full proximity tolerance, and shows it does nothing else anywhere it fires.
+The varying per-verb diffs across the three dots are just the piece standing in three different places
+afterwards, not a distinct effect.
+
+**Zero response** from the remaining ~35 halo-lattice points, all four box interiors and frames, both
+moat columns (x=21, 24, 27), the internal band (y=24, 27 across x=0-21), and **box2 specifically** —
+inside, outside and its frame. The one target that matches the PIECE rather than a dot, and that no
+complete fill line can end at, is click-inert like every other piece of scenery.
+
+### The one gap left, and it is the shape this campaign has twice been taught to look for
+
+Every one of those 462 clicks was a **first click from the untouched entry frame**. On `ar25`, levels 3
+and 4 both fell to precisely this: *a win can depend on a control surface that engaging the puzzle's own
+pieces locks you out of, so the ORDER of engagement is part of the solution* — a search that starts by
+touching the pieces was exhaustive there (116,640 states on L3) and blind. **And this game has already
+produced its own instance today**: box1 was called unreachable twice, then opened by a straight route
+with no search once the piece arrived on phase (1,2). Configuration decided reachability, not geometry.
+
+Running now: the same sweep from four **non-entry** configurations — after the two west kicks (the dots
+have moved, so their halos have moved); after the first crossing, with the piece on the left where it
+can never be at entry; after two boxes are filled (a filled box is a new object nobody has clicked); and
+with the piece standing **inside box2**. *A filled box and an emptied dot cell are both board states that
+did not exist at entry, and the halo result proves this game keys clicks to REGIONS AROUND OBJECTS — so
+moving the objects moves the surface.*
+
+If all four come back with nothing beyond the known dot-swap, ka59 level 2 is **closed by proof**: the
+fill model exhausted in every arrangement, the size-matched pairing structurally impossible, and the
+click surface inert from entry and from four distinct mid-line states.
+
+## 2026-08-16 — ka59 L2: ⚠️ NEW MECHANIC — a FILLED BOX'S MARKER IS COLOUR 4, and it is still swappable (agent, `ka59_y4/y5.py`)
+
+**The "click surface inert" closure is withdrawn**, and the reason is the campaign's own ar25 lesson
+arriving a third time: the 462-cell sweep was rooted at the untouched entry frame, and **a board that
+has been played contains objects the entry frame never had.**
+
+Sweeping the same stride-3 lattice from four NON-ENTRY configurations (1,848 candidates, all
+click-then-ACT against a per-configuration baseline, zero real actions — every config built by deepcopy
+replay of already-measured sequences):
+
+| config | how reached | responsive | new vs. entry sweep |
+|---|---|---|---|
+| 1. after two west kicks | kick dot0 west, kick dot1 west | 8 | none — the three dot halos, relocated with their dots |
+| 2. after first crossing, **box3 filled** | + walk box3, click dot1 | 7 | **(54,39) — box3's own corner** |
+| 3. after **box3 + box0 filled** | + chain-kick dot0, walk box0, click dot0 | 7 | **(54,39) persists + (6,45)/(9,45) — box0's corner** |
+| 4. piece inside box2, spawn phase, 0 clicks | walk box2 from entry | 8 | none — identical to the entry sweep |
+
+**A box's fill marker renders as colour 4, not colour 5** — which is why every probe in this game's
+history missed it: they all scanned `dot_cells` for colour **5**. Clicking near the marker re-fires the
+identical SWAP, read by pixel rather than inferred from a diff count:
+
+```
+box3 interior before the fill click:  [...,0,...]   (0 = piece standing there)
+box3 interior after  the fill click:  [...,4,...]   (4 = the new "filled" marker)
+
+click (54,39) on that filled board:
+  piece (18,34) -> (55,40)                    [swapped IN to box3]
+  diff: (17,34,0,4) (18,34,0,4) (55,40,4,0)   [piece's old footprint -> 4 ; marker cell -> 0]
+```
+
+A control click on a dead cell in the same state moved nothing, so this is not router noise.
+**Filling a box is therefore NOT terminal** — the marker inside stays click-manipulable through its own
+halo, exactly like an unconsumed dot.
+
+### Two consequences that are bigger than the mechanic, and are being chased now
+
+1. **It threatens every "boxes filled, no win" result already on record.** A route that merely *grazes*
+   a filled marker's halo while pathing elsewhere could have **silently un-filled a box**, and **no
+   probe has ever tracked colour-4 cells.** This is the same attribution-bug shape already caught once
+   today for dots — `bfs_route`'s `avoid` forbids *landing* on a dot's cells but not *passing near*
+   them, and a route kicked an unrelated dot mid-pathfind. If `y2` un-filled a box while walking, then
+   "all three filled, no win" was never measured and **the fill model is not exhausted at all**.
+2. **If an ejected marker can be clicked into a DIFFERENT box**, a wrongly-filled box can be corrected
+   without spending a fresh dot — and the resource arithmetic behind the entire deadlock (3 dots, one
+   click each, 3 boxes plus a carry) is wrong, because **markers are a fourth resource nobody counted.**
+   That would reopen the size-matched pairing, which is currently ruled out only by dot scarcity.
+
+Also being mapped: the marker's tolerance region — `(54,39)` responds and `(57,39)` does not, so it
+exists and is unbounded so far, unlike the three dot halos which are now fully characterised.
+
+**The ka59 closure I was about to write is held.** *"Click surface inert" was true of every board I had
+asked about, and false of the board the game actually produces after you play it.*
+
+## 2026-08-16 — ar25 L5: FACTORS EXPLAIN THE COUNT — the bbox proxy was wrong, not the key (agent, throwaway instrumented BFS)
+
+The 1.94x blowup is explained, and the way it was explained matters more than the answer.
+
+**First pass — piece position measured as a BOUNDING BOX**, which is what I asked for literally:
+
+| factor | distinct |
+|---|---|
+| piece bbox | **15** |
+| band phase | 19 (`[0,3,...,54]`, still climbing) |
+| sel phase | 3 |
+| **product** | **855** |
+| **distinct keys, same 3,000 nodes** | **3,000** |
+
+3,000 keys against a product of 855 — **every expanded node had a unique key, zero collisions.** That
+fires the "the key separates identical states" branch, which would have been the fourth such key on this
+campaign in one day. **The agent did not take it.** It found a colliding pair and diffed the raw boards,
+and the 91 differing cells split cleanly:
+
+- 4 cells at column 63 plus `0 ↔ 9` swaps — the known HUD-column and colour-0 dash noise, which
+  `key_of` **already neutralises** (`k[:,63]=0`, `k[k==0]=9`). Not the explanation.
+- **~26 cells at rows 36-40, cols 39-53, all `5 ↔ 9` swaps — the piece's OWN colour.** Two nodes sharing
+  one bounding box had genuinely different colour-5 pixel patterns inside it. **The piece can occupy
+  more than one internal configuration at a fixed extent.** That is real state a four-number bbox cannot
+  see — not something to mask.
+
+**Second pass — the piece's exact pixel footprint**, same run, same `key_of`, only the measurement
+changed:
+
+| factor | distinct |
+|---|---|
+| piece exact footprint | **127** |
+| band phase | 19 |
+| sel phase | 3 |
+| **product** | **7,239** |
+| **distinct keys** | **3,000** |
+
+3,000 ≤ 7,239 — the product now bounds the key count from above, which is the healthy relationship (not
+every combination is reachable). **The over-separation signal is gone the moment the piece factor stops
+being an undercount.**
+
+**The true size, and it lands on the blowup exactly.** The model's 289 was a bbox-shaped guess (17x17,
+from an old click-sweep framing). Extrapolating from the real checkpoint's 34,909 keys with band ≈ 21
+and sel = 3: **34,909 / 63 ≈ 554 piece positions** — roughly double 289, which *is* the 1.94x that
+started this investigation. Self-consistent rather than coincidental.
+
+⚠️ **And that arithmetic says the search is nearly done.** The corrected model is
+554 x 21 x 3 ≈ **34,902 total keys**, and the checkpoint **already holds 34,909**. So the reachable state
+set is essentially already discovered; the 6,282 frontier entries are nodes not yet *expanded*, whose
+keys are already counted. Expanding them should add few or no new keys and the frontier should **drain**.
+At 8-9 nodes/s that is about **12 minutes** — one or two chained runs, and a falsifiable prediction
+either way. The BFS was resumed on exactly that basis, with the two assumptions stated: that band really
+saturates at 21 (the sample saw 19 and was still climbing) and that every (piece, band, sel) triple is
+jointly reachable.
+
+*The transferable part: "the key over-separates" and "my proxy for a factor undercounts it" produce the
+IDENTICAL symptom — a product far below the key count — and only diffing a colliding pair tells them
+apart. Reaching for the mask first would have corrupted a sound key and voided a 690 MB checkpoint, on
+evidence that was actually pointing at the measurement.*
+
+## 2026-08-16 — ka59 L2: FILL IS REVERSIBLE, markers RECYCLE, and the deadlock arithmetic is wrong (agent, `ka59_y6/y7/y8.py`)
+
+**Root cause of why this hid for so long: colour 4 is the box FRAMES' colour — 88 permanent cells across
+all four boxes, present from level-2 entry.** `CLAUDE.md` already said the placed dot takes "the boxes'
+own colour", but no probe had ever subtracted the frame baseline, so every raw colour-4 count was
+reading frame pixels. Fixed with `extra4() = colour4_now − colour4_at_L2_entry`, and the three answers
+below are all pixel reads under that baseline, not diff-count inference.
+
+**Q1 — FILL IS REVERSIBLE.** Click dot1 from inside box3: cell (55,40) goes colour 1 (floor) → colour 4
+(filled). Click the marker's halo at (54,39) and walk away: **(55,40) goes colour 4 → colour 1, back to
+floor**, and the ejected marker sits at (17,34)/(18,34) — the piece's old position at the moment of the
+second click. The identical swap, run twice on the same object.
+
+**Q2 — `y2`'s fills SURVIVED their own routing.** Replayed y2's exact line with an `extra4` census after
+**every one of 37 real actions**: `[]` through action 19, `[(55,40)]` from the box3 fill at action 20
+and **unchanged for the next 16 actions**, then `[(8,46),(9,46),(55,40)]` at the box0 fill. Final census
+exactly 3 cells, all inside box3's and box0's bboxes, nothing outside. **The attribution-bug risk did
+not materialise on that line — y2's "two fills, blocked at box1's phase wall" stands as measured.**
+(Only that line is re-certified; `r18`-`r28` are not individually re-walked.)
+
+**Q3 — a recycled marker fills a DIFFERENT box.** Filled box3 with dot2 (never kicked, stays right, no
+crossing needed), ejected it via the halo re-click, walked to **box2**, clicked from inside:
+
+```
+fill box3 with dot2:       extra4 = [(55,40)]
+eject via halo click:      extra4 = [(44,47),(44,48),(45,47),(45,48)]   (dot2's old resting cells)
+walk to box2, click there: extra4 = [(52,52)]                          (inside box2's bbox)
+```
+
+**So markers are a REUSABLE resource, not a one-time-use dot** — and the arithmetic that ruled out the
+size-matched pairing ("3 dots, one click each, 3 boxes plus a carry") assumed each dot buys exactly one
+placement. **It is wrong.**
+
+**Q4 — the marker's halo is a plain 3x3 centred on the fill cell** (`{54,55,56} x {39,40,41}` around
+(55,40)), identical in shape and size to the raw dot halos. No new geometry; the same proximity rule.
+
+⚠️ **The consumption rule, narrowed precisely rather than conveniently**: a dot clicked onto **open
+floor** is consumed (the earlier `r24/r25` result stands — the vacated cell reads plain floor and a
+second click does nothing), while a dot placed **into a box** becomes a persistent, recyclable colour-4
+object. *Same verb, opposite outcome, gated on where the piece was standing when it clicked.* Both are
+now measured; neither generalises to the other.
+
+**The question that now decides the level, and it is being measured next: does a recycled marker's
+click still deliver its ORIGIN DOT's canonical phase?** The deadlock was — box1 is enterable only at
+phase (1,2); only dot0 delivers (1,2); box1 must be filled *by* dot0 under the size match; a dot is
+one-click-only, so dot0 must be both vehicle and cargo. **Recycling breaks the last premise.** If dot0's
+marker still delivers (1,2) after being placed and re-ejected, dot0 can be spent as the vehicle and
+recovered as the cargo, and the matched pairing reopens. Being tested on **two** different dots, because
+"the marker keeps its origin's phase" and "the marker's phase is positional" predict the same thing for
+one sample and different things for two.
+
+## 2026-08-16 — ka59 L2: marker phase is POSITIONAL — which closes the recycling escape and opens a better one (agent, `ka59_y9.py`)
+
+**A recycled marker delivers the phase of the CELL IT CURRENTLY OCCUPIES, never its origin dot's.**
+Two arms, designed so a coincidence could not pass — box3's fill cell is phase (1,1), which differs
+from dot0's canonical (1,2) *and* from dot2's (2,0):
+
+| marker from | created at | its phase | clicked from | piece landed | landing phase |
+|---|---|---|---|---|---|
+| dot0 | (55,40) | **(1,1)** | (34,44), phase (1,2) | (55,40) | **(1,1)** |
+| dot2 | (55,40) | **(1,1)** | (44,48), phase (2,0) | (55,40) | **(1,1)** |
+
+So the swap carries **no identity tag under the position** — click an object, the piece goes wherever
+that object currently sits. Placing dot0 into a box and ejecting it does *not* preserve a reusable
+"(1,2) delivery"; the ejected marker's phase is set by where it lands.
+
+**A loose marker can also be KICKED, and inherits its origin's geometry exactly**: ejected dot2's marker,
+approached from the east and pressed west, moved 44 → 17 (d = −27) — dot2's own measured flight — and
+**dragged dot0 along in the same compound-sweep pairing** already characterised for raw dot2. Steerable,
+but only within its current phase class, since kicks preserve phase.
+
+### ⚠️ And that result contains the escape the deadlock was missing
+
+The wall was: *box2 is phase (1,1); walking preserves phase; a click delivers a dot's fixed canonical
+phase; dot0→(1,2), dot1→(0,1), dot2→(2,0), none of them (1,1) — so after three clicks the piece can
+never return to box2.* **Every clause of that assumed the click's phase belongs to the DOT.**
+
+It belongs to the **cell**. And the table above shows that cell's phase is **(1,1)** — box2's own phase.
+So the three canonical phases were never the full set of deliverable ones: **a marker parked on a (1,1)
+cell delivers (1,1), and that is a return ticket to box2.** The premise dies not because markers keep
+an identity, but precisely because they do not — their phase is real estate, and real estate can be
+chosen.
+
+Two orderings now worth driving, and the second is what the agent's own "what I did not cover" was
+circling:
+1. **end on a click against a marker sitting at (1,1)** — e.g. clicking box3's marker from inside box1
+   fills box1 and sends the piece to (55,40), phase (1,1), from which box2 is walkable. It costs box3
+   its fill, so count what remains filled and read `levels_completed` anyway: **nobody actually knows
+   how many boxes the win needs** — every failed line so far assumed three.
+2. **bare-ferry into box1 with dot0 (as `r22` did, leaving box1 empty), then fill box1 from within with
+   a different object's marker** — Q3 proved a marker enters any box regardless of origin, so this
+   combination has never been tried.
+
+Also cheap and unmeasured: **box2 is fillable** (Q3 filled it with a recycled marker). If the win wants
+**four** filled boxes against three objects that is an impossibility worth stating; if it wants three
+filled plus the piece standing in box2 — whose interior matches the PIECE — then a (1,1) landing is
+exactly what makes that reachable, and it has never been available before.
+
+Being driven now with the per-action `extra4` census on and `levels_completed` read after every action,
+so a partial-fill win cannot be walked past.
+
+## 2026-08-16 — ar25 L5: keys past 40,000, frontier decelerating but not turned (agent, runs 8-9)
+
+| run | expanded | keys | frontier | Δkeys | ratio | Δfrontier |
+|---|---|---|---|---|---|---|
+| 1-7 | 4,614 → 28,627 | 5,720 → 34,909 | 1,106 → 6,282 | — | 1.16-1.29 | — |
+| 8 | 32,313 | 39,228 | 6,915 | 4,319 | 1.17 | **+633** |
+| 9 | 35,928 | **43,225** | 7,297 | 3,997 | 1.11 | **+382** |
+
+Keys are **24% past the corrected model's predicted ceiling** (43,225 against 34,902) and still adding
+~4,000 a run. The frontier is **decelerating** — +633 then +382, a ratio of about 0.60 — but has **not
+turned negative**. Every soundness check still green across all 35,928 expansions: divergence 0,
+deaths 0, C1, C2 and both `sel_phase` identities re-asserted at the top of every process.
+
+**The agent's postmortem of the 554 estimate is the part worth keeping**, and it is a self-critique
+rather than an excuse: 554 came from a **single division** (34,909 / 63) applied to a **3,000-node
+sample, about 8% of the search**, and it silently inherited two things that sample had itself flagged as
+unconfirmed — the band count had seen **19 of an assumed 21 and was still climbing**, and the 127 exact
+piece footprints were a **sample lower bound read as a ceiling**.
+
+> *The arithmetic was not wrong on its face. It was applied to a search that had not reached the point
+> the estimate assumed.*
+
+Which is the same failure mode as the sp80 exhaustion price earlier today (40-55k nodes ≈ 1-1.7h, from
+six noisy points; the real run passed 72,684 with the frontier still climbing). **Twice in one session
+an order-of-magnitude extrapolation was quoted with its caveat and then spent as if it were the
+midpoint.**
+
+**Now chained from the MAIN thread** (`ar25_run_to_exhaust.py`, backgrounded — a main-thread background
+job survives across turns where a subagent's dies with it). If the 0.60 deceleration holds, the frontier
+peaks near 7,900 within ~10 runs and drains, putting a real exhaustion — and therefore a **proof** about
+level 5 — about a hundred minutes out. The loop stops on frontier 0, on a win, on its wall-clock cap,
+**or on three consecutive runs where the growth is not decelerating**, because two data points are not a
+trend and the loop should not burn a budget defending one.
+
+## 2026-08-16 — ka59 L2: the (1,1) return ticket WORKS, and it exposes a probable router bug in an earlier "wall" (agent, `ka59_y11.py`)
+
+The construction was driven and it did exactly what the map predicted.
+
+| act | leg | event | `extra4` after |
+|---|---|---|---|
+| 1-14 | kick dot0 west, kick dot1 west (right region, no clicks) | | `[]` |
+| 15-20 | box3, **click dot1** → box3 filled | | `[(55,40)]` |
+| 21-32 | chain-kick dot0 north — **the fill survives 12 actions of routing untouched** | | `[(55,40)]` |
+| 33-37 | box0, **click dot0** → box0 filled, piece → phase (1,2) | | `[(8,46),(9,46),(55,40)]` |
+| 38-42 | walk into box1 — **straight route, no search**, phase matches | | unchanged |
+| 43 | **click box3's marker from inside box1** → box1 filled, box3 EMPTIED, piece → (55,40), **phase (1,1)** | | `[(8,46),(9,46),(10,14)]` |
+| 44-48 | walk to box2, land dead centre **(52,52)** | | unchanged |
+
+**Final: 2 boxes filled, the piece standing exactly in box2, `levels_completed` = 1.** No death, no
+accidental graze in 48 actions — every fill that should have persisted did, and the one deliberately
+spent shows up precisely where and when it was clicked.
+
+So the (1,1) ticket is real and **costs a box's fill**: box3's is the only measured (1,1) cell, and
+spending its marker to reach that phase empties it. 2-of-3 plus the piece in box2 is not the win.
+
+### ⚠️ But `ka59_x3.py`'s own output says an earlier "wall" was probably a ROUTER GOAL bug
+
+`x3` reported, for every box, the components its **interior** spans — and for box2:
+
+> `box2  centre (52,52) interior=9 cells -> 9 components [18,19,20,21,22,23,24,25,26]`
+
+**Nine interior cells in nine different components — one per phase of the right region.** Every box
+interior spans all nine phases; that correction is what made `x3` valid in the first place, and it
+applies to box2 too. So *"box2 requires phase (1,1)"* is a fact about its **centre**, not about the box:
+**from anywhere in the right region, some box2 interior cell is reachable at the piece's current phase.**
+
+Which puts `ka59_y2.py`'s terminal failure in a different light. It ended *"NO ROUTE FOUND from (44,48),
+phase (2,0) — box2 requires phase (1,1)"*, with **all three boxes filled**. (44,48) is in the right
+region. If that route was aimed at box2's **centre** rather than at any interior cell, it would
+correctly report no route while a route to a different interior cell existed — and **y2 would have been
+one correctly-aimed route away from finishing, making the "fill model is exhausted" conclusion built on
+it void.**
+
+Being checked now, in that order: first ask for a route to **each of box2's nine interior cells
+individually** from y2's exact end state; then, if any succeeds, re-drive y2's line and finish into
+whichever cell matches the piece's phase — with the per-action census running.
+
+**That configuration has never actually been achieved**: `r20` visited box2 *before* filling, `y2`
+filled and could not return, `y11` reached box2 with only two filled. Three fills **and** the piece
+inside box2, simultaneously, at the end, remains untested.
+
+*And the next lever after that, if it is still needed, comes from y11's own data: a marker lands on the
+cell the piece was standing on, so **standing on a (1,2) cell inside box3 mints a (1,2) marker outside
+box1** — arbitrary phase delivery, which would dissolve the phase constraint entirely and let dot0 be
+placed in box1 matched rather than spent as a ferry.*
+
+## 2026-08-16 — ka59 L2: y2's "wall" is attested only by an UNCONTROLLED NULL (main thread, `ka59_v2.py`)
+
+`ka59_y12.py` killed my router-goal hypothesis with a well-designed test: from y2's exact terminal
+state it asked for a route to **all nine** box2 interior cells, not just the centre, and got **0 of 9** —
+including `(53,51)`, whose phase (2,0) matches the piece's own. A centre-aiming bug cannot explain an
+unreachable same-phase cell, so the wall looked real.
+
+**Main-thread check says the walk graph disagrees.** Recomputed the partition with a control that
+passes — the entry board reproduces `x3` exactly, **27 components, all phase-pure** — then rebuilt y2's
+terminal board by marking its four census cells `[(8,46),(9,46),(10,14),(55,40)]` as filled:
+
+```
+box2 interior components : [18,19,20,21,22,23,24,25,26]   (unchanged from entry)
+(53,51)                  -> component 24
+piece (44,48)            -> component 24
+                                    -> CONNECTED
+```
+
+**The one cell the test correctly identified as decisive is in the SAME component as the piece.** So a
+route exists, and the router said NOT FOUND — for that cell and for the other eight.
+
+⚠️ **Which means the wall is attested only by a null from an instrument that was never shown to
+succeed.** `y12` ran no positive control. *A search that fails to find a path is worthless without one*
+— the rule that has already caught two instruments on this campaign today (the offset key that reported
+exhaustion on a level whose win it was standing on, and the FIRE-transfer bug that produced confident
+wrong states with no anomaly counter). **Zero-for-nine is exactly what a broken router looks like, and
+it is indistinguishable from a real wall without one arm that must succeed.**
+
+Caveat stated on my own side rather than hidden: board B here is a **simulation** — four cells marked
+filled on the entry board, not a replay of the line — and the real terminal board also has two kicked
+dots whose cells have moved. That should not affect connectivity *within* component 24, but the
+authoritative partition is the one computed on the real board.
+
+Being run now, in order: (1) give the router a **positive control** from y2's terminal state — a route
+to a cell known reachable, one step away; if that also returns NOT FOUND, every "NO ROUTE" verdict on
+this level needs re-reading; (2) recompute the partition on the **real** terminal board; (3) if the
+router is the problem, fix it and drive y2's line to completion — **three boxes filled AND the piece
+inside box2**, the configuration nobody has ever achieved and the one the entire fill-model closure
+rests on.
+
+*Three times in this game's history a "wall" has turned out to be an instrument: box1 unreachable
+(twice) until the piece arrived on phase (1,2); the click surface "inert" until the sweep ran from a
+board that had been played; and now this. The pattern is specific enough to act on — **on ka59, a
+negative result about reachability has never once survived being given a positive control.***
+
+## 2026-08-16 — ka59 L2: WALL CONFIRMED by exhaustion — and the phase-component MODEL is the thing that was wrong (agent, `ka59_y13/y14/y15.py`)
+
+Three instruments, and only the third is authoritative. **This corrects my own `ka59_v2.py`, which
+concluded CONNECTED and was wrong.**
+
+**1. The router's positive control PASSED.** From y2's real terminal state, one real press in each
+direction, then asking the router for the exact cell it had just proved reachable:
+
+```
+press 1: (44,48) -> (44,44)   router asked for (44,44): FOUND len=1
+press 2: (44,48) -> (44,50)   router asked for (44,50): FOUND len=1
+press 3: (44,48) -> (42,48)   router asked for (42,48): FOUND len=1
+press 4: (44,48) -> (48,48)   router asked for (48,48): FOUND len=1
+```
+
+So it is not broken on trivial targets — the uncontrolled-null worry is answered.
+
+**2. The static partition, recomputed on the REAL terminal board** (marker cells excluded from the walk
+set, as a control against my own caveat), still said **piece (44,48) → component 24** and
+**(53,51) → component 24 — CONNECTED**. Escalating `bfs_route` against (53,51) at **3,000 / 6,000 /
+12,000** nodes: **NOT FOUND every time.** Graph says yes, router says no, three budgets apart.
+
+**3. The authoritative instrument settles it — an exhaustive real BFS that targets nothing and just
+drains the queue:**
+
+```
+expanded 88 nodes, 88 distinct reachable positions -- EXHAUSTED (queue drained, cap was 15,000)
+(53,51) in reachable set: False
+all nine box2 interior cells: False
+reachable set bbox: x=[32,60] y=[32,60]
+```
+
+**A queue that drains at 88 against a 15,000 cap is not a budget failure — there is nothing left to
+explore.** Box2 sits *inside the bounding rectangle* of the reachable region and is not among its 88
+cells. So **y2's wall is real**, and the fill-model closure is reinstated on the strongest evidence it
+has had: not a failed route, but a fully drained reachable set containing zero box2 cells.
+
+### ⚠️ The correction that matters more than the verdict
+
+**The static colour-based flood fill OVERCOUNTS connectivity**, and both the agent's version and my
+`ka59_v2.py` did it. A same-colour-implies-walkable model is not a safe stand-in for the engine's own
+walk graph — *at least once a board has been altered by fills*.
+
+Likely mechanism, not chased and flagged as unproven: `ferry.py`'s own `find_cell()` describes the piece
+as *"one cell, or a tight cluster — the piece smears over 2-4 cells"*. If the piece effectively occupies
+more than one cell, a landing needs more than one clear cell, and a point-model admits landings the
+engine refuses. That would produce exactly this — a permissive map over a restrictive reality.
+
+**Practical rule for this campaign, effective immediately: the phase-pure component model
+(`x2`/`x3`/`x4`) is a HYPOTHESIS GENERATOR, not an oracle.** It was right about phase-purity, right that
+box1 needed (1,2), and right about the region structure at entry — and it is wrong about reachability on
+a board that has been played. **Verify any reachability claim with an exhaustive real BFS before acting
+on it.** The cheap tell is the one seen here: a static model and a real router disagreeing, at which
+point the model loses.
+
+*This session has now had a "wall" turn out to be an instrument three times on this game — box1 twice,
+the click surface once — which is exactly why I pushed back here. The fourth time it was the wall, and
+the instrument that proved it was the one that answers without being asked a question: not "can you
+reach X" but "what can you reach at all".*
+
+Still unattempted, and now the live next move: **arbitrary phase delivery** — a marker lands on the cell
+the piece was standing on, so standing on a chosen off-phase cell *inside* a box before clicking mints a
+marker at a phase of your choosing, rather than at whatever the auto-route happened to leave.
+
+## 2026-08-16 — ar25 L5: BFS IS THE WRONG INSTRUMENT — the deceleration was noise (main thread, `ar25_run_to_exhaust.py`)
+
+Six more chained runs from the main thread, and the loop's own stop rule fired:
+
+| run | expanded | keys | frontier | Δfrontier |
+|---|---|---|---|---|
+| 1 | 39,484 | 47,345 | 7,861 | — |
+| 2 | 42,704 | 50,835 | 8,131 | +270 |
+| 3 | 46,283 | 54,939 | 8,656 | **+525** |
+| 4 | 49,781 | 58,659 | 8,878 | +222 |
+| 5 | 53,269 | 62,530 | 9,261 | +383 |
+| 6 | 56,701 | **66,325** | 9,624 | +363 |
+
+**The +633 → +382 "deceleration" that justified this run was noise from two data points.** Across six
+runs the frontier delta is flat and jittery (+270, +525, +222, +383, +363) with no downward trend at
+all. Final state: **56,701 expanded, 66,325 distinct keys, frontier 9,624**, 340,207 raw boards,
+**deaths 0 and divergence 0 throughout** — the key stayed sound the whole way.
+
+Keys are now **90% past** the "corrected" model's 34,902, which was itself the second estimate to be
+refuted. **The space is larger than any estimate anyone has produced for it, and the frontier grows
+steadily.**
+
+**Conclusion: BFS cannot exhaust ar25 level 5.** It is the wrong instrument — the level needs a hand
+solve or a goal-directed search, not completeness. That is a real result: it retires an approach that
+has now consumed fifteen chained runs, and it says what the next session should NOT spend time on.
+
+*The loop's stop rule is the part worth keeping.* It was written as: **stop if three consecutive runs
+fail to decelerate**, precisely because the two-point trend that motivated the run might be noise — and
+it was. Encoding "two data points are not a trend" as a **condition in the script** rather than as an
+intention saved roughly seventy minutes of futile compute, on the same day two order-of-magnitude
+extrapolations (sp80's 40-55k nodes, ar25's 554 positions) were each quoted with their caveats and then
+spent as if they were midpoints. *The caveat only protects you if it is executable.*
+
+Checkpoint left intact at 56,701 expanded, so nothing is lost if a future session wants the state for a
+different purpose — but it should not be for more BFS.

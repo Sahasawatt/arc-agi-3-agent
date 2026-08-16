@@ -221,6 +221,9 @@ class Haul:
         self.prev = None
         self.last = None
         self.queue = []       # actions already decided
+        self.pick_target = None   # crate a queued GRAB is meant to lift
+        self.loose = None         # crates outside the frame, last round
+        self.conveyor = False     # a crate has been seen mid-delivery (ring 5)
         self.done = False
         self.stuck = 0
         self.lattice = None   # the piece's own (x, y) parity, latched at base
@@ -288,7 +291,31 @@ class Haul:
                     if (sub == inner).any() and                             set(sub.ravel().tolist()) <= {inner, ring}:
                         out.append((x, y, int((sub == inner).sum())))
             self.slotlist = sorted(out, key=lambda t: -t[2])
-        return [t for t in self.slotlist if (t[0], t[1]) not in self.filled]
+        # `self.filled` records what WE dropped -- but level 2 grew an
+        # autonomous conveyor that parks crates in slots on its own, so a
+        # slot must ALSO be checked live (the driver livelocked at action
+        # 105 with its book saying two empty slots were filled and two
+        # conveyor-filled slots were free, `results/wa30-q9.txt`).  The
+        # live read excludes any slot the PIECE overlaps, which is the
+        # oscillation trap the latched design was guarding against.
+        w, h, ring, inner, fx, fy = frame
+        bw, bh = self.base
+        pys, pxs = np.nonzero(g == self.body)
+        pbox = ((int(pxs.min()), int(pys.min()),
+                 int(pxs.max()) + 1, int(pys.max()) + 1)
+                if len(pxs) else None)
+        out = []
+        for x, y, n in self.slotlist:
+            if (x, y) in self.filled:
+                continue
+            if pbox and not (x + bw <= pbox[0] - bw or x >= pbox[2] + bw
+                             or y + bh <= pbox[1] - bh or y >= pbox[3] + bh):
+                out.append((x, y, n))   # near the piece: trust the book only
+                continue
+            sub = g[y:y + bh, x:x + bw]
+            if set(sub.ravel().tolist()) <= {inner, ring}:
+                out.append((x, y, n))   # still reads empty on the live board
+        return out
 
     # -- the round ---------------------------------------------------------
     def act(self, g, lvl):
@@ -300,6 +327,8 @@ class Haul:
             self.base, self.mine, self.lattice = None, None, None
             self.was, self.tried, self.frame = None, set(), None
             self.slotlist, self.filled, self.claim = None, set(), None
+            self.pick_target, self.loose = None, None
+            self.conveyor = False
         if self.done:
             return None
         bg = background(g)
@@ -359,23 +388,106 @@ class Haul:
             self.prev, self.last = g, a
             return a
 
+        # A LIFE BOUNDARY reverts the whole board (level 2 dies on a
+        # 70-action clock and re-enters pristine, measured byte-identically
+        # over 11 lives, `results/wa30-q20.txt`).  The books -- which slots
+        # were filled, which plan is in flight -- describe a board that no
+        # longer exists, and nothing else in this driver can notice: the
+        # tell is the count of crates OUTSIDE the frame going UP.
+        if self.frame is not None and self.base is not None:
+            fx0, fy0 = self.frame[4], self.frame[5]
+            fx1 = fx0 + self.frame[0] - 1
+            fy1 = fy0 + self.frame[1] - 1
+            n_loose = sum(1 for c in crates(g)
+                          if (c[0], c[1]) == self.base
+                          and not (fx0 <= c[4] <= fx1 and fy0 <= c[5] <= fy1))
+            # A SOLO +1 rise is Haul's own traffic, not a revert: a released
+            # crate reappears outside the frame for a tick wearing a THIRD
+            # border colour (3 -- neither the loose 4 nor the conveyor's 5).
+            # A real life boundary restores the whole starting set at once,
+            # so only a jump of two or more can be one (measured: the +1
+            # blip fired the wipe twice in one run, `wa30-q31.txt`).
+            if self.loose is not None and n_loose - self.loose >= 2:
+                self.filled, self.queue = set(), []
+                self.claim, self.pick_target = None, None
+                self.stuck = 0
+            self.loose = n_loose
+
         if box is None:
             self.done = True
             return None
 
         if self.queue:
             a = self.queue.pop(0)
+            # A queued GRAB was planned against a crate position that may no
+            # longer hold: level 2's CONVEYOR slides a crate 4 cells on every
+            # action, so a pickup planned in the open can mature into lifting
+            # a crate the conveyor has since PARKED IN A SLOT (measured: 5/6
+            # filled regressed to 4/6 at tick 54, `results/wa30-q21.txt`).
+            # Before releasing the GRAB, confirm the target crate still sits
+            # where the plan expects, outside the frame; otherwise drop the
+            # whole plan and think again next round.
+            if a == GRAB and self.pick_target is not None:
+                still = any((c[4], c[5]) == self.pick_target
+                            for c in crates(g))
+                inside = False
+                if still and self.frame is not None:
+                    fx0, fy0 = self.frame[4], self.frame[5]
+                    fx1 = fx0 + self.frame[0] - 1
+                    fy1 = fy0 + self.frame[1] - 1
+                    inside = (fx0 <= self.pick_target[0] <= fx1
+                              and fy0 <= self.pick_target[1] <= fy1)
+                if not still or inside:
+                    self.queue, self.pick_target = [], None
+                    self.prev, self.last = g, None
+                    return 1 if 1 in self.dirs else next(iter(self.dirs))
             self.prev, self.last = g, a
             return a
+
+        if any(c[2] == 5 for c in crates(g)):
+            self.conveyor = True   # this level has the autonomous deliverer
+        # ONE SLOT LEFT: stop planning and let the conveyor close it out.
+        # Level 2's conveyor delivers the last crate on its own, and Haul
+        # carrying at that point re-grabs what the conveyor just parked
+        # (its books only record its OWN drops) -- measured 5/6 regressing
+        # to 4/6, and measured cleared when the driver froze at 5/6
+        # instead (`results/wa30-q21.txt`, `wa30-q22.txt`).
+        if (self.conveyor and self.frame is not None and self.base is not None
+                and not self._carrying(box)
+                and len(self._slots(g, self.frame)) <= 1):
+            self._idle = getattr(self, "_idle", 0) + 1
+            self.prev, self.last = g, None
+            return DIRS[self._idle % len(DIRS)]
 
         self.claim = None
         plan = self._plan(g, box)
         if not plan:
+            # Level 2's autonomous conveyor may still be delivering: it
+            # slides one un-slotted crate at a time (ring 5 while moving, 4
+            # between activations) 4 cells on EVERY action -- so as long as
+            # any base-sized crate remains outside the frame, idling in a
+            # harmless cycle beats surrendering (measured: Haul to 5/6 then
+            # hands-off let the conveyor finish and clear the level,
+            # `results/wa30-q22.txt`).  A stall with no conveyor burns the
+            # level clock into a fresh life, which loses nothing.
+            fr = self.frame
+            def _outside(c):
+                if fr is None:
+                    return True
+                fx0, fy0 = fr[4], fr[5]
+                return not (fx0 <= c[4] <= fx0 + fr[0] - 1
+                            and fy0 <= c[5] <= fy0 + fr[1] - 1)
+            if any((c[0], c[1]) == (self.base or (0, 0)) and _outside(c)
+                   for c in crates(g)):
+                self._idle = getattr(self, "_idle", 0) + 1
+                self.prev, self.last = g, None
+                return DIRS[self._idle % len(DIRS)]
             self.done = True
             return None
-        if self.claim is not None:
-            self.filled.add(self.claim)
-            self.claim = None
+        # `claim` is no longer booked here: `_confirm_delivered` reads the
+        # live board instead (see its docstring).  Kept as a no-op clear so
+        # a stale claim never leaks into the next round.
+        self.claim = None
         self.queue = plan[1:]
         self.prev, self.last = g, plan[0]
         return plan[0]
@@ -430,6 +542,36 @@ class Haul:
                           size, blocked, shape)
         return None if legs is None else legs + [side]
 
+    def _confirm_delivered(self, g, frame):
+        """Add to `filled` only what the LIVE BOARD proves.
+
+        `act` used to book a slot the instant `_plan` computed a route to
+        it -- before the drop even executed.  Traced pixel by pixel, a
+        delivery claimed for (12,32) actually settles at (12,28) (the
+        crate slides through a colour-12 in-transit phase over three
+        ticks), and another never lands at all: the book then blacklists
+        a slot nothing occupies while the slot that DID take a crate stays
+        invisible (`results/wa30-q36.txt`).  Reading the board instead
+        credits a drifted delivery wherever it landed and leaves a lost
+        one free to retry.  A slot next to the piece is skipped -- the
+        piece covers what it stands on, the repo's oldest trap."""
+        if self.slotlist is None:
+            self._slots(g, frame)
+        w, h, ring, inner, fx, fy = frame
+        bw, bh = self.base
+        pys, pxs = np.nonzero(g == self.body)
+        pbox = ((int(pxs.min()), int(pys.min()),
+                 int(pxs.max()) + 1, int(pys.max()) + 1) if len(pxs) else None)
+        for sx, sy, _n in self.slotlist:
+            if (sx, sy) in self.filled:
+                continue
+            if pbox and not (sx + bw <= pbox[0] - bw or sx >= pbox[2] + bw
+                             or sy + bh <= pbox[1] - bh or sy >= pbox[3] + bh):
+                continue
+            sub = g[sy:sy + bh, sx:sx + bw]
+            if not (set(sub.ravel().tolist()) <= {inner, ring}):
+                self.filled.add((sx, sy))
+
     def _plan(self, g, box):
         cr = crates(g)
         # The frame is LATCHED for the level. Once the first crate is slotted its
@@ -452,6 +594,7 @@ class Haul:
         blocked = [(c[4], c[5], c[0], c[1]) for c in cr if c[:2] + c[4:] != frame[:2] + frame[4:]]
         cr = [c for c in cr
               if not (fx0 <= c[4] <= fx1 and fy0 <= c[5] <= fy1)]
+        self._confirm_delivered(g, frame)
         bw, bh = self.base
         here = (box[0], box[1])
 
@@ -468,14 +611,23 @@ class Haul:
                     # (`results/wa30-haul8.txt` showed two filled before the
                     # first drop). `act` commits it.
                     self.claim = (sx, sy)
+                    self.pick_target = None
                     return legs + [GRAB]
             return None
 
+        # The conveyor's ENTRY LANE -- one lattice step past the frame's
+        # near edge -- holds crates it is already delivering (they cycle
+        # ring 4 -> 3 -> 5 there and settle on their own).  Grabbing one
+        # hijacks a delivery Haul cannot reliably finish, and the hijacked
+        # crate is what the astray drops above were made of
+        # (`results/wa30-q35.txt`).
+        lane_x = fx0 + frame[0]
         for w, h, ring, inner, cx, cy in cr:
-            if (cx, cy) in self.filled:
+            if (cx, cy) in self.filled or cx == lane_x:
                 continue
             if (w, h) != (bw, bh):
                 continue
+            pick = (cx, cy)
             for side in DIRS:
                 d = self._step(side)
                 # The square the piece stands on to face this crate along `side`:
@@ -498,6 +650,7 @@ class Haul:
                                       (bw, bh), blocked + [(cx, cy, w, h)],
                                       g.shape)
                 if legs is not None:
+                    self.pick_target = pick
                     return legs + [GRAB]
         return None
 

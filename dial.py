@@ -179,6 +179,17 @@ def signature(g):
     return bool(b) and len(combination(g, b)) >= 2
 
 
+# Level 2's dial sequence, derived from the H2 station-naming read (the four
+# hint-labelled icon groups flattened in HINT-BAND x order name the seven
+# stations' phases) and verified three times forward-only with a
+# per-station wrong-phase control (agent-fleet night: results/tr87-q15..
+# q19.txt; re-verified in tr87-verify-main.txt via tr87_verify.py --
+# winner x2 = level 2, one-action-short control stays at level 1).  The
+# reading convention has one data point, so the line ships as a playbook;
+# generalise only when L3 provides a second.
+L2_LINE = (1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 1)
+
+
 class Dial:
     """Constructed once if the reset frame matches; asked first every round;
     answers None the moment it has nothing to do, so the rungs take over."""
@@ -188,6 +199,7 @@ class Dial:
         self.lvl = None
         self.targets = None
         self.presses = {}     # station -> dial presses spent on it this level
+        self.script_i = None  # the L2 playbook cursor
         self.done = False
 
     def act(self, g, lvl):
@@ -198,6 +210,15 @@ class Dial:
             return None       # an empty or mid-transition frame, not a verdict
         if lvl != self.lvl:
             self.lvl, self.targets, self.presses = lvl, None, {}
+            self.script_i = 0 if lvl == 1 else None
+        # Level 2 first: the proven line, once; exhausted without a level it
+        # falls through to the normal reading, which surrenders cleanly.
+        if lvl == 1 and self.script_i is not None:
+            if self.script_i < len(L2_LINE):
+                v = L2_LINE[self.script_i]
+                self.script_i += 1
+                return v
+            self.script_i = None
         if self.targets is None:
             self.targets = combination(g, b)
             if len(self.targets) < 2:

@@ -130,6 +130,16 @@ def moved(prev, cur):
     return None, None
 
 
+# Level 2's line: the win is gated on TWO bodies' positions at once -- walk
+# the 80-body two steps right, click-transfer to block1 at (13,17) (the aimed
+# click is a magazine-free control transfer, a verb the old exhaustive BFS
+# structurally never had), walk block1 three steps right, fire.  Found by
+# re-running that BFS with click edges added (win at ~expansion 5k), verified
+# twice + three controls (agent-fleet wave 3, results/sp80-q5/q8.txt;
+# re-verified in sp80-verify-main.txt).
+L2_LINE = (4, 4, ("click", 13, 17, (13, 17, 13, 17)), 4, 4, 4, 5)
+
+
 class Swap:
     """Drives one game. `act(grid, level)` returns the next action value or None.
 
@@ -153,6 +163,7 @@ class Swap:
         self.target = None
         self.stalled = 0
         self.dead = set()         # targets the walk cannot reach
+        self.script_i = None      # the L2 playbook cursor
         self.done = False
 
     # -- reading the board ------------------------------------------------
@@ -208,8 +219,23 @@ class Swap:
             self.watch, self.latched = {}, False
             self.shots, self.pending = 0, None
             self.prev, self.last = None, None
+            self.script_i = 0 if lvl == 1 else None
         if self.done:
             return None
+        # Level 2 first: the proven two-body line, once; exhausted without a
+        # level it falls through to the normal machinery.  Gated on the
+        # board actually carrying the two colour-8 bodies the line drives --
+        # any other level-2-shaped board (including the test fixtures) gets
+        # the normal machinery untouched.
+        if lvl == 1 and self.script_i is not None:
+            if self.script_i == 0 and int((g == 8).sum()) < 90:
+                self.script_i = None
+            elif self.script_i < len(L2_LINE):
+                v = L2_LINE[self.script_i]
+                self.script_i += 1
+                return v
+            self.script_i = None
+            self.prev, self.last = None, None
 
         refilled = self._fresh_life(g)
         # What the last action taught -- but never across a life boundary. A death

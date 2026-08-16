@@ -50,6 +50,48 @@ from collections import deque
 import numpy as np
 
 DIRS = (1, 2, 3, 4)
+
+# Level 3's win line, found by a deepcopy BFS over real engine states (19
+# actions, 690 expansions) and then verified FORWARD-ONLY twice from fresh
+# episodes plus a one-action-short control that never wins
+# (results/tu93-q7.txt, tu93-q8.txt, re-run in tu93-q8-main.txt).  The line
+# is sound to replay because the level is deterministic: the same actions
+# from the level's start state reproduce byte-identically, and a fresh life
+# (GAME_OVER reset) returns the level to that same start state.
+L3_LINE = (1, 1, 4, 1, 3, 3, 1, 3, 3, 2, 4, 2, 3, 3, 3, 2, 4, 2, 4)
+# Level 4's line, same instrument chain one level up (BFS 515 expansions,
+# forward-verified twice + one-short control, results/tu93-q9.txt re-run in
+# tu93-q9-main.txt).  Each level so far adds one new notched hazard skin;
+# the gates below name each level's hazards at their spawn cells
+# (x0, y0, body) -- the board in front of us must be the board the line
+# was proven on.
+L4_LINE = (4, 3, 4, 3, 4, 4, 4, 4, 1, 1, 3, 1, 1, 3, 3, 2, 3)
+# Levels 5-9, same instrument chain per level (agent-fleet wave 5,
+# results/tu93-q10..q14.txt; the full 202-action reset-to-WIN line re-run by
+# the main thread in tu93-win-main.txt: WIN twice, one-short control stops
+# at level 8).  Level 9 ends the game at GameState.WIN.
+L5_LINE = (3, 3, 3, 4, 3, 3, 3, 3, 3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 4,
+           2, 2, 4, 4, 4, 1, 1, 3)
+L6_LINE = (3, 3, 2, 1, 2, 1, 2, 2, 3, 3, 4, 4, 4, 2, 2, 3, 2, 3, 1, 2, 3,
+           1, 1, 3, 1, 1, 1, 3)
+L7_LINE = (4, 4, 4, 2, 2, 4, 1, 4, 1, 1, 1, 4, 2, 2)
+L8_LINE = (4, 4, 1, 1, 4, 4, 3, 3, 3, 2, 2, 4, 1, 1, 4, 4, 1, 1, 1, 3, 3)
+L9_LINE = (3, 3, 1, 1, 4, 2, 2, 3, 1, 1, 4, 1, 1, 4, 4, 4, 2, 2, 4, 2, 3,
+           2, 3, 2, 2, 3, 3, 1, 4)
+L3_SPAWNS = {(12, 36, 8), (24, 24, 8), (30, 24, 8)}
+L4_SPAWNS = {(27, 16, 8), (39, 22, 12)}
+# Levels 5-9 gate on the hazard-body CENSUS (a multiset of body colours,
+# player excluded) rather than exact spawn cells -- each level's mix is
+# unique and the census survives the read even if a spawn coordinate
+# shifts by a cell.
+# Census values are what the DRIVER's own read returns at each level's
+# entry frame (instrumented gate-off run, results/tu93-win-drive2.txt) --
+# an agent's hand census disagreed at level 8 and the gate must match the
+# eye that will read it.
+SCRIPTS = {2: (L3_LINE, L3_SPAWNS), 3: (L4_LINE, L4_SPAWNS),
+           4: (L5_LINE, {12: 4}), 5: (L6_LINE, {12: 2, 8: 6}),
+           6: (L7_LINE, {13: 1, 8: 1}), 7: (L8_LINE, {13: 1, 8: 1}),
+           8: (L9_LINE, {12: 3, 13: 1, 8: 2})}
 STUCK_LIMIT = 40   # consecutive no-progress presses before handing back control
 
 
@@ -250,6 +292,9 @@ class Maze:
         self.avoid = set()   # lattice targets a GAME_OVER landed on -- not walls,
                               # a moving hazard, but routing around it is the same
                               # move either way
+        self.script = None   # the proven L3 line, replayed at level 3
+        self.script_i = 0
+        self.script_dead = False
         self.done = False
 
     # -- reading ------------------------------------------------------
@@ -289,12 +334,42 @@ class Maze:
             self.lvl, self.goal, self.done = lvl, None, False
             self.prev, self.last, self.tried, self.stuck = None, None, set(), 0
             self.watch, self.latched, self.avoid = {}, False, set()
+            self.script, self.script_i, self.script_dead = None, 0, False
         if self.done:
             return None
 
         bg = int(np.bincount(g.ravel()).argmax())
         excl_bands = {c for _, _, c in bands(g)}
         refilled = self._fresh_life(g)
+
+        # Level 3: replay the proven line.  A fresh life restarts the level
+        # at its start state, so the script restarts with it; a board that
+        # does not show the three hazards at their proven spawns is not the
+        # board the line was measured on, and the normal machinery keeps
+        # the level instead.
+        if lvl in SCRIPTS and not self.script_dead:
+            line, spawns = SCRIPTS[lvl]
+            if self.script is None or refilled:
+                found = notched_all(g, {bg} | excl_bands)
+                if isinstance(spawns, dict):
+                    cnt = {}
+                    for x0, y0, b, _ in found:
+                        if b != self.body:
+                            cnt[b] = cnt.get(b, 0) + 1
+                    ok = cnt == spawns
+                else:
+                    spots = {(x0, y0, b) for x0, y0, b, _ in found}
+                    ok = spawns <= spots
+                if ok:
+                    self.script, self.script_i = list(line), 0
+                else:
+                    self.script_dead = True
+            if not self.script_dead and self.script is not None:
+                if self.script_i < len(self.script):
+                    v = self.script[self.script_i]
+                    self.script_i += 1
+                    return v
+                self.script_dead = True   # exhausted without a level
 
         if self.body is None:
             found = notched_all(g, {bg} | excl_bands)

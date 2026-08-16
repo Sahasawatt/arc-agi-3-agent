@@ -1,0 +1,143 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-16 05:57:28 | INFO | Got anonymous API key: 4406b3d3-076d-4b6f-a073-de9a42b9526d
+2026-08-16 05:57:28 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-16 05:57:29 | INFO | Successfully fetched 25 environment(s) from API
+game   verdict      per-verb (diff after press 1 -> after press 2)
+------------------------------------------------------------------------------
+2026-08-16 05:57:29 | INFO | Created new scorecard: 62f4427b-2a42-49b7-be56-f0d8879d2ee1
+2026-08-16 05:57:30 | INFO | Successfully fetched metadata for game ls20
+2026-08-16 05:57:30 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+2026-08-16 05:57:31 | INFO | Successfully fetched metadata for game ls20
+2026-08-16 05:57:33 | INFO | Successfully fetched metadata for game ls20
+2026-08-16 05:57:34 | INFO | Successfully fetched metadata for game ls20
+2026-08-16 05:57:35 | INFO | Successfully fetched metadata for game ls20
+ls20   COMMITS      1:52->54  2:2->4  3:52->54  4:52->54
+2026-08-16 05:57:36 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:57:36 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+2026-08-16 05:57:37 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:57:38 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:57:39 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:57:40 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:57:41 | INFO | Successfully fetched metadata for game re86
+re86   COMMITS      1:61->67  2:61->65  3:61->67  4:61->67  5:3->1
+2026-08-16 05:57:42 | INFO | Successfully fetched metadata for game tu93
+2026-08-16 05:57:42 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+2026-08-16 05:57:44 | INFO | Successfully fetched metadata for game tu93
+2026-08-16 05:57:45 | INFO | Successfully fetched metadata for game tu93
+2026-08-16 05:57:46 | INFO | Successfully fetched metadata for game tu93
+2026-08-16 05:57:47 | INFO | Successfully fetched metadata for game tu93
+tu93   COMMITS      1:1->3  2:1->3  3:1->3  4:19->21
+2026-08-16 05:57:48 | INFO | Successfully fetched metadata for game tr87
+2026-08-16 05:57:48 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+2026-08-16 05:57:49 | INFO | Successfully fetched metadata for game tr87
+2026-08-16 05:57:50 | INFO | Successfully fetched metadata for game tr87
+2026-08-16 05:57:52 | INFO | Successfully fetched metadata for game tr87
+2026-08-16 05:57:53 | INFO | Successfully fetched metadata for game tr87
+tr87   COMMITS      1:13->13  2:15->16  3:28->29  4:28->29
+2026-08-16 05:57:54 | INFO | Successfully fetched metadata for game sk48
+2026-08-16 05:57:54 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+2026-08-16 05:57:55 | INFO | Successfully fetched metadata for game sk48
+2026-08-16 05:57:56 | INFO | Successfully fetched metadata for game sk48
+2026-08-16 05:57:57 | INFO | Successfully fetched metadata for game sk48
+2026-08-16 05:57:59 | INFO | Successfully fetched metadata for game sk48
+2026-08-16 05:58:00 | INFO | Successfully fetched metadata for game sk48
+sk48   COMMITS      1:96->96  2:0->0  3:12->12  4:12->24  7:0->0
+2026-08-16 05:58:01 | INFO | Successfully fetched metadata for game sp80
+2026-08-16 05:58:01 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+2026-08-16 05:58:02 | INFO | Successfully fetched metadata for game sp80
+2026-08-16 05:58:03 | INFO | Successfully fetched metadata for game sp80
+2026-08-16 05:58:04 | INFO | Successfully fetched metadata for game sp80
+2026-08-16 05:58:05 | INFO | Successfully fetched metadata for game sp80
+2026-08-16 05:58:06 | INFO | Successfully fetched metadata for game sp80
+sp80   COMMITS      1:162->164  2:162->164  3:34->68  4:34->68  5:2->4
+2026-08-16 05:58:07 | INFO | Successfully fetched metadata for game wa30
+2026-08-16 05:58:07 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+2026-08-16 05:58:08 | INFO | Successfully fetched metadata for game wa30
+2026-08-16 05:58:09 | INFO | Successfully fetched metadata for game wa30
+2026-08-16 05:58:10 | INFO | Successfully fetched metadata for game wa30
+2026-08-16 05:58:12 | INFO | Successfully fetched metadata for game wa30
+2026-08-16 05:58:13 | INFO | Successfully fetched metadata for game wa30
+wa30   COMMITS      1:32->45  2:32->33  3:32->33  4:32->33  5:0->1
+2026-08-16 05:58:14 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:14 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+2026-08-16 05:58:15 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:16 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:17 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:18 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:19 | INFO | Successfully fetched metadata for game ar25
+2026-08-16 05:58:20 | INFO | Successfully fetched metadata for game ar25
+ar25   COMMITS      1:109->146  2:109->146  3:109->146  4:109->116  5:1->2  7:0->0
+2026-08-16 05:58:21 | INFO | Successfully fetched metadata for game cn04
+2026-08-16 05:58:21 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+2026-08-16 05:58:22 | INFO | Successfully fetched metadata for game cn04
+2026-08-16 05:58:23 | INFO | Successfully fetched metadata for game cn04
+2026-08-16 05:58:24 | INFO | Successfully fetched metadata for game cn04
+2026-08-16 05:58:25 | INFO | Successfully fetched metadata for game cn04
+2026-08-16 05:58:26 | INFO | Successfully fetched metadata for game cn04
+cn04   COMMITS      1:144->181  2:144->181  3:198->181  4:198->181  5:207->199
+2026-08-16 05:58:27 | INFO | Successfully fetched metadata for game m0r0
+2026-08-16 05:58:27 | INFO | Successfully loaded game class M0r0 from environment_files\m0r0\492f87ba\m0r0.py
+2026-08-16 05:58:28 | INFO | Successfully fetched metadata for game m0r0
+2026-08-16 05:58:29 | INFO | Successfully fetched metadata for game m0r0
+2026-08-16 05:58:31 | INFO | Successfully fetched metadata for game m0r0
+2026-08-16 05:58:32 | INFO | Successfully fetched metadata for game m0r0
+2026-08-16 05:58:33 | INFO | Successfully fetched metadata for game m0r0
+m0r0   COMMITS      1:100->102  2:100->102  3:100->102  4:100->102  5:0->2
+2026-08-16 05:58:34 | INFO | Successfully fetched metadata for game cd82
+2026-08-16 05:58:34 | INFO | Successfully loaded game class Cd82 from environment_files\cd82\fb555c5d\cd82.py
+2026-08-16 05:58:35 | INFO | Successfully fetched metadata for game cd82
+2026-08-16 05:58:36 | INFO | Successfully fetched metadata for game cd82
+2026-08-16 05:58:37 | INFO | Successfully fetched metadata for game cd82
+2026-08-16 05:58:38 | INFO | Successfully fetched metadata for game cd82
+2026-08-16 05:58:39 | INFO | Successfully fetched metadata for game cd82
+cd82   COMMITS      1:1->1  2:1->1  3:201->201  4:201->201  5:51->51
+2026-08-16 05:58:40 | INFO | Successfully fetched metadata for game bp35
+2026-08-16 05:58:40 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+2026-08-16 05:58:42 | INFO | Successfully fetched metadata for game bp35
+2026-08-16 05:58:43 | INFO | Successfully fetched metadata for game bp35
+2026-08-16 05:58:44 | INFO | Successfully fetched metadata for game bp35
+bp35   COMMITS      3:47->48  4:47->48  7:1->2
+2026-08-16 05:58:45 | INFO | Successfully fetched metadata for game dc22
+2026-08-16 05:58:45 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+2026-08-16 05:58:46 | INFO | Successfully fetched metadata for game dc22
+2026-08-16 05:58:47 | INFO | Successfully fetched metadata for game dc22
+2026-08-16 05:58:48 | INFO | Successfully fetched metadata for game dc22
+2026-08-16 05:58:49 | INFO | Successfully fetched metadata for game dc22
+dc22   COMMITS      1:9->9  2:9->9  3:9->9  4:9->9
+2026-08-16 05:58:50 | INFO | Successfully fetched metadata for game sb26
+2026-08-16 05:58:50 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+2026-08-16 05:58:52 | INFO | Successfully fetched metadata for game sb26
+2026-08-16 05:58:53 | INFO | Successfully fetched metadata for game sb26
+sb26   COMMITS      5:1->2  7:0->0
+2026-08-16 05:58:54 | INFO | Successfully fetched metadata for game ka59
+2026-08-16 05:58:54 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+2026-08-16 05:58:55 | INFO | Successfully fetched metadata for game ka59
+2026-08-16 05:58:56 | INFO | Successfully fetched metadata for game ka59
+2026-08-16 05:58:57 | INFO | Successfully fetched metadata for game ka59
+2026-08-16 05:58:58 | INFO | Successfully fetched metadata for game ka59
+ka59   COMMITS      1:19->19  2:19->19  3:19->19  4:19->19
+2026-08-16 05:58:59 | INFO | Successfully fetched metadata for game sc25
+2026-08-16 05:58:59 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+2026-08-16 05:59:00 | INFO | Successfully fetched metadata for game sc25
+2026-08-16 05:59:01 | INFO | Successfully fetched metadata for game sc25
+2026-08-16 05:59:02 | INFO | Successfully fetched metadata for game sc25
+2026-08-16 05:59:04 | INFO | Successfully fetched metadata for game sc25
+sc25   ABSORBED     1:0->8  2:0->8  3:0->32  4:0->16
+2026-08-16 05:59:05 | INFO | Successfully fetched metadata for game g50t
+2026-08-16 05:59:05 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+2026-08-16 05:59:06 | INFO | Successfully fetched metadata for game g50t
+2026-08-16 05:59:07 | INFO | Successfully fetched metadata for game g50t
+2026-08-16 05:59:08 | INFO | Successfully fetched metadata for game g50t
+2026-08-16 05:59:09 | INFO | Successfully fetched metadata for game g50t
+2026-08-16 05:59:11 | INFO | Successfully fetched metadata for game g50t
+g50t   COMMITS      1:0->1  2:48->49  3:0->1  4:48->49  5:0->1
+
+COMMITS  (16): ['ls20', 're86', 'tu93', 'tr87', 'sk48', 'sp80', 'wa30', 'ar25', 'cn04', 'm0r0', 'cd82', 'bp35', 'dc22', 'sb26', 'ka59', 'g50t']
+ABSORBED (1): ['sc25']
+unclear  (0): []
+
+=== across a real death, for every ABSORBED game ===
+2026-08-16 05:59:12 | INFO | Successfully fetched metadata for game sc25
+  sc25: after death+reset, press1 diff=0 press2 diff=8 -> ABSORBED every life
+
+READ: a game in ABSORBED loses its first action EVERY life. On a level with a short clock that is a per-life tax, and any scripted LINE written for it is off by one unless its author knew.

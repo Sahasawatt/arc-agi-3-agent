@@ -43,6 +43,16 @@ from bridge import Bridge
 from bridge import signature as bridge_signature
 from sorter import Sorter
 from sorter import signature as sorter_signature
+from ferry import Ferry
+from ferry import signature as ferry_signature
+from claw import Claw
+from claw import signature as claw_signature
+from mirror import Mirror
+from mirror import signature as mirror_signature
+from twin import Twin
+from twin import signature as twin_signature
+from roller import Roller
+from roller import signature as roller_signature
 from perception import HUD_ROW, hud
 from plan import (bfs, bfs_all, footprints_touching, route_to, slides, step_to,
                   targets)
@@ -1773,6 +1783,35 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # from sk48, whose rows read the same shape with different colours).
     sorter = (Sorter(values) if clicker is not None
               and sorter_signature(np.array(obs.frame)[-1]) else None)
+    # The swap-and-station family (`ferry.py`). Its signature -- a piece in
+    # a colour-14 ring, a 5-dot in another, a full-height colour-15 bar and
+    # two closed colour-4 boxes -- is ka59 alone of the seventeen at reset
+    # (`results/sig-sweep-ferry.txt`). The click is the SWAP verb, so the
+    # same clicker rule as tape/bridge/sorter.
+    ferry = (Ferry(values) if clicker is not None
+             and ferry_signature(np.array(obs.frame)[-1]) else None)
+    # The dock-the-claw family (`claw.py`). Its signature -- four 3x3 pad
+    # blobs plus a hundred-cell claw and socket -- is cn04 alone of the
+    # seventeen at reset (`results/sig-sweep-claw.txt`). Keyboard-only
+    # playbook, no clicker needed.
+    claw = Claw(values) if claw_signature(np.array(obs.frame)[-1]) else None
+    # The mirror family (`mirror.py`). Its signature -- a full-height
+    # three-column colour-10 wall plus the 45-cell colour-4 mirror sprite --
+    # is ar25 alone at reset (`results/sig-sweep-mirror.txt`); cover's loose
+    # signature also fires on ar25, so mirror is asked FIRST (sigs.py checks
+    # the order). Keyboard-only playbook.
+    mirror = (Mirror(values)
+              if mirror_signature(np.array(obs.frame)[-1]) else None)
+    # The twin family (`twin.py`). Its signature -- fifty colour-10 cells
+    # over thousand-cell colour-11 and colour-12 walls -- is m0r0 alone at
+    # reset (`results/sig-sweep-twin.txt`). Keyboard-only playbook.
+    twin = Twin(values) if twin_signature(np.array(obs.frame)[-1]) else None
+    # The tumbling-roller family (`roller.py`). Its signature -- a 30-cell
+    # colour-2 roller border plus hundred-cell colour-0/15 regions -- is
+    # cd82 alone at reset (`results/sig-sweep-roller.txt`). Keyboard-only
+    # playbook.
+    roller = (Roller(values)
+              if roller_signature(np.array(obs.frame)[-1]) else None)
     spun = set()  # actions proven to SPIN rather than walk — a game fact, latched
     world, windowed, run = None, False, 0   # a frame that is a window: see `stitch`
     prev_raw5 = None      # last step's fog mask, for the trace filter below
@@ -1923,6 +1962,24 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
             else:
                 cv = sorter.act(np.array(obs.frame)[-1], obs.levels_completed)
                 dsrc = "sorter"
+        if cv is None and ferry is not None:
+            if clicker is None:
+                ferry = None
+            else:
+                cv = ferry.act(np.array(obs.frame)[-1], obs.levels_completed)
+                dsrc = "ferry"
+        if cv is None and claw is not None:
+            cv = claw.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "claw"
+        if cv is None and mirror is not None:
+            cv = mirror.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "mirror"
+        if cv is None and twin is not None:
+            cv = twin.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "twin"
+        if cv is None and roller is not None:
+            cv = roller.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "roller"
         if cv is None and cover is not None:
             cv = cover.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "cover"

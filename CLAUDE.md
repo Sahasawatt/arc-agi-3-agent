@@ -103,6 +103,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 - **A blocked move IS charged budget** (measured 20/20, with 20 walked presses as a control).
   An earlier README claimed the opposite; what actually shows a refusal is that the piece's
   position does not change.
+  **NARROWED 2026-08-16: that is true of the MARKER and false of the rendered body.** On `re86`,
+  a press refused by the level-6 WALL desyncs the shape's drawn arm from its own tracked marker
+  by the attempted, denied displacement — marker frozen at (30,15), arm's row walking
+  18 → 21 → 24 → 27 over five refused DOWNs — and the offset survives toggling to the other
+  shape and back. It is cleared only by `reset()`, is capped at the shape's natural reach (one
+  lattice step short of the wall), and is specific to colliding with the wall OBJECT: the
+  board-edge clamp gives a normal non-accumulating shift. So inferring "refused" from the marker
+  is sound, and inferring "nothing changed" from the FRAME is not — a diff taken across a refusal
+  shows cells moving for a press that was denied (`results/re86-r5.txt`).
 - **Track ids are reused across a level boundary.** Numbering carries on at a boundary so the
   old model's body ids are never handed out again, but it deliberately restarts on a level
   *reset*, where the same board yields the same ids and that is the right answer.
@@ -111,6 +120,80 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   `build_model(prior=...)` exists for this; `test_compete.py` guards all three.
 - **`hash()` of bytes is randomised per process.** Anything keyed on it makes every run a
   different experiment — pass the raw bytes.
+- **A static colour-based walk map OVERCOUNTS reachability — it is a hypothesis generator, never an
+  oracle** (2026-08-16, ka59 L2). The phase-pure component model built from "same background colour
+  implies walkable" was right about phase-purity, right that box1 needs phase (1,2), and right about
+  the region structure at level entry — and **wrong about reachability on a board that had been
+  played**. It reported the piece and a box2 cell in the same component while the real router failed
+  at 3,000 / 6,000 / 12,000 nodes. The dispositive instrument was **an exhaustive real BFS that
+  targets nothing and just drains the queue**: it exhausted at **88 reachable cells against a 15,000
+  cap**, with box2 inside the reachable region's bounding box and not among its cells. Likely
+  mechanism, unproven: `ferry.find_cell()` calls the piece *"one cell, or a tight cluster"*, so if it
+  effectively occupies more than one cell a landing needs more than one clear cell, and a point-model
+  admits landings the engine refuses. **Verify any reachability claim with an exhaustive real search
+  before acting on it; when a static model and a real router disagree, the model loses.**
+- **ka59: FILLING A BOX IS REVERSIBLE, and a placed marker is a REUSABLE object** (2026-08-16).
+  A dot clicked while the piece stands **inside a box** lands in that box wearing the boxes' own
+  colour 4 — and it stays a swappable object: clicking its **3x3 halo** ejects it (the box cell goes
+  colour 4 → colour 1, back to floor) and the marker lands on the piece's old cell, from where it can
+  be clicked into a **different** box. Measured end to end: box3 filled with dot2 → ejected → walked
+  to box2 → clicked → the same object now fills box2. **So "3 dots, one click each" is NOT the
+  resource count** — that arithmetic ruled out a whole class of line and it is wrong.
+  ⚠️ Narrow it exactly: a dot clicked onto **open floor** IS consumed (a second click on the vacated
+  cell does nothing, and it reads as plain floor). *Same verb, opposite outcome, gated on where the
+  piece stood.* And the reason this hid for months: **colour 4 is the box FRAMES' colour — 88
+  permanent cells from level-2 entry** — so any raw colour-4 count reads frame pixels. Always
+  subtract the entry baseline (`extra4 = colour4_now − colour4_at_entry`). No probe before this one
+  tracked colour 4 at all.
+- **A divergence check placed DOWNSTREAM of a dedup cannot detect a key that merges states —
+  zero divergence under a merging key is the merge working, not evidence of soundness.** Measured
+  2026-08-16 on two different games in one day. ar25 level 5: a board-derived key could not
+  represent a **board-invisible selection state** (A5 has a period-3 cycle — `n mod 3 == 0` arrows
+  drive the band, `== 1` arrows are inert, `== 2` arrows drive the piece), the `seen`-set collision
+  dropped the node **before its successors were ever computed**, and the search reported
+  `EXHAUSTED at 21 states, 0 divergence` — retracted. sp80 level 3: an offset re-key omitting three
+  bodies' absolute positions reported **full exhaustion at depth 7 on a level whose win it was
+  standing on**. In both cases every other control passed (deepcopy fidelity, death-reverts,
+  mask-keeps-signal, keys-vs-raw-boards). **A search cannot audit its own state function from the
+  inside.** The two things that have ever caught it: a **positive control on a win already
+  possessed** (re-derive a known line blind, before trusting any null), and an outside challenge to
+  a number that matches another number for no reason.
+- **A BFS whose FRONTIER holds `deepcopy(env)` nodes is memory-bound long before it is
+  time-bound, and it dies without producing a result.** Measured 2026-08-16 on sp80 level 3:
+  **6.3 GB RSS at 12,000 nodes expanded**, with the frontier's own growth curve projecting a peak
+  near 36,700 — i.e. **~20 GB before exhaustion**, on a 32 GB box also running other searches. The
+  run does not finish; it dies partway having produced only its checkpoints, and it can swap the
+  machine on the way. Deepcopy nodes are legal, faithful and ~3 ms, so they are right for
+  *expansion* — they are wrong for *storage*. **Hold the frontier as ACTION PATHS and replay from
+  the root when a node is popped** (at depth ~20 that is ~60 ms against ~3 ms, a ~20x slowdown that
+  must be priced into any wall-clock estimate), or run **layer-by-layer**, keeping envs only for the
+  layer being expanded and emitting the next layer as paths — memory then bounds to one layer and
+  each node is replayed once rather than once per pop. `bfs_solve.py` and every ad-hoc probe in this
+  repo store envs; check before launching anything expected to exceed a few thousand nodes.
+- **EIGHT of the seventeen games answer some action with a MULTI-PLANE frame, and every reader
+  here takes `np.array(obs.frame)[-1]`** (`framestack.py` → `results/framestack.txt`, 2026-08-16).
+  sb26 returns **42 planes** on its run action, sp80 **22** on its fire, sc25 **22 on every one of
+  its four verbs**, cd82 15, tu93 8, g50t 7, bp35 5, sk48 2; the other nine are single-plane
+  throughout. Reading the last plane is **sound for play** — sb26 is cleared 8/8 through those 42
+  planes, and wins come from `levels_completed`, never from a frame. It is a **keyhole for
+  discovery**: any probe that pressed once and concluded "that action did nothing" measured the end
+  of an animation. On sc25 the first press of any verb animates through `9 → 18 → 27 → 36` changed
+  cells and **snaps back to entry**, so `f[-1]` is 0 and the press reads as a no-op — which is how a
+  board-keyed BFS "exhausted" that game's keyboard graph at **one node** (`sc25_r1.py`, verdict
+  void, kept as a worked example). Before concluding an action is inert on any game in the list,
+  read every plane.
+  **The sc25 rule, narrowed 2026-08-16: action-index 1 of every LIFE is absorbed — verb or click,
+  it makes no difference — and everything from index 2 onward commits normally.** (An earlier
+  reading of the same evidence said the trigger was "the board equals the entry frame"; the two are
+  observationally identical until you press a verb at index 1 and then click a real target at index
+  2, which commits.) **So every sc25 probe must open each life with a throwaway warmup press before
+  its first real action.** `sc25_q16.py`'s 480-state closure survives only because it happens to do
+  exactly that after each of its resets — accidentally, for an unrelated reason — which is why its
+  historical run shows zero `MISMATCH` across 13 rebuilds. A new probe gets no such protection.
+  **Absorption is sc25-ONLY** — measured across all seventeen games, every plain verb, pressed twice
+  from a fresh reset (`absorb_r1.py` → `results/absorb-r1.txt`): sixteen commit on the first action,
+  sc25 alone does not, and it absorbs after a death too (press-1 diff 0, press-2 diff 8). So no
+  driver anywhere else is off by one.
 - **`plates()` reads the whole frame, not the play area.** `ls20` draws its indicator across
   the row where the HUD starts.
 - **A learned map of the board can remove routes that exist.** `ls20` level 4 has floor cells
@@ -981,17 +1064,47 @@ width>=3 = fixture, colour-2 pair = slot), drops unpointed slotless boxes as fra
 artifacts (they steal the root), and solves by enumerating block-to-slot assignments
 against a pure-computation flatten — the engine is never stepped during the solve.
 
+Five more drivers landed 2026-08-13/14 (agent-fleet nights, `results/breadth-recon.md`
+§Agent-fleet), taking the roster to FOURTEEN. `ferry` (ka59) — the aimed click is a SWAP:
+the piece teleports to the dot and the dot, recoloured to the boxes' own colour, lands on
+the piece's old square, so standing inside a box when clicking PLACES the dot there;
+movement is a 3-cell lattice step that checks only the LANDING cell, which is how a
+"closed" box is entered at all. `claw` (cn04) — a 14-action playbook; the game's trap is
+that the wrong handedness gives the identical tip-to-tip vector and renders the same
+"docked" overlay without winning, so only `levels_completed` may be read as a win.
+`mirror` (ar25) — the player and a MIRROR sprite move in lockstep (vertical same,
+horizontal opposite; the old trap note about ACTION3 was reading the mirror), and the win
+docks the MIRROR on the target with one axis exact. `twin` (m0r0) — two pieces on shared
+controls in non-mirrored halves, win = one specific cell. `roller` (cd82) — a tumbling
+roller whose same-action-twice is a NO-OP (the visible correlate of the "hidden state"
+that made the generic engine burn 1,306 actions revisiting one object 22 times), ACTION5
+paints the wedge FACING it, and on level 2 the HUD icons are a COLOUR SELECTOR for that
+paint. Three games are now cleared END TO END: ls20 7/7, sb26 8/8, and tu93 9/9 — the
+last via `maze.py`'s `SCRIPTS` table, one BFS-found line per level gated on that level's
+hazard census. **The gate must match the eye that reads it**: level 8's gate written from
+an agent's hand census failed in-driver because `notched_all` reads the board differently;
+the shipped gates are the driver's own censuses, taken from an instrumented run.
+
+`haul` gained three guards for wa30's level 2, whose board runs an AUTONOMOUS CONVEYOR
+that parks one crate at a time on its own: a queued GRAB is dropped when its target crate
+has moved or entered the frame (a plan made in the open matures into lifting what the
+conveyor just delivered), `_slots` also checks the LIVE board rather than trusting the
+driver's own book of drops, and a life boundary is detected by the count of crates outside
+the frame going UP (the level dies on a 70-action clock and re-enters pristine, so every
+book describes a board that no longer exists). The 68-action win line is proven at probe
+level; the in-driver replay is still short.
+
 Every signature is measured against all seventeen games at reset before its driver is wired,
 which is the whole mechanism by which every other game stays byte-identical — nothing in the
 wiring scopes a driver to one game. `sigs.py` runs every SHIPPED predicate over all
 seventeen reset frames in one invocation (`results/sig-sweep.txt`) and is the check to run
-before adding a sixth. Two things it exists to enforce:
+before adding another. Two things it exists to enforce:
 
 - **Measure the shipped predicate, not a candidate table.** `maze_sig.py` prints the
   candidate table a signature is chosen from, and both of its candidates fire on five games;
   `maze.signature`, the function actually wired in, is neither of them.
 - **They are no longer all disjoint.** `cover`'s is the loose one — it fires on ar25, re86,
-  bp35 and tr87, and only ever ENGAGES re86, because a driver handed a board it cannot read
+  bp35 and tr87 (ar25 is now settled by `mirror` being asked first), and only ever ENGAGES re86, because a driver handed a board it cannot read
   answers None on its first round. So the contested board is settled by CASCADE ORDER: `dial`
   is asked before `cover` in `compete.play`, and `sigs.py` fails if any contested game has a
   driver other than the one built for it asked first. Keep its `CASCADE` list equal to the
@@ -1004,9 +1117,11 @@ upper bounds from a dev mode the competition does not offer.
 
 `kaggle/bundle.py` builds `kaggle/my_agent.py` -- the single-file submission agent the
 official starter kit splices into the notebook. Its MODULES list must name every driver
-`compete` imports, in dependency order: the three 2026-08 drivers (`tape`, `bridge`,
-`sorter`) were added 2026-08-13, and a bundle built without a module `compete` imports
-dies at exec with an ImportError on Kaggle, not locally. It is the single-file agent the
+`compete` imports, in dependency order: `tape`/`bridge`/`sorter` landed 2026-08-13 and
+`ferry`/`claw`/`mirror`/`twin`/`roller` on 2026-08-14, and a bundle built without a module
+`compete` imports dies at exec with an ImportError on Kaggle, not locally -- which is
+exactly what a forgotten `roller` did on the v8 build, caught only because the bundle was
+exec'd locally before pushing. **Exec the built bundle before every push.** It is the single-file agent the
 official starter kit splices into the Kaggle notebook. It embeds every module
 (zlib+base64, registered in `sys.modules` BEFORE exec or dataclasses break) and runs
 `compete.play` unchanged on a worker thread behind a queue-backed proxy env
@@ -1017,6 +1132,20 @@ artifact, never hand-edited. Two mechanics that cost a run each: `GameAction(v)`
 on every int (map `{int(a.value): a}`), and the adapter's per-round timeout must dwarf
 the slowest planning round (level-6 rounds think for minutes; 120s killed the worker
 mid-run and the random fallback's 5/7 looked like a logic bug).
+
+**The submission is scored on 110 HIDDEN games, and the drivers are nearly irrelevant
+there**: v1 (drivers + a 2,600-action cap) scored 0.11 and v7 (fourteen drivers) scored
+0.10, against the official sample's ~1.56. The sample's shape is the lesson -- it sets
+MAX_ACTIONS to infinity, bounds the whole run with an 8-hour clock, and spends thousands
+of cheap actions per game while LEARNING which actions move frames. So `kaggle/adapter.py`
+is now budgeted by CLOCKS, not actions: `play` gets a wall-time slice per game (short on
+games no driver signature claims -- its wander earns nothing there), a cheap mop-up gets
+the rest of a per-game clock, and a global clock drains the tail. The mop-up is a
+STATE-AWARE bandit -- per (frame-hash, action) it tracks how often that action changed the
+frame from THAT state, falling back to a per-action global prior, with the click as a
+candidate aiming at a random cell. Unit-driven on a two-state stub, it learns per-state
+(239 vs 67). The daily submission quota is **1**, not 5 -- the CLI swallows the reason and
+prints a bare 400; the real message is in the response body.
 
 The adapter budgets by CLOCKS, not actions (2026-08-13, after v1 scored 0.11 against
 the sample's 1.56 cluster): `compete.play` gets PLAY_SECONDS of wall time per game (the

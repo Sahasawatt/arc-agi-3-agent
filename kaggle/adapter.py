@@ -102,11 +102,23 @@ class MyAgent(Agent):
     random mop-up gets the remainder (it can afford thousands of engine
     steps), a per-game clock ends the game, and a global clock drains
     whatever remains as time runs out.  Sized for the hidden set: 110 games
-    x GAME_SECONDS ~ 7.3h inside the sample's own 8h envelope."""
+    x GAME_SECONDS ~ 7.3h inside the sample's own 8h envelope.
+
+    HOW MUCH of that clock the mop-up should get is now MEASURED, and the
+    answer inverts what v8 assumed.  Scores: v1 = 0.11, v7 = 0.10, v8 = 0.01.
+    v8's only behavioural change was handing the mop-up roughly three times
+    more clock (a 60s `play` slice on games no driver signature claims, versus
+    v7's 180s) and making its bandit state-aware -- and it scored TEN TIMES
+    WORSE.  So the mop-up is actively harmful relative to `compete.play`, not
+    a cheap way to spend leftover time, and the claim-gated short slice is
+    withdrawn: `play` owns the whole game clock on every game, claimed or not,
+    and the mop-up exists only to keep the framework loop legal after `play`
+    returns or dies.  Its bandit is back to v7's per-action global prior; the
+    per-(frame-hash, action) table went with the hypothesis that motivated it."""
 
     MAX_ACTIONS = 200_000          # the real bounds are the clocks below
-    PLAY_SECONDS = 180             # compete.play's thinking slice per game
-    GAME_SECONDS = 240             # play + random mop-up, then is_done
+    GAME_SECONDS = 240             # play, then is_done ends the game
+    PLAY_SECONDS = GAME_SECONDS    # play owns the clock -- see the docstring
     RUN_SECONDS = 8 * 3600 - 300   # global drain, same envelope as the sample
     _run_start = None              # stamped once by the first game's agent
 
@@ -120,8 +132,8 @@ class MyAgent(Agent):
         self._worker = None
         self._dead = False
         self._t0 = None          # first choose_action call, this game's clock
-        self._stats = {}         # mop-up bandit: value -> [tries, changes]
-        self._last = None        # (value, frame bytes) of the last mop-up pick
+        self._stats = {}         # global bandit prior: value -> [tries, changes]
+        self._last = None        # (value, frame bytes) of the last pick
         if MyAgent._run_start is None:
             MyAgent._run_start = time.time()
         random.seed(0xA5C ^ hash(self.game_id) % (1 << 30))
@@ -172,11 +184,14 @@ class MyAgent(Agent):
             self._rep.put(_Obs(latest_frame))
             self._pending = False
         if not self._dead:
-            # play's slice is PLAY_SECONDS of wall time.  The get timeout
-            # shrinks with it, so one long planner round (ls20's patrol
-            # thinks for minutes) cannot overrun the slice; on expiry the
-            # worker is parked mid-block (daemon thread, never joined) and
-            # the cheap random mop-up spends the rest of the game clock.
+            # play's slice is PLAY_SECONDS of wall time, which is the WHOLE
+            # game clock: v8 shortened it to 60s on games no driver signature
+            # claimed, handing the difference to the mop-up, and scored 0.01
+            # against v7's 0.10.  The get timeout shrinks with the slice, so
+            # one long planner round (ls20's patrol thinks for minutes) cannot
+            # overrun it; on expiry the worker is parked mid-block (daemon
+            # thread, never joined) and the mop-up keeps the loop legal for
+            # whatever is left.
             left = self.PLAY_SECONDS - (time.time() - self._t0)
             if left <= 0:
                 self._dead = True
@@ -195,14 +210,13 @@ class MyAgent(Agent):
                         ga.set_data(payload.data or {"x": 32, "y": 32})
                     return ga
                 self._dead = True     # play returned or timed out
-        # Mop-up keeps the framework loop legal until the game clock ends
-        # the game (is_done); it affords thousands of engine steps.  Not
-        # uniform: a per-action bandit weighted by HOW OFTEN the action
-        # changed the frame (the sample that owns the baseline cluster
-        # learns exactly this) -- weight (changes+1)/(tries+2), so an
-        # action the board ignores decays and one that moves things gets
-        # picked.  The click, where the game has one, is a candidate too
-        # (value 0 stands for it) and aims at a random cell.
+        # Mop-up keeps the framework loop legal after `play` returns or its
+        # slice expires -- nothing more.  It is v7's plain per-action bandit,
+        # weight (changes+1)/(tries+2); the per-(frame-hash, action) table is
+        # gone with the hypothesis that motivated it (see the class docstring:
+        # v8 gave this code more clock and the score fell from 0.10 to 0.01).
+        # The click, where the game has one, is a candidate (value 0) aiming
+        # at a random cell.
         if latest_frame.state in (GameState.NOT_PLAYED, GameState.GAME_OVER):
             self._last = None
             return GameAction.RESET
@@ -217,8 +231,10 @@ class MyAgent(Agent):
         if any(int(getattr(a, "value", a)) == 6
                for a in latest_frame.available_actions or []):
             cands = cands + [0]
-        w = [(self._stats.get(v, [0, 0])[1] + 1)
-             / (self._stats.get(v, [0, 0])[0] + 2) for v in cands]
+        w = []
+        for v in cands:
+            src = self._stats.get(v, [0, 0])
+            w.append((src[1] + 1) / (src[0] + 2))
         pick = random.choices(cands, weights=w)[0]
         self._last = (pick, fb)
         if pick == 0:
