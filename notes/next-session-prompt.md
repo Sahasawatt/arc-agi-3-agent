@@ -14,7 +14,7 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 **Standing: mean 23.841% (wave-13 gate, results/sweep-wave13.log). TWO levels fell today** — sp80 L3
 (swap.py L3_LINE, wave-12) + m0r0 L2 (twin.py L2_LINE, wave-13). All committed+pushed to `9947445`.
 
-**Resume after restart (cd Desktop\projectsrc-agi-3-agent; each chain resumes from its atomic
+**Resume after restart (cd Desktop/projects/arc-agi-3-agent; each chain resumes from its atomic
 checkpoint — do NOT pass --fresh):**
 
     PYTHONUTF8=1 ./.venv/Scripts/python.exe sp80_s13.py --budget-seconds 3300   # L4, ckpt @160k expanded
