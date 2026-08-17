@@ -22,6 +22,15 @@ import numpy as np
 L1_LINE = (1, 1, 3, 1, 1, 1, 1, 1, 4, 1, 4, 4, 4, 2, 4, 2, 4, 2, 4, 2, 2,
            2, 2, 2, 3, 2, 3)
 
+# Level 2's line, found by a hypothesis-free real-engine BFS from the L2 root
+# (m0r0_b1_l2bfs.py: win at depth 23, 1,653 nodes expanded, 0 deaths, 0 key
+# divergence; verified twice fresh plus a one-action-short control that stays
+# at levels_completed=1, results/m0r0-b2-verify.txt and an independent
+# main-thread replay). The earlier "L2 CLOSED" note had only closed one
+# hypothesis (the diagonal meeting-cell), never the level.
+L2_LINE = (2, 3, 3, 3, 2, 2, 2, 4, 4, 1, 4, 4, 2, 2, 2, 2, 2, 2, 4, 4, 4,
+           1, 3)
+
 
 def signature(g):
     """Exactly fifty colour-10 cells (the twin 5x5 pieces) over walls of
@@ -48,10 +57,11 @@ class Twin:
             return None
         if lvl != self.lvl:
             self.lvl, self.i, self.dead = lvl, 0, False
-        if self.dead or lvl != 0:
+        if self.dead or lvl not in (0, 1):
             return None
-        if self.i < len(L1_LINE):
-            v = L1_LINE[self.i]
+        line = L1_LINE if lvl == 0 else L2_LINE
+        if self.i < len(line):
+            v = line[self.i]
             self.i += 1
             return v
         self.dead = True

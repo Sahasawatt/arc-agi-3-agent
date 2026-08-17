@@ -45,6 +45,16 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
+- **sp80 L4 renders TWO colour-9 bodies at once (twin-merge after a control transfer), and an
+  anomaly counter nothing gates on is a silent prune.** s12's one-driver reader dropped 56,477
+  flagged children in 43k expansions — the search ran, checkpointed, and reported plausible numbers
+  over a SUBGRAPH; the only tell was `driver_blob_count` climbing while every drop site said
+  `continue`. Diagnosis (149 trajectories, 3 seeds): 120/120 anomalies were the same real game
+  state — the (9,3) body pair both colour 9 — not occlusion. Fix shape: recover-or-FORK, never
+  drop, and assert `forked == anomaly_count, dropped_hard == 0` in the FINAL line (`sp80_s13.py`).
+  Corollary for every tracker here: a counter that can fire without changing control flow is a
+  logging statement wearing a guard's name. 2026-08-17.
+
 - **"Responds to the most actions" elects the wrong player on a board with a metronome —
   and NO landable fix exists yet (three designs measured dead).** sc25's faller wins the
   vote and the run wanders unplanned; but ar25's baseline level DEPENDS on its own

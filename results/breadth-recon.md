@@ -6232,3 +6232,118 @@ instead of drop — reunify split blobs / pick by the driver's known size tier /
 FORK when genuinely ambiguous (the s11 multi-match philosophy applied to the driver reader). A fixed
 reader needs a FRESH search — the dropped children never entered `seen`, and their parents are
 already popped, so the old checkpoint under-covers by construction.
+
+## 2026-08-17 — sp80 L4: the anomaly is a TWIN-MERGE (a real game state), s13 forks it — chain relaunched (agent `sp80_s13.py`, main thread)
+
+Diagnosis over 149 random trajectories, 3 seeds: **120/120 anomalies are the identical event — after
+a control transfer (click/fire), the (9,3)-size body pair (root (8,29) and (20,29)) BOTH render
+colour 9 simultaneously.** A genuine twin-merge by direct frame inspection, not occlusion; SPLIT and
+MISSING never observed. So L4 has board states with two colour-9 bodies at once — the one-driver
+reader was structurally wrong there, and s12's smoke oddity (ids 0/2 never driving) is explained:
+every path to them WAS the dropped anomaly. `driver_blob_recover()` tiers: exact-size → split-union
+→ dropped_hard (none seen) → FORK ≤3; production smoke: **driver_forked == anomaly count exactly,
+driver_dropped_hard=0** — zero silent drops. Control (L3 win replay) PASS; resume exact.
+Long chain relaunched fresh (12 x 3300s, log results/sp80-s13-run1.txt). Note the branch factor:
+forking on every twin-merge may grow the space several-fold vs the (void) s12 numbers — correctness
+first, the census will say.
+
+## 2026-08-17 — m0r0 LEVEL 2 FALLS — the "CLOSED" verdict was hypothesis-scoped, and the hypothesis-free BFS won in 35 seconds (agent `m0r0_b1/b2.py`, main thread)
+
+**The earlier "m0r0 L2 CLOSED for the campaign" closed ONE HYPOTHESIS (the diagonal meeting-cell
+col=7 unreachable), never the level** — no hypothesis-free search had ever run. The real-engine BFS
+from the L2 root: **WIN at depth 23 — 1,653 nodes expanded, 0 deaths, 0 key divergence, 34.9s.**
+Verified twice fresh + a one-action-short control (stays at 1) + an independent main-thread replay
+(levels_completed=2 after the 50-action line). Deepcopy fidelity control PASS (first use of this
+instrument on m0r0).
+
+Landed as `L2_LINE` in twin.py (SEQ[27:] — the 27-action L1_LINE prefix matches byte-for-byte),
+act() wired for lvl in (0,1). pytest 330 (results/pytest-m0r0l2.txt). Sweep wave-13 running.
+
+*The campaign-level lesson, third instance today (sp80 L3, m0r0 L2): a closure is scoped to the
+question its instrument asked. "Hypothesis X is impossible" and "the level is unwinnable" are
+different claims, and the cheap completeness instrument — a real-engine BFS that reads
+levels_completed and needs NO win-condition theory — retires the second claim or wins. Every parked
+level whose closure is hypothesis-shaped deserves one BFS pass before staying parked.*
+
+## 2026-08-17 — dc22 L2: BLOCKED with the mechanism named — the panel buttons are multi-state RATCHETS, not toggles (agent `dc22_b1..b4.py`)
+
+L1 recipe = bridge.py's own 25 actions (reproduced x3). L2 fresh characterization: piece (colour 14)
+and goal (colour 11) on platforms across two 8-row void gaps; **component-centered click sweep found
+exactly 2 real controls of 51 clickable objects** (a coarse-lattice sweep first returned a false
+0/121 — the lattice missed the components); deepcopy control PASS; 320 direction presses, no death
+observed (negative, not proof). **Root cause of the driver stall: both panel buttons are RATCHETS —
+>=7 distinct states in 6-7 presses, no repeat — while bridge.py models a binary toggle and presses
+each once per position.** Structurally unsolvable by the current driver, not a search-depth issue.
+Next arm (scoped, not run): cycle-detect each button's true period, then BFS keyed on
+(piece position, button-state pair).
+
+## 2026-08-17 — cn04 L2: model-free BFS to depth 4 EXHAUSTED, no win — the space is a 4-body product (agent `cn04_b*.py`)
+
+First hypothesis-free evidence on this level (complements, does not repeat, the 191 criteria-ranked
+placements): board-keyed real-engine BFS from the L2 root, click alphabet bounded to clickable
+OBJECTS (16 targets + 6 verbs = 22 actions/node). **Depths 0-4 fully exhausted — 32,954 actions
+tried, 7,878 distinct states, zero wins**; depth 5 truncated by a memory cap; growth steady at
+4.3-6.4x per layer = the product-state signature of four freely-overlapping movable bodies. Facts
+banked: at L2 entry shape "0" is ALREADY selected (no click needed); bare ACTION6 without click
+data dies (the known data trap); centroid click-targeting silently misses concave shapes — click a
+member cell (instrument note). Deepcopy control passed 4/4.
+Verdict PARTIAL/GROWING — this level needs either a sound reduced key (the ar25 lesson looms: a
+merging key reports false exhaustion; any reduction needs a positive control) or goal-directed
+pruning, not deeper blind layers.
+
+**cn04 L2 amendment (the background run completed after the first write-up):** final census =
+**150,011 actions / 24,387 distinct states / zero wins**, stopped by the script's own
+MAX_TOTAL=150,000 node cap at depth 6 (not exhaustion, not the clock). Exact through depth 4,
+partial depth 5 (~5,650 of 6,380), fragmentary depth 6 (16,509 states). Throughput measured
+~2.7ms/candidate steady. The agent also caught its own log overstating a layer ("expanded 6000" vs
+~5,350 actually processed before the cap) and corrected it in the report rather than leaving it.
+Verdict unchanged: GROWING/PARTIAL — next lever is a sound reduced key (with positive control) or a
+directed search, not deeper blind layers.
+
+## 2026-08-17 — re86 L6: first hypothesis-free BFS — GROWING at 31,609 boards over 12 layers, no win (agent `re86_b1_bfs.py`)
+
+Root built by monkeypatching env.step to halt compete.play at levels_completed>=5 — **421 actions,
+matching sweep-wave12's [31,56,66,80,188] sum exactly**, ~38s. Action space = [1..5] only (no
+click). Deepcopy control PASS. **86,864 env.step calls, 31,609 distinct boards, 55,256 merges, 12
+layers, ZERO wins, zero GAME_OVERs** (the free-re-entry fact stayed unexercised — noted, not
+asserted). Stopped by its 300s cap mid-layer-12; per-layer growth bounces 1.1-3.4x with no
+consistent trend — neither converging nor hopeless on this sample. Checkpoint = 6,414 frontier
+ACTION-PATHS (not envs). The agent corrected its own script's auto-conclusion (a cumulative 0.364
+new/expanded scalar claiming convergence) against the per-layer curve — the dedup-hides-growth
+precedent applied by the agent itself.
+Next: an s11-style chain runner (resume + budget) — the checkpoint has no loader yet.
+
+## 2026-08-17 — dc22 L2: the "ratchet" is bigger than measured, movement is keyed on button B, and DEATH DOES NOT REVERT (agent `dc22_c1.py`)
+
+Corrections to the b-series: **both buttons show no board repeat within 40 presses** (period > 40,
+unresolved — "≥7 states" was a floor, not a period). Button A's diff footprint settles to a fixed
+box alternating two shapes while the full board still never repeats; **button B's footprint GROWS
+one-way** (x1 11→26 over 40 presses) — an extension, not a cycle, in the tested range. Cross-effects:
+A and B never touch each other's button regions, but **which arrow is REFUSED rotates with a
+period-3 pattern keyed on B's state** (tested across A 0-7). 8x8 movement grid: no single press
+reaches the goal from any sampled combo. **NEW: GAME_OVER is reachable at L2 (first at depth 11,
+440 dead branches) and measured NOT to revert the board** — first game in the campaign where death
+carries persistent state; dropping dead branches is NOT free here (c1 dropped them after the one
+measurement — a future search must model post-death boards or justify the drop).
+Board-keyed BFS (4 arrows + 2 clicks): **8,023 states to depth 19, 40k-expansion cap, frontier
+climbing (903), no win.** Checkpoint results/dc22_c1_ckpt.pkl (paths). GROWING.
+
+## 2026-08-17 — FOUR chained hypothesis-free BFS runs now grind in parallel (main thread)
+
+sp80 L4 (`sp80_s13.py`, twin-merge forking reader) · wa30 L3 (`wa30_b2_l3chain.py`) · re86 L6
+(`re86_b2_l6chain.py`, seeded from b1's live ckpt at 28k expanded) · dc22 L2 (`dc22_c2_l2chain.py`,
+seeded from c1's 903 frontier paths; **death measured per-process: post-death obs carries an EMPTY
+frame — a third outcome beside None/board — env terminates, branches dropped and counted**).
+All four: path frontier, atomic checkpoint every 2,000 expansions, budget on the success path,
+stop-early on exhausted/win, logs results/<game>-*-run1.txt. The instrument lesson standing behind
+this fan-out: today it produced two levels (sp80 L3, m0r0 L2) from closures that were only ever
+hypothesis-scoped.
+
+## 2026-08-17 — WAVE-13 GATE: PASS — m0r0 L2_LINE lands, mean 23.281% → 23.841%
+
+`sweep_diff.py wave-12 wave-13 m0r0` on the COMPLETED log: **16/17 identical to the digit**, control
+fired, **m0r0 (1,6)[27] → (2,6)[27,23]**, no game lost a level. (An earlier diff run mid-sweep
+showed cd82/sb26 as None — a diff against a log still being written reads absence as change; wait
+for the sweep's mean line before diffing.) pytest 330 (results/pytest-m0r0l2.txt).
+**results/sweep-wave13.log is the new clean gate** (chain: … wave-11 → wave-12 → wave-13).
+Standing: **15/17 games with a level, mean 23.841%, m0r0 2/6 = 14.286%. TWO levels landed today.**
