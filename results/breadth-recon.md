@@ -6361,3 +6361,17 @@ alphabet; 49 objects' inertness measured only at <=40-press button states).
 (candidate: per-button press COUNTS — the refused-arrow rotates period-3 on B's state; the true
 periods are >40 and may be pure counters), re-key as (board + carried counters), drive the
 divergence sample to ZERO under the new key, THEN re-run the exhaustion.
+
+## 2026-08-17 — dc22 L2: the hidden variable is IDENTIFIED and the sound key validated at 0/100 (agent `dc22_c4_hidden.py`)
+
+Characterization of 30 divergent pairs: **nA/nB identical in every pair — only TOTAL path length
+differs (by 1-3 arrow presses)**, every mismatch a single-cell frame diff, and the multi-plane
+escape is ruled out (all mismatching frames are single-plane — the variable is genuinely absent
+from the render). Validation ladder, each round a fresh collect+replay: board+total%3 → 37/100 ·
+board+total_raw → 1/100 (the residual pair: equal length, 0-vs-2 clickA composition) ·
+**board + total_len + nA + nB → 0/100 over 3,857 fresh collisions. SOUND.** Size inflation ~1.39x
+at comparable budgets. Structural note for c5: in strict FIFO BFS total_len is constant per layer,
+so the effective per-layer key is (board, nA, nB) — code-derived, per-depth census NOT RUN.
+Key importable: `from dc22_c4_hidden import key_total_raw_plus_nAnB_raw`.
+So dc22 L2's game state ticks on a GLOBAL press counter plus per-button counters — the ar25-band
+mechanism family, third game in the campaign where history-not-board is real state.
