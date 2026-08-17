@@ -6347,3 +6347,17 @@ showed cd82/sb26 as None — a diff against a log still being written reads abse
 for the sweep's mean line before diffing.) pytest 330 (results/pytest-m0r0l2.txt).
 **results/sweep-wave13.log is the new clean gate** (chain: … wave-11 → wave-12 → wave-13).
 Standing: **15/17 games with a level, mean 23.841%, m0r0 2/6 = 14.286%. TWO levels landed today.**
+
+## 2026-08-17 — dc22 L2: the EXHAUSTION IS VOID — 73/100 collision pairs diverge, the board key merges hidden state (agent `dc22_c3_verify.py`)
+
+c2's "EXHAUSTED at 28,495 states" does NOT bank. Control 2 (collision-divergence): 6,848 collision
+pairs collected across depths 2-12; of 100 sampled — replay both paths, press every action,
+byte-compare — **73 produced different successors from an identical board key under an identical
+action.** Hard hidden state, the ar25-sel_phase/sp80-offset mechanism, fourth false exhaustion this
+campaign caught by a control. Control 1 (L1 positive) was budget-limited (soft fail, 300s not
+reaching the depth-25 win) — moot given Control 2's hard result. Scope statement stands (6-action
+alphabet; 49 objects' inertness measured only at <=40-press button states).
+**A bigger c2 run cannot fix this — it would keep merging.** Next: identify the hidden variable
+(candidate: per-button press COUNTS — the refused-arrow rotates period-3 on B's state; the true
+periods are >40 and may be pure counters), re-key as (board + carried counters), drive the
+divergence sample to ZERO under the new key, THEN re-run the exhaustion.

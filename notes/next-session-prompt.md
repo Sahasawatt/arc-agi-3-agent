@@ -9,6 +9,42 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 (tu93 100.0 · sb26 100.0 · ls20 43.629 · re86 41.477 · sp80 28.571 · ar25 27.778 · tr87 14.286 · m0r0 14.286 · cd82 10.514 · wa30 6.667 · cn04 4.762 · dc22 4.762 · ka59 3.571 · sk48 2.778 · bp35 2.222 · sc25 0 · g50t 0)
 ← **results/sweep-wave13.log** is the current clean gate (wave-13 = twin.py L2_LINE, m0r0 1/6→2/6, 16/17 identical, PASS; wave-12 = swap.py L3_LINE, sp80 2/6→3/6) (chain: wave-6 → wave-8 [haul's wa30 L2 guards] → wave-9 [mirror L2] → wave-10 [mirror L3] → wave-11 [mirror L4]; every hop diffed with `sweep_diff.py <before> <after> <control>`, a control that DIFFERS, 16 of 17 identical to the digit, no game ever losing a level; pytest 330 throughout). ⚠️ `sweep-tu93win.log` = an aborted MemoryError run — ignore it. Remaining 0-level: sc25, g50t, both CLOSED with completeness evidence.
 
+## STATE AT 2026-08-17 19:15 — MACHINE RESTART: everything checkpointed, three chains resume with one command each
+
+**Standing: mean 23.841% (wave-13 gate, results/sweep-wave13.log). TWO levels fell today** — sp80 L3
+(swap.py L3_LINE, wave-12) + m0r0 L2 (twin.py L2_LINE, wave-13). All committed+pushed to `9947445`.
+
+**Resume after restart (cd Desktop\projectsrc-agi-3-agent; each chain resumes from its atomic
+checkpoint — do NOT pass --fresh):**
+
+    PYTHONUTF8=1 ./.venv/Scripts/python.exe sp80_s13.py --budget-seconds 3300   # L4, ckpt @160k expanded
+    PYTHONUTF8=1 ./.venv/Scripts/python.exe wa30_b2_l3chain.py --budget-seconds 3300   # L3, ckpt @64k, divergence 0
+    PYTHONUTF8=1 ./.venv/Scripts/python.exe re86_b2_l6chain.py --budget-seconds 3300   # L6, ckpt @976k expanded
+
+Chain each in a loop until FINAL shows exhausted=True or win=True (the 12x3300s wrapper pattern is
+in this session's bash history / recon). On win=True: independent replay (pattern
+results/sp80-win-replay.txt), land in the driver, pytest, full sweep, sweep_diff vs wave-13 —
+one driver change per wave.
+
+**dc22 L2: do NOT resume dc22_c2** — its exhaustion is VOID (73/100 collision pairs diverge; hidden
+state; results/dc22-c3-verify-20260817.md). Next step = respawn the hidden-state identification
+agent (spec in the recon tail section "the EXHAUSTION IS VOID"): characterize divergent pairs →
+sound key (candidates: per-button press counters; or the discarded frame PLANES — dc22 returns up
+to 15) → zero-divergence validation → only then re-run exhaustion as dc22_c5.
+
+**KAGGLE — at 07:00 Thai (00:00 UTC): submit the HYBRID, kernel v11 (COMPLETE, parquet verified).**
+From Desktop\ARC-AGI-3-Kaggle-Starter:
+
+    KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet -k sahasawatt/arc-prize-2026-arc-agi-3-starter -v 11 -m "hybrid: sample base + 14 measured drivers, mirror L3/L4 current (rebuilt 2026-08-17)"
+
+Verify via `competitions submissions` (the resource), never the submit command's error text.
+v9-lite answered yesterday's question: 0.10 — v8's 0.01 was v8's own changes.
+
+**Parked (do not respawn without a structurally new idea):** ka59 L2 (fill model closed), ar25 L5
+(position family closed board-wide). cn04 L2 = 4-body product space, needs a sound reduced key or
+directed search. Agents must run searches FOREGROUND (a subagent's background job dies with it —
+three agents hit this today).
+
 ## STATE AT 2026-08-17 09:05 — HYBRID IS PUSHED AS KERNEL v11; tomorrow = ONE submit command
 
 Hybrid rebuilt (one-line mirror-payload diff, sha 56aa957f…, 5/5 checks incl. L3/L4 in the decoded
