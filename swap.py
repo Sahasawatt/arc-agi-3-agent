@@ -139,6 +139,14 @@ def moved(prev, cur):
 # re-verified in sp80-verify-main.txt).
 L2_LINE = (4, 4, ("click", 13, 17, (13, 17, 13, 17)), 4, 4, 4, 5)
 
+# Level 3's four-body line: two aimed grabs re-seat the driver, two walks left,
+# a third grab, two more walks, fire.  Found by sp80_s11.py's checkpointed BFS
+# (win at expansion ~229,506 of a 545,138-state frontier run, size-tier
+# transfer resolution, forked=1), replayed independently in the main thread
+# (results/sp80-win-replay.txt: levels_completed 2 -> 3 on the final fire).
+L3_LINE = (4, ("click", 8, 20, (8, 20, 8, 20)), 4, ("click", 8, 32, (8, 32, 8, 32)),
+           3, 3, ("click", 40, 28, (40, 28, 40, 28)), 3, 3, 5)
+
 
 class Swap:
     """Drives one game. `act(grid, level)` returns the next action value or None.
@@ -219,19 +227,25 @@ class Swap:
             self.watch, self.latched = {}, False
             self.shots, self.pending = 0, None
             self.prev, self.last = None, None
-            self.script_i = 0 if lvl == 1 else None
+            self.script_i = 0 if lvl in (1, 2) else None
         if self.done:
             return None
-        # Level 2 first: the proven two-body line, once; exhausted without a
-        # level it falls through to the normal machinery.  Gated on the
-        # board actually carrying the two colour-8 bodies the line drives --
-        # any other level-2-shaped board (including the test fixtures) gets
-        # the normal machinery untouched.
-        if lvl == 1 and self.script_i is not None:
-            if self.script_i == 0 and int((g == 8).sum()) < 90:
-                self.script_i = None
-            elif self.script_i < len(L2_LINE):
-                v = L2_LINE[self.script_i]
+        # Levels 2 and 3 first: the proven lines, once each; exhausted without
+        # a level they fall through to the normal machinery.  Gated on the
+        # board actually carrying the bodies each line drives (L2: the two
+        # colour-8 bodies; L3: three colour-8 bodies + the colour-9 driver,
+        # 240/96 cells at the real entry vs 96/80 at L2's) -- any other
+        # similarly-shaped board (including the test fixtures) gets the
+        # normal machinery untouched.
+        if lvl in (1, 2) and self.script_i is not None:
+            line = L2_LINE if lvl == 1 else L3_LINE
+            if self.script_i == 0:
+                c8 = int((g == 8).sum())
+                ok = c8 >= 90 if lvl == 1 else (c8 >= 230 and int((g == 9).sum()) >= 90)
+                if not ok:
+                    self.script_i = None
+            if self.script_i is not None and self.script_i < len(line):
+                v = line[self.script_i]
                 self.script_i += 1
                 return v
             self.script_i = None

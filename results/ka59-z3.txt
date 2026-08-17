@@ -1,0 +1,17 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:03:29 | INFO | Got anonymous API key: fe828f1b-3c04-4553-8816-b52ce9101353
+2026-08-17 04:03:29 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:03:30 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:03:30 | INFO | Created new scorecard: 77367ccd-63b5-4a78-b38e-0cc824d0da20
+2026-08-17 04:03:31 | INFO | Successfully fetched metadata for game ka59
+2026-08-17 04:03:32 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+L2 entry: dot0=[(34, 44), (34, 45)] dot1=[(41, 34), (42, 34)] dot2=[(44, 47), (44, 48), (45, 47), (45, 48)]
+post-mint: piece=(44, 48) phase=(2, 0) extra4=[(52, 52)]
+
+=== exhaustive real BFS from post-mint state, cap 8000 ===
+expanded 60 nodes, 60 distinct reachable positions (EXHAUSTED)
+reachable bbox: x=[32,60] y=[32,60]
+dot0 cells [(34, 44), (34, 45)] reachable: [False, False]
+dot1 cells [(41, 34), (42, 34)] reachable: [False, False]
+box2 cell (52, 52) reachable: False
+any of dot0's approach region (35-39,42-46) reachable: False

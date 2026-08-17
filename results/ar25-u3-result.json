@@ -1,0 +1,130 @@
+{
+ "win": false,
+ "verdict": "SWEPT_NO_WIN",
+ "elapsed_s": 6.730869293212891,
+ "entry_bb": [
+  42,
+  56,
+  36,
+  50,
+  88
+ ],
+ "entry_center": [
+  49.0,
+  43.0
+ ],
+ "overlap_region": {
+  "cx": [
+   5,
+   45
+  ],
+  "cy": [
+   8,
+   48
+  ]
+ },
+ "raster_grid": {
+  "cx_list": [
+   7.0,
+   10.0,
+   13.0,
+   16.0,
+   19.0,
+   22.0,
+   25.0,
+   28.0,
+   31.0,
+   34.0,
+   37.0,
+   40.0,
+   43.0
+  ],
+  "cy_list": [
+   10.0,
+   13.0,
+   16.0,
+   19.0,
+   22.0,
+   25.0,
+   28.0,
+   31.0,
+   34.0,
+   37.0,
+   40.0,
+   43.0,
+   46.0
+  ],
+  "cells": 169,
+  "status": "COMPLETE",
+  "chunks_run": 3
+ },
+ "phase2_axis_status": {
+  "marker1col-below": "DONE",
+  "marker1col-above": "DONE",
+  "marker2col-below": "DONE",
+  "marker2col-above": "DONE",
+  "marker1row-below": "DONE",
+  "marker1row-above": "DONE",
+  "marker2row-below": "DONE",
+  "marker2row-above": "DONE"
+ },
+ "phase3_status": "DONE",
+ "visited_count": 183,
+ "a5click_tests": 193,
+ "blocked_cells": [
+  [
+   37,
+   1.0,
+   "y",
+   "m1col-below"
+  ],
+  [
+   37,
+   58.0,
+   "y",
+   "m1col-above"
+  ],
+  [
+   13,
+   1.0,
+   "y",
+   "m2col-below"
+  ],
+  [
+   13,
+   58.0,
+   "y",
+   "m2col-above"
+  ],
+  [
+   1.0,
+   16,
+   "x",
+   "m1row-below"
+  ],
+  [
+   58.0,
+   16,
+   "x",
+   "m1row-above"
+  ],
+  [
+   1.0,
+   40,
+   "x",
+   "m2row-below"
+  ],
+  [
+   58.0,
+   40,
+   "x",
+   "m2row-above"
+  ]
+ ],
+ "visited_bbox_range": [
+  7.0,
+  54.5,
+  10.0,
+  54.5
+ ]
+}

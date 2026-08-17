@@ -1,0 +1,45 @@
+=== reaching L5 root ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:31:35 | INFO | Got anonymous API key: 9bafa356-a01a-48e4-bbca-631749f8a467
+2026-08-17 04:31:35 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:31:36 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:31:36 | INFO | Created new scorecard: 9df0f2c8-8c7a-4a80-907a-18f5a99dfc11
+2026-08-17 04:31:37 | INFO | Successfully fetched metadata for game ar25
+2026-08-17 04:31:37 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+L5 entry t=3.8s
+  [down] CLAMPED at step 15 (n=15)
+  [up] CLAMPED at step 5 (n=5)
+down=15 up=5 distinct phases=21
+entry_idx=5 run order (phase indices)=[5, 4, 6, 3, 7, 2, 8, 1, 9, 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+raster grid 13x13=169 cells
+
+=== PHASE SWEEP (nearest-entry-first) ===
+phase 5 (row=15) -> visited=169 blocked=0 a5=169 status=COMPLETE t=6.8s
+phase 4 (row=12) -> visited=169 blocked=0 a5=169 status=COMPLETE t=9.5s
+phase 6 (row=18) -> visited=169 blocked=0 a5=169 status=COMPLETE t=12.1s
+phase 3 (row=9) -> visited=169 blocked=0 a5=169 status=COMPLETE t=14.9s
+phase 7 (row=21) -> visited=169 blocked=0 a5=169 status=COMPLETE t=17.5s
+  checkpoint written after 5 phases
+phase 2 (row=6) -> visited=169 blocked=0 a5=169 status=COMPLETE t=20.1s
+phase 8 (row=24) -> visited=169 blocked=0 a5=169 status=COMPLETE t=22.8s
+phase 1 (row=3) -> visited=169 blocked=0 a5=169 status=COMPLETE t=25.5s
+phase 9 (row=27) -> visited=169 blocked=0 a5=169 status=COMPLETE t=28.2s
+phase 0 (row=0) -> visited=169 blocked=0 a5=169 status=COMPLETE t=30.8s
+  checkpoint written after 10 phases
+phase 10 (row=30) -> visited=169 blocked=0 a5=169 status=COMPLETE t=33.5s
+phase 11 (row=33) -> visited=169 blocked=0 a5=169 status=COMPLETE t=36.2s
+phase 12 (row=36) -> visited=169 blocked=0 a5=169 status=COMPLETE t=38.8s
+phase 13 (row=39) -> visited=169 blocked=0 a5=169 status=COMPLETE t=41.6s
+phase 14 (row=42) -> visited=169 blocked=0 a5=169 status=COMPLETE t=44.3s
+  checkpoint written after 15 phases
+phase 15 (row=45) -> visited=169 blocked=0 a5=169 status=COMPLETE t=47.0s
+phase 16 (row=48) -> visited=169 blocked=0 a5=169 status=COMPLETE t=49.7s
+phase 17 (row=51) -> visited=169 blocked=0 a5=169 status=COMPLETE t=52.5s
+phase 18 (row=54) -> visited=169 blocked=0 a5=169 status=COMPLETE t=55.2s
+phase 19 (row=57) -> visited=169 blocked=0 a5=169 status=COMPLETE t=57.9s
+  checkpoint written after 20 phases
+phase 20 (row=60) -> visited=169 blocked=0 a5=169 status=COMPLETE t=60.6s
+
+=== SWEEP DONE t=60.6s === verdict=FULL_GRID_SWEPT_NO_WIN phases_done=21/21 phases_missing=[] total_visited=3549 total_blocked=0 total_a5=3549
+wrote results/ar25-u5-census.json
+done

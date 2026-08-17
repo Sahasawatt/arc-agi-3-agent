@@ -1,0 +1,68 @@
+=== full L1-L4 replay, all transitions captured in ONE run ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 03:54:59 | INFO | Got anonymous API key: 7fe85ec4-4be1-4e1d-a105-9cef73670c71
+2026-08-17 03:54:59 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 03:55:00 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 03:55:00 | INFO | Created new scorecard: 81e57a3b-bd32-45d6-bc42-5886f3e56fdc
+2026-08-17 03:55:01 | INFO | Successfully fetched metadata for game ar25
+2026-08-17 03:55:01 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+  [L1-4] level 0->1 at action i=14 (action=3)
+  [L1-4] level 1->2 at action i=39 (action=2)
+  [L1-4] level 2->3 at action i=79 (action=3)
+  [L1-4] level 3->4 at action i=108 (action=4)
+  [L1-4] final level=4
+
+--- level 0->1 board diff ---
+  [L1] colour cell-count changes: {0: (5, 21), 4: (43, 72), 5: (117, 127), 9: (3663, 3572), 10: (189, 168), 11: (79, 136)}
+    colour 0: before comps(top3)=[(1, (np.int64(13), np.int64(13), np.int64(52), np.int64(52))), (1, (np.int64(13), np.int64(13), np.int64(49), np.int64(49))), (1, (np.int64(13), np.int64(13), np.int64(46), np.int64(46)))] after comps(top3)=[(1, (np.int64(37), np.int64(37), np.int64(61), np.int64(61))), (1, (np.int64(37), np.int64(37), np.int64(58), np.int64(58))), (1, (np.int64(37), np.int64(37), np.int64(55), np.int64(55)))]
+    colour 4: before comps(top3)=[(43, (np.int64(48), np.int64(56), np.int64(45), np.int64(53)))] after comps(top3)=[(72, (np.int64(15), np.int64(29), np.int64(18), np.int64(29)))]
+    colour 5: before comps(top3)=[(63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63))), (40, (np.int64(6), np.int64(14), np.int64(45), np.int64(53))), (14, (np.int64(63), np.int64(63), np.int64(0), np.int64(13)))] after comps(top3)=[(64, (np.int64(45), np.int64(59), np.int64(18), np.int64(29))), (63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63)))]
+    colour 9: before comps(top3)=[(1845, (np.int64(0), np.int64(29), np.int64(0), np.int64(62))), (1818, (np.int64(33), np.int64(62), np.int64(0), np.int64(62)))] after comps(top3)=[(2124, (np.int64(0), np.int64(35), np.int64(0), np.int64(62))), (1440, (np.int64(39), np.int64(62), np.int64(0), np.int64(62))), (1, (np.int64(58), np.int64(58), np.int64(28), np.int64(28)))]
+    colour 10: before comps(top3)=[(189, (np.int64(30), np.int64(32), np.int64(0), np.int64(62)))] after comps(top3)=[(168, (np.int64(36), np.int64(38), np.int64(0), np.int64(62)))]
+    colour 11: before comps(top3)=[(50, (np.int64(63), np.int64(63), np.int64(14), np.int64(63))), (18, (np.int64(51), np.int64(53), np.int64(48), np.int64(53))), (9, (np.int64(57), np.int64(59), np.int64(45), np.int64(47)))] after comps(top3)=[(72, (np.int64(3), np.int64(17), np.int64(42), np.int64(53))), (64, (np.int64(63), np.int64(63), np.int64(0), np.int64(63)))]
+
+
+--- level 1->2 board diff ---
+  [L2] colour cell-count changes: {0: (8, 20), 4: (69, 0), 5: (136, 167), 9: (3612, 3451), 10: (168, 160), 11: (103, 298)}
+    colour 0: before comps(top3)=[(1, (np.int64(58), np.int64(58), np.int64(49), np.int64(49))), (1, (np.int64(55), np.int64(55), np.int64(49), np.int64(49))), (1, (np.int64(52), np.int64(52), np.int64(49), np.int64(49)))] after comps(top3)=[(1, (np.int64(61), np.int64(61), np.int64(49), np.int64(49))), (1, (np.int64(58), np.int64(58), np.int64(49), np.int64(49))), (1, (np.int64(55), np.int64(55), np.int64(49), np.int64(49)))]
+    colour 4: before comps(top3)=[(69, (np.int64(3), np.int64(17), np.int64(39), np.int64(50)))] after comps(top3)=[]
+    colour 5: before comps(top3)=[(64, (np.int64(45), np.int64(59), np.int64(39), np.int64(50))), (63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63))), (9, (np.int64(63), np.int64(63), np.int64(0), np.int64(8)))] after comps(top3)=[(63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63))), (56, (np.int64(12), np.int64(23), np.int64(21), np.int64(32))), (48, (np.int64(45), np.int64(56), np.int64(27), np.int64(32)))]
+    colour 9: before comps(top3)=[(1818, (np.int64(33), np.int64(62), np.int64(0), np.int64(62))), (1773, (np.int64(0), np.int64(29), np.int64(0), np.int64(62))), (1, (np.int64(31), np.int64(31), np.int64(61), np.int64(61)))] after comps(top3)=[(2718, (np.int64(0), np.int64(62), np.int64(0), np.int64(47))), (720, (np.int64(0), np.int64(62), np.int64(51), np.int64(62))), (1, (np.int64(55), np.int64(55), np.int64(28), np.int64(28)))]
+    colour 10: before comps(top3)=[(168, (np.int64(30), np.int64(32), np.int64(0), np.int64(62)))] after comps(top3)=[(88, (np.int64(0), np.int64(32), np.int64(48), np.int64(50))), (72, (np.int64(36), np.int64(62), np.int64(48), np.int64(50)))]
+    colour 11: before comps(top3)=[(55, (np.int64(63), np.int64(63), np.int64(9), np.int64(63))), (27, (np.int64(3), np.int64(11), np.int64(51), np.int64(53))), (18, (np.int64(12), np.int64(17), np.int64(42), np.int64(44)))] after comps(top3)=[(64, (np.int64(63), np.int64(63), np.int64(0), np.int64(63))), (63, (np.int64(33), np.int64(44), np.int64(42), np.int64(53))), (63, (np.int64(33), np.int64(44), np.int64(3), np.int64(14)))]
+
+
+--- level 2->3 board diff ---
+  [L3] colour cell-count changes: {0: (2, 20), 4: (106, 18), 9: (3531, 3451), 10: (168, 160), 11: (85, 280), 12: (37, 0)}
+    colour 0: before comps(top3)=[(1, (np.int64(22), np.int64(22), np.int64(43), np.int64(43))), (1, (np.int64(19), np.int64(19), np.int64(46), np.int64(46)))] after comps(top3)=[(1, (np.int64(61), np.int64(61), np.int64(10), np.int64(10))), (1, (np.int64(58), np.int64(58), np.int64(10), np.int64(10))), (1, (np.int64(55), np.int64(55), np.int64(10), np.int64(10)))]
+    colour 4: before comps(top3)=[(56, (np.int64(33), np.int64(44), np.int64(3), np.int64(14))), (50, (np.int64(12), np.int64(23), np.int64(9), np.int64(14)))] after comps(top3)=[(9, (np.int64(24), np.int64(26), np.int64(0), np.int64(2))), (9, (np.int64(12), np.int64(14), np.int64(0), np.int64(2)))]
+    colour 9: before comps(top3)=[(1944, (np.int64(0), np.int64(62), np.int64(30), np.int64(62))), (1566, (np.int64(0), np.int64(62), np.int64(0), np.int64(26))), (1, (np.int64(61), np.int64(61), np.int64(28), np.int64(28)))] after comps(top3)=[(2889, (np.int64(0), np.int64(62), np.int64(12), np.int64(62))), (549, (np.int64(0), np.int64(62), np.int64(0), np.int64(8))), (1, (np.int64(25), np.int64(25), np.int64(22), np.int64(22)))]
+    colour 10: before comps(top3)=[(168, (np.int64(0), np.int64(62), np.int64(27), np.int64(29)))] after comps(top3)=[(104, (np.int64(0), np.int64(38), np.int64(9), np.int64(11))), (56, (np.int64(42), np.int64(62), np.int64(9), np.int64(11)))]
+    colour 11: before comps(top3)=[(27, (np.int64(63), np.int64(63), np.int64(37), np.int64(63))), (9, (np.int64(12), np.int64(14), np.int64(45), np.int64(47))), (9, (np.int64(12), np.int64(14), np.int64(9), np.int64(11)))] after comps(top3)=[(108, (np.int64(33), np.int64(47), np.int64(30), np.int64(47))), (108, (np.int64(33), np.int64(47), np.int64(9), np.int64(26))), (64, (np.int64(63), np.int64(63), np.int64(0), np.int64(63)))]
+    colour 12: before comps(top3)=[(37, (np.int64(63), np.int64(63), np.int64(0), np.int64(36)))] after comps(top3)=[]
+
+
+--- level 3->4 board diff ---
+  [L4] colour cell-count changes: {0: (3, 16), 4: (99, 0), 5: (159, 151), 9: (3531, 3370), 10: (168, 288), 11: (110, 271), 12: (26, 0)}
+    colour 0: before comps(top3)=[(1, (np.int64(43), np.int64(43), np.int64(19), np.int64(19))), (1, (np.int64(31), np.int64(31), np.int64(22), np.int64(22))), (1, (np.int64(31), np.int64(31), np.int64(19), np.int64(19)))] after comps(top3)=[(1, (np.int64(61), np.int64(61), np.int64(16), np.int64(16))), (1, (np.int64(58), np.int64(58), np.int64(16), np.int64(16))), (1, (np.int64(55), np.int64(55), np.int64(16), np.int64(16)))]
+    colour 4: before comps(top3)=[(99, (np.int64(30), np.int64(44), np.int64(30), np.int64(47)))] after comps(top3)=[]
+    colour 5: before comps(top3)=[(96, (np.int64(30), np.int64(44), np.int64(9), np.int64(26))), (63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63)))] after comps(top3)=[(88, (np.int64(42), np.int64(56), np.int64(36), np.int64(50))), (63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63)))]
+    colour 9: before comps(top3)=[(1944, (np.int64(0), np.int64(62), np.int64(30), np.int64(62))), (1566, (np.int64(0), np.int64(62), np.int64(0), np.int64(26))), (1, (np.int64(61), np.int64(61), np.int64(28), np.int64(28)))] after comps(top3)=[(2034, (np.int64(12), np.int64(62), np.int64(18), np.int64(62))), (765, (np.int64(12), np.int64(62), np.int64(0), np.int64(14))), (405, (np.int64(0), np.int64(8), np.int64(18), np.int64(62)))]
+    colour 10: before comps(top3)=[(168, (np.int64(0), np.int64(62), np.int64(27), np.int64(29)))] after comps(top3)=[(192, (np.int64(0), np.int64(11), np.int64(0), np.int64(62))), (64, (np.int64(39), np.int64(62), np.int64(15), np.int64(17))), (32, (np.int64(24), np.int64(35), np.int64(15), np.int64(17)))]
+    colour 11: before comps(top3)=[(38, (np.int64(63), np.int64(63), np.int64(26), np.int64(63))), (18, (np.int64(45), np.int64(47), np.int64(33), np.int64(38))), (18, (np.int64(45), np.int64(47), np.int64(18), np.int64(23)))] after comps(top3)=[(189, (np.int64(12), np.int64(38), np.int64(15), np.int64(41))), (64, (np.int64(63), np.int64(63), np.int64(0), np.int64(63))), (9, (np.int64(36), np.int64(38), np.int64(15), np.int64(17)))]
+    colour 12: before comps(top3)=[(26, (np.int64(63), np.int64(63), np.int64(0), np.int64(25)))] after comps(top3)=[]
+
+=== L5 entry board: colour-11 component census (candidate targets) ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 03:55:03 | INFO | Got anonymous API key: 2b3bf747-9349-4d89-ba1d-37109a42d316
+2026-08-17 03:55:03 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 03:55:04 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 03:55:04 | INFO | Created new scorecard: 7e16c789-64ff-4438-9433-b8d12f13de49
+2026-08-17 03:55:05 | INFO | Successfully fetched metadata for game ar25
+reached L5 in 109 actions, level=4
+  colour 5: 2 components, top5 (cells,(x0,x1,y0,y1))=[(88, (np.int64(42), np.int64(56), np.int64(36), np.int64(50))), (63, (np.int64(0), np.int64(62), np.int64(63), np.int64(63)))]
+  colour 9: 35 components, top5 (cells,(x0,x1,y0,y1))=[(2034, (np.int64(12), np.int64(62), np.int64(18), np.int64(62))), (765, (np.int64(12), np.int64(62), np.int64(0), np.int64(14))), (405, (np.int64(0), np.int64(8), np.int64(18), np.int64(62))), (135, (np.int64(0), np.int64(8), np.int64(0), np.int64(14))), (1, (np.int64(55), np.int64(55), np.int64(49), np.int64(49)))]
+  colour 10: 3 components, top5 (cells,(x0,x1,y0,y1))=[(192, (np.int64(0), np.int64(11), np.int64(0), np.int64(62))), (64, (np.int64(39), np.int64(62), np.int64(15), np.int64(17))), (32, (np.int64(24), np.int64(35), np.int64(15), np.int64(17)))]
+  colour 11: 4 components, top5 (cells,(x0,x1,y0,y1))=[(189, (np.int64(12), np.int64(38), np.int64(15), np.int64(41))), (64, (np.int64(63), np.int64(63), np.int64(0), np.int64(63))), (9, (np.int64(36), np.int64(38), np.int64(15), np.int64(17))), (9, (np.int64(12), np.int64(14), np.int64(39), np.int64(41)))]
+
+done

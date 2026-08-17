@@ -1,0 +1,12 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:05:00 | INFO | Got anonymous API key: 30680388-8736-4f0e-b2b4-b7e6603b6c38
+2026-08-17 04:05:00 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:05:01 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:05:01 | INFO | Created new scorecard: 28330c7b-eb55-4904-a6ee-0f63f33ab300
+2026-08-17 04:05:02 | INFO | Successfully fetched metadata for game ka59
+2026-08-17 04:05:02 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+L2 entry: dot0=[(34, 44), (34, 45)] dot1=[(41, 34), (42, 34)] dot2=[(44, 47), (44, 48), (45, 47), (45, 48)]
+from-east-press-west: approached ok, pressed 8x v=3, dot2 never moved (still at [(34, 44), (34, 45), (41, 34), (42, 34), (59, 47), (59, 48), (60, 47), (60, 48)])
+from-west-press-east: dot2 kicked from [(44, 47), (44, 48), (45, 47), (45, 48)] -> [(59, 47), (59, 48), (60, 47), (60, 48)], piece now at (40, 49) phase=(1, 1), dot2 landing phase(s)=[(2, 2), (2, 0), (0, 2), (0, 0)]
+from-north-press-south: dot2 kicked from [(44, 47), (44, 48), (45, 47), (45, 48)] -> [(44, 59), (44, 60), (45, 59), (45, 60)], piece now at (43, 43) phase=(1, 1), dot2 landing phase(s)=[(2, 2), (2, 0), (0, 2), (0, 0)]
+from-south-press-north: dot2 kicked from [(44, 47), (44, 48), (45, 47), (45, 48)] -> [(41, 31), (42, 31), (44, 35), (44, 36), (45, 35), (45, 36)], piece now at (43, 52) phase=(1, 1), dot2 landing phase(s)=[(2, 1), (0, 1), (2, 2), (2, 0), (0, 2), (0, 0)]

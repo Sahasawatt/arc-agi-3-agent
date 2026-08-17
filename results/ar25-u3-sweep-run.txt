@@ -1,0 +1,57 @@
+=== reaching L5 root ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:11:32 | INFO | Got anonymous API key: 99183749-b084-46f0-9c9c-d4bd95b67c7e
+2026-08-17 04:11:32 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:11:33 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:11:33 | INFO | Created new scorecard: 26d7db0c-9c94-493a-b169-8e87911fa901
+2026-08-17 04:11:34 | INFO | Successfully fetched metadata for game ar25
+2026-08-17 04:11:34 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+at L5 entry, t=3.4s
+entry S bbox=(42, 56, 36, 50, 88)
+S selected (sel_n=2, n%3=2 -> S driven), center=(49.0,43.0)
+overlap region: cx[5,45] cy[8,48] (half_w=7 half_h=7)
+raster grid: 13 x-cols x 13 y-rows = 169 cells
+cx_list=[7.0, 10.0, 13.0, 16.0, 19.0, 22.0, 25.0, 28.0, 31.0, 34.0, 37.0, 40.0, 43.0]
+cy_list=[10.0, 13.0, 16.0, 19.0, 22.0, 25.0, 28.0, 31.0, 34.0, 37.0, 40.0, 43.0, 46.0]
+marker1=(37,16) exact-reachable: x=True y=True
+marker2=(13,40) exact-reachable: x=True y=True
+ZX0=12 exact-x-reachable=False
+ZX1=38 exact-x-reachable=False
+ZY0=15 exact-y-reachable=False
+ZY1=41 exact-y-reachable=False
+
+=== PHASE 1: main raster sweep (overlap region) ===
+[chunk0] nav done center=(7.0, 10.0) t=3.5s
+[chunk0] done, visited-so-far=65 t=4.5s
+[chunk5] nav done center=(7.0, 25.0) t=4.5s
+[chunk5] done, visited-so-far=130 t=5.5s
+[chunk10] nav done center=(7.0, 40.0) t=5.5s
+[chunk10] done, visited-so-far=169 t=6.1s
+phase 1 chunks_run=3/3 status=COMPLETE
+
+=== PHASE 2: axis-exact extension outside overlap region ===
+extension ranges: y-below=[1.0, 4.0, 7.0] y-above=[49.0, 52.0, 55.0, 58.0, 61.0] x-below=[1.0, 4.0] x-above=[46.0, 49.0, 52.0, 55.0, 58.0, 61.0]
+  [m1col-below-nav] nav BLOCKED at (37.0, 7.0) heading (37,1.0)
+  [m1col-below] BLOCKED at (37.0, 7.0)
+  [m1col-above] BLOCKED at (37.0, 54.5)
+  [m2col-below-nav] nav BLOCKED at (13.0, 7.0) heading (13,1.0)
+  [m2col-below] BLOCKED at (13.0, 7.0)
+  [m2col-above] BLOCKED at (13.0, 54.5)
+  [m1row-below-nav] nav BLOCKED at (7.0, 43.0) heading (1.0,16)
+  [m1row-below] BLOCKED at (7.0, 43.0)
+  [m1row-above] BLOCKED at (54.5, 16.0)
+  [m2row-below-nav] nav BLOCKED at (7.0, 43.0) heading (1.0,40)
+  [m2row-below] BLOCKED at (7.0, 43.0)
+  [m2row-above] BLOCKED at (54.5, 40.0)
+phase 2 status: {'marker1col-below': 'DONE', 'marker1col-above': 'DONE', 'marker2col-below': 'DONE', 'marker2col-above': 'DONE', 'marker1row-below': 'DONE', 'marker1row-above': 'DONE', 'marker2row-below': 'DONE', 'marker2row-above': 'DONE'}
+
+=== PHASE 3: band+10 variant (10 most-central overlap positions) ===
+central positions to re-sweep: [(19.0, 25.0), (22.0, 25.0), (25.0, 25.0), (28.0, 25.0), (31.0, 25.0), (19.0, 28.0), (22.0, 28.0), (25.0, 28.0), (28.0, 28.0), (31.0, 28.0)]
+
+phase3 status=DONE
+
+=== SWEEP COMPLETE (no win), t=6.7s ===
+total visited=183 a5click_tests=193 blocked_cells=8
+wrote results/ar25-u3-result.json
+done
+EXIT=0

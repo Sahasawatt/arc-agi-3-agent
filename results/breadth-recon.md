@@ -5808,3 +5808,427 @@ spent as if they were midpoints. *The caveat only protects you if it is executab
 
 Checkpoint left intact at 56,701 expanded, so nothing is lost if a future session wants the state for a
 different purpose — but it should not be for more BFS.
+
+## 2026-08-17 — ar25 L5: the induced L1-L4 win predicate does NOT transfer literally (agent, `ar25_u1/u2.py`)
+
+**Verdict: PREDICATE_FOUND_NOT_REACHED.** The predicate induced from board-diffs at all four win
+instants (replay landed at the documented action indices 14/39/79/108) is: *a movable colour-5
+piece (rendered colour-4 in flight) docks bbox- or axis-exact onto a static colour-11 target; the
+docking machinery is a new ruleset every level, but the precondition pattern repeats — a control
+surface must be set BEFORE the first piece-selecting click (one-way door).*
+
+Translated to L5: S (88 cells, 15x15 bbox) vs a 189-cell colour-11 zigzag with two 3x3 corner
+markers at (36-38,15-17) and (12-14,39-41). Driven center-exact onto BOTH markers (13 presses each,
+arrival measured from bbox, tolerance ±2), under band preconditions +0/+3/+7/+14 DOWN presses —
+**all arms `levels_completed=4`, `NOT_FINISHED`**. All three band preconditions converged to the
+identical final board, so no L3/L4-style one-way-door effect in the sampled phases.
+
+**CORRECTION to an earlier note: L5's axis pairing is A1=up(dy-3) A2=down(dy+3) A3=left(dx-3)
+A4=right(dx+3)** — the OPPOSITE of the breadth-recon directional note (A1/A2=x, A3/A4=y). Found
+because the walker built on the old note overshot into a wall; re-measured from raw bbox deltas
+(`results/ar25-u2.txt`). Changes no verdict (reachable set identical), but future walkers must use
+the corrected pairing.
+
+Main-thread verification: probe's `won=True` in the raw output means ARRIVED, not win — the code
+returns True on arrival or win alike; the authoritative readings are `levels_completed=4` +
+`NOT_FINISHED` in every arm, present per-step in `results/ar25-u2.txt`.
+
+**Named untested (the next cheap arm): axis-exact dock against the zigzag's 189-cell INTERIOR**
+(L1's predicate was axis-exact, not size-matched — the corner markers were an L3 analogy). Mirror-
+decouple was correctly skipped: colour 4 absent from L5's board, already measured.
+
+## 2026-08-17 — ka59 L2: ARBITRARY PHASE DELIVERY IS REAL — and the agent's REFUTED verdict is OVERSTATED (agent `ka59_z1..z4.py`, main-thread scope correction)
+
+**Arm 1 VERIFIED (live, both measurements exact):** standing on a chosen cell before clicking mints
+a colour-4 marker AT that cell; clicking that marker later delivers the piece to that exact cell at
+that cell's phase. Minted at (52,52) box2-interior (1,1) via clicking dot2; delivery confirmed.
+**Plus a gap closed: dot2's kicks preserve its phase set** (3 of 4 kick arms relocated it, none
+gained (1,1)) — the notes/next-session-prompt.md:374 gap.
+
+**The drive (z2) died at the mint click**: clicking dot2-at-entry strands the piece in dot2's (2,0)
+RIGHT pocket — exhaustive real BFS from the post-mint state drained at **60 nodes** (z3, verified in
+main thread from results/ka59-z3.txt), reaching neither dot, nor box2, nor dot0's approach region.
+
+⚠️ **Main-thread correction: the agent's "REFUTED — no reordering can fix it" covers ONLY the
+mint-via-dot2-at-entry variant.** The refutation argument ("no raw dot delivers (1,1)") attacks
+*walking* into box2 — but the ticket construction never needs the piece to walk there: the FINAL
+click delivers it (clicks have no proximity requirement), and the ticket's own (1,1) is planted
+early while box2 is free to enter from spawn. The stranding is a property of WHICH object triggers
+the mint and WHERE it sits. Untried variants, concrete:
+
+**The candidate line (mint-via-dot0), every leg either y11-proven or one check away:**
+1. Pre-kick dot0 west then chain north to (19,20) (y11's proven kicks — phase (1,2) preserved,
+   NORTH of the internal band). Pre-kick dot2 west past the moat (compound sweep does this cheaply).
+2. Fill box3: enter box3 (RIGHT), click dot1 at entry → box3 filled, piece to dot1's cell (RIGHT).
+3. Walk to a box2 interior cell AT THE PIECE'S CURRENT PHASE (interiors span all 9 phases; verify
+   reachability by real BFS, not the static map). MINT: click dot0 → ticket lands in box2, piece
+   lands at (19,20), phase (1,2), north of the band — the mint click IS the moat crossing.
+4. Walk into box1 (y11's proven leg). Fill box1: click dot2 (LEFT-BOTTOM, proximity irrelevant) →
+   box1 filled by dot2's marker, piece to dot2's cell, phase (2,0), LEFT-BOTTOM.
+5. Walk into a box0 interior (2,0) cell (ONE reachability check — the only truly new leg).
+6. FINAL: click the box2 ticket → box0 filled by the relocating ticket, piece delivered INTO box2.
+   End state: box3+box1+box0 filled, piece inside box2 — the never-achieved config.
+
+Two reachability checks decide it (step 3's box2-interior-at-phase, step 5's box0-(2,0)); each
+needs a positive control per this game's law (a negative reachability result has never survived one).
+Arm 4 (four boxes) stands as a DEDUCTION (3 markers = ceiling 3 fills; recycling conserves count).
+
+## 2026-08-17 — ar25 L5: the zigzag region is SWEPT — 169/169 raster + 8 axis-exact legs, no win (agent, `ar25_u3_zigzag_sweep.py`)
+
+**SWEPT_NO_WIN, quantified by census** (`results/ar25-u3-result.json`, verified): all 169 lattice
+cells whose 15x15 S-bbox overlaps the zigzag's bbox visited (13x13 raster, 0 interior blocks), plus
+8 axis-exact extension legs along both marker rows/columns out to the board edge (all 8 blocked only
+by the boundary), plus a band+10 variant on the 10 central cells, plus **an A5-click branch test at
+every one of 193 visited positions** (deepcopy → press → check → discard; sel_n%3 asserted, no
+drift). 183 distinct positions, zero `levels_completed` change, 6.7s wall.
+
+**New structural fact: the zigzag's outer bbox pixels (x=12,38 / y=15,41) are OFF the piece's 3px
+lattice from entry** (mod-3 parity mismatch) — a literal center-match on those exact coordinates is
+structurally impossible regardless of sweeping. Both 3x3 marker centers ARE on-lattice.
+
+This closes the axis-exact/interior-dock arm the goal-directed session named. L5's dockable surface
+under the L1-L4 predicate is now exhausted at the position level. What remains untried on L5 is not
+position: it is the JOINT space (band phase x S position) beyond the 4+1 phases sampled, and any win
+condition not of the docking family at all.
+
+## 2026-08-17 — sp80 L3: s11 engineering VERIFIED — multi-match resolved by SIZE, checkpointing live, long run launched (agent + main thread)
+
+`sp80_s11.py` replaces the load-bearing tie-break with a two-tier resolver: (1) body SIZE (w,h is a
+fixed physical property; the freshly-detected driver blob is never occluded, so its size is exact) —
+**55/55 multi-match events across 3,624 smoke expansions resolved by size alone**; (2) frame re-read
+on size ties; 0 survivors → FORK both branches instead of guessing (code-reachable, never fired at
+smoke scale ~1% of expected total — honest caveat, the fork counter is in every FINAL line).
+Checkpoint = atomic pickle every 2,000 expansions + on exit; resume verified live (705 → 1,403
+continuing); growth curve at expanded=2,000 byte-identical to the historical run (7,355 states /
+5,355 frontier) so the transition function is unchanged; **positive control = the known L2 win
+replayed through the SAME resolver code, PASS**.
+
+Main thread launched the long run (background, chained): 12 x 3300s cap (~11h), stop early on
+`exhausted=True` or `win=True` in FINAL, log `results/sp80-s11-run1.txt`, checkpoint
+`results/sp80_s11_ckpt.pkl`. Watch `multi_match`/`forked` counters — if `forked` starts firing the
+state count is no longer comparable to prior runs.
+
+## 2026-08-17 — ka59 L2: ticket line BROKE AT LEG 1 — and the break narrows the construction to ONE order (agent `ka59_w1..w5.py`, main-thread redesign)
+
+**BROKE_AT_LEG_1, mechanism measured**: a kick throws the DOT across the moat but the PIECE stays —
+chain-kicking dot0 north requires the piece standing in dot0's new (LEFT) component, which requires a
+prior CLICK-crossing (139-node exhausted BFS from the post-kick state; dot0's new cell outside the
+reachable bbox [31,61]x[31,61]). Minting off raw unkicked dot0 lands the piece in a component from
+which box1 is unreachable (0/18 cells, 77-node exhaustion). Reversed kick order = no-op.
+My step-1 summary had silently dropped dot1's crossing role from y11's line — a compressed
+plan-restatement is itself an unchecked given.
+
+**Corrected construction (main thread — resolves the conflict: dot0 cannot be both the chain-kick
+passenger and the mint trigger; so dot1 stays RIGHT as the box3 filler, dot2 carries the band
+crossing):**
+1. Kick dot0 west (19,44) + dot2 west (17,47) (compound sweep does both; piece stays RIGHT).
+   dot1 stays at entry (41,34) RIGHT.
+2. Fill box3: stand in box3 (RIGHT), click dot1 -> box3 filled, piece to (41,34) RIGHT (0,1). No crossing.
+3. Walk to a box2 interior cell on the (0,1) lattice (CHECK A + positive control). MINT: click dot0
+   (west) -> ticket lands in box2, piece lands (19,44) LEFT-BOTTOM (1,2) -- the mint IS the crossing.
+4. Chain-kick dot2 north past the internal band (CHECK B -- dot2's south-approach chain at its west
+   position is unmeasured; dot1's chained (17,34)->(17,19)).
+5. Fill box0: stand in a box0 (1,2) interior cell (CHECK C), click dot2 (north) -> box0 filled,
+   piece to dot2's cell NORTH of band, phase (2,0).
+6. Walk into a box1 interior (2,0) cell (CHECK D -- "box1 only at (1,2)" was measured from specific
+   positions, never from a (2,0) NORTH component; real BFS + control).
+7. FINAL: stand in box1, click the TICKET -> box1 filled by the relocating ticket, piece delivered
+   into box2. End: box3+box0+box1 filled, piece in box2.
+Checks A-D each = exhaustive real BFS + positive control. Any check failing = the wall is real at
+that leg, and the census says what IS reachable.
+
+## 2026-08-17 — ar25 L5: the JOINT (band phase x dock) space is swept — 21 phases x 3 docks x A5, no win (agent `ar25_u4_joint_sweep.py`)
+
+**JOINT_SWEPT_NO_WIN**: 21/21 band phases (rows 0-60 in 3-row steps; 5 above entry, 15 below, both
+clamps verified by zero-frame-change) x 3 docks (marker1, marker2, zigzag interior centre) — 63/63
+arms arrived exact-centre, 63/63 A5-click branches, zero wins. S's post-selection spawn identical
+(49.0,43.0) at all 21 phases — band phase does not affect S's dock geometry at all.
+
+**Instrument note worth keeping**: the first clamp detector used a colour-10 component reader and
+found only 12/21 phases — it was reading its OWN blindness as "clamped" (the band 4-connects with a
+static colour-10 column near the extremes, breaking component decomposition, while raw frames kept
+changing). Fixed by frame byte-equality (the repo's blocked-press law). 9 of 21 phases have
+row_observed=None in the census for this reason — their identity rests on predicted row + non-equal
+frames, stated rather than hidden.
+
+Named remaining gaps on L5: the full 21x~169 (phase x S-position) grid, and any win family that is
+not docking at all.
+
+## 2026-08-17 — ka59 L2: BROKE_AT_LEG_3 — box3's fill DISCONNECTS box2, and the fix is to make box3 the LAST box (agent `ka59_t1/t2.py`, main-thread redesign 3)
+
+Verified legs: **compound sweep works exactly as recorded** (one westward press relocates dot0 →
+(13,44)/(13,45) AND dot2 → (17,47)..(18,48), both past the moat, dot1 untouched) and **box3-fill via
+dot1 works** (piece to (42,34), phase (0,1)). Then CHECK A failed: from the post-box3-fill state,
+**box2 is unreachable at ANY phase** (exhaustive BFS drained at 102 nodes, positive control PASS).
+Diagnostic `ka59_t2.py`: **box2 WAS reachable right after the compound sweep, before box3 was
+touched** (129-node census, control PASS). Filling box3 first is what strands the piece — the
+(0,1) component at dot1's landing does not contain box2.
+
+**Redesign (main thread) — order the jobs so box3 is filled LAST, by the relocating ticket, and use
+the no-proximity click to fill box1 from across the map (x4's own trick):**
+1. Compound sweep: dot0 → (13,44) LEFT-BOTTOM, dot2 → (17,47) LEFT-BOTTOM; dot1 stays at entry RIGHT.
+2. Walk into box2 (PROVEN reachable at this point — t2's 129-node census). MINT via dot0 → ticket in
+   box2, piece to dot0's canonical cell ~(13,44), phase (1,2), LEFT-BOTTOM. The mint IS the crossing.
+3. Chain-kick dot2 north past the internal band (CHECK B — unmeasured).
+4. Fill box0: stand in a box0 (1,2) interior cell (CHECK C), click dot2 (north) → box0 filled, piece
+   to dot2's canonical cell NORTH of band, phase (2,0).
+5. Walk into a box1 interior (2,0) cell (CHECK D).
+6. Fill box1 FROM AFAR: click dot1 (still at entry, RIGHT — clicks have no proximity requirement) →
+   box1 filled by dot1's marker, piece returned to dot1's canonical cell (41,34)-area, phase (0,1),
+   RIGHT. The click that fills box1 is also the return ticket to the RIGHT region.
+7. Walk into a box3 interior (0,1) cell (CHECK E — t1's failed census was box2-from-(42,34) on a
+   different board; box3's (0,1) interior is a different question).
+8. FINAL: stand in box3, click the TICKET → box3 filled by the relocating ticket, piece delivered
+   into box2. End: box0+box1+box3 filled, piece in box2 — every job done with three dots, because
+   the ticket fills the last box AND delivers, and dot1's fill click doubles as the return crossing.
+
+## 2026-08-17 — ar25 L5: FULL GRID CLOSED — 21 phases x 169 raster x A5, zero wins (agent `ar25_u5_fullgrid_sweep.py`)
+
+**FULL_GRID_SWEPT_NO_WIN, verified census** (`results/ar25-u5-census.json`): 21/21 band phases
+(phases_missing=[]) x the 169-cell overlap raster = **3,549/3,549 arrivals + 3,549 A5-click
+branches, 0 blocked cells, 0 wins**, post-select spawn (49,43) reconfirmed at every phase, 60.6s.
+The docking/position/click family on L5 is CLOSED at census level.
+
+Remaining families, named: (a) the far-corner board regions outside the raster + axis-extension
+footprint (no session has swept them), (b) non-positional effects — timing/order invisible to a
+static-arrival census. After (a), L5 joins re86 L6 / tr87 L3 as "needs a fundamentally new idea".
+
+## 2026-08-17 — ar25 L5: POSITION FAMILY CLOSED BOARD-WIDE — level PARKED pending a structurally new idea (agent `ar25_u6_wholeboard_sweep.py`)
+
+**BOARD_CLOSED_NO_WIN**: the frame region outside the 169-cell raster (right/top/bottom strips, 191
+candidates/phase) swept at all 21 band phases — **1,869 arrivals + 483 boundary blocks + 2,268
+A5-click branches, zero wins**, counts byte-identical across every phase (band phase has zero effect
+on this region too). The 79 skipped cells/phase sit OUTSIDE the measured playable extent
+(x∈[7,55], y∈[1,55] on the lattice — a uniform rectangle confirmed independently across all strips,
+extending the two axis-line boundary measurements to the whole width/height).
+
+**Cumulative census for the position x phase x click family on L5: raster 3,549 + joint 63 + zigzag
+193 + whole-board 1,869 arms — all with per-press levels_completed reads and A5 branches — ZERO
+wins.** The family is closed over the entire board. **ar25 L5 is PARKED** alongside re86 L6 and
+tr87 L3: what remains is non-positional (press order/timing effects invisible to arrival censuses)
+or an unknown verb outside {A1-A5}. Do not spend more rounds on position sweeps here.
+
+## 2026-08-17 — ka59 L2: BROKE_AT_LEG_5 — box1 needs (1,2), so the dot ASSIGNMENT is now forced (agent `ka59_u1/u2.py`, main-thread redesign 4)
+
+Legs 1-4 of the box3-last line WORKED: compound sweep, box2 entry + MINT via dot0 (ticket at
+(52,52)), **dot2 chain-kick past the internal band — needs 2 real kicks, not 1** (single kick
+reaches y=32/33, still south; CHECK B closed), box0 filled via dot2 (CHECK C: 70-node BFS, 2/4
+phase cells reachable, control PASS). **CHECK D killed it: from dot2's north cell (18,18) phase
+(2,0), box1 is unreachable at ANY phase — 42-node exhausted BFS, control PASS — a genuine negative.**
+Plus one instrument fact: a MINT click landing beside box0's wall produces one transient corrupted
+frame (spread-guard trips); one settle action resolves it (auto-handled in ka59_u1.py).
+
+**The constraint set now forces a single assignment.** Box1 entry has only ever succeeded at phase
+(1,2) — dot0's canonical delivery, nobody else's. Therefore dot0 CANNOT be the mint trigger; it must
+be the box0-filler whose click delivers the piece to (1,2) NORTH (y11's exact leg). The mint must
+use dot2. dot1 stays the from-afar box1 filler / RIGHT-return. **Redesign 4 — the last assignment
+consistent with every measurement:**
+1. Compound sweep (dot0 → (13,44), dot2 → (17,47), dot1 stays RIGHT).
+2. Walk into box2, MINT via **dot2** → ticket in box2, piece to dot2's canonical cell LEFT-BOTTOM
+   (2,0) (CHECK A': is that LEFT (2,0) component non-isolated? The z3 isolation was dot2-at-ENTRY).
+3. Chain-kick **dot0** north from (13,44) past the band — 2 kicks likely, geometry unmeasured at
+   this x (CHECK B').
+4. Fill box0: stand in a box0 (2,0)-lattice interior cell (CHECK C'), click dot0 (north) → box0
+   filled, piece to dot0's north cell, phase **(1,2)**, NORTH.
+5. Walk into box1 at (1,2) — y11's proven leg shape (CHECK D').
+6. Fill box1 FROM AFAR: click dot1 (RIGHT) → box1 filled, piece to (41,34) (0,1) RIGHT.
+7. Walk into a box3 (0,1) interior cell (CHECK E').
+8. FINAL: click the ticket → box3 filled, piece in box2.
+If ANY check fails here, the ticket construction is exhausted across all consistent assignments —
+that itself would close the marker-fill family and the level needs a different mechanism entirely.
+
+## 2026-08-17 — ka59 L2: attempt 4 BROKE AT CHECK B' — but by an ACCIDENT of the settle press, so the closure does NOT bank yet (agent `ka59_s1_forced.py`, main-thread audit)
+
+Legs 1-2 worked (sweep; mint via dot2, ticket parked in box2, piece to dot2's LEFT (2,0) cell).
+**Then the instrument spent the plan's own resource**: the mint's auto-settle press — chosen only by
+"does this un-corrupt the frame" — walked INTO dot0 and kicked it 12 west to the wall,
+(13,44)→(1,44). The first CHECK A'/B' then ran against the STALE position (0/4 routes = pure
+artifact, caught); the corrected run measured the JAMMED position: 52-node exhausted component,
+only 3 approach cells reachable, no direction kicks dot0 north off the wall. **BROKE_AT_LEG_3.**
+
+⚠️ **Main-thread audit: the agent's "every assignment now tried and failed" claim is CONTAMINATED —
+the B' failure was caused by the accidental settle-kick, not by the assignment.** Nobody has
+measured dot0's north-chain from its PROPER (13,44) landing with the piece in the post-mint (2,0)
+component. The lesson that does bank: **a recovery/settle action is not neutral — it can spend a
+dot's favourable position that a later leg depends on.** Settle directions must be chosen to avoid
+every dot's footprint.
+
+Attempt 5 = Redesign 4 unchanged, with the settle press CONSTRAINED away from all dot footprints
+(any direction that un-corrupts and touches nothing). If B' then fails structurally — dot0 at
+(13,44) unreachable or unchainable north from the (2,0) component — the box3-last family closes for
+real, with the census to show it.
+
+## 2026-08-17 — ka59 L2: clean-settle attempt confirms the DIRECT assignments dead — but the family is NOT closed: two mechanics were never composed (agent `ka59_s4_clean_settle.py`, main-thread analysis)
+
+**Uncontaminated re-run**: the settle fix worked (trial log shows west WOULD have re-kicked dot0 —
+the accident reproduced inside the fix's own trial data — and the clean direction was chosen; dot0
+asserted at (13,44) post-mint). Then CHECK B' failed structurally: from the post-mint (2,0)
+component, only 4/132 of dot0's approach cells are reachable (44-node exhausted BFS, control PASS)
+and every reachable approach kicks dot0 AWAY from the band (north-approach → south, west-approach →
+east). **Both direct dot-role assignments (mint-via-dot0 / mint-via-dot2) are dead.**
+
+**Main-thread analysis — the remaining space is ORDERINGS composing two never-used mechanics:**
+(a) **the return-click fill**: standing INSIDE an unfilled box and clicking dot1 (still at entry,
+RIGHT) fills that box with dot1's marker AND returns the piece RIGHT — one click, two jobs, never
+driven; (b) **markers inherit their origin dot's kick geometry** (measured: ejected dot2's marker
+flew dot2's own −27), so **dot1's marker parked at (17,34) should chain north (17,34)→(17,19) like
+dot1 itself did in y11** — a north-of-band delivery that does not involve dot0 at all, landing
+(2,1)-phase; box1's (2,1) interior cell reachability from there has never been measured.
+The endgame shape that survives every measured constraint: box0+box1 filled while LEFT (one via a
+raw dot, one via the return-click or a recycled marker), piece re-enters RIGHT late via dot1's
+return click, walks into box3, and the FINAL click on the box2 ticket fills box3 + delivers the
+piece into box2. The open questions are pure reachability/ordering — enumerable, not open-ended.
+Next: a GUIDED SEARCH over click/kick orderings with live deepcopy validation per leg, instead of
+hand-deriving attempt 6, 7, 8 one wall at a time.
+
+## 2026-08-17 — ka59 L2: marker-geometry CONFIRMED for dot1's marker; composed line broke on a THIRD approach-contamination (agent `ka59_g1_composed_line.py`)
+
+**Banked mechanic**: dot1's marker kicked from dot1's own entry cell/approach lands on the exact
+cells (17,34)/(18,34), dx=-24 — markers inherit origin geometry, now measured on TWO dots.
+**Composed line #1** (no mint: dot2 does the crossing+box3 fill, dot0 keeps y11's proven north
+chain, dot1 saved for the return-click fill of box1, walk to box2 last): **broke at leg B by
+CONTAMINATION, not a wall** — the approach BFS toward dot2 silently kicked it EAST en route; leg D's
+69-node empty census matches "the crossing never happened", not a dot0 wall. Legs G (return-click
+fill) and H (walk to box2) = NOT RUN. **Third contamination incident of the day (settle press,
+approach walk x2) — the class is: ANY routed walk passing adjacent to a dot can kick it.**
+
+Fix going forward, harness-level: a `safe_route` that forbids every cell adjacent to any dot/marker
+footprint unless the leg IS a kick — verified per-press with deepcopy trials like the clean-settle
+fix. Note for leg H: t1's box2-unreachable wall was measured with fill set {box3} from (42,34); the
+composed line ends with fills {box3,box0,box1} — the walk graph differs per fill set (markers occupy
+cells), and y11 DID reach box2 with fills {box0,box1}. Run the census fresh from the real end state.
+
+## 2026-08-17 — ka59 L2: BROKE_AT_LEG_4 doubly confirmed — and a MODEL CORRECTION bigger than the verdict (agent `ka59_g2_safe_route.py`/`g2b_fallback.py`)
+
+The safe_route harness works (fired correctly on the compound sweep — a documented pair-move, not
+contamination — and exposed a dot0-vs-dot2 misclassification in the sweep reader, fixed by the
+smaller-x fact). Primary line legs 1-3 clean; **leg 4 wall: the crossing click on west-kicked dot2
+lands the piece at (18,50), phase (0,2), a 44-cell exhausted component** (control PASS) reaching
+nothing useful — identical landing and identical wall in BOTH orderings (box3 via dot2 / via dot1),
+so the wall is intrinsic to that landing cell. Also measured live: **the click-swap works from 25+
+cells away** (no proximity, now demonstrated at range).
+
+⚠️ **MODEL CORRECTION: a dot's delivery phase is NOT fixed by identity — it is POSITION-DEPENDENT
+for multi-cell dots.** dot2's canonical delivery was "(2,0), zero exceptions in 156 arms" — and its
+west-kicked canonical cell delivered **(0,2)**. Mechanism: a multi-cell footprint spans multiple
+phases (dot2's 2x2 = {(2,2),(2,0),(0,2),(0,0)}; dot0's 1x2 = {(1,2),(1,0)}; dot1's 2x1 =
+{(2,1),(0,1)}) and WHICH cell the piece lands on varies with the dot's location. Consequences:
+(a) the structural deadlock proof's premise 2 ("phase fixed by identity") is FALSE as stated —
+every delivery-phase argument must be re-read as "phase drawn from the footprint's phase SET at the
+current position"; (b) (1,1) is still in NO dot's phase set, so box2 delivery still needs a marker
+parked in box2 (the mint) — that part of the deadlock survives; (c) box1's (1,2) can only come from
+dot0's set — dot0 remains the box1-entry key; (d) kick placement now CHOOSES the delivery phase
+within the set — a whole new planning dimension nobody has used deliberately.
+Legs G (return-click fill) and H remain NOT RUN — dot1 was spent in the fallback ordering.
+
+## 2026-08-17 — ka59 L2: ALL THREE BOXES FILLED SIMULTANEOUSLY — first time ever — and the endgame reduces to ONE measurable question (agent `ka59_g3*.py`)
+
+**`ka59_g3f_drive.py`, 43 actions, verified per-action**: kick dot0 west → kick dot1 west → box3 ←
+click dot1 (crossing) → chain dot0 north ((19,20), works exactly when sequenced POST-crossing — a
+kick never moves the piece, only a click does; g3b settled that the earlier "chain walls" were
+pre-crossing category errors) → box0 ← dot0 (piece north (1,2)) → walk box1 → box1 ← click dot2
+(from inside box1, at range). **{box0, box1, box3} filled simultaneously — never reached before**
+(y11's recipe structurally empties one box to fill another). Piece exiled to dot2's canonical
+(44,48) (2,0) — an 88-node exhausted component with zero overlap with box2 (three converging
+positive-controlled censuses: g3d, g3f-final, g3g). `levels_completed` stayed 1. **So
+"3 filled + piece ANYWHERE-but-box2" is refuted; the untested config is still 3-filled + piece IN
+box2.**
+
+**The one move that would produce it, named by the report itself and never measured: kick dot2 so
+its CANONICAL CELL lands INSIDE box2's interior.** Then g3f's exact proven line, with that pre-kick
+added, ends: click dot2 from inside box1 → box1 filled + piece delivered INTO box2. dot2 kicks east
+from some approach (z4 measured 3 of 4 approaches relocating it to different regions — check
+results/ka59-z4.txt for an east landing before driving new kicks). Slide-until-blocked vs box2's
+frame is the open geometry question. If no kick lands dot2's canonical inside box2 → measure and
+record; that closes the g3f-line family and the level's fill model entirely.
+
+## 2026-08-17 — ka59 L2: FILL MODEL CLOSED — dot2's reachable rectangle never intersects box2, so "3 filled + piece in box2" is UNREACHABLE (agent `ka59_g4_dot2_canon.py`)
+
+**FILL_MODEL_CLOSED.** Five dot2 states measured (entry, east kick, south kick, both 2-kick chain
+orders): every canonical click-landing lies OUTSIDE box2's interior, and the two independently-
+ordered chains CONVERGE on the identical SE corner (59,59)-(60,60) — dot2's kickable positions form
+a closed 4-corner rectangle (NW entry / NE east / SW south / SE chains) whose corners never share
+box2's x or y band. Kicks slide-until-blocked and nothing blocks inside box2's band, so no cardinal
+kick sequence can ever park dot2 (or its canonical) in box2. With dot0 and dot1 both structurally
+required elsewhere in the g3f line (box1's (1,2) key; box3's crossing), no resource can deliver the
+piece into box2 with all three boxes filled.
+
+**ka59 L2 is now PARKED**: every fill/placement configuration reachable under the measured mechanics
+is either driven (all NOT_FINISHED — including the never-before-reached 3-simultaneous-fill) or
+proven unreachable (this closure). Like re86 L6, the win condition is NOT the fill model — the next
+idea must come from outside it (the uninterpreted compound-sweep mechanic is the one unexplained
+phenomenon left on this board). Wave standing: ka59 stays 1/8+.
+
+## 2026-08-17 — KAGGLE: v9-lite SCORED 0.10 — v8's 0.01 is EXPLAINED, and yesterday's "quota-blocked" submit had actually LANDED
+
+`kaggle competitions submissions` (2026-08-17 01:32 UTC) shows the discriminating experiment already
+ran: **submission 55559497, 2026-08-16 17:40 UTC, v9-lite, COMPLETE, publicScore 0.10** — the bare
+400 we chased into the quota body was thrown AFTER a submission that day had already been accepted;
+the "blocked" reading was wrong about the first attempt having failed. **Verdict: reverting v8's two
+changes (60s unclaimed play slice + qstate bandit) restored the score 0.01 → 0.10 — the drop was
+caused by v8 itself.** Consistent with (but no longer needing) the silent-worker-death/qstate-memory
+hypothesis; both written explanations that predicted proportional loss stay refuted.
+
+Cost of the wrong reading: today's 01:32 UTC submit (55567678, PENDING) is a byte-identical
+DUPLICATE of v9-lite — today's quota spent re-confirming 0.10. **The next real submission is the
+HYBRID (sample base ~1.56 + driver overrides), which still needs a REBUILD (it predates current
+mirror.py) — build + verify + push it TODAY so tomorrow's 00:00 UTC window tests something new.**
+Instrument lesson: "submission blocked" must be verified against `competitions submissions` (the
+resource), not against the submit command's error text — the exact ledger-vs-worker rule from
+long-running-job-discipline, on a remote resource.
+
+## 2026-08-17 — sp80 LEVEL 3 FALLS — the checkpointed BFS wins at expansion 229,506, replayed independently, L3_LINE landed (main thread)
+
+**The sp80_s11.py chain (6 checkpointed invocations, ~6.3h total) found a WIN**: 
+`seq=[4, click(8,20), 4, click(8,32), 3, 3, click(40,28), 3, 3, 5]` — fired by body id 3,
+levels_completed 2 → 3 on the final FIRE. **Replayed independently in the main thread**
+(results/sp80-win-replay.txt): fresh env, L1 recipe + L2_LINE + the 10-action seq, level-up
+confirmed on the last action. Run totals: 229,506 expanded, 545,138 states, frontier 315,631 still
+growing (the win predates exhaustion — the 300-500k estimate was for EXHAUSTION, the win needed
+less), multi_match 13,058 with **13,057 resolved exactly by the size tier and 1 forked** (the fork
+path fired once and cost one branch), transfer_no_match 0, all four driver ids fired from
+(58k/60k/46k/61k attempts).
+
+**Landed as `L3_LINE` in swap.py** (the win seq in the driver's 4-tuple click format), wired
+beside L2_LINE with its own board guard (L3 entry c8=240/c9=96 vs L2's 96/80 — measured, so test
+fixtures and other boards fall through to the normal machinery). pytest 330 passed
+(results/pytest-l3line.txt). **Full 17-game sweep running as wave-12** — the gate verdict
+(sweep_diff vs wave-11, control = sp80 which must differ) decides the landing.
+
+## 2026-08-17 — WAVE-12 GATE: PASS — sp80 L3_LINE lands, mean 22.441% → 23.281%
+
+`sweep_diff.py results/sweep-wave11.log results/sweep-wave12.log sp80`:
+**16/17 games identical to the digit** (ar25 bp35 cd82 cn04 dc22 g50t ka59 ls20 m0r0 re86 sb26 sc25
+sk48 tr87 tu93 wa30), control fired (sp80 differs, comparison not blind), **sp80 (2,6) → (3,6),
+actions [16,7] → [16,7,10]**, GAMES THAT LOST A LEVEL: NONE, VERDICT PASS. pytest 330
+(results/pytest-l3line.txt). **results/sweep-wave12.log is the new clean gate** (chain: wave-6 →
+wave-8 → wave-9 → wave-10 → wave-11 → wave-12).
+Standing: **15/17 games with a level, mean 23.281%, sp80 3/6 = 28.571%.**
+
+## 2026-08-17 — sp80 L4: s12 engineered + long chain LAUNCHED (agent + main thread)
+
+`sp80_s12.py` = s11 mechanically adapted (root through L3_LINE, ckpt results/sp80_s12_ckpt.pkl,
+control = L3_LINE replay through the resolver — PASS; smoke fresh/resume both pass, resume continues
+exactly from FINAL). **L4's body model, re-derived: SIX tracked bodies (colour-9 driver + five
+colour-8), in three size tiers of exactly two each — (15,3) x2, (12,3) x2, (9,3) x2.** Every size
+duplicated (L3 had one tied pair of four), so the frame-re-read/fork tier carries more load; the
+resolver logic is byte-identical to s11's. Long chain launched from the main thread (12 x 3300s cap,
+stop early on exhausted/win, log results/sp80-s12-run1.txt). Flagged UNVERIFIED from smoke: ids 0/2
+never drove in 803 expansions — sample too small to read as structural.
+
+## 2026-08-17 — sp80 L4: the s12 chain was STOPPED at ~43k expansions — driver_blob_count fired 56,477 times and every one DROPPED a child (main-thread audit)
+
+The counter that stayed ZERO across L3's entire 229,506-expansion run fired on more than half of
+L4's expansions (56,477 at 43k expanded), and the handling at all three sites is `continue` — **the
+child is silently pruned**. A search dropping >1 edge per node explores a SUBGRAPH: any negative it
+reports is void, and a win behind any dropped edge is invisible. Same trap family as the merged key
+and the FIRE-transfer bug — runs to completion, reports numbers, flags nothing (the counter is the
+only tell, and nothing gates on it).
+
+Why L4 differs (hypothesis, to verify in the fix): 6 bodies on a denser board overlap the colour-9
+driver far more often; occlusion can SPLIT the driver blob (count 2) or merge it with a neighbour
+(count includes wrong blob), and `driver_blob()` requires exactly one. The fix direction: recover
+instead of drop — reunify split blobs / pick by the driver's known size tier / frame-re-read, and
+FORK when genuinely ambiguous (the s11 multi-match philosophy applied to the driver reader). A fixed
+reader needs a FRESH search — the dropped children never entered `seen`, and their parents are
+already popped, so the old checkpoint under-covers by construction.

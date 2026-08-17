@@ -1,0 +1,452 @@
+{
+ "win": false,
+ "verdict": "FULL_GRID_SWEPT_NO_WIN",
+ "elapsed_s": 60.609333753585815,
+ "n_down_presses": 15,
+ "n_up_presses": 5,
+ "phases_sorted_keys": [
+  0,
+  3,
+  6,
+  9,
+  12,
+  15,
+  18,
+  21,
+  24,
+  27,
+  30,
+  33,
+  36,
+  39,
+  42,
+  45,
+  48,
+  51,
+  54,
+  57,
+  60
+ ],
+ "entry_idx": 5,
+ "run_order": [
+  5,
+  4,
+  6,
+  3,
+  7,
+  2,
+  8,
+  1,
+  9,
+  0,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20
+ ],
+ "phases_done": [
+  5,
+  4,
+  6,
+  3,
+  7,
+  2,
+  8,
+  1,
+  9,
+  0,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20
+ ],
+ "phases_missing": [],
+ "raster_grid": {
+  "cx_list": [
+   7,
+   10,
+   13,
+   16,
+   19,
+   22,
+   25,
+   28,
+   31,
+   34,
+   37,
+   40,
+   43
+  ],
+  "cy_list": [
+   10,
+   13,
+   16,
+   19,
+   22,
+   25,
+   28,
+   31,
+   34,
+   37,
+   40,
+   43,
+   46
+  ],
+  "cells_per_phase": 169
+ },
+ "total_visited": 3549,
+ "total_blocked": 0,
+ "total_a5_branches": 3549,
+ "census": {
+  "5": {
+   "phase_idx": 5,
+   "row0": 15,
+   "band_presses": 0,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "4": {
+   "phase_idx": 4,
+   "row0": 12,
+   "band_presses": -1,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "6": {
+   "phase_idx": 6,
+   "row0": 18,
+   "band_presses": 1,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "3": {
+   "phase_idx": 3,
+   "row0": 9,
+   "band_presses": -2,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "7": {
+   "phase_idx": 7,
+   "row0": 21,
+   "band_presses": 2,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "2": {
+   "phase_idx": 2,
+   "row0": 6,
+   "band_presses": -3,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "8": {
+   "phase_idx": 8,
+   "row0": 24,
+   "band_presses": 3,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "1": {
+   "phase_idx": 1,
+   "row0": 3,
+   "band_presses": -4,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "9": {
+   "phase_idx": 9,
+   "row0": 27,
+   "band_presses": 4,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "0": {
+   "phase_idx": 0,
+   "row0": 0,
+   "band_presses": -5,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "10": {
+   "phase_idx": 10,
+   "row0": 30,
+   "band_presses": 5,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "11": {
+   "phase_idx": 11,
+   "row0": 33,
+   "band_presses": 6,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "12": {
+   "phase_idx": 12,
+   "row0": 36,
+   "band_presses": 7,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "13": {
+   "phase_idx": 13,
+   "row0": 39,
+   "band_presses": 8,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "14": {
+   "phase_idx": 14,
+   "row0": 42,
+   "band_presses": 9,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "15": {
+   "phase_idx": 15,
+   "row0": 45,
+   "band_presses": 10,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "16": {
+   "phase_idx": 16,
+   "row0": 48,
+   "band_presses": 11,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "17": {
+   "phase_idx": 17,
+   "row0": 51,
+   "band_presses": 12,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "18": {
+   "phase_idx": 18,
+   "row0": 54,
+   "band_presses": 13,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "19": {
+   "phase_idx": 19,
+   "row0": 57,
+   "band_presses": 14,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  },
+  "20": {
+   "phase_idx": 20,
+   "row0": 60,
+   "band_presses": 15,
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "COMPLETE",
+   "chunks_run": 3,
+   "chunks_total": 3,
+   "visited": 169,
+   "blocked": 0,
+   "a5_branches": 169,
+   "blocked_cells": []
+  }
+ }
+}

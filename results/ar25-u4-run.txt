@@ -1,0 +1,60 @@
+=== reaching L5 root ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:24:34 | INFO | Got anonymous API key: 8797a5b1-32c8-4839-b3ef-3f48b9cd3d7c
+2026-08-17 04:24:34 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:24:34 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:24:34 | INFO | Created new scorecard: 86794679-5807-4bc3-ad15-5783623e4b9f
+2026-08-17 04:24:35 | INFO | Successfully fetched metadata for game ar25
+2026-08-17 04:24:35 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+L5 entry t=2.8s: band=(15, 17, 93, 2) S_center=(49.0, 43.0)
+  [down] CLAMPED at step 15 (n=15 presses so far): press produced zero board change
+  [up] CLAMPED at step 5 (n=5 presses so far): press produced zero board change
+down real presses=15 up real presses=5 distinct band phases reached (incl entry)=21
+  phase0: row0_predicted=0 row_observed=None presses_from_entry=-5
+  phase1: row0_predicted=3 row_observed=None presses_from_entry=-4
+  phase2: row0_predicted=6 row_observed=None presses_from_entry=-3
+  phase3: row0_predicted=9 row_observed=None presses_from_entry=-2
+  phase4: row0_predicted=12 row_observed=None presses_from_entry=-1
+  phase5: row0_predicted=15 row_observed=(15, 17, 93, 2) presses_from_entry=0
+  phase6: row0_predicted=18 row_observed=(18, 20, 101, 1) presses_from_entry=1
+  phase7: row0_predicted=21 row_observed=(21, 23, 93, 1) presses_from_entry=2
+  phase8: row0_predicted=24 row_observed=(24, 26, 93, 1) presses_from_entry=3
+  phase9: row0_predicted=27 row_observed=(27, 29, 77, 1) presses_from_entry=4
+  phase10: row0_predicted=30 row_observed=(30, 32, 93, 1) presses_from_entry=5
+  phase11: row0_predicted=33 row_observed=(33, 35, 85, 1) presses_from_entry=6
+  phase12: row0_predicted=36 row_observed=(36, 38, 53, 2) presses_from_entry=7
+  phase13: row0_predicted=39 row_observed=(39, 41, 85, 3) presses_from_entry=8
+  phase14: row0_predicted=42 row_observed=(42, 44, 13, 1) presses_from_entry=9
+  phase15: row0_predicted=45 row_observed=(45, 47, 13, 1) presses_from_entry=10
+  phase16: row0_predicted=48 row_observed=(48, 50, 13, 1) presses_from_entry=11
+  phase17: row0_predicted=51 row_observed=None presses_from_entry=12
+  phase18: row0_predicted=54 row_observed=None presses_from_entry=13
+  phase19: row0_predicted=57 row_observed=None presses_from_entry=14
+  phase20: row0_predicted=60 row_observed=None presses_from_entry=15
+
+=== PHASE 2: dock walk at 21 band phases x 3 docks ===
+  phase 0 done, t=3.2s
+  phase 1 done, t=3.3s
+  phase 2 done, t=3.5s
+  phase 3 done, t=3.7s
+  phase 4 done, t=3.8s
+  phase 5 done, t=3.9s
+  phase 6 done, t=4.1s
+  phase 7 done, t=4.2s
+  phase 8 done, t=4.3s
+  phase 9 done, t=4.5s
+  phase 10 done, t=4.6s
+  phase 11 done, t=4.8s
+  phase 12 done, t=4.9s
+  phase 13 done, t=5.0s
+  phase 14 done, t=5.2s
+  phase 15 done, t=5.3s
+  phase 16 done, t=5.5s
+  phase 17 done, t=5.6s
+  phase 18 done, t=5.7s
+  phase 19 done, t=5.9s
+  phase 20 done, t=6.0s
+
+=== SWEEP DONE t=6.0s === phases=21 arms=63 a5_branches=63 stopped_early=False
+wrote results/ar25-u4-result.json
+done

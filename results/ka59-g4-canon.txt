@@ -1,0 +1,68 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 08:28:40 | INFO | Got anonymous API key: 907f0a74-b8ab-4442-8fb4-936fa4f5d7bd
+2026-08-17 08:28:40 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 08:28:41 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 08:28:41 | INFO | Created new scorecard: 3015f331-62c2-4d8d-872f-a2d641ee6e3d
+2026-08-17 08:28:42 | INFO | Successfully fetched metadata for game ka59
+2026-08-17 08:28:42 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+L2 entry: dot0=[(34, 44), (34, 45)] dot1=[(41, 34), (42, 34)] dot2=[(44, 47), (44, 48), (45, 47), (45, 48)]
+box2 interior: (51, 51, 53, 53)
+  act#  1 0-entry-canonical            CLICK(44, 47)  piece=(44, 48) phase=(2, 0) extra4=[(37, 55)] levels_completed=1 state=GameState.NOT_FINISHED
+0-entry-canonical: canonical piece=(44, 48) phase=(2, 0) in_box2=False
+A-east-kick: approach candidate 0 succeeded (2 steps)
+  act#  2 A-east-kick-approach         v=1            piece=(37, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  3 A-east-kick-approach         v=1            piece=(37, 49) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  4 A-east-kick-p1               v=4            piece=(41, 49) phase=(2, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  5 A-east-kick-p2               v=4            piece=(40, 49) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+A-east-kick: landed at [(59, 47), (59, 48), (60, 47), (60, 48)]
+  act#  6 A-east-canonical             CLICK(59, 47)  piece=(60, 48) phase=(0, 0) extra4=[(40, 49)] levels_completed=1 state=GameState.NOT_FINISHED
+A-east-canonical: canonical piece=(60, 48) phase=(0, 0) in_box2=False
+B-south-kick: approach candidate 0 succeeded (6 steps)
+  act#  7 B-south-kick-approach        v=1            piece=(37, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  8 B-south-kick-approach        v=1            piece=(37, 49) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  9 B-south-kick-approach        v=1            piece=(36, 46) phase=(0, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 10 B-south-kick-approach        v=1            piece=(36, 43) phase=(0, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 11 B-south-kick-approach        v=4            piece=(40, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 12 B-south-kick-approach        v=4            piece=(43, 44) phase=(1, 2) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 13 B-south-kick-p1              v=2            piece=(43, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+B-south-kick: landed at [(44, 59), (44, 60), (45, 59), (45, 60)]
+  act# 14 B-south-canonical            CLICK(44, 59)  piece=(44, 60) phase=(2, 0) extra4=[(43, 43)] levels_completed=1 state=GameState.NOT_FINISHED
+B-south-canonical: canonical piece=(44, 60) phase=(2, 0) in_box2=False
+C-east-then-south-kick: approach candidate 0 succeeded (8 steps)
+  act# 15 C-east-then-south-kick-approach v=1            piece=(40, 46) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 16 C-east-then-south-kick-approach v=1            piece=(40, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 17 C-east-then-south-kick-approach v=4            piece=(43, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 18 C-east-then-south-kick-approach v=4            piece=(46, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 19 C-east-then-south-kick-approach v=4            piece=(49, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 20 C-east-then-south-kick-approach v=4            piece=(52, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 21 C-east-then-south-kick-approach v=4            piece=(55, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 22 C-east-then-south-kick-approach v=4            piece=(58, 44) phase=(1, 2) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 23 C-east-then-south-kick-p1    v=2            piece=(58, 43) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+C-east-then-south-kick: landed at [(59, 59), (59, 60), (60, 59), (60, 60)]
+  act# 24 C-east-then-south-canonical  CLICK(59, 59)  piece=(60, 60) phase=(0, 0) extra4=[(58, 43)] levels_completed=1 state=GameState.NOT_FINISHED
+C-east-then-south-canonical: canonical piece=(60, 60) phase=(0, 0) in_box2=False
+D-south-then-east-kick: approach candidate 0 succeeded (6 steps)
+  act# 25 D-south-then-east-kick-approach v=2            piece=(43, 46) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 26 D-south-then-east-kick-approach v=2            piece=(43, 49) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 27 D-south-then-east-kick-approach v=2            piece=(43, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 28 D-south-then-east-kick-approach v=2            piece=(43, 56) phase=(1, 2) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 29 D-south-then-east-kick-approach v=3            piece=(40, 55) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 30 D-south-then-east-kick-approach v=2            piece=(41, 58) phase=(2, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act# 31 D-south-then-east-kick-p1    v=4            piece=(40, 58) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+D-south-then-east-kick: landed at [(59, 59), (59, 60), (60, 59), (60, 60)]
+  act# 32 D-south-then-east-canonical  CLICK(59, 59)  piece=(60, 60) phase=(0, 0) extra4=[(40, 58)] levels_completed=1 state=GameState.NOT_FINISHED
+D-south-then-east-canonical: canonical piece=(60, 60) phase=(0, 0) in_box2=False
+
+=== DOT2 KICK / CANONICAL TABLE ===
+  label                    kicked                         landing                                  canonical    phase    in_box2 
+  entry (unkicked)         n/a                            [(44, 47), (44, 48), (45, 47), (45, 48)] (44, 48)     (2, 0)   False   
+  east kick                True                           [(59, 47), (59, 48), (60, 47), (60, 48)] (60, 48)     (0, 0)   False   
+  south kick               True                           [(44, 59), (44, 60), (45, 59), (45, 60)] (44, 60)     (2, 0)   False   
+  east then south kick     True                           [(59, 59), (59, 60), (60, 59), (60, 60)] (60, 60)     (0, 0)   False   
+  south then east kick     True                           [(59, 59), (59, 60), (60, 59), (60, 60)] (60, 60)     (0, 0)   False   
+
+=== VERDICT: NO_HIT -- no measured dot2 position lands its canonical inside box2 ===
+total actions this script: 32
+
+=== LEG TABLE ===
+  leg                              piece      phase    extra4                       lvl  asserts

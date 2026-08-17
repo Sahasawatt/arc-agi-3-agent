@@ -1140,6 +1140,25 @@ count with nothing in the logs to explain why**, so rebuild-then-exec is the gat
 PYTHONPATH=<starter>/vendor/ARC-AGI-3-Agents ./.venv/Scripts/python.exe kaggle_bundle_check.py
 ```
 
+**The whole submission runs from the CLI — the "human steps" below are not required.** Measured
+end to end 2026-08-17 from `Desktop\ARC-AGI-3-Kaggle-Starter` (its own venv, not the agent's):
+
+```bash
+PYTHONUTF8=1 ./.venv/Scripts/python.exe scripts/build_notebook.py
+KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe kernels push -p notebooks/
+KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe kernels status sahasawatt/arc-prize-2026-arc-agi-3-starter
+```
+
+Copy `kaggle/my_agent.py` onto `<starter>/agent/my_agent.py` first and **assert the sha matches** —
+the starter held a 224,752-byte bundle while the repo's was 230,211, i.e. it was still carrying the
+stale-mirror build. `PYTHONUTF8=1` is not optional: `build_notebook.py` and `play_local.py` print
+non-ASCII and Windows stdout is cp1252, so without it they die on a UnicodeEncodeError that looks
+like a build failure. **Never echo the token** — read it from the file straight into the CLI's env.
+The kernel then RUNS for hours (~7.3h of play inside the sample's 8h envelope); `wait_for_kernel.py`
+in the starter dir polls every 10 minutes and must be backgrounded **from the main thread**, since a
+background job a subagent starts dies with that agent. ⚠️ A `COMPLETE` that comes back fast is the
+silent-worker-death shape this file already documents — **read the kernel log before submitting.**
+
 It asserts, in order: the bundle exec's in a fresh namespace · every module named in
 `bundle.py`'s MODULES reaches `sys.modules` (the ImportError-on-Kaggle case a forgotten
 `roller` caused on v8) · all fourteen drivers are present by name · the agent class exists ·

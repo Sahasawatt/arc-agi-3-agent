@@ -1,0 +1,2115 @@
+{
+ "win": false,
+ "verdict": "JOINT_SWEPT_NO_WIN",
+ "elapsed_s": 6.012660026550293,
+ "entry_band": [
+  15,
+  17,
+  93,
+  2
+ ],
+ "entry_s_center": [
+  49.0,
+  43.0
+ ],
+ "n_down_presses": 15,
+ "n_up_presses": 5,
+ "phases": [
+  {
+   "idx": 0,
+   "row0_predicted": 0,
+   "row_observed": null,
+   "presses": -5
+  },
+  {
+   "idx": 1,
+   "row0_predicted": 3,
+   "row_observed": null,
+   "presses": -4
+  },
+  {
+   "idx": 2,
+   "row0_predicted": 6,
+   "row_observed": null,
+   "presses": -3
+  },
+  {
+   "idx": 3,
+   "row0_predicted": 9,
+   "row_observed": null,
+   "presses": -2
+  },
+  {
+   "idx": 4,
+   "row0_predicted": 12,
+   "row_observed": null,
+   "presses": -1
+  },
+  {
+   "idx": 5,
+   "row0_predicted": 15,
+   "row_observed": [
+    15,
+    17,
+    93,
+    2
+   ],
+   "presses": 0
+  },
+  {
+   "idx": 6,
+   "row0_predicted": 18,
+   "row_observed": [
+    18,
+    20,
+    101,
+    1
+   ],
+   "presses": 1
+  },
+  {
+   "idx": 7,
+   "row0_predicted": 21,
+   "row_observed": [
+    21,
+    23,
+    93,
+    1
+   ],
+   "presses": 2
+  },
+  {
+   "idx": 8,
+   "row0_predicted": 24,
+   "row_observed": [
+    24,
+    26,
+    93,
+    1
+   ],
+   "presses": 3
+  },
+  {
+   "idx": 9,
+   "row0_predicted": 27,
+   "row_observed": [
+    27,
+    29,
+    77,
+    1
+   ],
+   "presses": 4
+  },
+  {
+   "idx": 10,
+   "row0_predicted": 30,
+   "row_observed": [
+    30,
+    32,
+    93,
+    1
+   ],
+   "presses": 5
+  },
+  {
+   "idx": 11,
+   "row0_predicted": 33,
+   "row_observed": [
+    33,
+    35,
+    85,
+    1
+   ],
+   "presses": 6
+  },
+  {
+   "idx": 12,
+   "row0_predicted": 36,
+   "row_observed": [
+    36,
+    38,
+    53,
+    2
+   ],
+   "presses": 7
+  },
+  {
+   "idx": 13,
+   "row0_predicted": 39,
+   "row_observed": [
+    39,
+    41,
+    85,
+    3
+   ],
+   "presses": 8
+  },
+  {
+   "idx": 14,
+   "row0_predicted": 42,
+   "row_observed": [
+    42,
+    44,
+    13,
+    1
+   ],
+   "presses": 9
+  },
+  {
+   "idx": 15,
+   "row0_predicted": 45,
+   "row_observed": [
+    45,
+    47,
+    13,
+    1
+   ],
+   "presses": 10
+  },
+  {
+   "idx": 16,
+   "row0_predicted": 48,
+   "row_observed": [
+    48,
+    50,
+    13,
+    1
+   ],
+   "presses": 11
+  },
+  {
+   "idx": 17,
+   "row0_predicted": 51,
+   "row_observed": null,
+   "presses": 12
+  },
+  {
+   "idx": 18,
+   "row0_predicted": 54,
+   "row_observed": null,
+   "presses": 13
+  },
+  {
+   "idx": 19,
+   "row0_predicted": 57,
+   "row_observed": null,
+   "presses": 14
+  },
+  {
+   "idx": 20,
+   "row0_predicted": 60,
+   "row_observed": null,
+   "presses": 15
+  }
+ ],
+ "distinct_phases": 21,
+ "docks": [
+  [
+   "marker1",
+   [
+    37,
+    16
+   ]
+  ],
+  [
+   "marker2",
+   [
+    13,
+    40
+   ]
+  ],
+  [
+   "zigzag_center",
+   [
+    25,
+    28
+   ]
+  ]
+ ],
+ "arms_run": 63,
+ "a5_branch_count": 63,
+ "stopped_early": false,
+ "census": [
+  {
+   "phase_idx": 0,
+   "band_row0_predicted": 0,
+   "band_row_observed": null,
+   "band_presses_from_entry": -5,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 0,
+   "band_row0_predicted": 0,
+   "band_row_observed": null,
+   "band_presses_from_entry": -5,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 0,
+   "band_row0_predicted": 0,
+   "band_row_observed": null,
+   "band_presses_from_entry": -5,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 1,
+   "band_row0_predicted": 3,
+   "band_row_observed": null,
+   "band_presses_from_entry": -4,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 1,
+   "band_row0_predicted": 3,
+   "band_row_observed": null,
+   "band_presses_from_entry": -4,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 1,
+   "band_row0_predicted": 3,
+   "band_row_observed": null,
+   "band_presses_from_entry": -4,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 2,
+   "band_row0_predicted": 6,
+   "band_row_observed": null,
+   "band_presses_from_entry": -3,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 2,
+   "band_row0_predicted": 6,
+   "band_row_observed": null,
+   "band_presses_from_entry": -3,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 2,
+   "band_row0_predicted": 6,
+   "band_row_observed": null,
+   "band_presses_from_entry": -3,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 3,
+   "band_row0_predicted": 9,
+   "band_row_observed": null,
+   "band_presses_from_entry": -2,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 3,
+   "band_row0_predicted": 9,
+   "band_row_observed": null,
+   "band_presses_from_entry": -2,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 3,
+   "band_row0_predicted": 9,
+   "band_row_observed": null,
+   "band_presses_from_entry": -2,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 4,
+   "band_row0_predicted": 12,
+   "band_row_observed": null,
+   "band_presses_from_entry": -1,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 4,
+   "band_row0_predicted": 12,
+   "band_row_observed": null,
+   "band_presses_from_entry": -1,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 4,
+   "band_row0_predicted": 12,
+   "band_row_observed": null,
+   "band_presses_from_entry": -1,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 5,
+   "band_row0_predicted": 15,
+   "band_row_observed": [
+    15,
+    17,
+    93,
+    2
+   ],
+   "band_presses_from_entry": 0,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 5,
+   "band_row0_predicted": 15,
+   "band_row_observed": [
+    15,
+    17,
+    93,
+    2
+   ],
+   "band_presses_from_entry": 0,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 5,
+   "band_row0_predicted": 15,
+   "band_row_observed": [
+    15,
+    17,
+    93,
+    2
+   ],
+   "band_presses_from_entry": 0,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 6,
+   "band_row0_predicted": 18,
+   "band_row_observed": [
+    18,
+    20,
+    101,
+    1
+   ],
+   "band_presses_from_entry": 1,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 6,
+   "band_row0_predicted": 18,
+   "band_row_observed": [
+    18,
+    20,
+    101,
+    1
+   ],
+   "band_presses_from_entry": 1,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 6,
+   "band_row0_predicted": 18,
+   "band_row_observed": [
+    18,
+    20,
+    101,
+    1
+   ],
+   "band_presses_from_entry": 1,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 7,
+   "band_row0_predicted": 21,
+   "band_row_observed": [
+    21,
+    23,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 2,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 7,
+   "band_row0_predicted": 21,
+   "band_row_observed": [
+    21,
+    23,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 2,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 7,
+   "band_row0_predicted": 21,
+   "band_row_observed": [
+    21,
+    23,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 2,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 8,
+   "band_row0_predicted": 24,
+   "band_row_observed": [
+    24,
+    26,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 3,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 8,
+   "band_row0_predicted": 24,
+   "band_row_observed": [
+    24,
+    26,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 3,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 8,
+   "band_row0_predicted": 24,
+   "band_row_observed": [
+    24,
+    26,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 3,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 9,
+   "band_row0_predicted": 27,
+   "band_row_observed": [
+    27,
+    29,
+    77,
+    1
+   ],
+   "band_presses_from_entry": 4,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 9,
+   "band_row0_predicted": 27,
+   "band_row_observed": [
+    27,
+    29,
+    77,
+    1
+   ],
+   "band_presses_from_entry": 4,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 9,
+   "band_row0_predicted": 27,
+   "band_row_observed": [
+    27,
+    29,
+    77,
+    1
+   ],
+   "band_presses_from_entry": 4,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 10,
+   "band_row0_predicted": 30,
+   "band_row_observed": [
+    30,
+    32,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 5,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 10,
+   "band_row0_predicted": 30,
+   "band_row_observed": [
+    30,
+    32,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 5,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 10,
+   "band_row0_predicted": 30,
+   "band_row_observed": [
+    30,
+    32,
+    93,
+    1
+   ],
+   "band_presses_from_entry": 5,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 11,
+   "band_row0_predicted": 33,
+   "band_row_observed": [
+    33,
+    35,
+    85,
+    1
+   ],
+   "band_presses_from_entry": 6,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 11,
+   "band_row0_predicted": 33,
+   "band_row_observed": [
+    33,
+    35,
+    85,
+    1
+   ],
+   "band_presses_from_entry": 6,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 11,
+   "band_row0_predicted": 33,
+   "band_row_observed": [
+    33,
+    35,
+    85,
+    1
+   ],
+   "band_presses_from_entry": 6,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 12,
+   "band_row0_predicted": 36,
+   "band_row_observed": [
+    36,
+    38,
+    53,
+    2
+   ],
+   "band_presses_from_entry": 7,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 12,
+   "band_row0_predicted": 36,
+   "band_row_observed": [
+    36,
+    38,
+    53,
+    2
+   ],
+   "band_presses_from_entry": 7,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 12,
+   "band_row0_predicted": 36,
+   "band_row_observed": [
+    36,
+    38,
+    53,
+    2
+   ],
+   "band_presses_from_entry": 7,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 13,
+   "band_row0_predicted": 39,
+   "band_row_observed": [
+    39,
+    41,
+    85,
+    3
+   ],
+   "band_presses_from_entry": 8,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 13,
+   "band_row0_predicted": 39,
+   "band_row_observed": [
+    39,
+    41,
+    85,
+    3
+   ],
+   "band_presses_from_entry": 8,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 13,
+   "band_row0_predicted": 39,
+   "band_row_observed": [
+    39,
+    41,
+    85,
+    3
+   ],
+   "band_presses_from_entry": 8,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 14,
+   "band_row0_predicted": 42,
+   "band_row_observed": [
+    42,
+    44,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 9,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 14,
+   "band_row0_predicted": 42,
+   "band_row_observed": [
+    42,
+    44,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 9,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 14,
+   "band_row0_predicted": 42,
+   "band_row_observed": [
+    42,
+    44,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 9,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 15,
+   "band_row0_predicted": 45,
+   "band_row_observed": [
+    45,
+    47,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 10,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 15,
+   "band_row0_predicted": 45,
+   "band_row_observed": [
+    45,
+    47,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 10,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 15,
+   "band_row0_predicted": 45,
+   "band_row_observed": [
+    45,
+    47,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 10,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 16,
+   "band_row0_predicted": 48,
+   "band_row_observed": [
+    48,
+    50,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 11,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 16,
+   "band_row0_predicted": 48,
+   "band_row_observed": [
+    48,
+    50,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 11,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 16,
+   "band_row0_predicted": 48,
+   "band_row_observed": [
+    48,
+    50,
+    13,
+    1
+   ],
+   "band_presses_from_entry": 11,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 17,
+   "band_row0_predicted": 51,
+   "band_row_observed": null,
+   "band_presses_from_entry": 12,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 17,
+   "band_row0_predicted": 51,
+   "band_row_observed": null,
+   "band_presses_from_entry": 12,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 17,
+   "band_row0_predicted": 51,
+   "band_row_observed": null,
+   "band_presses_from_entry": 12,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 18,
+   "band_row0_predicted": 54,
+   "band_row_observed": null,
+   "band_presses_from_entry": 13,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 18,
+   "band_row0_predicted": 54,
+   "band_row_observed": null,
+   "band_presses_from_entry": 13,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 18,
+   "band_row0_predicted": 54,
+   "band_row_observed": null,
+   "band_presses_from_entry": 13,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 19,
+   "band_row0_predicted": 57,
+   "band_row_observed": null,
+   "band_presses_from_entry": 14,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 19,
+   "band_row0_predicted": 57,
+   "band_row_observed": null,
+   "band_presses_from_entry": 14,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 19,
+   "band_row0_predicted": 57,
+   "band_row_observed": null,
+   "band_presses_from_entry": 14,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  },
+  {
+   "phase_idx": 20,
+   "band_row0_predicted": 60,
+   "band_row_observed": null,
+   "band_presses_from_entry": 15,
+   "dock": "marker1",
+   "target": [
+    37,
+    16
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    37.0,
+    16.0
+   ],
+   "arrival_bbox": [
+    30,
+    44,
+    9,
+    23,
+    88
+   ]
+  },
+  {
+   "phase_idx": 20,
+   "band_row0_predicted": 60,
+   "band_row_observed": null,
+   "band_presses_from_entry": 15,
+   "dock": "marker2",
+   "target": [
+    13,
+    40
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    13.0,
+    40.0
+   ],
+   "arrival_bbox": [
+    6,
+    20,
+    33,
+    47,
+    88
+   ]
+  },
+  {
+   "phase_idx": 20,
+   "band_row0_predicted": 60,
+   "band_row_observed": null,
+   "band_presses_from_entry": 15,
+   "dock": "zigzag_center",
+   "target": [
+    25,
+    28
+   ],
+   "s_after_select": [
+    49.0,
+    43.0
+   ],
+   "status": "ARRIVED",
+   "arrival_center": [
+    25.0,
+    28.0
+   ],
+   "arrival_bbox": [
+    18,
+    32,
+    21,
+    35,
+    88
+   ]
+  }
+ ]
+}

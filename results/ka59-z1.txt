@@ -1,0 +1,32 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 03:59:29 | INFO | Got anonymous API key: c4a29042-7857-44ba-891b-bc303b95b531
+2026-08-17 03:59:29 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 03:59:30 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 03:59:30 | INFO | Created new scorecard: 76090ee8-f4ce-4474-8014-dc190496f9fe
+2026-08-17 03:59:32 | INFO | Successfully fetched metadata for game ka59
+2026-08-17 03:59:32 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+L2 entry: piece=(37, 55) phase=(1, 1) dot0=[(34, 44), (34, 45)] dot1=[(41, 34), (42, 34)] dot2=[(44, 47), (44, 48), (45, 47), (45, 48)]
+  act#  1 1-walk-to-box2           v=1            piece=(37, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  2 1-walk-to-box2           v=4            piece=(40, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  3 1-walk-to-box2           v=4            piece=(43, 51) phase=(1, 0) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  4 1-walk-to-box2           v=4            piece=(46, 51) phase=(1, 0) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  5 1-walk-to-box2           v=4            piece=(49, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  6 1-walk-to-box2           v=4            piece=(52, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+
+ARM1 step1: chosen cell p_stand=(52, 52) phase=(1, 1) (expected box2, phase (1,1))
+  act#  7 2-click-dot2-from-box2   CLICK(44, 47)  piece=(44, 48) phase=(2, 0) extra4=[(52, 52)] levels_completed=1 state=GameState.NOT_FINISHED
+
+ARM1 step2 MEASUREMENT:
+  piece landed at (44, 48) (dot2's raw pixel group was [(44, 47), (44, 48), (45, 47), (45, 48)], note: the group's first SORTED pixel is not necessarily the dot's canonical landing cell -- landed-in-group=True): informational, not the load-bearing claim
+  new extra4 marker(s): [(52, 52)] (expected to contain p_stand=(52, 52)): MATCH
+  ARM1a (mint lands EXACTLY at the deliberately chosen old cell) verdict: WORKS
+  act#  8 3-click-minted-marker    CLICK(52, 52)  piece=(52, 52) phase=(1, 1) extra4=[(44, 47), (44, 48), (45, 47), (45, 48)] levels_completed=1 state=GameState.NOT_FINISHED
+
+ARM1 step3 MEASUREMENT:
+  piece landed at (52, 52) (expected minted marker's cell (52, 52)): MATCH
+  phase(p_final)=(1, 1) vs phase(p_stand)=(1, 1): MATCH
+  ARM1b (delivery at chosen phase) verdict: WORKS
+
+=== ARM1 FINAL: mint=WORKS deliver=WORKS overall=WORKS ===
+levels_completed=1 state=GameState.NOT_FINISHED total actions=8
+final extra4 census: [(44, 47), (44, 48), (45, 47), (45, 48)]

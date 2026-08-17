@@ -1,0 +1,163 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 12:10:20 | INFO | Got anonymous API key: cbd3aea4-83e9-495d-8861-dbd1b620bf86
+2026-08-17 12:10:20 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 12:10:21 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 12:10:21 | INFO | Created new scorecard: 1fc27bc4-9a51-4aeb-968e-ad6221d083a7
+2026-08-17 12:10:22 | INFO | Successfully fetched metadata for game sp80
+2026-08-17 12:10:22 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+L4 root: 6 tracked bodies: [(9, 17, 17, 15, 3), (8, 38, 17, 15, 3), (8, 44, 32, 12, 3), (8, 38, 41, 12, 3), (8, 20, 29, 9, 3), (8, 8, 29, 9, 3)]
+root pos0: {0: (8, 29), 1: (17, 17), 2: (20, 29), 3: (38, 17), 4: (38, 41), 5: (44, 32)} sizes: {0: (9, 3), 1: (15, 3), 2: (9, 3), 3: (15, 3), 4: (12, 3), 5: (12, 3)} driver0: 1
+FRESH START
+HEARTBEAT expanded=535 states=2330 frontier=1795 rate=8.91/s multi_match=0 forked=0 t=60s
+HEARTBEAT expanded=1064 states=4172 frontier=3108 rate=8.86/s multi_match=0 forked=0 t=120s
+HEARTBEAT expanded=1578 states=6087 frontier=4509 rate=8.76/s multi_match=0 forked=0 t=180s
+  CURVE expanded=2000 states=7602 frontier=5602 d_states/2000=7601 d_frontier/2000=5601 anomalies=4043 multi_match=1 forked=0 avg_replay_ms/node=14.87 t=226s CHECKPOINTED
+HEARTBEAT expanded=2123 states=8071 frontier=5948 rate=8.84/s multi_match=1 forked=0 t=240s
+HEARTBEAT expanded=2647 states=9853 frontier=7206 rate=8.82/s multi_match=1 forked=0 t=300s
+HEARTBEAT expanded=3163 states=11590 frontier=8427 rate=8.78/s multi_match=1 forked=0 t=360s
+HEARTBEAT expanded=3628 states=13050 frontier=9422 rate=8.63/s multi_match=1 forked=0 t=420s
+  CURVE expanded=4000 states=14091 frontier=10091 d_states/2000=6489 d_frontier/2000=4489 anomalies=8069 multi_match=1 forked=0 avg_replay_ms/node=16.42 t=461s CHECKPOINTED
+HEARTBEAT expanded=4180 states=14474 frontier=10294 rate=8.70/s multi_match=1 forked=0 t=480s
+HEARTBEAT expanded=4693 states=16241 frontier=11548 rate=8.68/s multi_match=1 forked=0 t=540s
+HEARTBEAT expanded=5216 states=18016 frontier=12800 rate=8.69/s multi_match=1 forked=0 t=601s
+HEARTBEAT expanded=5677 states=19542 frontier=13865 rate=8.59/s multi_match=1 forked=0 t=661s
+  CURVE expanded=6000 states=20541 frontier=14541 d_states/2000=6450 d_frontier/2000=4450 anomalies=12075 multi_match=1 forked=0 avg_replay_ms/node=17.28 t=702s CHECKPOINTED
+HEARTBEAT expanded=6166 states=21027 frontier=14861 rate=8.56/s multi_match=1 forked=0 t=721s
+HEARTBEAT expanded=6725 states=22665 frontier=15940 rate=8.61/s multi_match=7 forked=0 t=781s
+HEARTBEAT expanded=7238 states=24493 frontier=17255 rate=8.61/s multi_match=8 forked=0 t=841s
+HEARTBEAT expanded=7766 states=26276 frontier=18510 rate=8.62/s multi_match=8 forked=0 t=901s
+  CURVE expanded=8000 states=27028 frontier=19028 d_states/2000=6487 d_frontier/2000=4487 anomalies=16241 multi_match=8 forked=0 avg_replay_ms/node=16.65 t=927s CHECKPOINTED
+HEARTBEAT expanded=8236 states=27809 frontier=19573 rate=8.57/s multi_match=8 forked=0 t=961s
+HEARTBEAT expanded=8772 states=29363 frontier=20591 rate=8.59/s multi_match=8 forked=0 t=1021s
+HEARTBEAT expanded=9317 states=30981 frontier=21664 rate=8.62/s multi_match=8 forked=0 t=1081s
+HEARTBEAT expanded=9811 states=32552 frontier=22741 rate=8.60/s multi_match=8 forked=0 t=1141s
+  CURVE expanded=10000 states=33094 frontier=23094 d_states/2000=6066 d_frontier/2000=4066 anomalies=20241 multi_match=8 forked=0 avg_replay_ms/node=17.08 t=1161s CHECKPOINTED
+HEARTBEAT expanded=10384 states=34000 frontier=23616 rate=8.65/s multi_match=8 forked=0 t=1201s
+HEARTBEAT expanded=10827 states=35507 frontier=24680 rate=8.58/s multi_match=8 forked=0 t=1261s
+HEARTBEAT expanded=11297 states=36984 frontier=25687 rate=8.55/s multi_match=8 forked=0 t=1321s
+HEARTBEAT expanded=11815 states=38297 frontier=26482 rate=8.55/s multi_match=8 forked=0 t=1381s
+  CURVE expanded=12000 states=38894 frontier=26894 d_states/2000=5800 d_frontier/2000=3800 anomalies=24350 multi_match=8 forked=0 avg_replay_ms/node=18.02 t=1412s CHECKPOINTED
+HEARTBEAT expanded=12208 states=39525 frontier=27317 rate=8.47/s multi_match=8 forked=0 t=1442s
+HEARTBEAT expanded=12637 states=40586 frontier=27949 rate=8.42/s multi_match=8 forked=0 t=1502s
+HEARTBEAT expanded=13175 states=42128 frontier=28953 rate=8.44/s multi_match=8 forked=0 t=1562s
+HEARTBEAT expanded=13717 states=43494 frontier=29777 rate=8.46/s multi_match=9 forked=1 t=1622s
+  CURVE expanded=14000 states=44149 frontier=30149 d_states/2000=5255 d_frontier/2000=3255 anomalies=28351 multi_match=9 forked=1 avg_replay_ms/node=18.06 t=1653s CHECKPOINTED
+HEARTBEAT expanded=14262 states=44683 frontier=30421 rate=8.48/s multi_match=9 forked=1 t=1682s
+HEARTBEAT expanded=14799 states=46142 frontier=31343 rate=8.50/s multi_match=10 forked=2 t=1742s
+HEARTBEAT expanded=15295 states=47779 frontier=32484 rate=8.49/s multi_match=10 forked=2 t=1802s
+HEARTBEAT expanded=15740 states=49198 frontier=33458 rate=8.45/s multi_match=10 forked=2 t=1862s
+  CURVE expanded=16000 states=49946 frontier=33946 d_states/2000=5797 d_frontier/2000=3797 anomalies=32357 multi_match=10 forked=2 avg_replay_ms/node=18.04 t=1891s CHECKPOINTED
+HEARTBEAT expanded=16283 states=50582 frontier=34299 rate=8.47/s multi_match=10 forked=2 t=1922s
+HEARTBEAT expanded=16794 states=52279 frontier=35485 rate=8.47/s multi_match=10 forked=2 t=1982s
+HEARTBEAT expanded=17311 states=53882 frontier=36571 rate=8.48/s multi_match=10 forked=2 t=2042s
+HEARTBEAT expanded=17842 states=55337 frontier=37495 rate=8.49/s multi_match=10 forked=2 t=2102s
+  CURVE expanded=18000 states=55875 frontier=37875 d_states/2000=5929 d_frontier/2000=3929 anomalies=36378 multi_match=10 forked=2 avg_replay_ms/node=17.97 t=2124s CHECKPOINTED
+HEARTBEAT expanded=18272 states=56744 frontier=38472 rate=8.45/s multi_match=10 forked=2 t=2162s
+HEARTBEAT expanded=18777 states=58255 frontier=39478 rate=8.45/s multi_match=10 forked=2 t=2222s
+HEARTBEAT expanded=19237 states=59460 frontier=40223 rate=8.43/s multi_match=10 forked=2 t=2282s
+HEARTBEAT expanded=19644 states=60667 frontier=41023 rate=8.39/s multi_match=10 forked=2 t=2343s
+  CURVE expanded=20000 states=61539 frontier=41539 d_states/2000=5664 d_frontier/2000=3664 anomalies=40378 multi_match=10 forked=2 avg_replay_ms/node=18.96 t=2392s CHECKPOINTED
+HEARTBEAT expanded=20096 states=61819 frontier=41723 rate=8.36/s multi_match=10 forked=2 t=2403s
+HEARTBEAT expanded=20622 states=63264 frontier=42642 rate=8.37/s multi_match=10 forked=2 t=2463s
+HEARTBEAT expanded=21165 states=64624 frontier=43459 rate=8.39/s multi_match=11 forked=3 t=2523s
+HEARTBEAT expanded=21713 states=65733 frontier=44020 rate=8.41/s multi_match=12 forked=4 t=2583s
+  CURVE expanded=22000 states=66621 frontier=44621 d_states/2000=5082 d_frontier/2000=3082 anomalies=44436 multi_match=39 forked=4 avg_replay_ms/node=18.31 t=2613s CHECKPOINTED
+HEARTBEAT expanded=22289 states=67587 frontier=45298 rate=8.43/s multi_match=39 forked=4 t=2643s
+HEARTBEAT expanded=22834 states=69409 frontier=46575 rate=8.45/s multi_match=45 forked=4 t=2703s
+HEARTBEAT expanded=23308 states=71083 frontier=47775 rate=8.44/s multi_match=46 forked=4 t=2763s
+HEARTBEAT expanded=23773 states=72582 frontier=48809 rate=8.42/s multi_match=46 forked=4 t=2823s
+  CURVE expanded=24000 states=73223 frontier=49223 d_states/2000=6602 d_frontier/2000=4602 anomalies=48958 multi_match=46 forked=4 avg_replay_ms/node=18.34 t=2848s CHECKPOINTED
+HEARTBEAT expanded=24316 states=73954 frontier=49638 rate=8.43/s multi_match=46 forked=4 t=2883s
+HEARTBEAT expanded=24823 states=75665 frontier=50842 rate=8.43/s multi_match=46 forked=4 t=2943s
+HEARTBEAT expanded=25349 states=77256 frontier=51907 rate=8.44/s multi_match=46 forked=4 t=3003s
+HEARTBEAT expanded=25890 states=78789 frontier=52899 rate=8.45/s multi_match=46 forked=4 t=3063s
+  CURVE expanded=26000 states=79160 frontier=53160 d_states/2000=5937 d_frontier/2000=3937 anomalies=53072 multi_match=46 forked=4 avg_replay_ms/node=18.17 t=3076s CHECKPOINTED
+HEARTBEAT expanded=26353 states=80260 frontier=53907 rate=8.44/s multi_match=46 forked=4 t=3123s
+HEARTBEAT expanded=26894 states=81827 frontier=54933 rate=8.45/s multi_match=46 forked=4 t=3183s
+HEARTBEAT expanded=27323 states=82992 frontier=55669 rate=8.42/s multi_match=46 forked=4 t=3243s
+
+== GROWTH CURVE TABLE (every 2000 expanded) ==
+  expanded     states   frontier   d_states  d_frontier  states/node  frontier/node
+      2000       7602       5602       7601        5601        3.800          2.800
+      4000      14091      10091       6489        4489        3.244          2.244
+      6000      20541      14541       6450        4450        3.225          2.225
+      8000      27028      19028       6487        4487        3.244          2.244
+     10000      33094      23094       6066        4066        3.033          2.033
+     12000      38894      26894       5800        3800        2.900          1.900
+     14000      44149      30149       5255        3255        2.627          1.627
+     16000      49946      33946       5797        3797        2.898          1.899
+     18000      55875      37875       5929        3929        2.965          1.964
+     20000      61539      41539       5664        3664        2.832          1.832
+     22000      66621      44621       5082        3082        2.541          1.541
+     24000      73223      49223       6602        4602        3.301          2.301
+     26000      79160      53160       5937        3937        2.969          1.968
+
+== throughput (this invocation) ==
+expanded_this_run=27723 elapsed=3300s replay_time_total=519s replay_share=15.7%
+
+== state-space size ==
+states visited: 84165
+expanded=27723 anomalies=56523 anomaly_reasons={'driver_blob_count': 56477, 'transfer_no_match': 0, 'transfer_multi_match': 46} exhausted=False t=3300s
+
+== per-driver-identity fire coverage ==
+ids ever seen as driver: [1, 3, 4, 5] (root driver id = 1)
+fire attempts tabulated by who-was-driving: {0: 0, 1: 5788, 2: 0, 3: 7234, 4: 7278, 5: 7296}
+
+== transfer_multi_match resolution breakdown ==
+count=46 resolved_exact=42 forked_survivors(2+)=4 forked_forced(0 survivors)=0 total_extra_branches_forked=4
+
+NO WIN: t=3300s exhausted=False
+
+FINAL expanded=27723 states=84165 frontier=56442 multi_match=46 forked=4 exhausted=False win=False
+DONE
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 13:05:25 | INFO | Got anonymous API key: 2075f7c4-a329-4dba-94ea-15bcf77f2702
+2026-08-17 13:05:25 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 13:05:26 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 13:05:26 | INFO | Created new scorecard: cc3ebc1a-6183-44bc-8a73-8328c9021d9d
+2026-08-17 13:05:27 | INFO | Successfully fetched metadata for game sp80
+2026-08-17 13:05:27 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+L4 root: 6 tracked bodies: [(9, 17, 17, 15, 3), (8, 38, 17, 15, 3), (8, 44, 32, 12, 3), (8, 38, 41, 12, 3), (8, 20, 29, 9, 3), (8, 8, 29, 9, 3)]
+root pos0: {0: (8, 29), 1: (17, 17), 2: (20, 29), 3: (38, 17), 4: (38, 41), 5: (44, 32)} sizes: {0: (9, 3), 1: (15, 3), 2: (9, 3), 3: (15, 3), 4: (12, 3), 5: (12, 3)} driver0: 1
+RESUMED expanded=27723 states=84165 frontier=56442 multi_match=46 forked=4
+  CURVE expanded=28000 states=84818 frontier=56818 d_states/2000=5658 d_frontier/2000=3658 anomalies=57077 multi_match=46 forked=4 avg_replay_ms/node=18.83 t=37s CHECKPOINTED
+HEARTBEAT expanded=28207 states=85386 frontier=57179 rate=469.14/s multi_match=46 forked=4 t=60s
+HEARTBEAT expanded=28757 states=86896 frontier=58139 rate=239.34/s multi_match=46 forked=4 t=120s
+HEARTBEAT expanded=29310 states=88216 frontier=58906 rate=162.68/s multi_match=47 forked=5 t=180s
+HEARTBEAT expanded=29873 states=89384 frontier=59511 rate=124.34/s multi_match=48 forked=6 t=240s
+  CURVE expanded=30000 states=89820 frontier=59820 d_states/2000=5002 d_frontier/2000=3002 anomalies=61079 multi_match=48 forked=6 avg_replay_ms/node=18.40 t=255s CHECKPOINTED
+HEARTBEAT expanded=30382 states=91075 frontier=60693 rate=101.15/s multi_match=48 forked=6 t=300s
+HEARTBEAT expanded=30922 states=92681 frontier=61759 rate=85.80/s multi_match=48 forked=6 t=360s
+HEARTBEAT expanded=31406 states=93969 frontier=62563 rate=74.69/s multi_match=48 forked=6 t=420s
+HEARTBEAT expanded=31856 states=95282 frontier=63426 rate=66.30/s multi_match=48 forked=6 t=480s
+  CURVE expanded=32000 states=95624 frontier=63624 d_states/2000=5804 d_frontier/2000=3804 anomalies=65079 multi_match=48 forked=6 avg_replay_ms/node=18.76 t=500s CHECKPOINTED
+HEARTBEAT expanded=32368 states=96566 frontier=64198 rate=59.88/s multi_match=48 forked=6 t=541s
+HEARTBEAT expanded=32930 states=98125 frontier=65195 rate=54.83/s multi_match=48 forked=6 t=601s
+HEARTBEAT expanded=33496 states=99452 frontier=65956 rate=50.70/s multi_match=49 forked=7 t=661s
+  CURVE expanded=34000 states=100451 frontier=66451 d_states/2000=4827 d_frontier/2000=2827 anomalies=69124 multi_match=51 forked=9 avg_replay_ms/node=18.37 t=713s CHECKPOINTED
+HEARTBEAT expanded=34079 states=100717 frontier=66638 rate=47.29/s multi_match=51 forked=9 t=721s
+HEARTBEAT expanded=34476 states=102073 frontier=67597 rate=44.15/s multi_match=51 forked=9 t=781s
+HEARTBEAT expanded=34919 states=103427 frontier=68508 rate=41.53/s multi_match=51 forked=9 t=841s
+HEARTBEAT expanded=35398 states=104625 frontier=69227 rate=39.29/s multi_match=51 forked=9 t=901s
+HEARTBEAT expanded=35793 states=105862 frontier=70069 rate=37.24/s multi_match=51 forked=9 t=961s
+  CURVE expanded=36000 states=106433 frontier=70433 d_states/2000=5982 d_frontier/2000=3982 anomalies=73491 multi_match=51 forked=9 avg_replay_ms/node=19.07 t=990s CHECKPOINTED
+HEARTBEAT expanded=36221 states=106915 frontier=70694 rate=35.47/s multi_match=51 forked=9 t=1021s
+HEARTBEAT expanded=36758 states=108456 frontier=71698 rate=34.00/s multi_match=51 forked=9 t=1081s
+HEARTBEAT expanded=37286 states=109788 frontier=72502 rate=32.67/s multi_match=52 forked=10 t=1141s
+HEARTBEAT expanded=37833 states=110996 frontier=73163 rate=31.50/s multi_match=52 forked=10 t=1201s
+  CURVE expanded=38000 states=111290 frontier=73290 d_states/2000=4857 d_frontier/2000=2857 anomalies=77493 multi_match=53 forked=11 avg_replay_ms/node=18.82 t=1220s CHECKPOINTED
+HEARTBEAT expanded=38276 states=112035 frontier=73759 rate=30.35/s multi_match=53 forked=11 t=1261s
+HEARTBEAT expanded=38643 states=113126 frontier=74483 rate=29.25/s multi_match=53 forked=11 t=1321s
+HEARTBEAT expanded=39028 states=114068 frontier=75040 rate=28.25/s multi_match=53 forked=11 t=1381s
+HEARTBEAT expanded=39454 states=115263 frontier=75809 rate=27.37/s multi_match=53 forked=11 t=1442s
+HEARTBEAT expanded=39877 states=116331 frontier=76454 rate=26.55/s multi_match=54 forked=12 t=1502s
+  CURVE expanded=40000 states=116643 frontier=76643 d_states/2000=5353 d_frontier/2000=3353 anomalies=81494 multi_match=54 forked=12 avg_replay_ms/node=20.00 t=1520s CHECKPOINTED
+HEARTBEAT expanded=40300 states=117302 frontier=77002 rate=25.81/s multi_match=54 forked=12 t=1562s
+HEARTBEAT expanded=40769 states=118275 frontier=77506 rate=25.14/s multi_match=55 forked=13 t=1622s
+HEARTBEAT expanded=41297 states=119572 frontier=78275 rate=24.55/s multi_match=55 forked=13 t=1682s
+HEARTBEAT expanded=41897 states=121176 frontier=79279 rate=24.05/s multi_match=55 forked=13 t=1742s
+  CURVE expanded=42000 states=121437 frontier=79437 d_states/2000=4794 d_frontier/2000=2794 anomalies=85495 multi_match=55 forked=13 avg_replay_ms/node=19.89 t=1755s CHECKPOINTED
+HEARTBEAT expanded=42379 states=122292 frontier=79913 rate=23.52/s multi_match=55 forked=13 t=1802s
+HEARTBEAT expanded=43063 states=123824 frontier=80761 rate=23.13/s multi_match=62 forked=20 t=1862s
+HEARTBEAT expanded=43819 states=125456 frontier=81637 rate=22.80/s multi_match=68 forked=26 t=1922s
+  CURVE expanded=44000 states=125796 frontier=81796 d_states/2000=4359 d_frontier/2000=2359 anomalies=89508 multi_match=68 forked=26 avg_replay_ms/node=19.43 t=1934s CHECKPOINTED

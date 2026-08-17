@@ -1,0 +1,22 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 04:00:48 | INFO | Got anonymous API key: 1ba3bab2-847a-40d4-9020-1e7096791782
+2026-08-17 04:00:48 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 04:00:50 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 04:00:50 | INFO | Created new scorecard: 1bcce470-af91-4e85-b4b3-9d390ef56e97
+2026-08-17 04:00:51 | INFO | Successfully fetched metadata for game ka59
+2026-08-17 04:00:51 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+L2 entry: piece=(37, 55) dot0=[(34, 44), (34, 45)] dot1=[(41, 34), (42, 34)] dot2=[(44, 47), (44, 48), (45, 47), (45, 48)]
+  act#  1 0-walk-to-box2             v=1            piece=(37, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  2 0-walk-to-box2             v=4            piece=(40, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  3 0-walk-to-box2             v=4            piece=(43, 51) phase=(1, 0) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  4 0-walk-to-box2             v=4            piece=(46, 51) phase=(1, 0) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  5 0-walk-to-box2             v=4            piece=(49, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+  act#  6 0-walk-to-box2             v=4            piece=(52, 52) phase=(1, 1) extra4=[] levels_completed=1 state=GameState.NOT_FINISHED
+
+0: standing at box2 cell (52, 52) phase=(1, 1) -- minting here
+  act#  7 0-MINT-box2-via-dot2       CLICK(44, 47)  piece=(44, 48) phase=(2, 0) extra4=[(52, 52)] levels_completed=1 state=GameState.NOT_FINISHED
+   confirmed: box2 marker sits at (52, 52)
+
+  LINE NOT EXECUTABLE: no route to dot0's approach
+  FINAL: levels_completed=1 state=GameState.NOT_FINISHED
+  final extra4 census: [(52, 52)]

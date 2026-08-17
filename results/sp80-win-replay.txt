@@ -1,0 +1,21 @@
+RECIPE1 = [4, 4, 4, 5]
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-17 10:25:33 | INFO | Got anonymous API key: 4f534d5b-e266-4584-8ae6-ef16b2a4d3a7
+2026-08-17 10:25:33 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-17 10:25:34 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-17 10:25:34 | INFO | Created new scorecard: 90a625f0-c63d-4bac-9c94-107caac41dbb
+2026-08-17 10:25:35 | INFO | Successfully fetched metadata for game sp80
+2026-08-17 10:25:35 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+L1 done, levels_completed=1
+L2 done, levels_completed=2
+step 0 (4) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 1 (('click', 8, 20)) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 2 (4) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 3 (('click', 8, 32)) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 4 (3) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 5 (3) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 6 (('click', 40, 28)) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 7 (3) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 8 (3) -> levels_completed=2 state=GameState.NOT_FINISHED
+step 9 (5) -> levels_completed=3 state=GameState.NOT_FINISHED
+*** L3 WIN REPLAYED INDEPENDENTLY: levels_completed = 3 ***
