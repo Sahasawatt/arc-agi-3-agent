@@ -6550,3 +6550,15 @@ locally/commit-run, bank ~1.0-1.2; (3) the top-5 differentiator = inject this ca
 mechanics as REPL TOOLS for the LLM (component click enumeration, transition-graph builder,
 level-clock/budget awareness, absorption guard) — the Duck writeup's own thesis is that the harness
 wins by giving the model better hands, and two days of instrument-building is exactly that.
+
+## 2026-08-18 — Duck fork LIVE: sahasawatt/taaf-duck-fork v1 pushed (RTX Pro 6000), source bundle pulled locally (main thread)
+
+Pulled the milestone winner's notebook (jeroencottaar/tufa-labs-duck-harness-june-30-milestone-
+winner, public score 1.25) + its TAAF source dataset (duck/bundle/src: ARC3-Inference +
+tufa-arc-agi-framework — the whole agent, Apache 2.0). Forked under our account with identical
+inputs (vLLM wheelhouse, TAAF source share, Qwen3.6-27B-FP8 snapshot), machine NvidiaRtxPro6000,
+internet off. Commit run in flight (~2.4h expected).
+**Tomorrow's window decision (one slot): duck fork (proven-family ~1.25) vs v12 (validates our
+adapter fix, uncertain score). Score-first goal → duck takes the slot if its commit run is clean;
+v12 slides.** After banking: differentiation = our campaign mechanics as REPL tools inside TAAF's
+harness (the src is now on disk to study).
