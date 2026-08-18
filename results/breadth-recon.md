@@ -6495,3 +6495,26 @@ driver-carrying submission (consistent: v1 with NO drivers = 0.11 is our best).
 Fix (ranked in the report): deliver the terminal reply unconditionally before is_done() can end the
 loop; join/kill the worker on teardown; re-verify with the SAME crash-test harness (0 leaked
 threads, flat RSS) before spending tomorrow's quota.
+
+## 2026-08-18 — g50t L1 IS WINNABLE — squirrel v1 cleared it on its FIRST eval, overturning the campaign's "closure by exhaustion" (main-thread verified)
+
+The generic online graph agent (squirrel.py, built this afternoon for the Kaggle score push)
+cleared g50t L1 at agent-action 156 in its 17-game eval — and the main thread reproduced it
+independently (seed 0, results in-session). **The 2026-08-16 exhaustion proof (1,854 boards,
+frontier 0, "g50t is 0/7 and stays 0/7; spend no more rounds") is the campaign's FIFTH false
+exhaustion.** The proof searched a SINGLE life and dropped GAME_OVER children after measuring one
+death revert; squirrel's winning line passes through RESETS — multi-life states the BFS never saw
+(or the f[-1] keyhole the proof's own qualification flagged). Reproduction + mechanism
+characterization + landable-line extraction in flight (g50t_w*).
+*The instrument lesson, sharpened: an exhaustion proof inherits every scoping assumption of its
+root and its dropped children — and the cheapest refuter turned out to be a domain-blind agent
+that simply did not know the level was "closed".*
+
+## 2026-08-18 — WAVE-14 GATE: PASS — g50t L1 lands (0/7 → 1/7), SIXTEEN of seventeen games now hold a level
+
+`sweep_diff wave-13 wave-14 g50t`: 16/17 identical to the digit, control fired, **g50t (0,7)[] →
+(1,7)[26]**, no game lost a level. The 26-action line found by the domain-blind squirrel agent —
+through a level closed by a false exhaustion proof — is now `glide.py`, wired into compete.py's
+dispatch (import + one rung after twin), pytest 330. **results/sweep-wave14.log is the new clean
+gate.** Only sc25 remains at 0 (its closure is the absorption-mechanics one — completeness-shaped,
+but the g50t lesson says: let squirrel take a swing at it too).

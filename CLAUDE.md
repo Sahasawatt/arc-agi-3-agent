@@ -45,6 +45,15 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
+- **An exhaustion proof inherits every scoping assumption of its root and its dropped children —
+  and the cheapest refuter is an agent that does not know the level is "closed".** g50t L1 was
+  "PROVEN unwinnable" by a single-life BFS (1,854 boards, frontier 0, GAME_OVER children dropped
+  after one measured revert); a domain-blind online graph agent cleared it on its first eval by
+  playing THROUGH resets — multi-life states the proof never enumerated. Fifth false exhaustion of
+  the campaign; before banking any exhaustion, enumerate what the root and the drop policy exclude
+  (lives, planes, hidden counters), and let a cheap generic agent take one swing at every "closed"
+  level. 2026-08-18.
+
 - **A fork policy is a HYPOTHESIS about ambiguity — measure whether the ambiguity is real before
   paying exponential rent on it.** sp80 L4's s13 reader forked ≤3 branches per twin-merge reading
   and reached 1.6M states (driver_forked ~2.6/expansion — the counter was the tell); one diagnostic

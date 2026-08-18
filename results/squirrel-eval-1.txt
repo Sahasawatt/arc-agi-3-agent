@@ -1,0 +1,59 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-18 12:20:36 | INFO | Got anonymous API key: 5a8c5eb3-3118-4f90-b27d-ef9b31dcd5e2
+2026-08-18 12:20:36 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-18 12:20:37 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-18 12:20:37 | INFO | Created new scorecard: f303ac1e-92d5-47e7-aded-d744d381af82
+2026-08-18 12:20:38 | INFO | Successfully fetched metadata for game ar25
+2026-08-18 12:20:38 | INFO | Successfully loaded game class Ar25 from environment_files\ar25\0c556536\ar25.py
+ar25  squirrel 0/8 levels  actions=[]  score=0.000%  wave13=4/8  
+2026-08-18 12:20:40 | INFO | Successfully fetched metadata for game cn04
+2026-08-18 12:20:40 | INFO | Successfully loaded game class Cn04 from environment_files\cn04\2fe56bfb\cn04.py
+cn04  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=1/6  
+2026-08-18 12:20:42 | INFO | Successfully fetched metadata for game dc22
+2026-08-18 12:20:42 | INFO | Successfully loaded game class Dc22 from environment_files\dc22\fdcac232\dc22.py
+dc22  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=1/6  
+2026-08-18 12:20:49 | INFO | Successfully fetched metadata for game ka59
+2026-08-18 12:20:49 | INFO | Successfully loaded game class Ka59 from environment_files\ka59\38d34dbb\ka59.py
+ka59  squirrel 0/7 levels  actions=[]  score=0.000%  wave13=1/7  
+2026-08-18 12:20:52 | INFO | Successfully fetched metadata for game ls20
+2026-08-18 12:20:52 | INFO | Successfully loaded game class Ls20 from environment_files\ls20\9607627b\ls20.py
+ls20  squirrel 0/7 levels  actions=[]  score=0.000%  wave13=7/7  
+2026-08-18 12:20:54 | INFO | Successfully fetched metadata for game m0r0
+2026-08-18 12:20:54 | INFO | Successfully loaded game class M0r0 from environment_files\m0r0\492f87ba\m0r0.py
+m0r0  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=2/6  
+2026-08-18 12:20:57 | INFO | Successfully fetched metadata for game re86
+2026-08-18 12:20:57 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+re86  squirrel 0/8 levels  actions=[]  score=0.000%  wave13=5/8  
+2026-08-18 12:20:59 | INFO | Successfully fetched metadata for game sc25
+2026-08-18 12:20:59 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+sc25  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=0/6  
+2026-08-18 12:21:02 | INFO | Successfully fetched metadata for game sp80
+2026-08-18 12:21:02 | INFO | Successfully loaded game class Sp80 from environment_files\sp80\589a99af\sp80.py
+sp80  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=3/6  
+2026-08-18 12:21:04 | INFO | Successfully fetched metadata for game bp35
+2026-08-18 12:21:04 | INFO | Successfully loaded game class Bp35 from environment_files\bp35\0a0ad940\bp35.py
+bp35  squirrel 0/9 levels  actions=[]  score=0.000%  wave13=1/9  
+2026-08-18 12:21:07 | INFO | Successfully fetched metadata for game g50t
+2026-08-18 12:21:07 | INFO | Successfully loaded game class G50t from environment_files\g50t\5849a774\g50t.py
+g50t  squirrel 1/7 levels  actions=[156]  score=0.893%  wave13=0/7  
+2026-08-18 12:21:09 | INFO | Successfully fetched metadata for game sk48
+2026-08-18 12:21:09 | INFO | Successfully loaded game class Sk48 from environment_files\sk48\d8078629\sk48.py
+sk48  squirrel 0/8 levels  actions=[]  score=0.000%  wave13=1/8  
+2026-08-18 12:21:11 | INFO | Successfully fetched metadata for game tr87
+2026-08-18 12:21:11 | INFO | Successfully loaded game class Tr87 from environment_files\tr87\cd924810\tr87.py
+tr87  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=2/6  
+2026-08-18 12:21:13 | INFO | Successfully fetched metadata for game tu93
+2026-08-18 12:21:13 | INFO | Successfully loaded game class Tu93 from environment_files\tu93\0768757b\tu93.py
+tu93  squirrel 0/9 levels  actions=[]  score=0.000%  wave13=9/9  
+2026-08-18 12:21:15 | INFO | Successfully fetched metadata for game wa30
+2026-08-18 12:21:15 | INFO | Successfully loaded game class Wa30 from environment_files\wa30\ee6fef47\wa30.py
+wa30  squirrel 0/9 levels  actions=[]  score=0.000%  wave13=2/9  
+2026-08-18 12:21:16 | INFO | Successfully fetched metadata for game cd82
+2026-08-18 12:21:16 | INFO | Successfully loaded game class Cd82 from environment_files\cd82\fb555c5d\cd82.py
+cd82  squirrel 0/6 levels  actions=[]  score=0.000%  wave13=2/6  
+2026-08-18 12:21:18 | INFO | Successfully fetched metadata for game sb26
+2026-08-18 12:21:18 | INFO | Successfully loaded game class Sb26 from environment_files\sb26\7fbdac44\sb26.py
+sb26  squirrel 0/8 levels  actions=[]  score=0.000%  wave13=8/8  
+
+mean squirrel score over 17 environments: 0.053%
+vs wave13 (17 games matched): beats=1 matches=1 loses=15

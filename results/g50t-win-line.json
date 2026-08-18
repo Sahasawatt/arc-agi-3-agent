@@ -1,0 +1,20 @@
+{
+  "game": "g50t",
+  "level": 1,
+  "seed": 0,
+  "line": [3, 4, 2, 4, 4, 4, 4, 5, 5, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4],
+  "line_python_format": "[3, 4, 2, 4, 4, 4, 4, 5, 5, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4]",
+  "note": "plain action values only (g50t action_space=[1,2,3,4,5], no complex/click action). No RESET needed -- this line wins from a single fresh env.reset() in ONE life, 26 actions.",
+  "verified_runs": 4,
+  "verification": [
+    "extracted from squirrel.py full run as events[132:158] (the tail after squirrel's one internal death-reset)",
+    "replayed alone from a genuinely fresh env.reset() (none of squirrel's preceding 130 actions taken): WIN at action 26 (index 25)",
+    "repeated twice more on fresh envs: WIN at index 25 both times",
+    "total 3 independent fresh-env replays of this exact 26-action line, all won at the same index"
+  ],
+  "shorter_variant_UNCONFIRMED_single_run": {
+    "line": [4, 2, 4, 4, 4, 4, 5, 5, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4],
+    "length": 25,
+    "note": "dropping the leading action-3 still wins (tested once, WIN at index 24). Dropping two leading actions (also drop the 4) does NOT win. Not re-verified a second time -- use the 26-action line above as the landable line unless a second confirmation is done."
+  }
+}

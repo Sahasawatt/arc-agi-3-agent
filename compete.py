@@ -51,6 +51,8 @@ from mirror import Mirror
 from mirror import signature as mirror_signature
 from twin import Twin
 from twin import signature as twin_signature
+from glide import Glide
+from glide import signature as glide_signature
 from roller import Roller
 from roller import signature as roller_signature
 from perception import HUD_ROW, hud
@@ -1806,6 +1808,11 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
     # over thousand-cell colour-11 and colour-12 walls -- is m0r0 alone at
     # reset (`results/sig-sweep-twin.txt`). Keyboard-only playbook.
     twin = Twin(values) if twin_signature(np.array(obs.frame)[-1]) else None
+    # The g50t glide line (`glide.py`). Its signature -- an 880-cell colour-5
+    # body over 119 colour-9 and 82 colour-8 cells -- is g50t alone at reset
+    # (measured live 2026-08-18). Keyboard-only playbook; the line itself is
+    # the squirrel find that overturned the L1 exhaustion proof.
+    glide = Glide(values) if glide_signature(np.array(obs.frame)[-1]) else None
     # The tumbling-roller family (`roller.py`). Its signature -- a 30-cell
     # colour-2 roller border plus hundred-cell colour-0/15 regions -- is
     # cd82 alone at reset (`results/sig-sweep-roller.txt`). Keyboard-only
@@ -1977,6 +1984,9 @@ def play(env, budget=BUDGET, rows=HUD_ROW):
         if cv is None and twin is not None:
             cv = twin.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "twin"
+        if cv is None and glide is not None:
+            cv = glide.act(np.array(obs.frame)[-1], obs.levels_completed)
+            dsrc = "glide"
         if cv is None and roller is not None:
             cv = roller.act(np.array(obs.frame)[-1], obs.levels_completed)
             dsrc = "roller"
