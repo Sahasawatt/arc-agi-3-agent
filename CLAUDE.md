@@ -45,6 +45,19 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
+- **A fork policy is a HYPOTHESIS about ambiguity — measure whether the ambiguity is real before
+  paying exponential rent on it.** sp80 L4's s13 reader forked ≤3 branches per twin-merge reading
+  and reached 1.6M states (driver_forked ~2.6/expansion — the counter was the tell); one diagnostic
+  session (sp80_s14) showed the transition is DETERMINISTIC (arrows move both twins in lockstep,
+  fire resolves it), so every fork was inflation and the state set was polluted by wrong-model
+  branches. Fork only after the dc22-style test: byte-identical states reached by different routes
+  actually behaving differently. 2026-08-18.
+- **Killing a chained background run child-first does nothing — the wrapper loop respawns it, and a
+  `tasklist | tail` verification can show you only the survivors you expected to see.** The chain
+  wrappers survived a Claude Code process restart, respawned 20GB of killed pythons within minutes,
+  and the tail-truncated process list read as "all dead". Kill the wrapper bash tree FIRST, then
+  the pythons, and verify with the FULL process list + a free-RAM number, never a tail. 2026-08-18.
+
 - **sp80 L4 renders TWO colour-9 bodies at once (twin-merge after a control transfer), and an
   anomaly counter nothing gates on is a silent prune.** s12's one-driver reader dropped 56,477
   flagged children in 43k expansions — the search ran, checkpointed, and reported plausible numbers

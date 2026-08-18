@@ -6375,3 +6375,123 @@ so the effective per-layer key is (board, nA, nB) — code-derived, per-depth ce
 Key importable: `from dc22_c4_hidden import key_total_raw_plus_nAnB_raw`.
 So dc22 L2's game state ticks on a GLOBAL press counter plus per-button counters — the ar25-band
 mechanism family, third game in the campaign where history-not-board is real state.
+
+## 2026-08-17 — tr87 L3: first hypothesis-free BFS — GROWING at depth 8, and the level's facts firm up (agent `tr87_b1_bfs.py`)
+
+Root = the settled 58-action L1+L2 line, live-confirmed. **tr87 has NO click verb** (plain [1,2,3,4],
+complex empty — confirms actionspace.py). Deepcopy faithful (positive + negative controls).
+**Death: ACTION1-spam hits GAME_OVER at 128 actions (row-63 budget bar ~64 units draining 1 per 2
+actions); `.reset()` returns levels_completed=2 with a byte-identical L3-entry frame — reset is
+scoped to the CURRENT LEVEL, not the game.** BFS board-keyed (frame minus the budget bar), 4 verbs:
+depth 8, 6,085 states, 10,084 expanded, no win, growth x2.4-2.5/layer. Stopped by session budget,
+not the cap. **Implementation note for b2: the layer loop replays every frontier node FROM ROOT each
+layer (O(depth) per node per layer — depth 7→8 cost 99s vs 0.2s at depth 2); the chain runner must
+use replay-on-pop or held deepcopy envs.** Checkpoint results/tr87_b1_ckpt.pkl (depth 8, 3,564
+frontier paths).
+
+## 2026-08-17 — bp35 L2: the FIRST real search on this game — GROWING, and a nondeterminism red flag that gates everything (agent `bp35_b1/b2.py`)
+
+deepcopy is impossible on bp35 (infinite recursion) so no BFS had ever run; replay-from-reset does
+not need it. Root recipe (20-action L1 line) replays deterministically (diff=0 twice); action space
+plain [3,4,7] + click [6]; at the L2 root ALL 7 block-clicks ride the piece (L1: most just clear);
+death-revert reconfirmed a third time. Replay-BFS: **5,965+ distinct boards, frontier growing, no
+win** — two stages, 24,542 nodes total. Two instrument bugs caught+fixed (Arcade().make per node =
+~1s network each; root hash pre-seeded into visited silently blocked all children).
+⚠️ **GATING CAVEAT: the two runs — identical method — disagree on death counts (91 vs 0) over
+overlapping node ranges. Something past the root is not run-to-run reproducible even though the
+root path is.** Under replay-from-reset, nondeterminism poisons every path's identity — no bp35
+search verdict banks until this is settled: either (a) find the RNG/state source and pin it, or
+(b) prove the discrepancy was a script difference (the two files handled deaths differently), or
+(c) demonstrate divergence with one script on one path replayed twice — which would retire the
+replay-BFS instrument on this game entirely.
+
+## 2026-08-17 — bp35 L2: determinism verdict MIXED — the ENGINE replays byte-identically; the 91-vs-0 suspect is a PRE-USED SHARED ENV (agent `bp35_b3_determinism.py`)
+
+(c) 3x-replay grid: **20/20 paths (depths 5-40, incl. both death paths) byte-identical across three
+fresh-reset replays each — zero divergence, death indices matching every time.** (b) static diff:
+death classification functionally identical between b1/b2; the real asymmetry is that b1 ran ~30
+characterization replays + a live death/reset on the SHARED env before its BFS — candidate
+mechanism for its 91 deaths, unproven. Verdict MIXED: the replay-from-FRESH-RESET instrument shows
+no crack anywhere it was probed; b1's counts stay quarantined. Practical rule for any bp35 search:
+every replay from a virgin env.reset(), never a pre-used env — then the instrument stands on the
+b3 evidence.
+
+## 2026-08-18 — bp35 L2 chain: 543k expanded / 115k real states — the 79% dup rate is STRUCTURAL, not a bug (main-thread audit)
+
+b4's lazy dedup (visited-check on pop, after the replay) looks wasteful — 543,332 expanded vs
+115,016 distinct states = ~79% of replays spent on duplicates — but on a game with NO deepcopy it
+is near-optimal: a child's board is unknowable without stepping to it, stepping requires the
+replay, and eager child-keying would cost |children|x|path| re-replays per node, roughly the same
+arithmetic. The frontier (543k paths) is RAM-heavy but sound. Implication: when novel states dry
+up, draining the dup-laden frontier to prove exhaustion costs ~2-3h of pure dup pops at ~65/s —
+budget for it before reading "frontier still large" as "far from done". Chain extended.
+
+## 2026-08-18 — sp80 L4: the twin-merge is DETERMINISTIC — s13's 1.24M forks were pure inflation, fresh search required (agent `sp80_s14_twinmerge.py`)
+
+Across 6 merged states (3 byte-identical reproductions): **arrows move BOTH twin members in lockstep
+(moved_idx=(0,1), zero exceptions); FIRE resolves the merge deterministically (both revert to
+colour 8, driver_blob comes back count==1 on a different (15,3) body — 5/5 valid states); click on
+the twin is inert.** UNVERIFIED (flagged): whether fire's selection is provably deterministic
+beyond this sample. Verdict: s13's tier-(d) fork was unnecessary — and the fork branches carried
+WRONG driver assignments into `seen`, so the s13 chain's 1.6M states / 481k expanded are polluted;
+do not quote them and do not resume that checkpoint. s15 = deterministic twin handler (arrows apply
+one shared delta to both bodies; fire re-runs driver_blob over the full list), fresh chain.
+The pattern to name: **a fork policy is a hypothesis about ambiguity — measure whether the ambiguity
+is real before paying exponential rent on it** (this campaign's counters made the rent visible:
+driver_forked ~2.6/expansion was the tell).
+
+## 2026-08-18 — KAGGLE: the HYBRID is submitted (55590173, PENDING, 02:26 UTC)
+
+First submission whose predicted score rests on the sample's own baseline (~1.56) + driver
+overrides rather than our drivers alone. Verified via `competitions submissions` (the resource).
+The 2026-08-17 duplicate v9-lite completed at 0.10 exactly as predicted. Expect the hybrid's
+server-side run ~7.3h; read the score at the next session/wakeup, and remember what it tests:
+beat 0.11 = the hybrid architecture works and iteration continues there; ~0.10-0.11 = the sample
+base did not survive the bundling, debug the goose extraction.
+
+## 2026-08-18 — KAGGLE: hybrid scored 0.05 — WORSE than drivers-only, and the timing says the run DIED
+
+Submission 55590173 COMPLETE at ~1.6h after submit (02:26 → before 04:04 UTC) with **publicScore
+0.05** — half of v9-lite's 0.10, against a scoring run that should take ~7h. The v8 signature again:
+a kernel that dies partway scores zero for every game after it. Leading suspect class (same as v8's
+qstate table): the goose/torch sample base + 14 drivers in ONE process across 110 games — memory.
+"A per-unit cost measured cheap is a claim about TIME, never about SPACE."
+Decision context for tomorrow's single submission: v1 (0.11, no drivers) remains the best score;
+drivers-only ceiling ~0.10-0.11; the hybrid only beats that if the death is found and fixed
+LOCALLY first — never spend quota on an unreproduced fix again (two quota-days lost to
+untested-bundle classes so far).
+
+## 2026-08-18 — KAGGLE INTEL (results/kaggle-intel-20260818.md): our instrument family took 2nd in the preview — and the scoring rewards COMPLETION over polish
+
+Key findings (sources in the intel file): the goose baseline (RL/CNN legality+frame-change
+predictor, ~12.58% preview) is ARC Prize's own documented dead end ("good exploration, poor
+conversion"); Tufa's current line is an LLM-in-REPL, but **scoring runs with NO INTERNET** —
+hosted-API approaches are out. The 2nd-place preview finisher ("Blind Squirrel") is a
+**deterministic state-transition graph + pruning agent — the exact family this campaign has been
+building for two days** (board-keyed real-engine search, sound keys, divergence controls,
+action-effect models). "Executable World Models" (best-quantified academic entry) = same family +
+simplicity bias. Scoring confirmed: quadratic in action-efficiency but ZERO for unsolved levels —
+**complete more levels first, polish later**. NOT FOUND/unverified: the 240s/game clock (our
+adapter's assumption!), specific OOM reports, what the current top-5 handles actually run.
+
+**The decisive unknown: is v1's 0.11 the true strength of compete.play on hidden games, or has the
+ADAPTER been dying early on every submission?** (v8's recorded 120s-timeout worker death; the
+hybrid's 1.6h COMPLETE.) If the adapter dies, our true score is unmeasured. The crash-test in
+flight answers the hybrid's half; the same audit must cover the compete adapter before we write off
+the generic rungs. Strategy: bank a working base tonight, then port the campaign's graph-search
+machinery into a GENERIC agent (the Blind Squirrel path) — our comparative advantage is exactly
+there.
+
+## 2026-08-18 — HYBRID DEATH REPRODUCED: the adapter leaks one permanently-blocked thread PER CLAIMED GAME (agent `kaggle_hybrid_crashtest.py`)
+
+Mechanism, traced not hypothesized: `kaggle/adapter_hybrid.py` runs compete.play on a worker thread
+behind a queue proxy; **the reply to the worker's LAST step()/reset() is only delivered at the top
+of the NEXT choose_action — and Agent.main() checks is_done() first and exits when the terminal
+frame arrives, so that reply is structurally never sent.** The worker blocks forever on an un-timed
+Queue.get(), un-joined: **28/28 claimed game-runs leaked a daemon thread** (even sb26's WINs — not
+a timeout artifact), RSS 251MB → 2,639MB post-GC across one 35-run local sweep. On Kaggle's 110
+games this kills the run partway = the 0.05 / 1.6h-COMPLETE signature, and likely suppressed every
+driver-carrying submission (consistent: v1 with NO drivers = 0.11 is our best).
+Fix (ranked in the report): deliver the terminal reply unconditionally before is_done() can end the
+loop; join/kill the worker on teardown; re-verify with the SAME crash-test harness (0 leaked
+threads, flat RSS) before spending tomorrow's quota.

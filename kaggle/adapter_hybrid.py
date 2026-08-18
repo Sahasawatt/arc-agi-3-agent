@@ -141,6 +141,12 @@ class MyAgent(GooseAgent):
     #                                trades coverage of all 110 games against
     #                                the sample's time to learn one board
     RUN_SECONDS = 8 * 3600 - 300   # global drain, same envelope as the sample
+    _REPLY_TIMEOUT = 60            # worker's wait for its OWN reply -- normal
+    #                                round-trip is well under a second; this
+    #                                only bounds the abandoned-worker case
+    #                                where nothing will ever answer again
+    _JOIN_TIMEOUT = 2.0            # cleanup()'s bounded join, purely for the
+    #                                "did it actually die" log line
     _run_start = None              # stamped once by the first game's agent
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -161,7 +167,18 @@ class MyAgent(GooseAgent):
     # -- worker side ------------------------------------------------------
     def _exchange(self, msg):
         self._req.put(msg)
-        return self._rep.get()
+        # Normal round-trip (worker asks -> next choose_action delivers) is
+        # sub-second. A reply that never comes means the framework loop has
+        # already ended and nothing will ever service `self._req` again --
+        # `is_done`'s delivery below covers the game's real last reply, but
+        # `compete.play` doesn't know to stop there and asks for one more
+        # (see adapter_hybrid.py's fix notes); this timeout is what actually
+        # bounds that case instead of blocking forever.
+        try:
+            return self._rep.get(timeout=self._REPLY_TIMEOUT)
+        except queue.Empty:
+            raise TimeoutError(
+                "adapter_hybrid: no reply -- framework loop has ended")
 
     def _run(self):
         try:
@@ -173,13 +190,43 @@ class MyAgent(GooseAgent):
 
     # -- framework side ---------------------------------------------------
     def is_done(self, frames: list[FrameData], latest_frame: FrameData) -> bool:
-        if latest_frame.state is GameState.WIN:
-            return True
-        now = time.time()
-        if (MyAgent._run_start is not None
-                and now - MyAgent._run_start > self.RUN_SECONDS):
-            return True
-        return self._t0 is not None and now - self._t0 > self.GAME_SECONDS
+        done = latest_frame.state is GameState.WIN
+        if not done:
+            now = time.time()
+            if (MyAgent._run_start is not None
+                    and now - MyAgent._run_start > self.RUN_SECONDS):
+                done = True
+            elif self._t0 is not None and now - self._t0 > self.GAME_SECONDS:
+                done = True
+        if done and self._pending:
+            # `Agent.main()` checks `is_done()` BEFORE calling `choose_action`
+            # again, so once this returns True the reply this game's worker
+            # is blocked on (delivered, normally, at the top of the NEXT
+            # choose_action) would otherwise never be sent. Deliver it here,
+            # unconditionally, before the short-circuit -- root cause fix.
+            self._rep.put(_Obs(latest_frame))
+            self._pending = False
+        return done
+
+    def cleanup(self, *args: Any, **kwargs: Any) -> None:
+        """Called by `Agent.main()` unconditionally after the loop exits --
+        including the MAX_ACTIONS-cutoff path, which can end the loop without
+        `is_done()` ever returning True. Backstop-deliver any still-pending
+        reply (using the last frame the loop actually saw) so an abandoned
+        worker isn't left holding the bag purely on that path, then give the
+        thread a short bounded join and log if it's still alive -- it will
+        still die on its own via `_exchange`'s timeout, but this makes a
+        leaked thread observable in the Kaggle log instead of silent."""
+        super().cleanup(*args, **kwargs)
+        if self._pending and self.frames:
+            self._rep.put(_Obs(self.frames[-1]))
+            self._pending = False
+        if self._worker is not None:
+            self._worker.join(timeout=self._JOIN_TIMEOUT)
+            if self._worker.is_alive():
+                print(f"[hybrid] {self.game_id}: worker thread still alive "
+                      f"after cleanup join (times out on its own in "
+                      f"{self._REPLY_TIMEOUT}s)")
 
     def _claims(self, latest_frame) -> bool:
         try:
