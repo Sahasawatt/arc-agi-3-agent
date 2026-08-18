@@ -30,6 +30,19 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 (tu93 100.0 · sb26 100.0 · ls20 43.629 · re86 41.477 · sp80 28.571 · ar25 27.778 · tr87 14.286 · m0r0 14.286 · cd82 10.514 · wa30 6.667 · cn04 4.762 · dc22 4.762 · ka59 3.571 · g50t 3.571 · sk48 2.778 · bp35 2.222 · sc25 0)
 ← **results/sweep-wave14.log** is the current clean gate (wave-14 = glide.py g50t L1, 0/7→1/7; wave-13 = twin.py m0r0 L2; wave-12 = swap.py sp80 L3) (chain: wave-6 → wave-8 [haul's wa30 L2 guards] → wave-9 [mirror L2] → wave-10 [mirror L3] → wave-11 [mirror L4]; every hop diffed with `sweep_diff.py <before> <after> <control>`, a control that DIFFERS, 16 of 17 identical to the digit, no game ever losing a level; pytest 330 throughout). ⚠️ `sweep-tu93win.log` = an aborted MemoryError run — ignore it. Remaining 0-level: sc25 (closed) — and **g50t is REOPENED 2026-08-18: squirrel.py cleared L1 (5th false exhaustion — the proof was single-life; the win uses resets). Landing in flight, see recon tail.**
 
+## STATE AT 2026-08-18 17:15 — STRATEGY PIVOT: the milestone winner's code is PUBLIC; the road to top-5 is a Duck fork with our tools
+
+Primary-source intel (recon tail "KAGGLE INTEL 2"): milestone-1 winner = **Tufa's Duck Harness**
+(Qwen 3.6 27B FP8 in a Python REPL, context eviction, multimodal frames), official 1.21, **code
+open**: kaggle.com/code/jeroencottaar/taaf-duck-harness-kaggle-share (the recommended fork base;
+agent code attached as a Kaggle dataset). Kaggle env = RTX Pro 6000 / 96GB / 9h (our
+build_notebook still pins t4 — revisit). Today's top5 (2.35+) ≈ improved Duck forks.
+**Plan: (1) tonight 07:00 submit v12 as planned (validates our adapter fix); (2) fork
+duck-harness-share + its dataset, get it running (commit-run), bank ~1.0-1.2; (3) differentiate
+toward 2.35+ by injecting this campaign's measured mechanics as REPL tools for the LLM (component
+click enumeration, transition-graph builder, budget/absorption awareness).** Goose/hybrid line =
+superseded baseline; keep v12's result as the adapter-fix validation, not the future.
+
 ## STATE AT 2026-08-18 14:00 — ADAPTER LEAK FOUND+FIXED, KERNEL v12 READY; submit at 07:00 Thai
 
 **GOAL IS NOW SCORE-FIRST (top 5 = 2.35+; see the GOAL section).** The decisive bug is found and

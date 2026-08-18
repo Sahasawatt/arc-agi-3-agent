@@ -6529,3 +6529,24 @@ seeded SHUFFLE replaced the fixed action ordering that had lucked into g50t's 26
 was a lottery ticket, not a capability.** Squirrel iteration PAUSED until v12's score lands —
 if the fixed adapter restores the goose base (~1.5), the next work is goose-side; if v12 stays low,
 bundle forensics first. The local generic-agent crown stays with compete.play's rungs.
+
+## 2026-08-18 — KAGGLE INTEL 2 (browser, primary sources): the milestone winner's FULL CODE is public — and the road to 2.35+ is a Duck fork with better tools
+
+From the competition's own discussion threads (read live):
+- **Milestone-1 winner = Tufa's "Duck Harness"** (successor to Goose, authors incl. Jeroen Cottaar):
+  **Qwen 3.6 27B FP8 in a Python REPL** — game state exposed as Python variables, agent iterates
+  reason→tool→act, oldest context evicted to play indefinitely, multimodal frame input + ASCII
+  grid + a segmentation tool. Best official 1.21 (variance 0.77-1.3, σ≈0.4 on public games).
+  **Code fully open**: kaggle.com/code/jeroencottaar/taaf-duck-harness-kaggle (lucky-score) and
+  …-kaggle-share (recommended base); agent code attached as a Kaggle dataset.
+- Kaggle env per their writeup: **RTX Pro 6000, 96GB VRAM, 9 HOURS for 110 games** (not T4/7.3h —
+  our build_notebook currently pins accelerator: t4; the upgraded-accelerators thread confirms).
+- Referenced approaches: **Symbolica "ARCgentica" hit 36%** with frontier models (offline-infeasible);
+  **RGB Agent** = generic coding harness (OpenCode), near-human action efficiency, full-history log
+  + grep pattern. Today's top5 (2.35+) most plausibly = improved Duck forks post-open-source.
+**Strategy consequence: our goose/hybrid line is chasing a superseded baseline.** Plan: (1) v12
+tonight unchanged — it validates OUR adapter fix cheaply; (2) fork duck-harness-share, run it
+locally/commit-run, bank ~1.0-1.2; (3) the top-5 differentiator = inject this campaign's measured
+mechanics as REPL TOOLS for the LLM (component click enumeration, transition-graph builder,
+level-clock/budget awareness, absorption guard) — the Duck writeup's own thesis is that the harness
+wins by giving the model better hands, and two days of instrument-building is exactly that.
