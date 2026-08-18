@@ -6562,3 +6562,18 @@ internet off. Commit run in flight (~2.4h expected).
 adapter fix, uncertain score). Score-first goal → duck takes the slot if its commit run is clean;
 v12 slides.** After banking: differentiation = our campaign mechanics as REPL tools inside TAAF's
 harness (the src is now on disk to study).
+
+## 2026-08-18 — TAAF harness mapped (results/taaf-study-20260818.md): one python tool, injected names, a never-evicted prompt, and a Customization hook
+
+Study highlights (file:line refs in the report): the notebook is infra-only — the solver arrives as
+a pickled HarnessSolver in benchmark_initial.pkl; all logic in duck/bundle/src/ARC3-Inference.
+**Exactly ONE OpenAI tool (`python`)**; action()/current_frame/history/segmentation are names
+injected into an ISOLATED subprocess namespace (segmentation.py deliberately stdlib-only so its
+source can be spliced in). System prompt = 6 constants in prompts.py, permanent messages[0].
+Context survives via a token sliding window PLUS an LLM-maintained "world model" prose block that
+is regex-reinjected past eviction. Games run CONCURRENTLY (semaphore + pool) with per-game runtime
+and shrinking LLM timeouts. Ranked injections: (1) HUD/budget-bar auto-flag (their own prompt names
+this trap), (2) online transition-graph builder over history, (3) component-click enumeration
+(highest risk — our ka59 evidence says centroids mislead). The notebook's own "Customization hook"
+section is the intended mod point. Sequencing: baseline fork must complete under our account first
+— one unknown at a time.
