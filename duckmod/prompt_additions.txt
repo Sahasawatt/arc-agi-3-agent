@@ -1,0 +1,33 @@
+[STRUCTURED_RUNTIME_STATE_ADDENDUM]
+- `hud_mask(history)` returns a `set` of `(row, col)` cells that behave like HUD/timer
+  chrome: cells that change on 95%+ of frame-to-frame transitions, or that are, alone,
+  the only cell that changed on 2+ separate transitions. Recomputed fresh from
+  `history` each call (nothing persists between calls).
+- `TransitionGraph()` is an online state-transition graph you build yourself from
+  `.record(state_key, action, next_state_key)` calls (state_key can be any value --
+  hashable ones pass through, others are coerced automatically). `.untried(state_key,
+  valid_actions)` lists actions never tried from a state; `.path_to_nearest_untried(
+  state_key, valid_actions)` BFS-searches recorded edges for the nearest state with an
+  untried action and returns `{"target": ..., "path": [actions...]}` or `None`.
+
+[PYTHON_ADDENDUM]
+- Before comparing frames or building a state key/signature, subtract `hud_mask(history)`
+  from the cells you diff or hash. A common failure mode is mistaking a ticking
+  clock/budget bar for gameplay state because it changes almost every action --
+  `hud_mask` flags exactly that pattern from observed history, not from a guess.
+- To avoid repeating explored actions or looping, build a `TransitionGraph`: call
+  `.record(state_key, action_taken, resulting_state_key)` after every action you take
+  (state_key can be `current_frame.ascii`, a `segmentation` hash, or your own derived
+  key). Before choosing an action, check `.untried(state_key, valid_actions)` for
+  actions you haven't tried from this exact state; if none remain, call
+  `.path_to_nearest_untried(state_key, valid_actions)` to find and navigate back to the
+  nearest state that still has one. Treat it as a hypothesis generator built only from
+  what you actually observed, never as a promise -- it has no edges for states you
+  haven't visited yet.
+
+[PYTHON_TOOL_DESCRIPTION]
+Two more helpers are preloaded: `hud_mask(history)` returns the set of `(row, col)`
+cells that look like HUD/timer chrome (subtract before diffing frames), and
+`TransitionGraph()` lets you record observed `(state, action) -> next_state` edges and
+query `.untried(state, valid_actions)` / `.path_to_nearest_untried(state, valid_actions)`
+to avoid repeating actions and navigate back to unexplored states.

@@ -6577,3 +6577,15 @@ this trap), (2) online transition-graph builder over history, (3) component-clic
 (highest risk — our ka59 evidence says centroids mislead). The notebook's own "Customization hook"
 section is the intended mod point. Sequencing: baseline fork must complete under our account first
 — one unknown at a time.
+
+## 2026-08-18 — taaf-duck-mod v1 PUSHED: our first modified harness (HUD auto-flag + TransitionGraph as LLM tools)
+
+duckmod/ built + verified locally (results/duckmod-build-20260818.md): the notebook's Customization
+hook cell now monkeypatches the sandbox bootstrap (source-splice, anchor-based) to inject
+`hud_mask(history)` and `TransitionGraph` (both stdlib-only) plus their docs into the permanent
+system prompt. **Instrument catch worth keeping: `from X import NAME` copies the binding — patching
+the source module post-import is a silent no-op; the patch must target the importer's global.
+Proven with a negative control.** UNVERIFIED: a live LLM turn using the helpers (no local GPU).
+Kernel sahasawatt/taaf-duck-mod v1 pushed — commit run (~2.4h + queue) will show mean score vs the
+baseline's 1.25 on the same 25 public games. Tonight's slot = baseline duck fork; duck-mod is
+tomorrow's candidate IF its commit run's mean >= baseline.
