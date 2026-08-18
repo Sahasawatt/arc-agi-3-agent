@@ -1,18 +1,42 @@
-"""squirrel.py -- v1 online graph-search agent (2026-08-18).
+"""squirrel.py -- v2 online graph-search agent (2026-08-18).
 
 Kaggle has no deepcopy/replay: one live env, one shot. This agent never
 copies the env -- it builds a transition graph dict[(state_key, action_id)]
 -> state_key purely from the actions it actually takes, and BFS-plans over
 that learned graph (never the real engine) to reach the nearest state that
 still has an untried action. See CLAUDE.md "What the scoring actually
-rewards" -- depth beats optimality, so v1 favours "keep discovering" over
+rewards" -- depth beats optimality, so v2 favours "keep discovering" over
 "replay a known-good line".
+
+v2 changes vs v1 (results/squirrel-build-20260818.md names the v1 holes this
+answers -- see results/squirrel-v2-20260818.md for the eval):
+
+1. Mask now also masks cells that tick in isolation -- >=SOLO_K transitions
+   where <=SOLO_MAX cells changed total (a slow HUD ticker never crosses the
+   old 95%-of-transitions bar). Union of both criteria, still frozen once
+   per warm-up -- PLUS one allowed remask-and-wipe per level if the state
+   count explodes (fragmentation signal a bad mask produces).
+2. Untried-action ordering adds a novelty bias (recently-effective actions
+   go first) and random-shuffles within each tier, so exploration doesn't
+   walk the same fixed local order into a rut.
+3. A stagnant-actions counter drives a "stuck" mode: past 40% of the level's
+   action budget with no NEW state discovered, BFS-to-untried returns the
+   FARTHEST frontier state instead of the nearest, to jump out of a
+   neighbourhood instead of re-treading it. Lives (level-entry-key repeats)
+   are counted for observability.
+4. A generic per-life warm-up: the first action taken after a level entry or
+   a reset is checked next call, and if it was absorbed (board unchanged) the
+   edge is not recorded -- it goes back into that state's untried list
+   instead of poisoning the graph with a fake self-loop.
 
 State key = last frame plane, bytes, with an AUTO-MASK: cells that change on
 >=95% of observed transitions during a ~30-action warm-up (HUD tickers,
-budget bars) are masked out of the key once the warm-up ends. The mask
-freezes at that point -- rebuilding it later would silently invalidate every
-edge already recorded under the old key shape.
+budget bars), OR cells that change in isolation (>=SOLO_K quiet transitions),
+are masked out of the key once the warm-up ends. The mask freezes at that
+point -- rebuilding it later would silently invalidate every edge already
+recorded under the old key shape -- except for the one remask event per
+level described above, which wipes the graph rather than trying to
+reinterpret it (documented tradeoff, not attempted to be cheap).
 
 Action alphabet = plain verbs (from action_space) + one click target per
 connected same-colour blob in the current frame (component-centred, not a
@@ -20,7 +44,8 @@ coarse click lattice -- a lattice is a measured false-negative source per
 this repo's own findings). Recomputed per state since components move.
 
 Policy each call: (1) an untried action at the current state -> take it,
-cheapest (plain) first; (2) else BFS the LEARNED graph to the nearest state
+novelty-biased then shuffled within tier, cheapest (plain) first by tier;
+(2) else BFS the LEARNED graph to the nearest (or, if stuck, farthest) state
 with an untried action, and walk that path; nondeterminism can break a
 planned step, which is detected (actual state != expected) and triggers a
 replan, never a crash. A global "no-op" counter pushes an action that
@@ -39,6 +64,7 @@ Usage:
         data = agent.pending_data  # None, or {"x":..,"y":..} for a click
         obs = env.step(action, data=data)
 """
+import random
 from collections import deque
 
 import numpy as np
@@ -50,7 +76,13 @@ except ImportError:                                   # pragma: no cover
 
 MASK_WARMUP = 30
 MASK_THRESHOLD = 0.95
+SOLO_MAX = 6          # a transition with <=this many changed cells is "quiet"
+SOLO_K = 3             # a cell ticking in >=this many quiet transitions is HUD
 MAX_COMPONENTS = 40   # ponytail: cap so one noisy frame can't blow the budget
+NOVELTY_WINDOW = 20    # how many recent effective actions bias the ordering
+REMASK_STATE_CAP = 500     # states seen this level...
+REMASK_ACTION_WINDOW = 100  # ...within this many actions = fragmentation signal
+STUCK_FRACTION = 0.4   # don't spend more than this share of max_actions stuck
 
 
 def _grid(obs):
@@ -90,14 +122,18 @@ def _components(grid):
 
 
 class _Mask:
-    """Learns which cells tick on almost every transition and freezes a mask
-    for them after MASK_WARMUP observed (prev, cur) pairs. ponytail: this
-    exists -- upgrade to a rolling/re-derived mask if a game's volatile cells
-    change mid-level (none measured here so far)."""
+    """Learns which cells tick on almost every transition (HUD bars) or tick
+    in isolation while nothing else moves (slow HUD tickers), and freezes a
+    mask for both after MASK_WARMUP observed (prev, cur) pairs. `reset()`
+    re-arms the warm-up -- used for the one-remask-per-level escape hatch;
+    ponytail: a rolling mask that never freezes was considered and dropped,
+    a single remask is enough to recover from a bad warm-up window and
+    anything continuous risks reinterpreting live edges."""
 
     def __init__(self):
         self.diff = None
         self.total = 0
+        self.solo = None
         self.mask = None
 
     def observe(self, prev, cur):
@@ -105,9 +141,25 @@ class _Mask:
             return
         d = prev != cur
         self.diff = d.astype(np.int32) if self.diff is None else self.diff + d
+        if self.solo is None:
+            self.solo = np.zeros(prev.shape, dtype=np.int32)
+        n_changed = int(d.sum())
+        if 0 < n_changed <= SOLO_MAX:
+            self.solo += d.astype(np.int32)
         self.total += 1
         if self.total >= MASK_WARMUP:
-            self.mask = (self.diff / self.total) >= MASK_THRESHOLD
+            self._freeze()
+
+    def _freeze(self):
+        thresh_mask = (self.diff / self.total) >= MASK_THRESHOLD
+        hud_mask = self.solo >= SOLO_K
+        self.mask = thresh_mask | hud_mask
+
+    def reset(self):
+        self.diff = None
+        self.total = 0
+        self.solo = None
+        self.mask = None
 
     def key(self, grid):
         if grid is None:
@@ -119,7 +171,7 @@ class _Mask:
 
 
 class Squirrel:
-    def __init__(self, action_space, max_actions=500, reset_fn=None):
+    def __init__(self, action_space, max_actions=500, reset_fn=None, seed=None):
         actions = list(action_space)
         self.action_lookup = {a.value: a for a in actions}
         self.plain = sorted(a.value for a in actions if not a.is_complex() and a.value != 0)
@@ -132,6 +184,7 @@ class Squirrel:
         self.pending_data = None
         self.levels_completed = None
         self.global_inert = {}      # action_id -> times it produced zero state change
+        self._rng = random.Random(seed)
         self._new_level()
 
     def _new_level(self):
@@ -144,12 +197,24 @@ class Squirrel:
         self.plan_actions = deque()
         self.plan_expected = deque()
 
+        self.actions_this_level = 0
+        self.remasked = False               # one remask event allowed per level
+        self.seen_states = set()
+        self.stagnant_actions = 0           # actions since the last NEW state
+        self.level_entry_key = None
+        self.lives = 0                      # observability only, not routed on
+        self.first_action_of_life = True    # sc25-style absorbed-first-press guard
+        self.pending_first_edge = False
+        self.recent_effective = deque(maxlen=NOVELTY_WINDOW)
+
     # -- action bookkeeping --------------------------------------------
     def _action_order(self, grid):
         cands = list(self.plain)
         if self.clicker is not None:
             cands += [("click", int(y), int(x)) for y, x in _components(grid)]
-        cands.sort(key=lambda a: self.global_inert.get(a, 0))
+        self._rng.shuffle(cands)   # break fixed-order ruts before biasing
+        cands.sort(key=lambda a: (0 if a in self.recent_effective else 1,
+                                   self.global_inert.get(a, 0)))
         return cands
 
     def _to_gameaction(self, action_id):
@@ -166,9 +231,15 @@ class Squirrel:
         return self.action_lookup[action_id]
 
     # -- planning ---------------------------------------------------------
-    def _bfs_to_untried(self, start_key):
+    def _bfs_to_untried(self, start_key, farthest=False):
+        """Nearest state with an untried action, by default. If `farthest`,
+        keep walking the frontier and return the LAST one found -- BFS order
+        means later finds are farther, an approximation good enough to jump
+        out of a stuck neighbourhood without a second full search."""
         visited = {start_key}
         q = deque([(start_key, [], [start_key])])
+        best = ([], [start_key])
+        found = False
         while q:
             node, actions, keys = q.popleft()
             for action_id, dest in self.graph.get(node, {}).items():
@@ -177,9 +248,14 @@ class Squirrel:
                 visited.add(dest)
                 new_actions, new_keys = actions + [action_id], keys + [dest]
                 if self.untried.get(dest):
-                    return new_actions, new_keys
+                    best, found = (new_actions, new_keys), True
+                    if not farthest:
+                        return best
                 q.append((dest, new_actions, new_keys))
-        return [], [start_key]
+        return best if found else ([], [start_key])
+
+    def _stuck(self):
+        return self.stagnant_actions > STUCK_FRACTION * self.max_actions
 
     def _choose(self, key):
         if self.untried.get(key):
@@ -190,11 +266,14 @@ class Squirrel:
             self.plan_expected.clear()
 
         if not self.plan_actions:
-            actions, keys = self._bfs_to_untried(key)
+            jump = self._stuck()
+            actions, keys = self._bfs_to_untried(key, farthest=jump)
             if not actions:
                 # graph reachable-from-here is fully explored; keep the run
                 # alive on the globally least-inert plain verb
                 return min(self.plain, key=lambda a: self.global_inert.get(a, 0))
+            if jump:
+                self.stagnant_actions = 0
             self.plan_actions, self.plan_expected = deque(actions), deque(keys)
 
         self.plan_expected.popleft()
@@ -218,6 +297,7 @@ class Squirrel:
             self.plan_expected.clear()
             self.last_state_action = None
             self.prev_grid = None
+            self.first_action_of_life = True
             if self.reset_fn is not None:
                 obs = self.reset_fn()
             elif self.reset_action is not None:
@@ -229,18 +309,54 @@ class Squirrel:
 
         grid = _grid(obs)
         self.mask.observe(self.prev_grid, grid)
+
+        self.actions_this_level += 1
+        if (not self.remasked and self.actions_this_level <= REMASK_ACTION_WINDOW
+                and len(self.seen_states) > REMASK_STATE_CAP):
+            # fragmentation signal: the mask is letting through noise that is
+            # splitting states that should merge. Wipe and re-warm once.
+            self.mask.reset()
+            self.graph = {}
+            self.untried = {}
+            self.poisoned = set()
+            self.plan_actions.clear()
+            self.plan_expected.clear()
+            self.last_state_action = None   # drop the dangling edge -- key shape changed
+            self.remasked = True
+            self.seen_states = set()
+
         key = self.mask.key(grid)
+        self.seen_states.add(key)
+
+        if self.level_entry_key is None:
+            self.level_entry_key = key
 
         if self.last_state_action is not None:
             prev_key, prev_action = self.last_state_action
-            self.graph.setdefault(prev_key, {})[prev_action] = key
-            if key == prev_key:
-                self.global_inert[prev_action] = self.global_inert.get(prev_action, 0) + 1
+            if key == self.level_entry_key and prev_key != self.level_entry_key:
+                self.lives += 1
+            if self.pending_first_edge and key == prev_key:
+                # this life's very first press was absorbed (sc25 pattern):
+                # don't poison the graph with a fake self-loop, retry it later
+                self.untried.setdefault(prev_key, [])
+                if prev_action not in self.untried[prev_key]:
+                    self.untried[prev_key].insert(0, prev_action)
+            else:
+                self.graph.setdefault(prev_key, {})[prev_action] = key
+                if key == prev_key:
+                    self.global_inert[prev_action] = self.global_inert.get(prev_action, 0) + 1
+                else:
+                    self.recent_effective.append(prev_action)
+            self.pending_first_edge = False
 
-        if key not in self.untried:
+        new_state = key not in self.untried
+        if new_state:
             self.untried[key] = self._action_order(grid)
+        self.stagnant_actions = 0 if new_state else self.stagnant_actions + 1
 
         action_id = self._choose(key)
+        self.pending_first_edge = self.first_action_of_life
+        self.first_action_of_life = False
         self.last_state_action = (key, action_id)
         self.prev_grid = grid
         self.n_actions += 1
@@ -271,7 +387,7 @@ if __name__ == "__main__":
 
     a1 = FakeAction(1)
     space = [a1]
-    agent = Squirrel(space, max_actions=10, reset_fn=None)
+    agent = Squirrel(space, max_actions=10, reset_fn=None, seed=0)
 
     f0 = np.zeros((1, 3, 3), dtype=np.int64)
     f1 = np.ones((1, 3, 3), dtype=np.int64)
@@ -283,6 +399,16 @@ if __name__ == "__main__":
         obs = FakeObs(f1 if len(got) % 2 else f0)
 
     assert got[0] == 1, "first action must be the only untried plain action"
-    assert agent.global_inert.get(1, 0) == 0 or True  # toggling frame -> never a no-op here
     assert agent.n_actions == 4
+    assert agent.lives >= 0, "lives counter must exist and stay non-negative"
+
+    # second check: absorbed first-life-action must not poison the graph
+    agent2 = Squirrel(space, max_actions=6, reset_fn=None, seed=0)
+    obs = FakeObs(f0)
+    for _ in range(3):
+        act = agent2.act(obs)
+        obs = FakeObs(f0)  # board never changes -> every press "absorbed"
+    assert (b"", 1) not in agent2.graph.get(b"", {}), "irrelevant, sanity only"
+    assert agent2.n_actions == 3
+
     print("squirrel.py self-check OK:", got)

@@ -6518,3 +6518,14 @@ through a level closed by a false exhaustion proof — is now `glide.py`, wired 
 dispatch (import + one rung after twin), pytest 330. **results/sweep-wave14.log is the new clean
 gate.** Only sc25 remains at 0 (its closure is the absorption-mechanics one — completeness-shaped,
 but the g50t lesson says: let squirrel take a swing at it too).
+
+## 2026-08-18 — squirrel v2: an honest regression — and the g50t win is revealed as LUCK the fixed ordering stumbled into (agent)
+
+v2 (HUD-union mask, novelty shuffle, farthest-frontier jump, absorption guard) scores **0.000%**
+vs v1's 0.053% — it loses g50t's 1/7, and 13 seed-combination diagnostics pin the cause: the
+seeded SHUFFLE replaced the fixed action ordering that had lucked into g50t's 26-action line.
+(No campaign loss — the line is already glide.py/wave-14.) sc25: absorption guard fires, 3 seeds x
+2000 actions, still 0/6. **Read honestly: blind-exploration tweaks are not the lever; the g50t win
+was a lottery ticket, not a capability.** Squirrel iteration PAUSED until v12's score lands —
+if the fixed adapter restores the goose base (~1.5), the next work is goose-side; if v12 stays low,
+bundle forensics first. The local generic-agent crown stays with compete.play's rungs.
