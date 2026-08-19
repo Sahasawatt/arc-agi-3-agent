@@ -6589,3 +6589,16 @@ Proven with a negative control.** UNVERIFIED: a live LLM turn using the helpers 
 Kernel sahasawatt/taaf-duck-mod v1 pushed — commit run (~2.4h + queue) will show mean score vs the
 baseline's 1.25 on the same 25 public games. Tonight's slot = baseline duck fork; duck-mod is
 tomorrow's candidate IF its commit run's mean >= baseline.
+
+## 2026-08-19 — SUBMITTED: duck-mod (55613165, PENDING) — our tools DOUBLED the harness's public mean (2.41 vs 1.25)
+
+taaf-duck-mod's commit run on the same 25 public games: **mean 2.41 vs the baseline fork's 1.25**
+(median 0.08 vs 0.02, actions 3,481 vs 4,090 — fewer actions, more score). The two injected tools
+(hud_mask + TransitionGraph, with prompt docs) are the only delta. Submitted at 02:53 UTC
+(verified via competitions submissions — the window-miss almost cost the day; the wakeup chain
+silently lapsed overnight, caught by the user's "เสร็จยัง" probe). If the public→hidden transfer
+holds even at high variance, 2.41-class is TOP-5 TERRITORY (top5 = 2.35+ as of Aug 18).
+Score lands in ~7-9h. Next iteration candidates regardless of outcome: injection #3
+(component-click enumeration, with the ka59 centroid caveat), tuning the graph advice in the
+prompt, and reading duck-mod's own transcripts (duckmodout/transcripts) for how the LLM actually
+used the tools.
