@@ -6681,3 +6681,17 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Consequence: v4 ≈ neutral-but-unproven; hold stands (tonight = duck-mod v1). The REAL
   lever per R6+R7 convergence: the state channel itself — v5 (B3) = server-side
   auto-persist/accumulate + auto-pushed transition record, built on duck-mod base.
+
+## 2026-08-19 21:10 UTC — v5 EVAL: 2.43, TOP OF BAND — best public run of the campaign; window slot switches to v5
+
+- taaf-duck-v5 v1 public mean **2.43**, median 0.27 (band [2.16, 2.41]; duck-mod best 2.41).
+  0 crashed / 25 gave_up (clean clock endings). Features PROVEN LIVE from transcripts, not
+  the stdout log (prompts never hit stdout — checking the log for prompt-injected content
+  is a category error): first 10 games alone carry 1,106 PROGRESS DIGEST blocks and 594
+  GAME RESET banners. ft09 16.98 (3 levels) + re86 16.67 (3 levels) led the run.
+- n=1 — 2.43 vs band top is NOT statistical proof of superiority; it IS proof of
+  non-regression + mechanism live. Per score-first EV: tonight's 00:00 UTC slot = submit
+  **v5** (hidden draw of the better design, 24h earlier; Kaggle keeps best, so downside
+  vs a duck-mod resubmit is zero).
+- v5 = duckmod base + accumulating world model + auto-pushed transition digest + reset
+  banner (build: results/duckv5-build-20260820.md, artifacts /tmp/duckv5out).

@@ -47,6 +47,10 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 - [R4 Scoring EV](../../results/wayfinder/R4-ev.md) — depth is ~7× cheaper than breadth
   (final level of a 7-level game = 25.0 pts vs fresh L1 = 3.57); efficiency past 1.07×
   pace is worth zero; 1.00→3.00 = ~9 deep games closed vs ~62 new games opened.
+- [B3 v5 eval](../../results/duckv5-build-20260820.md) — v5 (state channel) public
+  **2.43**, top of band [2.16, 2.41], clean run; digest x1106 + banner x594 live in the
+  first 10 games' transcripts. Window 2026-08-20 00:00 UTC submits v5 (Kaggle keeps best;
+  higher EV + info than a duck-mod resubmit). n=1 caveat recorded.
 - [B2 v4 eval + R7 postmortem](../../results/wayfinder/R7-v4-postmortem.md) — v4 public
   1.73 vs identical-code calibration band [2.16, 2.41] (duck-mod rerun = 2.16) → HOLD.
   Postmortem: binding stop = wall clock only (token hypothesis refuted); reallocator fired
@@ -85,7 +89,7 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 | id | type | question | status |
 |---|---|---|---|
 | D2 | grilling | Eval bar: what result earns v4 a submission slot, given n_passes=1 trap + ~2.2 GPU-h per commit-run eval + 1 hidden sample/day | open |
-| B3 | task | v5 BUILT + kernel sahasawatt/taaf-duck-v5 v1 RUNNING since 18:35 UTC Aug 19 (duckmod base + accumulate world-model + auto digest + reset-on-grid-revert banner; v4 levers excluded per R7). Read result ~20:50 UTC vs band [2.16,2.41] | claimed |
+(B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets
 
