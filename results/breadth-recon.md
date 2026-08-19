@@ -6602,3 +6602,19 @@ Score lands in ~7-9h. Next iteration candidates regardless of outcome: injection
 (component-click enumeration, with the ka59 centroid caveat), tuning the graph advice in the
 prompt, and reading duck-mod's own transcripts (duckmodout/transcripts) for how the LLM actually
 used the tools.
+
+## 2026-08-19 — duck-mod forensics: the 2.41 is NOT tool adoption — 0 TransitionGraph calls, 2 hud_mask calls, a 2-game effect (agent, results/duckmod-transcripts-20260819.md)
+
+Parsed [TOOL CALL] blocks (not raw grep — the docs repeat per turn and pollute text counts):
+**TransitionGraph constructed 0 times in 2,001 tool turns; hud_mask called twice** (both clean, one
+inconclusive). The whole +1.16 mean gain sits in ft09 (+22.20) and ar25 (+7.73) — the other 23 games
+NET −0.91 — and **neither winning game touched either tool**. Verdict: prompt-priming and/or
+single-run variance (documented σ≈0.4/game), not verified capability. Cost found: ~450-500
+tokens/turn of tool docs paid ~2,000 times for 2 invocations.
+**Design law for the next iteration: an LLM under a 3s/turn budget does not do BOOKKEEPING through
+an API — compute it FOR the model and put it in the observation.** v3 = auto-push: every turn the
+harness itself computes (a) HUD-masked frame diff summary, (b) state-novelty flag + untried-action
+list from an automatically-maintained transition graph, (c) revisit counts — injected as a short
+OBSERVATION block, no callable API, zero adoption risk. Ablation option (advice-prose-only) kept as
+the control arm if a second commit-run slot is available. The pending hidden score (55613165) is
+one more data point, not a verdict either way.
