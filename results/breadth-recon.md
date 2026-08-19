@@ -6618,3 +6618,13 @@ list from an automatically-maintained transition graph, (c) revisit counts — i
 OBSERVATION block, no callable API, zero adoption risk. Ablation option (advice-prose-only) kept as
 the control arm if a second commit-run slot is available. The pending hidden score (55613165) is
 one more data point, not a verdict either way.
+
+## 2026-08-19 — duck-v3 commit run: mean 0.80 — the auto-push block did NOT help on this single run
+
+Same 25 public games, single unseeded runs: baseline 1.25 · duck-mod 2.41 · **duck-v3 0.80**
+(median 0.00, actions 4,336). Three single runs with documented per-game σ≈0.4 cannot cleanly rank
+designs — but v3 shows no sign of lift and possible harm (the observation block may distract or the
+novelty/untried info may mislead on games where the masked key fragments). Standing decision input
+for tomorrow's 00:00 UTC slot: the duck-mod HIDDEN score (55613165, still PENDING) is the next real
+datum; candidates = resubmit duck-mod v1 (second sample of the same artifact — averages the hidden
+estimate) vs baseline vs a fixed v3. No new submission before that lands.
