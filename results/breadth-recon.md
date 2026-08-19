@@ -6637,3 +6637,13 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Leaderboard moved: top5 bar 2.35 -> **2.57**, #1 = 3.57 (cstl).
 - Decision (tree branch 1.0-1.5): resubmit duck-mod v1 at 2026-08-20 00:00 UTC — Kaggle keeps best score, so a second hidden draw is free upside. Baseline fork (public 1.25) expected lower; duck-v3 (0.80) still barred as-is.
 - Strategic read: re-rolls of a ~1.0-mean design cannot reach 2.57. Top-5 requires a design improvement on the duck harness, not another sample.
+
+## 2026-08-19 17:30 UTC — CALIBRATION LANDED: duck-mod identical rerun = 2.16 (vs 2.41 first run)
+
+- taaf-duck-mod v2 (byte-identical rerun of v1) public mean **2.16**, 2h12m, 3,858 actions.
+- Run-to-run band for identical code on the public 25: **[2.16, 2.41]**, range 0.25 — first
+  direct measurement of aggregate variance (R5's calibration unknown now has n=2).
+- Implication for v4's bar: mean >= ~2.1 with a clean log (patches fired, no crashed states)
+  = within-band, submit-worthy; anything below ~1.9 = likely regression, hold.
+- Also recalibrates the hidden drop: public band [2.16,2.41] vs hidden 1.00 → the public→hidden
+  gap is real (~2.2x), not a bad public draw.
