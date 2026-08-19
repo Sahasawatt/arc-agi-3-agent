@@ -6647,3 +6647,15 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   = within-band, submit-worthy; anything below ~1.9 = likely regression, hold.
 - Also recalibrates the hidden drop: public band [2.16,2.41] vs hidden 1.00 → the public→hidden
   gap is real (~2.2x), not a bad public draw.
+
+## 2026-08-19 18:00 UTC — v4 EVAL: 1.73, BELOW the calibration band -> HOLD; submit duck-mod v1 at the window
+
+- taaf-duck-v4 v2 public mean **1.73**, median 0.04 (calibration band for unchanged code:
+  [2.16, 2.41], median 0.25). 25/25 gave_up, 0 crashed — the id() fix works, but the design
+  underperforms out-of-band. **Decision: do NOT submit v4; window slot = duck-mod v1 resubmit.**
+- Log reads: `compacted:` markers = **0** (the world-model cap never fired — lever inert as
+  built); per-game tokens cluster tightly at ~66-90k with gave_up at ~70k, suggesting the
+  BINDING per-game constraint may be a token budget, not the wall clock R1 assumed — if so,
+  time reallocation cannot help by construction. ft09 dropped 3 levels/28.57 -> 2/14.29.
+- v4 artifacts: /tmp/duckv4out2 (v1 crash artifacts: /tmp/duckv4out). Analysis agent launched
+  to diff v4 vs calibration per-game and settle the binding-constraint question -> v4.1/v5 spec.
