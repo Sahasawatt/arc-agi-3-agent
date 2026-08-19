@@ -20,7 +20,16 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 ## Decisions so far
 
 - [T0 Tomorrow's slot](../next-session-prompt.md) — resubmit duck-mod v1 at 2026-08-20
-  00:00 UTC (second hidden draw; Kaggle keeps best).
+  00:00 UTC (second hidden draw; Kaggle keeps best). May be superseded by v4 if its
+  commit run lands clean (decide at window with the log read, per B2).
+- [B1 duck-mod-v4 built](../../results/duckv4-build-20260819.md) — duckv4/: world-model
+  cap 6000 chars/field (tail-keep + marker, patches _extract_labeled_blocks
+  tool_agent.py:226-260) + BudgetReallocator (zero-sum-or-negative pool over
+  runtime_limit_reached/timing_payload solver.py:212-225, hard caps 600s/game +
+  600s system-wide). Verified: py_compile, mock self-tests (main-thread re-run), patch
+  targets live in real bundle, negative controls fail loudly, notebook diff = cell 12
+  only. Constants THRASH_ACTION_FLOOR=150 / 600s caps are conservative guesses, not
+  measured.
 - [R1 Where duck-mod loses score](../../results/wayfinder/R1-forensics.md) — ALL 25 games
   cut by the 7,920s per-game wall clock (zero crashes/surrenders); ft09 was 2/28 actions
   into L4 at cutoff. Latency 19-233s/action on identical config. 14 games thrash ≥2×
@@ -60,14 +69,13 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 
 | id | type | question | status |
 |---|---|---|---|
-| B1 | task | Build duck-mod-v4: world-model caps + context compaction + depth-aware time reallocation, as a duckv4/ customization layer; local exec-verify; do NOT push to Kaggle (main thread does) | open |
 | D2 | grilling | Eval bar: what result earns v4 a submission slot, given n_passes=1 trap + ~2.2 GPU-h per commit-run eval + 1 hidden sample/day | open |
 
 ## Blocked tickets
 
 | id | type | question | blocked by |
 |---|---|---|---|
-| B2 | task | Push v4 kernel + commit-run eval on public 25 (n_passes per D2) | B1, D2 |
+| B2 | task | Commit-run eval in flight: kernel sahasawatt/taaf-duck-v4 v1 RUNNING since 14:44 UTC Aug 19 (~2.2h) — read public score + log before window | claimed |
 
 ## Fog
 
