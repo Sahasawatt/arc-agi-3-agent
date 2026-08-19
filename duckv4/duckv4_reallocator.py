@@ -91,15 +91,21 @@ class BudgetReallocator:
         self._last_tick = time.monotonic()
         self._pool = 0.0            # harvested, unspent slack (seconds), always >= 0
         self._total_granted = 0.0   # cumulative seconds ever granted, monotonic
-        self._sessions = weakref.WeakKeyDictionary()
+        # _HarnessGameSession is UNHASHABLE (dataclass with eq=True, not frozen),
+        # so it cannot key a WeakKeyDictionary -- that crashed every game in the
+        # v1 kernel run ("TypeError: unhashable type: '_HarnessGameSession'").
+        # Key by id() with a strong ref instead: one entry per game per run,
+        # process-lifetime, so the strong ref leaks nothing that matters.
+        self._sessions = {}  # id(session) -> (session, entry)
 
     def _entry(self, session):
-        entry = self._sessions.get(session)
-        if entry is None:
+        rec = self._sessions.get(id(session))
+        if rec is None:
             base = float(session.solver.max_runtime_s_per_game or 0.0)
             entry = {"delta": 0.0, "last_levels": _levels_completed(session), "base": base}
-            self._sessions[session] = entry
-        return entry
+            self._sessions[id(session)] = (session, entry)
+            return entry
+        return rec[1]
 
     def effective_deadline(self, session) -> float:
         base = float(session.solver.max_runtime_s_per_game)
@@ -115,7 +121,7 @@ class BudgetReallocator:
         self._last_tick = now
 
         snapshot = []
-        for session, entry in list(self._sessions.items()):
+        for session, entry in list(self._sessions.values()):
             levels = _levels_completed(session)
             actions = _action_count(session)
             leveled = levels > entry["last_levels"]
@@ -152,7 +158,7 @@ class BudgetReallocator:
 
     def total_delta(self) -> float:
         """Sum of every tracked session's delta -- must always be <= 0."""
-        return sum(entry["delta"] for entry in self._sessions.values())
+        return sum(entry["delta"] for _s, entry in self._sessions.values())
 
 
 def install_patch(solver_module) -> None:
@@ -204,11 +210,20 @@ def _demo() -> None:
             self.max_runtime_s_per_game = budget
 
     class _FakeSession:
+        # UNHASHABLE on purpose, matching the real _HarnessGameSession (a
+        # dataclass with eq=True): the v1 kernel run crashed all 25 games on
+        # exactly this property, and a hashable fake let it ship. This fake is
+        # the regression teeth -- any future session-as-dict-key code dies here.
+        __hash__ = None
+
         def __init__(self, budget, levels, actions):
             self.solver = _FakeSolver(budget)
             self.game = _FakeGame(levels)
             self._actions = actions
             self.started_at = time.monotonic()
+
+        def __eq__(self, other):
+            return self is other
 
         @property
         def action_count(self):
