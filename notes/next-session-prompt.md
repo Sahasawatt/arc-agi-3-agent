@@ -30,24 +30,29 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 (tu93 100.0 · sb26 100.0 · ls20 43.629 · re86 41.477 · sp80 28.571 · ar25 27.778 · tr87 14.286 · m0r0 14.286 · cd82 10.514 · wa30 6.667 · cn04 4.762 · dc22 4.762 · ka59 3.571 · g50t 3.571 · sk48 2.778 · bp35 2.222 · sc25 0)
 ← **results/sweep-wave14.log** is the current clean gate (wave-14 = glide.py g50t L1, 0/7→1/7; wave-13 = twin.py m0r0 L2; wave-12 = swap.py sp80 L3) (chain: wave-6 → wave-8 [haul's wa30 L2 guards] → wave-9 [mirror L2] → wave-10 [mirror L3] → wave-11 [mirror L4]; every hop diffed with `sweep_diff.py <before> <after> <control>`, a control that DIFFERS, 16 of 17 identical to the digit, no game ever losing a level; pytest 330 throughout). ⚠️ `sweep-tu93win.log` = an aborted MemoryError run — ignore it. Remaining 0-level: sc25 (closed) — and **g50t is REOPENED 2026-08-18: squirrel.py cleared L1 (5th false exhaustion — the proof was single-life; the win uses resets). Landing in flight, see recon tail.**
 
-## STATE AT 2026-08-19 18:15 — WAITING ON ONE NUMBER: submission 55613165 (duck-mod) is PENDING
+## STATE AT 2026-08-19 19:15 — SCORE LANDED: duck-mod hidden = 1.00, rank 585/2409
 
-**The only live thread: hidden-set score for 55613165** (duck-mod, submitted 02:53 UTC Aug 19;
-still PENDING at 11:11 UTC, past the nominal 9h envelope — not yet anomalous, a failed run shows
-ERROR). Check: cd Desktop/ARC-AGI-3-Kaggle-Starter; KAGGLE_API_TOKEN=$(cat .kaggle/access_token)
-./.venv/Scripts/kaggle.exe competitions submissions -c arc-prize-2026-arc-agi-3 | head -4.
-**Public-set means (all SINGLE runs, per-game σ≈0.4 — do not over-read):** duck baseline 1.25 ·
-duck-mod 2.41 · duck-v3 0.80. Ours before ducks: 0.11. Forensics (results/
-duckmod-transcripts-20260819.md): duck-mod's 2.41 is NOT tool adoption (0+2 calls in 2,001 turns;
-2-game effect ft09+ar25) — likely priming/variance.
-**Tomorrow 00:00 UTC slot decision once the score lands:** score >=1.5 → resubmit duck-mod v1
-(2nd hidden sample) · score ~1.0-1.5 → judge duck-mod vs baseline resubmit · score <1.0 → baseline
-resubmit to re-anchor. Never submit unverified builds. Kernels ready: sahasawatt/taaf-duck-fork v1
-(baseline) · taaf-duck-mod v1 · taaf-duck-v3 v1 (0.80, do not submit as-is).
-Leaderboard ref (Aug 18): top5 = 2.35+, #1 2.81. GOAL = score-first, top 5.
+**Submission 55613165 (taaf-duck-mod v1) COMPLETE at ~12:05 UTC: publicScore 1.00** — our best
+ever (prior max 0.11), first score above the field median (0.26). Rank 585/2409; 581 teams above,
+11 tied at 1.00. Public 2.41 → hidden 1.00 confirms the forensics read (results/
+duckmod-transcripts-20260819.md): the 2.41 was a 2-game public effect (ft09+ar25), priming/
+variance — it does not transfer. Leaderboard moved: **top5 bar now 2.57** (#1 = 3.57 cstl).
+**Decision taken (tree branch 1.0-1.5): resubmit duck-mod v1 at 2026-08-20 00:00 UTC (07:00
+Thai)** — Kaggle keeps best score, so a second hidden draw is free upside; baseline fork
+(public 1.25) offers no edge; duck-v3 (0.80) still barred as-is. From
+Desktop\ARC-AGI-3-Kaggle-Starter:
+
+    KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet -k sahasawatt/taaf-duck-mod -v 1 -m "duck-mod v1 resubmit: second hidden sample (first draw 1.00, public 2.41)"
+
+Verify via `competitions submissions`, never error text.
+**Strategic read: re-rolls of a ~1.0-mean design cannot reach 2.57 — top-5 needs a design
+improvement on the duck harness** (seeded A/B locally first; the seeded-runs question for duck-v3
+is still open). **Public-set means (all SINGLE runs, per-game σ≈0.4):** duck baseline 1.25 ·
+duck-mod 2.41 (hidden 1.00) · duck-v3 0.80. Kernels ready: sahasawatt/taaf-duck-fork v1 ·
+taaf-duck-mod v1 · taaf-duck-v3 v1 (do not submit as-is).
 **Local campaign:** 16/17 games hold a level (wave-14, mean 24.051%); BFS chains STOPPED at user
 request, checkpoints intact (resume commands in the 19:15 block below — no --fresh). Duck source +
-TAAF study + all build reports committed through `73184cc`.
+TAAF study + all build reports committed through `a7d6d2b`.
 
 ## STATE AT 2026-08-18 17:15 — STRATEGY PIVOT: the milestone winner's code is PUBLIC; the road to top-5 is a Duck fork with our tools
 

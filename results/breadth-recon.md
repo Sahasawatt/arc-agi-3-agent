@@ -6628,3 +6628,12 @@ novelty/untried info may mislead on games where the masked key fragments). Stand
 for tomorrow's 00:00 UTC slot: the duck-mod HIDDEN score (55613165, still PENDING) is the next real
 datum; candidates = resubmit duck-mod v1 (second sample of the same artifact — averages the hidden
 estimate) vs baseline vs a fixed v3. No new submission before that lands.
+
+## 2026-08-19 12:09 UTC — HIDDEN SCORE LANDED: duck-mod = 1.00
+
+- Submission 55613165 (taaf-duck-mod v1) COMPLETE, publicScore **1.00**, rank **585/2409** (median 0.26; 581 teams above, 11 tied at 1.00).
+- vs history: ours 0.05/0.10/0.11 → 1.00 = 20x jump, first score above median.
+- Public 2.41 -> hidden 1.00: consistent with forensics (results/duckmod-transcripts-20260819.md) — 2.41 was a 2-game public effect (ft09+ar25), priming/variance, NOT tool adoption. Hidden set does not carry it.
+- Leaderboard moved: top5 bar 2.35 -> **2.57**, #1 = 3.57 (cstl).
+- Decision (tree branch 1.0-1.5): resubmit duck-mod v1 at 2026-08-20 00:00 UTC — Kaggle keeps best score, so a second hidden draw is free upside. Baseline fork (public 1.25) expected lower; duck-v3 (0.80) still barred as-is.
+- Strategic read: re-rolls of a ~1.0-mean design cannot reach 2.57. Top-5 requires a design improvement on the duck harness, not another sample.
