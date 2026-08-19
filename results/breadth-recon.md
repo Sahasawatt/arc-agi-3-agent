@@ -6659,3 +6659,25 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   time reallocation cannot help by construction. ft09 dropped 3 levels/28.57 -> 2/14.29.
 - v4 artifacts: /tmp/duckv4out2 (v1 crash artifacts: /tmp/duckv4out). Analysis agent launched
   to diff v4 vs calibration per-game and settle the binding-constraint question -> v4.1/v5 spec.
+
+## 2026-08-19 18:25 UTC — R7 POSTMORTEM: v4's levers were mostly INERT; the 1.73 gap is rollout variance
+
+- **Binding stop = wall clock ONLY** (should_stop() solver.py:246-261 has no token check;
+  all 75 game-runs across 3 runs end via runtime_limit_reached). The ~70k-token uniformity
+  I read as a token budget was correlation (range 37k-91k at the same 7920s cutoff) — my
+  hypothesis REFUTED by R7.
+- **Reallocator fired correctly** (4 shrinks exactly matching its predicate: cn04 -1779s,
+  sk48 -1970s, tr87 -2155s, sc25 -384s; ft09 +625s) but MAX_EXTENSION_PER_GAME_S ==
+  TOTAL_POOL_CAP_S == 600 → ft09 alone exhausted the whole pool; other leveling games got
+  noise. Shrunk games scored 0 in every run anyway (no measurable cost) — possible
+  feedback loop: shrinking deadline also shrinks per-call LLM timeout (tr87 stall 4.6-8x).
+- **World-model cap never fired because the premise was wrong at runtime**: fields are
+  OVERWRITTEN each turn (tool_agent.py:1109-1111), max observed 3,501 chars < 6000 cap;
+  **77.1% of turns wrote ZERO assistant prose** — the world model is mostly EMPTY. This is
+  R6's Mode 1 (state amnesia) measured from the other side.
+- **The -0.43 vs band = 3 games** (ft09 -13.63, vc33 -5.94, tu93 -4.85); two ran on
+  untouched budgets, ft09 got MORE time and still lost levels → dominant driver = rollout
+  variance at temp 0.6, not the levers.
+- Consequence: v4 ≈ neutral-but-unproven; hold stands (tonight = duck-mod v1). The REAL
+  lever per R6+R7 convergence: the state channel itself — v5 (B3) = server-side
+  auto-persist/accumulate + auto-pushed transition record, built on duck-mod base.
