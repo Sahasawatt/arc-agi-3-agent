@@ -47,7 +47,9 @@ Desktop\ARC-AGI-3-Kaggle-Starter:
 Verify via `competitions submissions`, never error text.
 **Strategic read: re-rolls of a ~1.0-mean design cannot reach 2.57 — top-5 needs a design
 improvement on the duck harness** (seeded A/B locally first; the seeded-runs question for duck-v3
-is still open). **Public-set means (all SINGLE runs, per-game σ≈0.4):** duck baseline 1.25 ·
+is still open). **Public-set means (all SINGLE runs; ⚠️ R5 corrected the old "σ≈0.4 per game"
+label — 0.4 is the σ of the AGGREGATE 25-game mean, real per-game SD is 2.15-4.88, single runs
+cannot rank designs):** duck baseline 1.25 ·
 duck-mod 2.41 (hidden 1.00) · duck-v3 0.80. Kernels ready: sahasawatt/taaf-duck-fork v1 ·
 taaf-duck-mod v1 · taaf-duck-v3 v1 (do not submit as-is).
 **Local campaign:** 16/17 games hold a level (wave-14, mean 24.051%); BFS chains STOPPED at user
