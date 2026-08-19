@@ -47,6 +47,15 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 - [R4 Scoring EV](../../results/wayfinder/R4-ev.md) — depth is ~7× cheaper than breadth
   (final level of a 7-level game = 25.0 pts vs fresh L1 = 3.57); efficiency past 1.07×
   pace is worth zero; 1.00→3.00 = ~9 deep games closed vs ~62 new games opened.
+- [R6 Thrash forensics](../../results/wayfinder/R6-thrash-forensics.md) — 9 zero-games
+  read turn-by-turn: Mode 1 scaffold state amnesia 8/9 (world-model field frozen/empty
+  after turn 1-4; real reasoning lives in an uncaptured [THINKING] channel, hypotheses
+  re-derived every turn); Mode 2 offered tools used ZERO times 9/9 (confirms the design
+  law: an LLM under time pressure does no bookkeeping through callable APIs); Mode 3
+  silent GAME_OVER resets erase 75-300 actions of progress 6-7/9; Mode 4 HUD/timer
+  misread 3/9 (m0r0 drove TOWARD its own game-over timer as a win target). v5 levers
+  ranked in the file — top two are auto-persist + auto-record, i.e. duck-v3's philosophy
+  with the missing half (persistence) done server-side.
 - [R5 Eval protocol](../../results/wayfinder/R5-eval-protocol.md) — harness ships its own
   `significance.py` (paired t/permutation/Bayes, multi-pass native); notebook hardcodes
   `bm.n_passes=1` in cell 14 AFTER the customization hook (silent trap); a commit-run
@@ -70,6 +79,7 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 | id | type | question | status |
 |---|---|---|---|
 | D2 | grilling | Eval bar: what result earns v4 a submission slot, given n_passes=1 trap + ~2.2 GPU-h per commit-run eval + 1 hidden sample/day | open |
+| B3 | task | Build v5 from R6's top levers: server-side auto-persist of world-model state + auto-recorded transition graph pushed INTO the observation (the model never has to call anything) + GAME_OVER reset detection banner. Waits for v4's run so v5 stacks on whatever v4 proves | blocked by B2 |
 
 ## Blocked tickets
 
