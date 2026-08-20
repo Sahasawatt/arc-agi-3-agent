@@ -4,6 +4,20 @@ An agent for [ARC Prize 2026 — ARC-AGI-3](https://www.kaggle.com/competitions/
 Open source from the first commit (MIT-0), which the competition requires for prize
 eligibility anyway.
 
+## New here? Read in this order
+
+1. [notes/wayfinder/MAP.md](notes/wayfinder/MAP.md) — the whole campaign's current state,
+   decisions, and open questions on one page (Kaggle score push).
+2. [CLAUDE.md](CLAUDE.md) — the repo's operating rules. The one non-negotiable:
+   **never read `environment_files/`** (it is the public games' source — an answer key
+   that generalises to nothing and poisons every measurement).
+3. `results/wayfinder/R1-R8` — the research reports behind the current design.
+4. This README — the local-campaign findings log (long; it is a measurement diary,
+   the `*.py` files at the root are its instruments).
+
+Kaggle lineage: `duckmod/` → `duckv5/` (current submission) → `duckv6/` (in progress),
+each with a build report in `results/`.
+
 ## Where this is
 
 The loop is closed and it is getting through levels. Playing under the competition's own
