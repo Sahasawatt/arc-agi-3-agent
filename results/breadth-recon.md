@@ -6713,3 +6713,21 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Public-sample ledger now: duck-mod 2.41, 2.16 · v4 1.73 · v5 2.43, 2.37.
 - Waiting: hidden score of 55633845 (~09:00-12:00 UTC) decides the v6 direction per the
   tree in the brief.
+
+## 2026-08-20 06:00 UTC — codex lanes landed: R8 digest audit + duckv6/hud_semantics
+
+- **R8 (codex read-only, results/wayfinder/R8-digest-audit.md)**: digest bookkeeping
+  mechanically CORRECT (15/15 spot-checks: tried=changed+noop, last-5 matches, milestones
+  right); reset banner **0/5 false positives** (the 594-fire rate = agents exhausting
+  budgets repeatedly, not spam). Weaknesses: ADOPTION thin (10 explicit references total,
+  ALL in losing games — the two best runs never cited it; usage is reactive, not
+  exploration-control) and the append-only world model preserves superseded beliefs /
+  grows into clutter. Top-3 v6 fixes: split `changed` into gameplay vs HUD-only vs unknown
+  · make the digest an INTERVENTION (fire advice when thrash detected) not a ledger ·
+  typed revised state instead of append-only accumulation.
+- **duckv6/hud_semantics.py landed** (codex writer via codex-run.js worktree lane, patch
+  reviewed + self-test re-run in main thread, commit a24327f): timer/budget vs goal
+  classifier for R6 Mode 4 — and it is exactly the instrument R8's fix #1 needs (its
+  region classification feeds the gameplay-vs-HUD split). Not yet wired.
+- v6 design now has three converging inputs: R8's three fixes + hud_semantics + the v5
+  hidden score (pending) which decides how hard to push this axis.
