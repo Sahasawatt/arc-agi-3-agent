@@ -12,8 +12,9 @@ eligibility anyway.
    **never read `environment_files/`** (it is the public games' source — an answer key
    that generalises to nothing and poisons every measurement).
 3. `results/wayfinder/R1-R8` — the research reports behind the current design.
-4. This README — the local-campaign findings log (long; it is a measurement diary,
-   the `*.py` files at the root are its instruments).
+4. This README — the local-campaign findings log (long; it is a measurement diary).
+   Root `*.py` = the engine + drivers + tests + active chain runners only; every
+   one-off probe script the diary cites by bare filename lives in `probes/`.
 
 Kaggle lineage: `duckmod/` → `duckv5/` (current submission) → `duckv6/` (in progress),
 each with a build report in `results/`.
