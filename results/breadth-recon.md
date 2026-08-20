@@ -6875,3 +6875,24 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   into score rather than taxing them (the opposite of what our own v6 warnings did).
 - Next: confirmation rerun of v10 for a band; v11 (v8 + brevity prompt) is now the LOWER
   priority arm — the same brevity idea should be re-cut on the v10 base if v10 confirms.
+
+## 2026-08-20 19:20 UTC — R18: v10's remaining defect is ANIMATION-RETRIEVAL LOOPING, not a missing switch
+
+- R18 (results/wayfinder/R18-v10-headroom.md) counted from v10's own per-game event logs:
+  **669 `animation()` requests, 582 served**, concentrated pathologically — sb26 **405**,
+  tn36 **137**, sp80 **41** — against 3-10 in the games where animation paid (ft09, sc25).
+  **Two of the three loopers scored ZERO.** The model retrieves frames in loops instead of
+  taking environment actions; the feature is genuinely used, its API just invites blind
+  iteration over frame indices.
+- Ranked next moves per R18: (1) prompt-level retrieval discipline, (2) confirmation rerun
+  of unmodified v10, (3) per-game time reallocation, (4) flip an unused bundle switch
+  (LOCAL_ANALYZER_TOOL_STEPS cap or thinking-off — blunter), (5) do nothing.
+- ⚠️ Concentration risk recorded: v10's 4.55 leans on **ft09 = 47.62** (~42% of the run's
+  total) — exactly R9's lottery shape, which is why the confirmation rerun (in flight) is
+  as valuable as any new arm.
+- Built **duckv13 = v10 + retrieval-discipline addendum** (bundle-verified,
+  PYTHON_ADDENDUM 3,817 -> 4,316). Prediction from R18: retrievals fall >=75% (669 ->
+  <=167), no depth lost on ft09/sb26/sc25, >=1 new level among tn36/sp80/sk48/cd82.
+  Falsified if depth drops — then the retrieval loops were load-bearing.
+- Arms now: v10 (confirm, running) · v12 = v10+brevity (running) · v13 = v10+retrieval
+  discipline (staged, queued for the next free GPU slot).
