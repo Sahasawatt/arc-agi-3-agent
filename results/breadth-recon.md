@@ -6704,3 +6704,12 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   with the same ~2.2-2.4x public->hidden shrink would land ~1.0-1.1 — the REAL test is
   whether the state channel shrinks LESS (its levers target exactly the failure modes R6
   found, which should be as common on hidden games).
+
+## 2026-08-20 03:35 UTC — v5 CALIBRATION: 2.37 → v5 band [2.37, 2.43]
+
+- taaf-duck-v5 v2 (identical rerun) public mean **2.37**, median 0.30. v5's own band =
+  **[2.37, 2.43]** (range 0.06) vs duck-mod's [2.16, 2.41] (range 0.25). Both v5 samples
+  sit at/above duck-mod's band top; means 2.40 vs 2.285 (n=2 each — suggestive, not proof).
+- Public-sample ledger now: duck-mod 2.41, 2.16 · v4 1.73 · v5 2.43, 2.37.
+- Waiting: hidden score of 55633845 (~09:00-12:00 UTC) decides the v6 direction per the
+  tree in the brief.
