@@ -116,7 +116,8 @@ score. Build order:
 | id | type | question | status |
 |---|---|---|---|
 | B5 | task | Throughput build per D3 (output cap + prompt slim + batching push) on duck-mod base | open |
-| B6 | task | Qwen3.8-27B swap + sm_120 attention-backend safety check | blocked by B5 eval |
+| B6 | task | duckv8 (3.8 swap) RUNNING | claimed |
+| B8 | task | duckv9 REBASE (anim bundle + 3.8 + cap, per R13) RUNNING — the priority candidate | claimed |
 (B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets

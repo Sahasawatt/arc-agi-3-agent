@@ -6770,3 +6770,23 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - User: "ไม่ต้องส่งทุกวันก็ได้นะ" — daily auto-resubmit cancelled. A slot is spent only on
   a bar-passing candidate or a deliberate probe (baseline hidden-shrink probe stays listed
   in MAP.md as the candidate probe). Leaderboard holds at duck-mod's 1.00 meanwhile.
+
+## 2026-08-20 13:25 UTC — RIVAL RECON (fan-out): the meta moved to "duck v12"; we rebase
+
+- Kaggle CLI (the angle R3's web sweep couldn't reach) listed competition kernels by
+  score: the field runs "arc3 duck v12" lineage notebooks; FOYSAL (leaderboard ~2.23)
+  publishes "LB-9 arc3 duck v12 with Qwen 3.8 27B" (141 votes); a v19 lineage exists.
+- Their source = public dataset jakobbrggen/taaf-kaggle-source-anim-20260807-anim =
+  Tufa's OWN branch feature/animation-awareness (2026-08-07, 5 weeks past our base):
+  +noop_guard.py (blocks known no-op actions BEFORE spending env actions — a loop
+  intervention, stronger than our v6 advisory), +animation.py (multi-plane frame
+  retrieval — the exact keyhole our CLAUDE.md documents: 8/17 games answer with
+  multi-plane frames and last-plane reads miss it), prompts/sandbox/solver rewired.
+- R13 (results/wayfinder/R13-anim-bundle-diff.md): REBASE not port; anim
+  setup_commands.json is byte-identical to ours → the R12 model-swap seam holds; and
+  upstream STILL ships max_output uncapped → our R10 cap is an edge they lack.
+- FOYSAL's overlay: Qwen3.8 (as a Kaggle Model attachment), regex setup rewrite (same
+  seam), offline env hardening, public-eval override (n_passes=1, concurrency 28).
+- Built + launched duckv9 = duckmod shell → anim bundle + qwen3-8 dataset + MAX_OUTPUT
+  768, duckmod patches dropped (R8 zero adoption + stale patch points). Three-way eval
+  in flight: v7 (cap on old base) · v8 (3.8 on old base) · v9 (rebase+3.8+cap).
