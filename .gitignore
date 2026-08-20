@@ -8,3 +8,6 @@ environment_files/
 
 # run logs — the artifacts they summarise are committed, the raw stdout is not
 results/*.log
+
+# hook backups - never commit, never keep piles of these
+*.bak.*
