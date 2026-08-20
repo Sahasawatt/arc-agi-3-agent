@@ -6830,3 +6830,26 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   run is the outstanding question, not a settled loss.
 - Standing verdict: **v8 (duck-mod base + Qwen3.8, uncapped) = 3.31 is the campaign's best
   and the only candidate** — confirmation rerun next for a band.
+
+## 2026-08-20 16:40 UTC — R16 vs R17 collide, and the resolution is a PROMPT, not a knob
+
+- **R16 (v8 forensics)**: the binding constraint moved but stayed generation-side —
+  v8 spends **2.71x the tokens/action** and **2.13x the seconds/action** of the Qwen3.6
+  baseline (median 1,262 tok and 127.9 s per action vs 463 / 60.0), and in six sampled
+  games **90.2% of generated characters are REASONING** (1,422,859 reasoning chars vs
+  155,008 tool-payload chars) with 264/266 completions ending in valid tool calls. The
+  model buys better decisions (22 levels in 1,946 actions vs 19 in 3,858) and pays for
+  them in deliberation. R16's recommendation: a thinking-only token budget.
+- **R17 (feasibility, same day)**: that knob DOES NOT EXIST here. vLLM 0.19.0 exposes
+  `chat_template_kwargs.enable_thinking` (binary) and a TOTAL `max_tokens`; the harness
+  forwards no arbitrary fields; the 5-weeks-newer upstream adds none. A total cap is
+  exactly what collapsed v9. Completion-length distribution from v8: p50 ~1.6k, p90 ~4.6k,
+  p99 ~9.5k proxy tokens — so any total cap low enough to save time truncates actions.
+- **Resolution (both reports respected):** the diagnosis is R16's, the remedy must be one
+  that CANNOT truncate a tool call. Built **duckv11 = v8 + a system-prompt brevity
+  addendum** (ask for <~300 words of reasoning per turn, never shorten the tool call),
+  output left uncapped. Verified against the real bundle: PYTHON_ADDENDUM 3,817 -> 4,143
+  chars through the same global duckmod documented as the only working seam.
+- Falsifiable prediction for v11: actions > 1,946, levels >= 22, malformed tool calls stay
+  ~0, mean >= 3.31. If actions rise but levels fall, the long reasoning was load-bearing
+  and the lever is dead — that outcome retires the whole "cut deliberation" axis.
