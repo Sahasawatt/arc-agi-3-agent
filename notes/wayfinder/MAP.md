@@ -117,7 +117,9 @@ score. Build order:
 |---|---|---|---|
 | B5 | task | Throughput build per D3 (output cap + prompt slim + batching push) on duck-mod base | open |
 | B6 | DONE | **duckv8 (Qwen3.8 swap) = 3.31 public, 15/25 scoring, 22 levels** — first run above every prior band; model verified in vLLM log | closed |
-| B8 | task | duckv9 REBASE (anim bundle + 3.8 + cap, per R13) RUNNING — the priority candidate | claimed |
+| B8 | DONE | duckv9 = **0.22** — the output cap truncates tool calls (finish_reason `length` 704 vs `tool_calls` 68; parser errors 87). R10's cap lever REFUTED; anim bundle still untested (confounded) | closed |
+| B9 | task | v8 confirmation rerun (identical) for a band, then recommend submission | open |
+| B10 | task | clean anim+3.8 NO-CAP run to test the rebase separately (v9 was confounded) | open |
 (B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets

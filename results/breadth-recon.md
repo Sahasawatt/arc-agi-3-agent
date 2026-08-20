@@ -6807,3 +6807,26 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Open: v9 (anim rebase + 3.8 + output cap) still running — if the rebase adds on top of
   the model gain, that is the submission candidate; if v9 < v8, the anim bundle's guards
   cost more than they buy at this model tier.
+
+## 2026-08-20 16:00 UTC — v9 = 0.22 and the CAUSE KILLS R10's top lever: the output cap truncates TOOL CALLS
+
+- taaf-duck-v9 (anim rebase + Qwen3.8 + LOCAL_ANALYZER_MAX_OUTPUT=768) public **0.22**,
+  median 0.00, only **255 actions across 25 games** (v8: 1,946), every game gave_up on the
+  clock with almost nothing executed.
+- Mechanism, measured from transcripts (8 games sampled): **finish_reason `length` 704 vs
+  `tool_calls` 68**. The model's action IS a tool call whose payload is python code, so a
+  768-token ceiling truncates it mid-XML; vLLM's parser then throws
+  (`qwen3coder_tool_parser: ValueError: substring not found`, 87 occurrences) and the turn
+  produces NO action. CONTROL (same instrument, uncapped runs): v8 = tool_calls 326 /
+  stop 4; duck-mod cal = tool_calls 673 / stop 2 — zero `length` finishes.
+- **R10's "hard-cap analyzer output" recommendation is REFUTED as implemented.** Its
+  premise (a 1k-token answer costs ~110s at ~9 tok/s) was arithmetically right and the
+  remedy was wrong: capping total output truncates the *action itself*, not just thinking.
+  Any future version of this lever must bound THINKING only (a reasoning budget), never the
+  completion that carries the tool call. v7/v7b (same cap on the old base) are dead by the
+  same mechanism — do not run them.
+- Confound note: v9 changed three things at once (bundle + model + cap). The cap alone
+  explains the collapse, so the anim bundle remains UNTESTED — a clean anim+3.8 (no cap)
+  run is the outstanding question, not a settled loss.
+- Standing verdict: **v8 (duck-mod base + Qwen3.8, uncapped) = 3.31 is the campaign's best
+  and the only candidate** — confirmation rerun next for a band.
