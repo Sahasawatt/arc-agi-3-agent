@@ -6731,3 +6731,20 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   region classification feeds the gameplay-vs-HUD split). Not yet wired.
 - v6 design now has three converging inputs: R8's three fixes + hud_semantics + the v5
   hidden score (pending) which decides how hard to push this axis.
+
+## 2026-08-20 09:50 UTC — v5 HIDDEN = 0.84; leaderboard stays on duck-mod's 1.00
+
+- Submission 55633845 (duck-v5, public band [2.37, 2.43]) COMPLETE: hidden **0.84** —
+  below duck-mod's hidden 1.00 (public band [2.16, 2.41]). Kaggle keeps best → leaderboard
+  unchanged at 1.00.
+- Shrink ratios: duck-mod ~2.4x, v5 ~2.9x. The "state channel shrinks less" hypothesis is
+  NOT supported on this draw (n=1 per design — a single draw cannot rank them either way,
+  but there is no evidence of hidden-side improvement).
+- Decision-tree branch: <1.0 → re-read R7's hidden-behavior hypotheses before shipping
+  anything new. v6's PUBLIC eval (kernel running, done ~11:00 UTC) is still worth reading:
+  in-band public + clean log keeps v6 as a candidate, but the public->hidden gap now looks
+  like the dominant unknown — two designs with near-identical public bands drew 1.00 and
+  0.84 hidden.
+- Aug-21 slot leading options (decide when v6 eval lands): (a) duck-mod v1 resubmit —
+  second draw of the best-known design, EV of best-kept >= 1.00; (b) v6 if its public run
+  is in-band+ AND its log shows the warnings actually change behavior (not just render).
