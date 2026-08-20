@@ -6790,3 +6790,20 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Built + launched duckv9 = duckmod shell → anim bundle + qwen3-8 dataset + MAX_OUTPUT
   768, duckmod patches dropped (R8 zero adoption + stale patch points). Three-way eval
   in flight: v7 (cap on old base) · v8 (3.8 on old base) · v9 (rebase+3.8+cap).
+
+## 2026-08-20 15:30 UTC — v8 (Qwen3.8 swap) = 3.31 PUBLIC: first run ever ABOVE duck-mod's band
+
+- taaf-duck-v8 v1 (duck-mod base + Qwen3.8-27B-FP8 via setup-command rewrite, R12 seam):
+  **mean 3.31, median 1.64**, 2h13m, 0 crashed / 25 gave_up. Model verified from the vLLM
+  log: served_model_name = vrfai/Qwen3.8-27B-FP8, weights from jakobbrggen/qwen3-8-27b-fp8
+  -hf-snapshot, zero Qwen3.6 references.
+- Structural, not lottery: **15/25 games score (vs 13/25)** and **22 levels completed (vs
+  19 and 17)** — breadth AND depth up. Actions FELL 3,858 -> 1,946 while score rose, so the
+  gain is per-action quality, not throughput (3.8 spends ~2x tokens/action: 2.12M total
+  tokens vs 1.56M; generated tok/s 265 vs 196).
+- This is the first candidate whose public mean sits outside every prior band; duck-mod's
+  band is [2.16,2.41], v5 [2.37,2.43], v6 1.85, v4 1.73. Still ONE run (R9: single runs
+  cannot rank designs) — but the level count is a lower-variance signal and it moved too.
+- Open: v9 (anim rebase + 3.8 + output cap) still running — if the rebase adds on top of
+  the model gain, that is the submission candidate; if v9 < v8, the anim bundle's guards
+  cost more than they buy at this model tier.
