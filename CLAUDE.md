@@ -1033,6 +1033,10 @@ sources, including a retraction of the "5× human median" action cap that is not
 
 ## Layout, in dependency order
 
+One-off probe scripts (the `<game>_<tag>.py` instruments the README cites by bare
+filename) live in `probes/` since 2026-08-20; the root holds only the engine, drivers,
+tests, and active chain runners.
+
 `perception` (frame → objects, HUD, glyph bitmaps) → `identity` (cross-frame tracking) →
 `discover` (movement model by acting) → `plan` (BFS routing) / `gate` (locks and the squares
 that change them) / `signals` (counters, clock, refills) → `compete` (the rules-legal play
