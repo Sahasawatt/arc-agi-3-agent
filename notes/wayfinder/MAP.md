@@ -84,11 +84,39 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
   clock death mid-level) and R4 says the points recovered by finishing deep levels are
   the biggest pool. Both levers attack that chain directly.
 
+## THE v7 PLAN (D3, resolved 2026-08-20 from R9+R10+R11) — "raise the floor, measure what has low variance"
+
+R9 killed score-based iteration on single public runs (reliable base itself swings 75%
+between identical-code reruns). The levers that remain are GENERAL (help every game, both
+sets) and are verifiable on LOW-VARIANCE metrics (actions/clock, tokens/action) instead of
+score. Build order:
+
+- **B5 throughput build** (config+prompt only, on duck-mod base):
+  (a) hard output cap `LOCAL_ANALYZER_MAX_OUTPUT` ~768 + bounded thinking (R10 very-high;
+  per-request rate is ~9 tok/s so a 1k-token answer costs ~110s);
+  (b) slim the 14.5k-char system prompt (dedupe the 6 addenda, target <8k) + compact
+  history retention (prefix-cache hit rate falls 70-80% -> 23-34% as histories diverge);
+  (c) prompt-push multi-action batching (one LLM turn amortized over 5-15 env actions —
+  R10 calls it the strongest empirical determinant of actions/clock).
+  SHIP CRITERION: actions/game UP >= 2x on a commit run AND paired 2-pass score
+  not-degraded vs duck-mod (harness significance.py — first actual use of R5's protocol).
+- **B6 model swap**: Qwen3.8-27B-FP8 (released 2026-08-14; same size/arch = same tok/s
+  envelope, large agentic jumps). PRE-CHECK first: our launch args vs the sm_120
+  FlashInfer+FP8-KV silent-corruption bug (vLLM #41651) — if our path uses it, add
+  TRITON_ATTN workaround regardless of swap.
+- **B7 combine + submit**: best of B5/B6/combo gets the next spent slot (cadence is
+  on-demand per user 2026-08-20). Judge on the actions KPI + paired eval, never a single
+  public mean.
+- Parked: spec decoding (throughput-negative at ~25 concurrent), smaller models (no
+  3.6/3.8 family below 27B; proxies say net-negative), all prompt features tuned on
+  public games (v5/v6 lesson).
+
 ## Frontier tickets
 
 | id | type | question | status |
 |---|---|---|---|
-| D2 | grilling | Eval bar: what result earns v4 a submission slot, given n_passes=1 trap + ~2.2 GPU-h per commit-run eval + 1 hidden sample/day | open |
+| B5 | task | Throughput build per D3 (output cap + prompt slim + batching push) on duck-mod base | open |
+| B6 | task | Qwen3.8-27B swap + sm_120 attention-backend safety check | blocked by B5 eval |
 (B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets
