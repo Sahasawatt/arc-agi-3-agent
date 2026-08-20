@@ -6853,3 +6853,25 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Falsifiable prediction for v11: actions > 1,946, levels >= 22, malformed tool calls stay
   ~0, mean >= 3.31. If actions rise but levels fall, the long reasoning was load-bearing
   and the lever is dead — that outcome retires the whole "cut deliberation" axis.
+
+## 2026-08-20 18:45 UTC — v10 = 4.55 (campaign best) and v8's band lands [2.87, 3.31]
+
+- **taaf-duck-v10** (anim bundle + Qwen3.8, output UNCAPPED): public **4.55**, median 0.96,
+  14/25 scoring, **22 levels**, 1,285 actions, 0 crashed. Config verified from the kernel
+  log: `SERVED_MODEL_NAME='vrfai/Qwen3.8-27B-FP8'`, `LOCAL_ANALYZER_MAX_OUTPUT='0'`
+  (uncapped), and the solver line reads `hard_noop_guard=True, animation_awareness=True` —
+  the anim bundle's own features are live. finish_reason over 8 games: tool_calls 317,
+  stop 1, **zero `length`** (the v9 truncation is gone, as designed).
+- **v8 confirmation rerun**: 2.87 (median 1.26, 13/25 scoring, 19 levels, 1,586 actions).
+  So v8's band is **[2.87, 3.31]** — a 0.44 spread on identical code, consistent with R9's
+  finding that reruns move materially. Its midpoint ~3.09.
+- Ranking on public means: **v10 4.55 > v8 [2.87,3.31] > duck-mod [2.16,2.41] > v5
+  [2.37,2.43] > v6 1.85 > v4 1.73 > v9 0.22**. v10 is a single run and needs its own
+  confirmation before it can be called better than v8 with confidence — but it beats v8's
+  BEST run by 1.24, which is ~3x the width of v8's own band.
+- Mechanism read: v10 = v8's model plus the anim bundle's guards. Same 22 levels as v8's
+  best run from **34% fewer actions** (1,285 vs 1,946) — consistent with noop_guard
+  refusing known-dead actions before they are spent, i.e. the guard converts wasted actions
+  into score rather than taxing them (the opposite of what our own v6 warnings did).
+- Next: confirmation rerun of v10 for a band; v11 (v8 + brevity prompt) is now the LOWER
+  priority arm — the same brevity idea should be re-cut on the v10 base if v10 confirms.
