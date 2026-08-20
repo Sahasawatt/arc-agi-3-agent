@@ -32,7 +32,8 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 
 ## STATE AT 2026-08-20 16:50 Thai — v5 hidden = 0.84 (leaderboard stays 1.00); v6 public eval running
 
-v5 (55633845) drew hidden **0.84** vs duck-mod's 1.00 — two designs with near-identical
+v6 public eval: **1.85 out-of-band low, HELD** (warnings fired but suppressed actions
+30%; hud hint never fired). Aug-21 slot = duck-mod v1 resubmit. v5 (55633845) drew hidden **0.84** vs duck-mod's 1.00 — two designs with near-identical
 public bands ([2.37,2.43] vs [2.16,2.41]) drew 0.84 and 1.00: the public->hidden gap is the
 dominant unknown, single draws cannot rank designs. Next: v6 public eval (~11:00 UTC) →
 Aug-21 slot = duck-mod v1 resubmit (safe second draw) unless v6 is in-band+ with warnings

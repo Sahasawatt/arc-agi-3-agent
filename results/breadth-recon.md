@@ -6748,3 +6748,19 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - Aug-21 slot leading options (decide when v6 eval lands): (a) duck-mod v1 resubmit —
   second draw of the best-known design, EV of best-kept >= 1.00; (b) v6 if its public run
   is in-band+ AND its log shows the warnings actually change behavior (not just render).
+
+## 2026-08-20 11:20 UTC — v6 EVAL: 1.85, OUT OF BAND LOW -> HOLD; Aug-21 slot = duck-mod v1 resubmit
+
+- taaf-duck-v6 v1 public mean **1.85**, median 0.00, actions **2,802** (v5: 4,000 — down
+  30%). 0 crashed / 25 gave_up. Feature audit: advisory warnings fired (74 in 8 games'
+  transcripts) but **hud hints fired 0 times** (confidence gate never satisfied on real
+  frames) → the changed-split had no confident HUD regions either, so v6's effective delta
+  over v5 = the warnings alone. Read: warnings suppressed exploration throughput — fewer
+  actions inside the same wall clock is exactly the wrong direction when the binding
+  constraint is the clock (R1/R7).
+- Ledger of builds vs duck-mod (public band [2.16,2.41], hidden 1.00): v4 1.73 inert-held ·
+  v5 [2.37,2.43] public but hidden 0.84 · v6 1.85 held. **duck-mod remains champion.**
+- Aug-21 00:00 UTC slot: duck-mod v1 resubmit (second hidden draw of the best design;
+  Kaggle keeps best, EV >= 1.00). Before ANY v7 design: read R7's hidden-behavior
+  hypotheses (mandated by the <1.0 tree branch) + this v6 lesson (an intervention that
+  costs actions must pay for itself in redirected exploration, not just correctness).
