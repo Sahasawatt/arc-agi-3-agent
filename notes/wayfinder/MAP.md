@@ -97,10 +97,29 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
 |---|---|---|---|
 (B2 closed — see Decisions: v4 = 1.73, below band, HOLD; postmortem = R7)
 
+- **[B4 v6 eval → HELD 2026-08-20]** public 1.85 out-of-band (band v5 [2.37,2.43]);
+  warnings fired 74x/8 games but actions fell 4,000→2,802 (-30%) inside the same clock —
+  an intervention that taxes throughput loses under a wall-clock-bound regime; hud hint
+  fired 0 times (confidence gate never met on real frames). Lesson: interventions must
+  REDIRECT exploration, not tax it; confidence gates need calibration against real-game
+  frame statistics before shipping.
+- **[Hidden-shrink ledger — the dominant unknown, updated 2026-08-20]** public→hidden:
+  duck-mod 2.41→1.00 (2.4x) · v5 2.43→0.84 (2.9x) · Tufa's own reported shrink ~1.32x
+  (R3, public→semi-private, dated). Both OUR builds shrink worse than the base reportedly
+  did → open hypothesis: our public gains are partly public-specific. Decisive-but-costly
+  probe: spend one daily slot on the PURE baseline fork (taaf-duck-fork v1, public 1.25)
+  for its hidden draw — if ~0.95 (1.32x), the additions bought nothing hidden-side and v7
+  must target general competence (latency, exploration policy), not prompt features tuned
+  on the public 25. Candidate for the Aug-22 slot if duck-mod's second draw teaches little.
+
 ## Fog
 
 - Whether hidden set rewards the same failure mix as public 25 (only submission deltas
-  probe it — 1/day).
+  probe it — 1/day; three data points so far and the gap dominates design differences).
+- v7 gating question: is there ANY lever measurable on public that transfers? The R5
+  multi-pass protocol (n_passes>1, harness's own significance.py) has never actually been
+  used — a paired 2-pass eval of duck-mod vs candidate would at least kill public-side
+  noise before spending hidden draws.
 - Whether a calibration run (repeat duck-mod commit run unchanged) is worth a slot vs
   spending every run on candidates (Kaggle GPU quota bounds this, not submission quota).
 - duck-v3 salvage — parked with D1.3.
