@@ -120,7 +120,9 @@ score. Build order:
 | B8 | DONE | duckv9 = **0.22** — the output cap truncates tool calls (finish_reason `length` 704 vs `tool_calls` 68; parser errors 87). R10's cap lever REFUTED; anim bundle still untested (confounded) | closed |
 | B9 | DONE | v8 band = **[2.87, 3.31]** (rerun 2.87: 13/25 scoring, 19 levels) — 0.44 spread on identical code | closed |
 | B10 | DONE | **duckv10 (anim bundle + Qwen3.8, uncapped) = 4.55 public, 22 levels from 1,285 actions** — campaign best; anim guards verified live (hard_noop_guard/animation_awareness True), zero truncation | closed |
-| B11 | task | v10 confirmation rerun (band) — then recommend submission | claimed |
+| B11 | DONE | **v10 band = [4.55, 4.71]** (rerun: 18/25 scoring, 28 levels) — tightest band measured; lottery worry retired (broader floor, different top-3) | closed |
+| B12 | DONE | v12 (v10 + brevity prompt) = 3.72, below band → the "cut reasoning" axis is dead in BOTH forms (cap v9 0.22, prompt v12 3.72) | closed |
+| B13 | task | v13 (v10 + animation-retrieval discipline) — queued, the remaining open lever | claimed |
 (B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets

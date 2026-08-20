@@ -6896,3 +6896,23 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   Falsified if depth drops — then the retrieval loops were load-bearing.
 - Arms now: v10 (confirm, running) · v12 = v10+brevity (running) · v13 = v10+retrieval
   discipline (staged, queued for the next free GPU slot).
+
+## 2026-08-20 21:35 UTC — v10 CONFIRMS at 4.71: band [4.55, 4.71], and it is NOT a lottery peak
+
+- **taaf-duck-v10 rerun = 4.71** (median 2.22, 18/25 scoring, **28 levels**, 1,597 actions)
+  vs run 1's 4.55 (median 0.96, 14/25, 22 levels, 1,285 actions). **v10 band = [4.55, 4.71]
+  — a 0.16 spread**, the tightest of any design measured (duck-mod 0.25, v8 0.44).
+- The lottery worry is retired by the structure, not just the mean: run 2 scored on FOUR
+  more games and cleared SIX more levels, and its top-3 is a different set (ft09 23.0,
+  lp85 16.7, dc22 14.3) than run 1's (ft09 47.6, sc25 22.3, vc33 10.7). The concentration
+  in run 1 was the noise; the floor is broad.
+- **v12 (v10 + brevity prompt) = 3.72** (17/25, 24 levels, 1,810 actions) — BELOW v10's
+  band. Actions rose as predicted (+24% over run 1) but score fell: the deliberation the
+  brevity prompt trimmed was load-bearing. R16's "cut reasoning" axis is now retired in
+  both forms — as a token cap (v9, 0.22) and as a prompt (v12, 3.72).
+- Animation-event counts are flat across arms (13.5k / 13.5k / 16.6k raw event lines), so
+  v12's extra actions did not come from less retrieval — v13's retrieval-discipline test
+  is still unrun and still the open lever.
+- **Standing: v10 (anim bundle + Qwen3.8, uncapped, stock prompts) is the candidate.**
+  Public ladder: v10 [4.55, 4.71] > v12 3.72 > v8 [2.87, 3.31] > v5 [2.37, 2.43] >
+  duck-mod [2.16, 2.41] > v6 1.85 > v4 1.73 > v9 0.22.
