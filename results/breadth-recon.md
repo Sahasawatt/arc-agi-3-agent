@@ -6916,3 +6916,20 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
 - **Standing: v10 (anim bundle + Qwen3.8, uncapped, stock prompts) is the candidate.**
   Public ladder: v10 [4.55, 4.71] > v12 3.72 > v8 [2.87, 3.31] > v5 [2.37, 2.43] >
   duck-mod [2.16, 2.41] > v6 1.85 > v4 1.73 > v9 0.22.
+
+## 2026-08-20 21:40 UTC — GPU QUOTA EXHAUSTED (30h/week). v13 cannot run; v10 stands as the candidate
+
+- `kernels push` for duckv13 returned: **"Maximum weekly GPU quota of 30.00 hours reached."**
+  Today alone spent ~8 commit runs x 2.2h. No further commit-run evals until Kaggle's
+  weekly quota resets. duckv13 (v10 + retrieval discipline) stays staged and unrun.
+- Submissions are NOT blocked by this: the hidden scoring run executes on competition
+  infrastructure, and our three prior submissions (9h each) coexisted with a full local
+  eval schedule. UNVERIFIED in the strict sense — if a submission is refused with a quota
+  error, that refutes it and costs nothing but the attempt.
+- **Candidate for the next submission: v10** (anim bundle + Qwen3.8, uncapped, stock
+  prompts) — public band **[4.55, 4.71]** over two runs, 18/25 scoring and 28 levels in the
+  better one, tightest spread of any design measured. Best previous submission was duck-mod
+  at hidden 1.00 from a public band of [2.16, 2.41]; v10's public floor is ~2x that band's
+  ceiling.
+- Awaiting the user's go — cadence is on-demand and they asked to submit only when
+  satisfied.
