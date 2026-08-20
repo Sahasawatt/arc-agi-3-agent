@@ -6695,3 +6695,12 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   vs a duck-mod resubmit is zero).
 - v5 = duckmod base + accumulating world model + auto-pushed transition digest + reset
   banner (build: results/duckv5-build-20260820.md, artifacts /tmp/duckv5out).
+
+## 2026-08-20 00:05 UTC — SUBMITTED: duck-v5 as 55633845
+
+- Submission **55633845** (taaf-duck-v5 v1, public 2.43) PENDING at 00:02:25 UTC, verified
+  via `competitions submissions`. Hidden score expected ~09:00-12:00 UTC (9h envelope).
+- Context: duck-mod's hidden draw was 1.00 (from public band [2.16,2.41]); v5's public 2.43
+  with the same ~2.2-2.4x public->hidden shrink would land ~1.0-1.1 — the REAL test is
+  whether the state channel shrinks LESS (its levers target exactly the failure modes R6
+  found, which should be as common on hidden games).
