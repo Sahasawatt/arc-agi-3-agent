@@ -6764,3 +6764,9 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   Kaggle keeps best, EV >= 1.00). Before ANY v7 design: read R7's hidden-behavior
   hypotheses (mandated by the <1.0 tree branch) + this v6 lesson (an intervention that
   costs actions must pay for itself in redirected exploration, not just correctness).
+
+## 2026-08-20 12:45 UTC — POLICY: submissions on-demand only (user)
+
+- User: "ไม่ต้องส่งทุกวันก็ได้นะ" — daily auto-resubmit cancelled. A slot is spent only on
+  a bar-passing candidate or a deliberate probe (baseline hidden-shrink probe stays listed
+  in MAP.md as the candidate probe). Leaderboard holds at duck-mod's 1.00 meanwhile.
