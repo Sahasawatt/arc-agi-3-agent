@@ -6951,3 +6951,34 @@ Also probed the same session: `kernels push` of duckv13 → `Maximum weekly GPU 
 30.00 hours reached`. So B13 stays blocked and no new commit-run eval is possible; the
 submission itself was NOT refused by the quota, which retires the "does a submission consume
 GPU quota" unknown in the negative (it does not).
+
+## 2026-08-21 16:49 UTC — duckv10 hidden = 1.70 (new best, +70% over duck-mod)
+
+`competitions submissions` ref **55662656** → `SubmissionStatus.COMPLETE`, publicScore **1.70**.
+Envelope ran slightly long: scored between the 15:48 and 16:49 UTC polls, i.e. ~10h after submit,
+not the ~9h the prior runs took. Nothing else anomalous.
+
+Hidden ladder now: **v10 1.70** > duck-mod 1.00 (rank 585/2409) > v5 0.84 > our own agent 0.11.
+
+**The shrink model held — third data point, prediction hit.** Predicted 1.6-1.9 before the result
+was known (recorded in the 06:49 entry above). Measured shrink public→hidden:
+
+| build | public | hidden | shrink |
+|---|---|---|---|
+| duck-mod | 2.41 | 1.00 | 2.41x |
+| v5 | 2.43 | 0.84 | 2.89x |
+| **v10** | **4.55 – 4.71** | **1.70** | **2.68 – 2.77x** |
+
+Three designs now sit in a 2.4-2.9x band, and v10's ratio lands mid-band rather than at an edge.
+That is no longer "nothing says the ratio is stable across designs" — it is an empirical range with
+three members. Still UNPROVEN as a *law*: three points, one harness lineage, no mechanism.
+
+**What that buys: the top-5 bar becomes a public-score target.** Leaderboard read the same minute —
+#1 cstl 3.57, Tufa Labs 2.97, then 2.76 / 2.73 / 2.72 / 2.66 / 2.59 / 2.58 / **2.57** at rank 9.
+Applying the measured 2.68-2.77x shrink to a 2.57 hidden bar → **public ~6.9-7.1 needed**, against
+v10's 4.55-4.71. So the remaining gap is roughly **+47% to +56% of public score**, not a small tune.
+
+Our exact rank at 1.70 was NOT measured (leaderboard is paginated; only the top 9 were read).
+
+Not changed by this result: GPU quota still exhausted, v13 still unrun, and the next submission slot
+opens 2026-08-22 00:00 UTC — no candidate exists to fill it.
