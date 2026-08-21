@@ -6933,3 +6933,21 @@ estimate) vs baseline vs a fixed v3. No new submission before that lands.
   ceiling.
 - Awaiting the user's go — cadence is on-demand and they asked to submit only when
   satisfied.
+
+## 2026-08-21 06:49 UTC — SUBMITTED duckv10 (ref 55662656), hidden draw pending
+
+User gave the go ("ส่ง"). Submitted kernel `sahasawatt/taaf-duck-v10` version 2.
+Verified via `competitions submissions` (NOT from the CLI's "0 submissions remaining today."
+line, which prints on success): ref **55662656**, `SubmissionStatus.PENDING`, 2026-08-21
+06:49:27 UTC. The 9h scoring envelope ends ~15:49 UTC.
+
+What is being measured: v10's HIDDEN score, the top UNPROVEN item. Public band [4.55, 4.71]
+over two commit-runs. Prior shrink public→hidden: duck-mod 2.41→1.00 (2.4x), v5 2.43→0.84
+(2.9x). Same shrink puts v10 at ~1.6-1.9 — above our standing 1.00 — but nothing measured
+says the ratio is stable across designs, so a result outside that range refutes the shrink
+model, not v10.
+
+Also probed the same session: `kernels push` of duckv13 → `Maximum weekly GPU quota of
+30.00 hours reached`. So B13 stays blocked and no new commit-run eval is possible; the
+submission itself was NOT refused by the quota, which retires the "does a submission consume
+GPU quota" unknown in the negative (it does not).
