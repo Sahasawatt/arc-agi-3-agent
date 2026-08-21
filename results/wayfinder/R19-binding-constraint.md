@@ -51,6 +51,46 @@ Full token budget spent, action count at or near baseline, **~0% of generated to
 to a recorded action**, ordinary single cutoff. `cn04`-A used **exactly** its 29-action L1 baseline.
 `sk48` and `cn04` are dead in both runs — the cleanest "model does not solve this" pair.
 
+### REVISION, same day — "CAPABILITY" is STRATEGY, not IQ
+
+A third lane read the transcripts themselves, which no one on this campaign had ever done — every
+prior report measured these failures from the outside, by token and action counts. The label
+survives as a bucket; its interpretation does not.
+
+- **The model does not fail to think. It fails to converge.** `cn04` cycles through **five distinct
+  top-level theories** (key-in-lock, collect-the-red, no-red-goal, timer-race, player-absorbed) and
+  discards each on evidence. That is not a model that cannot reason; it is one that never lands.
+- **It knows it is stuck and says so.** `cn04` writes *"OK, I'm really stuck"* **four times**
+  (transcript lines 6287, 6656, 6990, 8444); `sk48` ends *"So I'm stuck?"* (10840). Any
+  stuck-handling mechanism has something concrete to attach to.
+- **It reads the board correctly. It misreads its OWN TOOL OUTPUT.** Confusion over
+  `before_frame`/`history` indexing recurs **8+ times in `sk48`, 6+ in `cn04`**, each costing a
+  turn (`sk48`:2054-2320, 3242-3270). This is a tool-semantics defect, not a perception limit.
+- **The winner wins on behaviour.** `ft09` (47.62) clears level 1 in **three turns**: probe
+  *outside* the target first to see what moves, one variable per action, and — decisively —
+  **verify a tool's return type before trusting it** (`ft09`:889), pre-empting the exact confusion
+  that ate whole turns in `sk48`. It then transfers the mechanic to level 2 in a single turn.
+- **The winner dies of the losers' disease.** `ft09` ends at level 5 firing a **35-click blind
+  batch** on an unverified state-transition assumption (*"Cycle assumed p → M → green"*),
+  `level_completed: False` (`ft09`:5862,5886). Committing to a large batch on an unverified
+  transition model is the one failure shared by the best and worst trajectories in the corpus.
+- **No transcript ever names a missing tool.** Zero instances. The models silently re-derive state
+  and get it wrong rather than reporting a gap — so "which affordance is missing" cannot be
+  answered by asking them.
+- **The existing stuck-nudge is aimed at the wrong thing.** The harness already fires an escalating
+  nudge — but only for unread animation frames. It fired **7 times in `sk48`, was heeded every
+  time, and the level was still lost**; in `cn04` it **never fired at all**, because that game
+  produces no hidden frames. A nudge aimed at *hypothesis revision* does not exist and is untested.
+
+**Consequence for section 5's ranking:** the MoE-vs-dense model question is not what stands between
+us and the next level, and neither is any other model swap. The remaining upside named by this
+evidence is behavioural — tool-semantics hygiene, a bar on unverified batch commits, and a
+revision-directed nudge — and all three live in scaffolding, which we can change.
+
+UNVERIFIED and load-bearing: whether part of `cn04` is structurally unobservable (this repo's own
+deterministic-driver notes record that a mirrored docking renders identically and does not win) —
+if so, no amount of better reasoning reaches it.
+
 ---
 
 ## 2. Lane B — inference throughput

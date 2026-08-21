@@ -35,6 +35,12 @@ NEW_DS = "jakobbrggen/qwen3-8-27b-fp8-hf-snapshot"
 
 # The vLLM launch args are a Python list literal inside the bundle's setup command.
 # Anchor on the prefix-caching flag and inject the KV dtype right after it.
+#
+# These two constants are the SINGLE source of truth: NEW_LOOP below embeds them via
+# json.dumps (which emits a valid Python string literal), and the teeth in main()
+# exercise the same pair. An earlier draft spelled the substitution a second time
+# inside NEW_LOOP, so the teeth proved a parallel implementation nobody ran — caught
+# by the review-fanout verify pass on bad283a.
 KV_ANCHOR = "        '--enable-prefix-caching',\n"
 KV_INJECT = (
     "        '--enable-prefix-caching',\n"
@@ -45,7 +51,9 @@ KV_INJECT = (
 OLD_LOOP = """for command in json.loads((BUNDLE_DIR / "setup_commands.json").read_text()):
     print(f"taaf.kaggle: setup command: {command}", flush=True)"""
 
-NEW_LOOP = """for command in json.loads((BUNDLE_DIR / "setup_commands.json").read_text()):
+# Built, not hand-written, so the anchor/injection text cannot drift from the teeth.
+NEW_LOOP = '''_kv_injected = False
+for command in json.loads((BUNDLE_DIR / "setup_commands.json").read_text()):
     # duckv14: v10's model swap (R12 seam) + ONE new flag, --kv-cache-dtype fp8.
     # NO output cap - v9 proved a 768-token ceiling truncates the tool call that
     # carries the action itself.
@@ -61,18 +69,27 @@ NEW_LOOP = """for command in json.loads((BUNDLE_DIR / "setup_commands.json").rea
             "SERVED_MODEL_NAME = 'vrfai/Qwen3.8-27B-FP8'",
         )
     )
-    if "'--enable-prefix-caching',\\n" in command:
-        assert command.count("'--enable-prefix-caching',\\n") == 1, "duckv14: prefix-caching anchor is not unique"
+    _kv_anchor = ''' + json.dumps(KV_ANCHOR) + '''
+    _kv_inject = ''' + json.dumps(KV_INJECT) + '''
+    if _kv_anchor in command:
+        assert command.count(_kv_anchor) == 1, "duckv14: prefix-caching anchor is not unique"
         assert "'--kv-cache-dtype'" not in command, "duckv14: kv-cache-dtype already present upstream"
-        command = command.replace(
-            "        '--enable-prefix-caching',\\n",
-            "        '--enable-prefix-caching',\\n        '--kv-cache-dtype',\\n        'fp8',\\n",
-        )
+        command = command.replace(_kv_anchor, _kv_inject)
+        _kv_injected = True
         print("taaf.kaggle: duckv14 injected --kv-cache-dtype fp8", flush=True)
     assert "vrfai-qwen3-6-27b-fp8-hf-snapshot" not in command, "duckv14: model slug rewrite missed"
     assert "Qwen3.6-27B-FP8" not in command, "duckv14: served-name rewrite missed"
     assert "'LOCAL_ANALYZER_MAX_OUTPUT': '0'" in command, "duckv14: output must stay UNCAPPED"
-    print(f"taaf.kaggle: setup command: {command}", flush=True)"""
+    print(f"taaf.kaggle: setup command: {command}", flush=True)
+
+# Fail LOUDLY rather than silently running a v10-identical experiment. Without this,
+# a re-versioned bundle that reformatted its vLLM arg list would produce v10-shaped
+# numbers that read as "R19 hypothesis refuted" when the flag never landed at all.
+assert _kv_injected, (
+    "duckv14: --kv-cache-dtype was NEVER injected - the bundle's launch args no longer "
+    "match KV_ANCHOR. This run would silently be a v10 rerun; fix the anchor before "
+    "reading any result as evidence about the R19 hypothesis."
+)'''
 
 CELL12 = (
     "# duckv14: stock anim bundle + Qwen3.8, output UNCAPPED, identical to v10 except\n"
@@ -111,14 +128,28 @@ def main() -> None:
     assert "Qwen3.8-27B-FP8" in o8
     assert "'LOCAL_ANALYZER_MAX_OUTPUT': '768'" not in o8, "v14 must not cap output"
     assert "--kv-cache-dtype" in o8, "v14: KV dtype injection missing from cell 8"
+    # The generated cell must carry the SAME constants the teeth below exercise —
+    # this is what makes the teeth evidence about the code that actually runs.
+    assert json.dumps(KV_ANCHOR) in o8, "v14: cell 8 does not embed KV_ANCHOR"
+    assert json.dumps(KV_INJECT) in o8, "v14: cell 8 does not embed KV_INJECT"
+    assert "_kv_injected" in o8, "v14: cell 8 is missing the did-it-fire guard"
 
-    # --- teeth: the injection must actually transform a launch command, and must
-    # leave a command that has no prefix-caching flag untouched. Run the real
-    # substitution here rather than trusting the string that describes it. ---
+    # --- the anchor, checked against the REAL artifact rather than a fixture ---
+    # R13 recorded that the anim bundle v14 mounts has the same SHA-256 as this local
+    # copy, so this is the launch command the Kaggle run will actually rewrite.
+    bundle = REPO / "duck" / "bundle" / "setup_commands.json"
+    if bundle.exists():
+        cmds = json.loads(bundle.read_text(encoding="utf-8"))
+        hits = sum(c.count(KV_ANCHOR) for c in cmds)
+        assert hits == 1, f"anchor appears {hits} times in the real bundle, expected exactly 1"
+        assert not any("--kv-cache-dtype" in c for c in cmds), "bundle already sets kv-cache-dtype"
+        print(f"anchor check OK against {bundle} ({len(cmds)} command(s), 1 anchor)")
+    else:
+        print(f"WARNING: {bundle} absent - anchor NOT checked against a real launch command")
+
+    # --- teeth: run the real substitution, on the same constants cell 8 embeds ---
     def inject(cmd: str) -> str:
-        if KV_ANCHOR in cmd:
-            cmd = cmd.replace(KV_ANCHOR, KV_INJECT)
-        return cmd
+        return cmd.replace(KV_ANCHOR, KV_INJECT) if KV_ANCHOR in cmd else cmd
 
     sample = (
         "    cmd = [\n"
@@ -132,8 +163,10 @@ def main() -> None:
     assert got.index("'--kv-cache-dtype'") > got.index("'--enable-prefix-caching'"), "teeth: wrong order"
     assert got.count("'--enable-prefix-caching'") == 1, "teeth: anchor duplicated"
     assert inject("no flags here\n") == "no flags here\n", "teeth: fired on an unrelated command"
+    # and the guard has to be reachable: an anchorless corpus must NOT set the flag
+    assert inject("no flags here\n").find("--kv-cache-dtype") == -1, "teeth: flag leaked without anchor"
 
-    print("self-check OK: cells [6, 8, 12]; anim bundle + 3.8, no cap, KV fp8")
+    print("self-check OK: cells [6, 8, 12]; anim bundle + 3.8, no cap, KV fp8, fire-guard armed")
 
 
 if __name__ == "__main__":
