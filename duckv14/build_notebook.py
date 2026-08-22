@@ -82,14 +82,24 @@ for command in json.loads((BUNDLE_DIR / "setup_commands.json").read_text()):
     assert "'LOCAL_ANALYZER_MAX_OUTPUT': '0'" in command, "duckv14: output must stay UNCAPPED"
     print(f"taaf.kaggle: setup command: {command}", flush=True)
 
-# Fail LOUDLY rather than silently running a v10-identical experiment. Without this,
-# a re-versioned bundle that reformatted its vLLM arg list would produce v10-shaped
-# numbers that read as "R19 hypothesis refuted" when the flag never landed at all.
+    print(f"taaf.kaggle: setup command: {command}", flush=True)'''
+
+# The post-loop guard CANNOT be appended to NEW_LOOP: OLD_LOOP matches only the first two
+# lines of the setup loop, and the real loop body continues past it (`subprocess.run(...)`,
+# `env = _command_env()`, ...). A column-0 statement at the end of the replacement closes the
+# loop early and strands those lines — that is exactly the IndentationError that killed
+# duckv14 version 1 on Kaggle. Anchor it on a later line that is genuinely outside the loop.
+GUARD_ANCHOR = '# Honour any PYTHONPATH a setup command exported.'
+GUARD = '''# duckv14: fail LOUDLY rather than silently running a v10-identical experiment.
+# Without this, a re-versioned bundle that reformatted its vLLM arg list would produce
+# v10-shaped numbers that read as "R19 hypothesis refuted" when the flag never landed.
 assert _kv_injected, (
     "duckv14: --kv-cache-dtype was NEVER injected - the bundle's launch args no longer "
     "match KV_ANCHOR. This run would silently be a v10 rerun; fix the anchor before "
     "reading any result as evidence about the R19 hypothesis."
-)'''
+)
+
+# Honour any PYTHONPATH a setup command exported.'''
 
 CELL12 = (
     "# duckv14: stock anim bundle + Qwen3.8, output UNCAPPED, identical to v10 except\n"
@@ -108,7 +118,9 @@ def main() -> None:
 
     c8 = "".join(nb["cells"][8]["source"])
     assert OLD_LOOP in c8, "cell 8: expected setup loop not found"
-    nb["cells"][8]["source"] = c8.replace(OLD_LOOP, NEW_LOOP)
+    assert c8.count(GUARD_ANCHOR) == 1, "cell 8: guard anchor is missing or not unique"
+    c8 = c8.replace(OLD_LOOP, NEW_LOOP).replace(GUARD_ANCHOR, GUARD, 1)
+    nb["cells"][8]["source"] = c8
 
     nb["cells"][12]["source"] = CELL12
 
@@ -121,6 +133,20 @@ def main() -> None:
     out = json.loads(OUT_NB.read_text(encoding="utf-8"))
     diff = [i for i in range(len(src["cells"])) if src["cells"][i]["source"] != out["cells"][i]["source"]]
     assert diff == [6, 8, 12], f"unexpected diff cells: {diff}"
+
+    # THE gate that was missing. Every content assert below passed on version 1 while the
+    # cell was not valid Python at all — Kaggle answered `IndentationError: unexpected
+    # indent` and the slot was gone. Ask the parser, not only the text.
+    for idx in diff:
+        cell_src = "".join(out["cells"][idx]["source"])
+        try:
+            compile(cell_src, f"cell{idx}", "exec")
+        except SyntaxError as exc:
+            raise AssertionError(
+                f"cell {idx} is not valid Python: {type(exc).__name__}: {exc.msg} "
+                f"at line {exc.lineno} -> {(exc.text or '').rstrip()!r}"
+            ) from None
+    print(f"syntax OK: cells {diff} compile")
 
     o6 = "".join(out["cells"][6]["source"])
     o8 = "".join(out["cells"][8]["source"])

@@ -84,6 +84,30 @@ Goal: Kaggle ARC-AGI-3 public leaderboard score >= 3.00 (current us: 1.00, rank 
   clock death mid-level) and R4 says the points recovered by finishing deep levels are
   the biggest pool. Both levers attack that chain directly.
 
+- **D-alloc (2026-08-21) — the exchange rate is 2 slots per rankable answer.** R9 says a single
+  run cannot rank two designs, and v10's own band took two runs. Quota is 30 GPU-h/week and a
+  commit run is ~2h12m, so **13 slots/week = 6 rankable answers/week, maximum**. Running 13
+  designs once each yields 13 numbers and zero rankings — the exact mistake R9 exists to prevent.
+  Corollary: a candidate whose *losing* branch teaches nothing costs a full rankable answer to
+  learn nothing, which is why B13 is held. There is no cheap eval mode — R15 settled that (games
+  run concurrently, so 4 games cost the same wall clock as 25). Full reasoning:
+  `notes/quota-allocation.md`.
+
+- **D-read (2026-08-21) — read the vLLM log BEFORE the score, pre-registered.** v14's outcome
+  space has two independent axes, and the quadrant "score up, mechanism unchanged" is confounded.
+  It is only visible if the mechanism is read first; reading the score first makes a confounded
+  result indistinguishable from a confirmation.
+
+- **D-pred (2026-08-21) — two of R19's four predictions were not discriminators and were
+  rewritten.** "`lf52`/`tr87` execute a non-zero number of actions" fails because `lf52` already
+  scored 1.82 in run B — the marker is present in both worlds, so luck satisfies it. Same flaw for
+  the `r11l`/`sk48` tok/s outliers (n=1 per game per run). Both replaced with population
+  statistics that have many samples per run: the count of game-runs with a >50% dead tail plus the
+  total fraction of clock in stuck-yield tails, and the spread of per-game tok/s across all 25
+  games. Also measured: vLLM's "prefix cache hit rate" is a **cumulative** average, not a rolling
+  window (mean step 0.52 → 0.041 while n grew 14.8×, the 1/n signature), so the endpoint is
+  comparable across runs only at equal run length — true here, but by coincidence of config.
+
 ## THE v7 PLAN (D3, resolved 2026-08-20 from R9+R10+R11) — "raise the floor, measure what has low variance"
 
 R9 killed score-based iteration on single public runs (reliable base itself swings 75%
@@ -122,7 +146,12 @@ score. Build order:
 | B10 | DONE | **duckv10 (anim bundle + Qwen3.8, uncapped) = 4.55 public, 22 levels from 1,285 actions** — campaign best; anim guards verified live (hard_noop_guard/animation_awareness True), zero truncation | closed |
 | B11 | DONE | **v10 band = [4.55, 4.71]** (rerun: 18/25 scoring, 28 levels) — tightest band measured; lottery worry retired (broader floor, different top-3) | closed |
 | B12 | DONE | v12 (v10 + brevity prompt) = 3.72, below band → the "cut reasoning" axis is dead in BOTH forms (cap v9 0.22, prompt v12 3.72) | closed |
-| B13 | task | v13 (v10 + animation-retrieval discipline) — queued, the remaining open lever | claimed |
+| B13 | task | v13 (v10 + animation-retrieval discipline) — **HELD**, not queued: prompt axis is 0-for-2 and a loss teaches nothing (see D-alloc) | held |
+| B14 | DONE | **duckv10 hidden = 1.70** (ref 55662656), best ever, up from duck-mod's 1.00. Predicted 1.6-1.9 before the number was known and hit; shrink 2.68-2.77x lands mid-band against duck-mod 2.41x and v5 2.89x — 3 points now, still not a law | closed |
+| B15 | task | **v14 smoke, 12-minute clock (~0.1 slot)** — does the `--kv-cache-dtype fp8` flag land and does the kernel serve? `kv_cache_dtype` is readable at 5m50s and the first request is served at 6m37s, both measured off v10's own log. Insurance against v7's two ERROR-burned slots. Does NOT measure score or prefix decay | open |
+| B16 | task | **v14 paired, 2 slots** — does KV retention change the mechanism, and does that move score? Read the vLLM log BEFORE the score (see D-read). P2/P4 rewritten as population statistics first (see D-pred) | blocked by B15 |
+| B17 | task | **v16 (push-the-diff) — build, then paired, 2 slots.** Design done at `notes/v16-push-the-diff.md`; wiring is two edits reusing `_diff_cells`/`_bbox_text`/`_format_changes` and the proven `_build_user_prompt` push channel | open |
+| B18 | DONE | **v15 (stop-on-surprise) ABANDONED** the day it was drafted — the batch path was already guarded, and a "surprise" has no harness-visible definition because the harness never sees the model's expectation. Full reasoning kept at `notes/v15-stop-on-surprise.md` | closed |
 (B3 closed — see Decisions: v5 = 2.43 top-of-band, features live in transcripts; tonight's slot = v5)
 
 ## Blocked tickets

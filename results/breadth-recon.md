@@ -6982,3 +6982,165 @@ Our exact rank at 1.70 was NOT measured (leaderboard is paginated; only the top 
 
 Not changed by this result: GPU quota still exhausted, v13 still unrun, and the next submission slot
 opens 2026-08-22 00:00 UTC — no candidate exists to fill it.
+
+## 2026-08-22 11:23 UTC — quota model A CONFIRMED; v14 and v16 launched CONCURRENTLY
+
+`kernels push` of duckv14 accepted at **Sat 2026-08-22 11:23:45 UTC**, after being refused with
+`Maximum weekly GPU quota of 30.00 hours reached` throughout 2026-08-21. That settles the open
+question from the 08-21 entry: the weekly GPU quota is a **fixed weekly reset (model A)**, not a
+rolling 7-day window (model B). Under model B nothing would have freed until 08-25.
+
+**Both candidates launched at once.** Kaggle allows 2 concurrent GPU sessions — a constraint we
+have had all campaign and never used. Running the pair in parallel returns both first passes in
+~2h12m instead of ~4h24m for the same quota spend.
+
+- `sahasawatt/taaf-duck-v14` v1 — v10 + `--kv-cache-dtype fp8`, nothing else
+- `sahasawatt/taaf-duck-v16` v1 — v10 + a compact change summary pushed into every turn's user
+  message, nothing else
+
+Each differs from v10 in exactly two notebook cells (8 and 12) and from each other in the same
+two, so neither run confounds the other's variable.
+
+**The smoke run (ticket B15) was skipped deliberately.** Its purpose was insurance against a build
+that never runs, but both notebooks were verified locally against the real bundle source first, on
+both poles — which is stronger evidence than a smoke run gives for the flag itself:
+
+- v14: the generated cell 8 executed against `duck/bundle/setup_commands.json` puts
+  `--kv-cache-dtype fp8` into the launch args after `--enable-prefix-caching` with output still
+  uncapped; against a bundle with the anchor stripped, the `assert _kv_injected` guard fires.
+- v16: cell 12 extracted from the built notebook, run against the anim bundle's own
+  `inference` package, passes 4/4 teeth — and goes RED on three mutations, including the
+  `history_entries[-1]` positional read that is the exact defect the patch removes.
+
+What remains unmeasurable in advance is only whether the kernel starts at all, and both metadata
+files derive from v10's, which ran.
+
+**Reading order is pre-registered (decision D-read in `notes/wayfinder/MAP.md`):** read each run's
+vLLM log BEFORE its score. The quadrant "score moved, mechanism unchanged" is confounded and is
+invisible if the score is read first.
+
+**Predictions P2 and P4 were rewritten before launch (D-pred)** — "`lf52`/`tr87` execute a
+non-zero number of actions" is not a discriminator, because `lf52` already scored 1.82 in v10's
+run B. They are replaced by population statistics: the count of game-runs with a >50% dead tail
+and the total fraction of clock spent in stuck-yield tails, plus the spread of per-game tok/s
+across all 25 games.
+
+## 2026-08-22 11:35 UTC — v14 version 1 died on a syntax error; both builders now compile-check
+
+`taaf-duck-v14` version 1 returned `KernelWorkerStatus.ERROR` within minutes of launch:
+
+```
+papermill.exceptions.PapermillExecutionError
+Exception encountered at "In [4]":
+IndentationError: unexpected indent
+```
+
+**Cause.** `OLD_LOOP` matches only the FIRST TWO LINES of the bundle's setup loop, while the real
+loop body continues past it (`subprocess.run(command, ...)`, `env = _command_env()`,
+`os.environ.update(env)`). v10 and v16 replace those two lines with a block that still ends at the
+loop's own indent level, so the remaining lines stay inside the loop. v14 appended its post-loop
+`assert _kv_injected` at column 0 to the end of the replacement, which **closed the loop early** and
+stranded `subprocess.run(...)` at indent 4 — line 74 of the generated cell.
+
+Fixed by anchoring the guard on `# Honour any PYTHONPATH a setup command exported.`, a line that is
+genuinely outside the loop, instead of appending it to the replacement.
+
+**The missing gate, now added to BOTH builders.** Every content assertion passed on version 1 —
+model slug, served name, uncapped output, the flag's presence, cells [6,8,12], the teeth — while
+the cell was not valid Python at all. None of them asked the parser. Both builders now `compile()`
+every modified cell and fail with the syntax error's line and text. Verified against the artifact
+that actually shipped: it reports `IndentationError: unexpected indent line 74`.
+
+**Two process failures worth recording, both mine.**
+
+1. **The smoke run (B15) was skipped on my reasoning that local verification was stronger.** It was
+   stronger about the *flag* and blind to the *file*. A 12-minute smoke would have caught this for
+   ~0.1 of a slot; instead version 1 burned a launch. The local checks executed the loop body
+   extracted from the cell — the same "teeth exercise a parallel form, not the shipped artifact"
+   trap the review-fanout verify pass caught on `bad283a` one day earlier, wearing a different
+   disguise.
+2. **The first diagnosis was wrong and was stated before the evidence was read.** I attributed it
+   to leading whitespace surviving `.replace`, which was plausible and false — both candidate lines
+   sit at column 0, and the error was at line 74, not line 1.
+
+Re-verified before re-pushing, this time executing the loop **and** the guard **and** reaching
+`subprocess.run` with a stubbed subprocess: the rewritten command carries `--kv-cache-dtype` after
+`--enable-prefix-caching` with output uncapped, and a bundle with the anchor stripped still fires
+the guard. `taaf-duck-v14` version 2 pushed 11:35:57 UTC. `taaf-duck-v16` version 1 unaffected and
+still RUNNING — its cell 8 is v10's shape byte for byte.
+
+## 2026-08-22 13:43 UTC — duckv16 = 3.51 public. The mechanism worked; the score fell.
+
+Read in the pre-registered order (D-read): vLLM/harness log first, score last.
+
+**1. Mechanism — the patch did what it was built to do.**
+
+`duckv16: patch installed, teeth 4/4 OK, budget=12, output UNCAPPED` appears in the kernel's own
+log, so the monkeypatch took on Kaggle's machine and its four teeth passed there, not only
+locally. Delivery confirmed in `prompts/`: the line reaches the model's turn.
+
+Coverage, counted over all 25 games' prompt logs (178 turns):
+
+| channel | turns | share |
+|---|---|---|
+| new diff line | 78 | **43.8%** |
+| pre-existing animation line | 83 | 46.6% |
+| either | 161 | **90.4%** |
+
+The deferral works exactly as designed and the two channels partition the turns almost perfectly:
+games with `anim=0` get the diff on nearly every turn (`ft09` 8/8, `m0r0` 8/8, `lp85` 8/8,
+`cn04` 7/7), games with heavy animation get zero (`sp80` 0/8, `sb26` 0/7, `su15` 0/7). So v16
+roughly **doubled** how often the model is told what changed: 46.6% → 90.4% of turns.
+
+**2. The confusion it targeted barely moved.**
+
+Same matcher over all three runs' transcripts (`contradict|confus|wait, that|does not match|
+mismatch`, per million characters): v10out **53.5**, v10cal **54.2**, v16 **50.8**. That is ~5%
+down, against a v10-to-v10 spread of 0.7. Directionally right, four times the observed noise, and
+still one run — **not established**, and nothing like the disappearance R19's revision implied.
+
+**3. Score — 3.51, clear of the band and below it.**
+
+| run | mean | scoring games | levels | zero-action games |
+|---|---|---|---|---|
+| v10out | 4.55 | 14 | 22 | 2 (`lf52`, `tr87`) |
+| v10cal | 4.71 | 18 | 28 | 0 |
+| **v16** | **3.51** | **19 — the most ever** | 24 | 1 (`dc22`) |
+
+v16 got **more games onto the scoreboard than any run in the campaign** and still scored lowest of
+the three. Under `min((baseline/actions)^2 * 100, 115)` weighted by level number, breadth does not
+pay — this is the most direct confirmation of R4's "depth beats breadth ~7x" the campaign has
+produced.
+
+The gap is 1.04 below the bottom of a band that is itself 0.16 wide, so R9's "one run cannot rank
+designs" does not rescue it. **v16 is rejected**, with n=1 stated.
+
+**One thing that did move, and it was not the diff.** `lf52` and `tr87` — the two games that
+executed literally zero actions in v10 run A — took actions here. But v16 has its own zero-action
+game, `dc22` (0 actions, 0 tokens). The yield spiral was not fixed; it relocated. That matches
+R19's reading that the spiral is a harness retry defect, independent of anything the diff push
+touches — and it means "did `lf52` move" was never going to be evidence about this change, which
+is exactly why D-pred replaced that prediction before launch.
+
+**What this closes:** pushing more state into the model's turn is not the lever. The information
+was delivered — measurably, to twice as many turns — and the score went down.
+
+## 2026-08-22 15:43 UTC — v10 resubmitted (ref 55694474): the variance measurement we never took
+
+Same kernel, same version (`sahasawatt/taaf-duck-v10` v2) as the 08-21 submission that drew
+**1.70**. Nothing about the build changed. Verified via `competitions submissions`, not from the
+CLI's "0 submissions remaining today." line.
+
+This is the first time the campaign submits an identical build twice, so it measures the **hidden**
+draw's spread directly. Until now variance was only ever measured on the public set (v10's band
+[4.55, 4.71]; v8's [2.87, 3.31] on identical code — 0.44 wide).
+
+Why it is worth a slot rather than a new design: the efficiency axis was closed the same day with
+a hard ceiling of **5.80 public (~2.1 hidden)** once the scorer's `completion_cap` term was
+recovered, and both fresh designs lost (v14 2.87, v16 3.51). A second draw of the best build is
+the only move available that costs no GPU quota and no build risk.
+
+Expected: another draw near 1.70 says the hidden estimate is stable and the ceiling argument
+holds. A materially different number would mean the single-draw hidden scores this campaign has
+been reasoning from — 1.00, 0.84, 0.11, 1.70 — carry error bars nobody has measured, which would
+change how every past hidden comparison should be read.
