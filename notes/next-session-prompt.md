@@ -264,7 +264,7 @@ AFTER that submit had landed. Reverting v8's two changes restored 0.01 → 0.10:
 itself** (60s slice + qstate bandit). Today's quota got spent on an accidental byte-identical
 duplicate (55567678, PENDING — expect ~0.10). **Next lever = the HYBRID bundle** (sample base ~1.56
 + driver overrides, <starter>/agent/my_agent_hybrid.py via kaggle/bundle_hybrid.py): REBUILD it
-(it predates current mirror.py), verify like kaggle_bundle_check.py, push as a new kernel version,
+(it predates current mirror.py), verify like kaggle/bundle_check.py, push as a new kernel version,
 submit at tomorrow's 00:00 UTC window. Verify any "blocked" reading against `competitions
 submissions`, never against the submit command's error text.
 
@@ -287,7 +287,7 @@ Details + censuses: results/breadth-recon.md tail sections dated 2026-08-17.
 Facts behind it, all verified this session:
 - **The committed bundle was STALE and would have shipped without ar25's L3/L4** -- rebuilding changed
   exactly one line, the `mirror` payload. Fixed in `4de4923`; starter's `agent/my_agent.py` now
-  sha-matches the repo bundle (230,211 B). `kaggle_bundle_check.py` passes 5/5 (needs
+  sha-matches the repo bundle (230,211 B). `kaggle/bundle_check.py` passes 5/5 (needs
   `PYTHONPATH=<starter>/vendor/ARC-AGI-3-Agents`, else a false ModuleNotFoundError).
 - **A ~21s COMPLETE on the kernel is NORMAL** -- that is the commit run (wheels + notebook convert, no
   play). The real ~7.3h run happens server-side after `competitions submit`.

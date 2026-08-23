@@ -12,3 +12,9 @@ dependencies = [
 dev = [
     "pytest>=9.1.1",
 ]
+
+[tool.pytest.ini_options]
+# Tests live in tests/ and import the engine modules by bare name, the same way
+# kaggle/bundle.py embeds them. Put the repo root on sys.path so both agree.
+pythonpath = ["."]
+testpaths = ["tests"]
