@@ -71,9 +71,75 @@ inside a `taaf_grafts/` directory. Measured with `kaggle datasets files` *before
 loader, not discovered from a failed run. Cell 12 handles both layouts and rebuilds the
 package directory under `/kaggle/working` when the mount is flat.
 
-## Status
+## Status — smoke PASSED, full run in flight
 
-Smoke pushed 2026-08-23 (`-t 900`, version 1). UNVERIFIED until it lands: that the grafts
-*run* on the anim bundle (symbol and signature compatibility is necessary, not sufficient —
-behaviour inside the overridden methods can still differ), and what banking is worth in
-score. Its value is also unknown on the public set — the fork reports no number for it.
+Smoke (version 1, `-t 900`, 2026-08-23) confirmed the install end to end. From the kernel log:
+
+```
+duckv19: flat mount at /kaggle/input/datasets/sahasawatt/taaf-grafts-banking
+         -> rebuilt package at /kaggle/working/_grafts/taaf_grafts
+duckv19: graft root = /kaggle/working/_grafts
+duckv19: teeth OK - banking importable, and engine facts 1/2/3 hold on THIS engine
+TAAF_GRAFTS FEATURES={"banking":true} API_VERSION=1
+[banking] armed
+duckv19: solver HarnessSolver -> BankingHarnessSolver  (installed=True)
+```
+
+So the grafts DO run on the anim bundle — compatibility was necessary and turns out to have
+been sufficient here.
+
+**A second, independent confirmation that only one flag armed**: the downloaded
+`_grafts/taaf_grafts/__pycache__/` holds exactly four `.pyc` files — `banking_solver`,
+`solver_base`, `composite`, `__init__`. The other fourteen modules have none. Python only
+compiles what is imported, and that bytecode is a side effect of the interpreter rather than
+a line we wrote, which makes it better evidence than our own print.
+
+⚠️ **One log line looked like a contradiction and is not.** Two tenths of a second AFTER the
+install, the log prints `benchmark.solver: HarnessSolver(label='duck-harness', ...)`. That is
+not a `repr()` of the live object: it is `preamble.txt`, generated when the bundle was
+packed on the author's machine — it still carries
+`local_server_repo_dir='/Users/jakobbruggen/Desktop/duck-harness/ARC3-Inference'` and reports
+`benchmark.passes: 4` / `benchmark.games : 6`, against our actual 1 pass over 25 games. A
+stored string that reads exactly like current state.
+
+## ⚠️ RESULT — v19 scored 2.82, and banking never fired
+
+The full run landed at **2.82 public**. Before reading that as banking's value, the check
+that should have been done before the run at all:
+
+```
+solver_note, all 25 games : "tokens=NNNNN"  — no replay, no prune, no abort, nothing
+v19    states {'gave_up': 25}   games reaching WIN: 0   levels cleared 20 of 183
+v10cal states {'gave_up': 25}   games reaching WIN: 0   levels cleared 28 of 183
+```
+
+`banking_solver` fires **"once a session's WIN is fully recorded"** — and a WIN is the whole
+game, every level, not a level-up. **This campaign has never won a single game.** All four
+engine facts above were verified correctly against the real engine, and not one of them was
+ever reached, because the precondition for the code path that uses them never occurred.
+
+That sentence was read during the pre-flight — it is quoted verbatim in this file's own
+"why banking" section — and the obvious follow-up question (*have we ever actually won a
+game?*) was never asked. Four facts checked in depth; the gate in front of them unchecked.
+The `state` column that answers it is in every `benchmark.json` this campaign has downloaded.
+
+**Banking is not refuted. It is unreachable from where we are**, and it stays unreachable
+until at least one game is won outright. Its cost is not zero either: the swapped
+`session_class` records traces regardless (actions 1597 → 1638, +2.6%).
+
+**What the run IS worth, and it is worth more than the feature:** v19 is v10 with an inert
+graft — a third sample of the same build, at 2.82 against 4.71 and 4.55. See LEDGER
+CORRECTION 3: the public band this campaign judged everything by was [4.55, 4.71]; the real
+spread is **[2.82, 4.71]**, and four of the eight "closed" directions were closed on
+differences smaller than that.
+
+## Review
+
+`review-fanout` over `22784dc..810f8f4` (14 files, 1438 loc, route FULL) returned **SHIP**:
+0 findings, 2 refuted by the verify pass, all four ship criteria met.
+
+One residual gap the verify pass named and this note keeps rather than closing: the
+`composite.install(bm, {"banking": True})` literal assert in `build_notebook.py:66` is
+defeated by a **second** `install(` call on a new line, which would leave the assert passing
+while arming a second flag. Narrow, but real — the guard covers the single arming path that
+exists today, not the shape of a future edit.

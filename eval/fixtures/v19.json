@@ -1,0 +1,131 @@
+{
+ "label": "v19",
+ "source": "v19full",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 24
+  },
+  "tn36": {
+   "score": 1.3524936601859678,
+   "levels": 1,
+   "actions": 58
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 133
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 27
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 26
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 82
+  },
+  "tu93": {
+   "score": 0.6939638600538255,
+   "levels": 1,
+   "actions": 44
+  },
+  "lp85": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 13
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 18
+  },
+  "wa30": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 182
+  },
+  "vc33": {
+   "score": 9.107142857142858,
+   "levels": 2,
+   "actions": 35
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 58
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 14
+  },
+  "sc25": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 40
+  },
+  "sp80": {
+   "score": 1.3226547010330791,
+   "levels": 1,
+   "actions": 74
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 67
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 111
+  },
+  "cd82": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 49
+  },
+  "re86": {
+   "score": 16.100476971063,
+   "levels": 3,
+   "actions": 276
+  },
+  "s5i5": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 62
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 89
+  },
+  "ft09": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 11
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 53
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 74
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 18
+  }
+ }
+}

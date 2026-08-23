@@ -11,6 +11,9 @@ four builds ever submitted.
 | **v10cal** | **4.71** | — | 18 | 28 | 1597 | 57.0 | 2.03 | anim | rerun of v10; the campaign's best number |
 | **v10out** | **4.55** | **1.70** | 14 | 22 | 1285 | 58.4 | 1.87 | anim | anim bundle + Qwen3.8, output uncapped. The rebase onto Tufa's animation-awareness branch is the single largest jump in the campaign |
 | v12 | 3.72 | — | 17 | 24 | 1810 | 75.4 | 2.19 | anim | v10 + a "be brief" prompt. Below band → the cut-reasoning axis is dead in its soft form too |
+| **v21** | **1.25** | — | 15 | 12 | 2921 | 243.4 | 2.27 | anim | v10 + `reasoning_effort=medium` (the rank-21 team's flag; template default is xhigh). Patch verified in-kernel. Mechanism worked exactly as designed — **tok/action 1271→776 (−39%), actions 1597→2921 (+83%)** — and levels HALVED (28→12). `eval/rank_runs.py`: **p=0.0052, WORSE** — the second result outside the same-build noise, in the opposite direction from the hope. `notes/R26-reasoning-effort.md` |
+| **v20** | **0.18** | — | 3 | 3 | 7656 | 2552.0 | — | anim | v10 with the model swapped to **Qwen3.6-35B-A3B-FP8** (MoE, 256 experts / 8 active, ~3B active). vLLM booted it fine and tool calls parsed — the agent fired **7,656 actions, 4.7x v10's 1,597** — and cleared **3 levels against 28**. act/lvl 57 -> 2,552. **The first result of this campaign that lands outside the [2.82, 4.71] same-build spread**, so it is the first single run that can rank anything. `notes/R25-moe-result.md` |
+| **v19** | **2.82** | — | 16 | 20 | 1638 | 81.9 | — | anim | v10 + the fork's `banking` graft, armed and verified installed (`solver HarnessSolver -> BankingHarnessSolver (installed=True)`). **It never fired**: banking needs a full-game WIN and all 25 games ended `gave_up` — 0 WINs, 20 of 183 levels. So this is a THIRD sample of v10 with an inert graft, and it is what widened the public band to [2.82, 4.71]. `notes/R23-banking.md` |
 | **v18** | **3.60** | — | 15 | 22 | 1576 | 71.6 | — | anim | v10 + `MULTIMODAL_UPSCALE` 4→8. The board PNG went 256×256→512×512 (~64→~256 vision tokens for 4096 cells). Below band, and the shape is v14's exactly: **same 22 levels as v10out for 291 MORE actions** (1285→1576), act/lvl 58.4→71.6. Bigger image did not buy sight; it bought attempts. `notes/v18-vision-upscale.md` |
 | v16 | 3.51 | — | **19** | 24 | 1218 | **50.8** | 2.02 | anim | v10 + a change summary pushed into every turn. Delivery doubled (46.6%→90.4% of turns) and the score fell. Most games scoring ever, best efficiency ever, still lost — breadth does not pay |
 | v8out | 3.31 | — | 15 | 22 | 1946 | 88.5 | 2.12 | old | model swap to Qwen3.8 on the OLD bundle. Proved the model was worth ~+37% before the bundle was touched |
@@ -48,6 +51,62 @@ Five builds, monotonic, across two different bundles and two models. Score is
 `min((baseline/actions)^2 * 100, 115)` weighted by level number, so halving the actions spent per
 level roughly quadruples that level's contribution. Every real gain this campaign made was an
 efficiency gain wearing some other name.
+
+### CORRECTION 3 (2026-08-23) — the PUBLIC band was wrong too, and it invalidates every run comparison
+
+v19 armed the banking graft and scored **2.82 public**. Then the check that should have come
+before the run: **banking never fired.** `solver_note` on all 25 games contains only
+`tokens=NNNNN` — no mention of a replay, a prune, or an abort — and the reason is in the
+state column:
+
+```
+v19    : states {'gave_up': 25}   games reaching WIN: 0   levels cleared 20 of 183
+v10cal : states {'gave_up': 25}   games reaching WIN: 0   levels cleared 28 of 183
+```
+
+`banking_solver` fires "once a session's WIN is fully recorded" — a WIN is the whole game,
+every level. **This campaign has never won a single game.** Its four engine facts were all
+verified correctly and none of them was ever reached.
+
+So v19 is v10 with an inert graft, i.e. a THIRD sample of the same build:
+
+| run | public |
+|---|---|
+| v10cal | 4.71 |
+| v10out | 4.55 |
+| **v19 (banking inert)** | **2.82** |
+
+**The band this campaign has used to judge every design is [4.55, 4.71]. The real spread of
+the same build is [2.82, 4.71] — 1.89 wide, 40% of the top.** Consequences:
+
+| run | score | verdict recorded | verdict that survives |
+|---|---|---|---|
+| v12 | 3.72 | "below band, brevity axis dead" | inside v10's own spread |
+| v16 | 3.51 | "delivery doubled and it still lost" | inside |
+| v18 | 3.60 | "bigger image bought attempts, not sight" | inside |
+| v14 | 2.87 | "KV fp8 mechanism works, score didn't move" | inside |
+
+**Four of the eight closed directions were closed on a difference smaller than the noise of
+the build they were compared against.** The mechanism findings inside them (v14's KV
+retention doubling, v16's delivery going 46.6%→90.4%, v18's image arithmetic) are still real
+— those were measured directly, not inferred from the score. What does not survive is the
+verdict attached to each: "this axis is dead".
+
+⚠️ v19 is not a clean A/A: `BankingHarnessSolver` swaps `session_class`, so trace recording
+runs even when the replay never does. Actions moved 1597 → 1638 (2.6%), which does not
+explain a 40% score drop, but the pair is a near-A/A rather than an A/A.
+
+**What this costs going forward:** with n=3 spanning 1.89 on public and n=2 spanning 0.38 on
+hidden, a single run cannot rank two designs on either set — R9 said this for public and was
+under-believed. Any future claim that a change helped needs paired runs, and the campaign
+does not have the quota to buy that for every idea.
+
+**The instrument for this now exists: `eval/rank_runs.py`** — paired per-game sign-flip
+permutation over the 25 games, verdict DISTINGUISHABLE only at p<0.05. Calibrated on both
+poles in one invocation (`--selftest`): v10cal-vs-v19 (same build) reads NOT-DISTINGUISHABLE
+at p=0.21 ✓, v10cal-vs-v20 (26x apart) reads WORSE at p=0.0001 ✓. Re-judging v18 with it:
+**p=0.51, NOT-DISTINGUISHABLE** — this table's original "below band" verdict on v18 is now
+refuted numerically, not just argued. Per-game fixtures for all four runs: `eval/fixtures/`.
 
 ### CORRECTION 2 (2026-08-23) — the hidden number has a ±0.19 spread and every past comparison sat inside it
 
@@ -174,6 +233,23 @@ The two exceptions prove the shape rather than breaking it:
   *more games at shallow depth*, and the level-number weighting does not pay for shallow.
 - **v14** raised throughput 26% and act/lvl went the wrong way (57.0 → 85.9). Capacity was spent on
   attempts.
+
+### The axis, now measured in both directions (2026-08-23)
+
+Three runs cut *reasoning per decision* three different ways, and depth fell every time:
+
+| run | how thinking was cut | actions | levels | public |
+|---|---|---|---|---|
+| v14 | not cut — throughput raised 26% | more | 19 | 2.87 |
+| **v21** | effort xhigh→medium (−39% tok/action) | ×1.8 | **12** | 1.25 (p=0.0052) |
+| **v20** | capability 27B dense → ~3B active | ×4.7 | **3** | 0.18 (p=0.0001) |
+
+**Deliberation per decision is monotonically load-bearing on this task**, and xhigh — the
+maximum — is what v10 already runs. The rank-21 team ships `medium` inside a 6-file change
+(trimmed prompt + a tried-this checklist); the flag alone, on our stack, is decisively
+negative. There is no thinking-dial headroom left upward, no larger dense model on either
+Kaggle registry, and the harness axes are closed. That is the evidence-backed shape of why
+hidden 3.0 is out of reach with the models this competition makes available.
 
 ## What is closed, with the number that closed it
 

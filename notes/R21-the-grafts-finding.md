@@ -121,6 +121,30 @@ LLM env` as MISSING. That is my regex capturing an inline comment as part of the
 name — the real `ToolAgent` is present. A missing-symbol result from a sweep is a claim
 about the pattern before it is a claim about the code.
 
+## ⚠️ CORRECTION 2 (2026-08-23) — the fork's author is 102 ranks BELOW us
+
+This file treats `thtennant`'s 6,524-line graft stack as evidence of what teams above us
+do, on the strength of 1,275 downloads. The leaderboard CSV settles it:
+
+| publisher | rank | hidden |
+|---|---|---|
+| ataraxian ("Ya Xu") | **21** | 2.37 |
+| sonpham | 38 | 2.21 |
+| **us (Thuitanium)** | **212** | **1.70** |
+| **thtennant — this fork** | **314** | **1.46** |
+| yousefturk (FluidMind) | 1381 | 0.23 |
+
+R22's `attribution` lens had already stated the rule — *popularity is not evidence that a
+scoring team uses it* — and this file half-believed the fork anyway.
+
+**What rank 21 actually ships is six changed files against the same base**, one of which
+is a `reasoning_effort` env hook set to `medium`; see `notes/R26-reasoning-effort.md`.
+The two artifacts that read as most impressive (this fork, and FluidMind's writeup, which
+diagnoses our harness precisely) are the two that score worst.
+
+The mechanisms catalogued below are still real code and still worth reading. What does not
+survive is the inference that they are what the leaders are doing.
+
 ## What is still UNVERIFIED
 
 - **What this fork actually scores.** 1,275 downloads says people use it, not that anyone in

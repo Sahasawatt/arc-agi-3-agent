@@ -1,0 +1,131 @@
+{
+ "label": "v20",
+ "source": "v20full",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 88
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 281
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 919
+  },
+  "bp35": {
+   "score": 0.6786703601108035,
+   "levels": 1,
+   "actions": 825
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 263
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 72
+  },
+  "tu93": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "lp85": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 70
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 41
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 680
+  },
+  "vc33": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 795
+  },
+  "lf52": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 458
+  },
+  "r11l": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 249
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 167
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 140
+  },
+  "ar25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 1019
+  },
+  "sb26": {
+   "score": 1.0701545778834722,
+   "levels": 1,
+   "actions": 266
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 123
+  },
+  "re86": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 101
+  },
+  "s5i5": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 207
+  },
+  "ft09": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 188
+  },
+  "su15": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 145
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 54
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 403
+  }
+ }
+}
