@@ -123,11 +123,18 @@ def build_cell12(existing: str, probe_source: str) -> tuple[str, str]:
     return existing.rstrip("\n") + "\n\n" + payload, "APPEND"
 
 
-def build_metadata(src_meta: Path, out_nb: Path) -> dict:
+def build_metadata(
+    src_meta: Path,
+    out_nb: Path,
+    *,
+    owner: str | None = None,
+    title: str | None = None,
+) -> dict:
     meta = json.loads(src_meta.read_text(encoding="utf-8"))
-    owner = str(meta["id"]).split("/", 1)[0]
+    if owner is None:
+        owner = str(meta["id"]).split("/", 1)[0]
     meta["id"] = f"{owner}/{out_nb.stem}"
-    meta["title"] = out_nb.stem
+    meta["title"] = out_nb.stem if title is None else title
     meta["code_file"] = out_nb.name
     return meta
 
@@ -137,6 +144,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--src", default=str(HERE.parent / "duckv10" / "taaf-duck-v10.ipynb"))
     ap.add_argument("--out", default=str(HERE / "taaf-thui-v1.ipynb"))
     ap.add_argument("--probe", default=str(HERE / "request_usage_probe.py"))
+    ap.add_argument("--owner")
+    ap.add_argument("--title")
     args = ap.parse_args(argv)
 
     src_nb, out_nb, probe = Path(args.src), Path(args.out), Path(args.probe)
@@ -162,7 +171,7 @@ def main(argv: list[str] | None = None) -> int:
 
     src_meta = src_nb.parent / "kernel-metadata.json"
     if src_meta.is_file():
-        meta = build_metadata(src_meta, out_nb)
+        meta = build_metadata(src_meta, out_nb, owner=args.owner, title=args.title)
         (out_nb.parent / "kernel-metadata.json").write_text(
             json.dumps(meta, indent=2) + "\n", encoding="utf-8"
         )
