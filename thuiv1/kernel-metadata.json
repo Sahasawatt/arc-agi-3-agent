@@ -1,10 +1,10 @@
 {
-  "id": "sahasawatt/taaf-thui-v1",
+  "id": "yocybercode/thui-v1-0",
   "title": "Thui v1.0",
   "code_file": "taaf-thui-v1.ipynb",
   "language": "python",
   "kernel_type": "notebook",
-  "is_private": false,
+  "is_private": true,
   "enable_gpu": true,
   "enable_tpu": false,
   "enable_internet": false,
