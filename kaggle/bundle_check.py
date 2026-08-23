@@ -17,7 +17,7 @@ here:
   4. the agent class the starter kit splices in exists and is constructible-ish
   5. each driver still exposes the `signature` predicate the play loop wires on
 
-    ./.venv/Scripts/python.exe kaggle_exec_test.py
+    ./.venv/Scripts/python.exe kaggle/bundle_check.py
 """
 
 import io

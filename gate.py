@@ -62,7 +62,7 @@ def plates(frame):
 
     Read over the WHOLE frame rather than the play area: `ls20` draws its indicator across
     the row where the HUD begins, and a reader that stops at that line cuts the glyph in
-    half — which is trap 3 in `NOTES-ls20.md`, in a different disguise.
+    half — which is trap 3 in `docs/notes-ls20.md`, in a different disguise.
     """
     grid = np.array(frame)[-1]
     out = {}
