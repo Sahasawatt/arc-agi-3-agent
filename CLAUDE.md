@@ -73,7 +73,7 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   over a SUBGRAPH; the only tell was `driver_blob_count` climbing while every drop site said
   `continue`. Diagnosis (149 trajectories, 3 seeds): 120/120 anomalies were the same real game
   state — the (9,3) body pair both colour 9 — not occlusion. Fix shape: recover-or-FORK, never
-  drop, and assert `forked == anomaly_count, dropped_hard == 0` in the FINAL line (`sp80_s13.py`).
+  drop, and assert `forked == anomaly_count, dropped_hard == 0` in the FINAL line (`experiments/sp80_s13.py`).
   Corollary for every tracker here: a counter that can fire without changing control flow is a
   logging statement wearing a guard's name. 2026-08-17.
 
