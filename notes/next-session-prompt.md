@@ -213,9 +213,9 @@ BFS chains stay PARKED (user RAM request; checkpoints intact, resume commands in
 **Resume after restart (cd Desktop/projects/arc-agi-3-agent; each chain resumes from its atomic
 checkpoint — do NOT pass --fresh):**
 
-    PYTHONUTF8=1 ./.venv/Scripts/python.exe sp80_s13.py --budget-seconds 3300   # L4, ckpt @160k expanded
-    PYTHONUTF8=1 ./.venv/Scripts/python.exe wa30_b2_l3chain.py --budget-seconds 3300   # L3, ckpt @64k, divergence 0
-    PYTHONUTF8=1 ./.venv/Scripts/python.exe re86_b2_l6chain.py --budget-seconds 3300   # L6, ckpt @976k expanded
+    PYTHONUTF8=1 PYTHONPATH=. ./.venv/Scripts/python.exe experiments/sp80_s13.py --budget-seconds 3300   # L4, ckpt @160k expanded
+    PYTHONUTF8=1 PYTHONPATH=. ./.venv/Scripts/python.exe experiments/wa30_b2_l3chain.py --budget-seconds 3300   # L3, ckpt @64k, divergence 0
+    PYTHONUTF8=1 PYTHONPATH=probes ./.venv/Scripts/python.exe experiments/re86_b2_l6chain.py --budget-seconds 3300   # L6, ckpt @976k expanded
 
 Chain each in a loop until FINAL shows exhausted=True or win=True (the 12x3300s wrapper pattern is
 in this session's bash history / recon). On win=True: independent replay (pattern
