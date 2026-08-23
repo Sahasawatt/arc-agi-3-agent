@@ -43,3 +43,24 @@ in-kernel; their effort flag deliberately left out after v21 measured it WORSE).
 flag was excluded. Same lesson as v16's `'fp8'` assert: a negative assert must target the
 functional token (`LOCAL_ANALYZER_REASONING_EFFORT`, `build_chat_payload`), never a word
 that legitimate prose about the exclusion will contain.
+
+
+## RESULT (2026-08-24) — the last attributed lever closes
+
+v22 landed **2.84 public, p=0.0798, NOT-DISTINGUISHABLE** from v10cal (`rank_runs.py`; 6 up /
+11 down / 6 scoring-flips, levels 28→20). That is the very bottom of the [2.82, 4.71]
+same-build band — no evidence the rank-21 team's prompt package adds anything on our stack,
+and directionally it leans worse.
+
+B28 rode free on the same artifacts, with the v10cal control re-run in the same invocation
+(reproduced exactly: 19/935 = 2.0%): **v22 search-construct usage is 22/902 = 2.4%.** The
+ported addendum's explicit BFS instruction moved nothing globally. Sharper: the two games
+where it DID move locally — tu93 (10/28 turns = 36%) and g50t (8/40 = 20%) — scored **worse**
+(tu93 5.22→0.08, g50t 0→0). Induced search bought nothing, which is v17's transition-coverage
+kill (1.3% state recurrence) showing up in vivo.
+
+So of the rank-21 team's six changed files: the effort flag measured WORSE alone (v21,
+p=0.0052), the prompt package measured indistinguishable-leaning-worse (v22), and what
+remains of their 2.37 is unattributable from public artifacts. Their edge, like the top 5's,
+is not something we can copy. Single-run caveat applies to the per-game collapses (same-build
+A/A flips 7 of 25 games), but the aggregate verdict does not rest on them.
