@@ -1,6 +1,6 @@
 """Exec the built HYBRID Kaggle bundle and assert it is complete. (2026-08-17)
 
-Adapted from the repo's own `kaggle_bundle_check.py` (which checks
+Adapted from the repo's own `kaggle/bundle_check.py` (which checks
 `kaggle/my_agent.py`, the v9-lite bundle) for the HYBRID bundle built by
 `kaggle/bundle_hybrid.py`. Same rule, same reason: exec the built bundle
 before every push -- a bundle missing a module `compete` imports dies at
@@ -40,7 +40,7 @@ already in this repo's venv; `agents.agent` is not):
 
 Without it this fails at step 1 with `ModuleNotFoundError: No module named
 'agents'` -- an environment fault, not a bundle fault (same caveat as
-`kaggle_bundle_check.py`).
+`kaggle/bundle_check.py`).
 """
 
 import base64

@@ -1170,10 +1170,10 @@ still embedding an OLD `mirror.py`, so the submission agent carried **none of ar
 or `L4_LINE`** -- the two levels the campaign had just won (1/8 -> 4/8, 2.778% -> 27.778%). A
 rebuild changed exactly one line, the `mirror` payload. **A stale bundle scores the old level
 count with nothing in the logs to explain why**, so rebuild-then-exec is the gate, not a habit.
-**`kaggle_bundle_check.py` is that gate**, and it must be run with the starter kit on the path:
+**`kaggle/bundle_check.py` is that gate**, and it must be run with the starter kit on the path:
 
 ```bash
-PYTHONPATH=<starter>/vendor/ARC-AGI-3-Agents ./.venv/Scripts/python.exe kaggle_bundle_check.py
+PYTHONPATH=<starter>/vendor/ARC-AGI-3-Agents ./.venv/Scripts/python.exe kaggle/bundle_check.py
 ```
 
 **The whole submission runs from the CLI — the "human steps" below are not required.** Measured

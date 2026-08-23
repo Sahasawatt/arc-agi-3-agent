@@ -71,7 +71,7 @@ def test_the_bulk_of_the_board_is_not_a_plate():
 
 def test_a_plate_is_read_across_the_line_where_the_hud_begins():
     """`ls20` draws its indicator over rows 53 to 62 and the play area stops at row 60. A
-    reader that stops there cuts the glyph in half — trap 3 of NOTES-ls20.md, in a new
+    reader that stops there cuts the glyph in half — trap 3 of docs/notes-ls20.md, in a new
     disguise."""
     g = blank()
     panel(g)

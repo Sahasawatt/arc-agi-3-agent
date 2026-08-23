@@ -1,6 +1,6 @@
 MIT No Attribution
 
-Copyright 2026 Sahasawat
+Copyright 2026 Thuitanium — Sahasawat and Watchara Sueasakul
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software
@@ -14,3 +14,18 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+-------------------------------------------------------------------------------
+Third-party material — informational, not part of the grant above
+-------------------------------------------------------------------------------
+
+The notebooks under `duckmod/` and every `duckv*/` directory derive from the Tufa
+Labs ARC-AGI-3 duck harness notebook, authored by Harold Bessis, Jeroen Cottaar,
+Isaiah Pressman, Andries Smit, Michal Tesnar and Stefano Viel, and published on
+Kaggle. Copyright in that material remains with its authors; the copyright line
+above covers this repository's own contribution to that line, which is the
+per-version `build_notebook.py` patch scripts and the build reports in `results/`.
+
+Those notebooks also reference Kaggle datasets and model snapshots owned by third
+parties, which are attached at run time and are not redistributed here.
