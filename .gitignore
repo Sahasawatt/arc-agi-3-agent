@@ -11,3 +11,6 @@ results/*.log
 
 # hook backups - never commit, never keep piles of these
 *.bak.*
+
+# issue #7: per-game trace appenders grow without bound - snapshots live in kernel output, not git
+results/traces/

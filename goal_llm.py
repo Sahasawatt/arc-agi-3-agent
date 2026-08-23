@@ -1,16 +1,8 @@
-"""Ask a local model which object is the goal. It proposes; the engine decides.
-
-The algorithmic search knows how to reach anything and has no idea what to reach — it
-tries objects shortest-route first, which is a guess with no prior. A language model has
-seen a great many puzzles and is a decent prior over "what is a door, what is a key, what
-is a prize", and it is wrong often enough that its answer cannot be trusted. So it never
-acts: it ranks, the planner routes, and `levels_completed` is the only judge. Being wrong
-costs a replay, which is free.
-
-Requires ollama running locally. Absent, `propose` returns nothing and the caller falls
-back to search — the whole point of the competition notebook having no internet.
+"""DEV-ONLY module (issue #6): reachable only from play.py, which is not the
+rules-legal submission line. The submission bundle roster (kaggle/bundle.py)
+deliberately excludes it. Kept for local experiments; do not wire it into
+anything that ships. The ACTIVE line is the Duck harness - see CLAUDE.md.
 """
-
 import json
 import re
 

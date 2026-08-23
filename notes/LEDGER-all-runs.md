@@ -131,7 +131,23 @@ Same parquet, same build, **0.38 apart — 25% of the larger value**. So:
 - **Top-5 needs 2.57 hidden**, so the gap from a mean of 1.51 is **+1.06**, not +0.87.
 
 Two draws is n=2: 0.38 is a range, not a standard deviation, and the true spread could
-be wider. What it already rules out is reading any single hidden number as a build's
+be wider.
+
+**Addendum 2026-08-24 — a SECOND hidden A/A pair existed all along, and it reads 0.00.**
+Submissions 55559497 and 55567678 are a byte-identical accidental duplicate of v9-lite
+(recorded contemporaneously in `notes/next-session-prompt.md`: *"Today's quota got spent on
+an accidental byte-identical duplicate (55567678, PENDING — expect ~0.10)"* — and it drew
+exactly 0.10, as predicted). So:
+
+| build | draw 1 | draw 2 | spread |
+|---|---|---|---|
+| v9-lite (low score) | 0.10 | 0.10 | **0.00** |
+| duck-v10 (high score) | 1.70 | 1.32 | **0.38** |
+
+Hidden variance is not a constant — it **grows with the score**, which is exactly what the
+per-game mechanism predicts: the swing lives in deep-level clears, and a 0.10 build has no
+deep clears to flip. A single hidden draw is adequate for a weak build and inadequate for
+precisely the builds worth ranking. What it already rules out is reading any single hidden number as a build's
 value.
 
 ### Where the variance comes from — per-game, and the big earners are the unstable ones

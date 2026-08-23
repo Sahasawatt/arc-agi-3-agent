@@ -3,6 +3,21 @@
 An agent for ARC Prize 2026 (ARC-AGI-3). `README.md` is the findings log and is written to be
 read by a stranger; this file is the operating manual for changing the code.
 
+## Which line is ACTIVE (issue #5 — read this before anything below)
+
+This repo holds TWO submission lines and everything below this section documents the
+RETIRED one:
+
+- **Active: the Duck harness line** (`duckv*/`). Base = duckv10 (anim bundle +
+  Qwen3.8-27B-FP8, uncapped); every version patches notebook cells 6/8/12 only. The
+  full run history with scores and why each landed there is `notes/LEDGER-all-runs.md`;
+  decision tickets are `notes/wayfinder/MAP.md`; two runs are compared with
+  `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 4.71]).
+  Submissions go from `Desktop/ARC-AGI-3-Kaggle-Starter` with `-k sahasawatt/taaf-duck-vNN`.
+- **Retired: the algorithmic line** (root drivers + `kaggle/bundle.py`, hidden 0.11).
+  Kept for reference; its per-game search chains live in `experiments/`. Do not extend it
+  without reopening the decision in `notes/wayfinder/MAP.md`.
+
 ## The one rule that is not negotiable
 
 **Never read, grep, list or derive anything from `environment_files/`.** It is the source code
