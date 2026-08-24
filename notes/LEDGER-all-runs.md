@@ -127,6 +127,13 @@ Same parquet, same build, **0.38 apart — 25% of the larger value**. So:
   vs v5 0.84 is a 0.16 gap; our own agent's 0.11 is the only number outside it. Two
   builds cannot be ranked on one hidden draw each — the same rule R9 established for
   public runs turns out to hold harder here.
+- ⚠️ **CORRECTED 2026-08-24 by R30 — the 3.05x below mixes a MAX with a MEAN, which is the
+  error this very correction flags one paragraph up about quoting 1.70.** It divides the
+  top TWO public draws by the MEAN of the two hidden ones. `v10cal` 4.71, `v10out` 4.55,
+  `thuiv1` 3.20 and `v19` 2.82 are all the same build, so means on both sides are **3.82
+  public over 1.51 hidden = 2.53x**. It moves the target the easy way: a candidate needs
+  public **7.29** to sit at the 2.88 bar, not 8.83, and B20's 5.80 ceiling is **2.29**
+  hidden — still under the bar, so the depth conclusion is unchanged.
 - **The shrink is worse than recorded**: public [4.55, 4.71] against a hidden mean of
   ~1.51 is **~3.05x**, not the 2.72x the depth table used. The +0 row of that table
   predicted 1.73 and was scored against 1.70; against the mean it over-predicts.
@@ -151,6 +158,16 @@ per-game mechanism predicts: the swing lives in deep-level clears, and a 0.10 bu
 deep clears to flip. A single hidden draw is adequate for a weak build and inadequate for
 precisely the builds worth ranking. What it already rules out is reading any single hidden number as a build's
 value.
+
+⚠️ **NARROWED 2026-08-24 by R30 — the v9-lite row contributes nothing to that conclusion.**
+"Grows with the score" is a restatement of **constant CV**, and the CV is now measured
+twice: **0.249** over the four same-build public draws and **0.178** over this hidden pair.
+At v9-lite's 0.10 that same CV predicts σ = **0.025** — the pair had almost no room to
+differ, whatever is true about how variance scales, so its 0.00 is implied by the v10 pair
+rather than confirming it. The conclusion stands and rests on **one** pair. The public CV
+also gives an INDEPENDENT reading of this build's hidden σ — 0.249 × 1.51 = **0.376**
+against this pair's own **0.269**, agreeing within 1.40, which is what makes the B30
+decision robust where n=2 alone could not.
 
 ### Where the variance comes from — per-game, and the big earners are the unstable ones
 
