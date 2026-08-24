@@ -30,8 +30,8 @@ next, which is what `--src` is for.
 
 USAGE
 
-    python3 build_notebook.py                       # duckv10 -> duckv17, sibling probe
-    python3 build_notebook.py --src ../duckv16/taaf-duck-v16.ipynb --out ../duckv17/x.ipynb
+    python3 build_notebook.py                       # duckv10 -> thuiv1, sibling probe
+    python3 build_notebook.py --src ../duckv16/taaf-duck-v16.ipynb --out ../duckv18/x.ipynb
 
 Run from this file's directory, or pass absolute paths.
 """
