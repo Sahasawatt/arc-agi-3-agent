@@ -433,3 +433,92 @@ does not spend a slot to learn what §2 already asserts.
 `python3 scripts/b27/attempts.py` prints the validation table; `python3 scripts/b27/widen2.py`
 prints the signal table. Both read `~/Claude/arc-artifacts/{v10cal,thuiv1,v18,v19,v23}`,
 pulled with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
+
+---
+
+# §9 — B29's verifier premise, tested offline: the recorded transition does not predict
+
+§8 closed by proposing B29's own verifier be run offline over the corpus before anything is
+built, for zero slots. Done. **It does not get as far as grading beliefs, because the premise
+underneath it fails first: a recorded transition does not predict the next one from the same
+observed state.**
+
+B29 is *"draft k candidate short plans in the sandbox, check each against `history`'s recorded
+transitions, execute only the best-verified one, abort on first prediction miss."* Every clause
+after "check" assumes that if the agent has seen `(state, action) → outcome` once, seeing the
+same `(state, action)` again means the same outcome. That is checkable directly, with no model
+in the loop: find every case where a run revisited an exact `(level, board, action)` it had
+already fired, and ask whether the outcome reproduced.
+
+**446 such repeats across the five runs.** They reproduce the exact board **58.7%** of the time
+and the harness's own `board_changed` flag **77.8%** of the time.
+
+## The aggregate is one game, and it inverts without it
+
+| game | repeats | board reproduced | changed-flag reproduced |
+|---|---|---|---|
+| cn04 | 260 | 70.4% | **99.6%** |
+| ls20 | 32 | **100.0%** | 100.0% |
+| s5i5 | 28 | 10.7% | 17.9% |
+| sb26 | 26 | 15.4% | 26.9% |
+| ft09 | 18 | 50.0% | 50.0% |
+| dc22 | 14 | **0.0%** | **0.0%** |
+| lp85 | 12 | 25.0% | 33.3% |
+| su15 | 12 | 16.7% | 25.0% |
+| tu93 | 11 | **100.0%** | 100.0% |
+| sc25 | 8 | 62.5% | 62.5% |
+| vc33 | 7 | **0.0%** | **0.0%** |
+| **ALL** | **446** | **58.7%** | **77.8%** |
+| **excluding cn04** | **186** | **42.5%** | **47.3%** |
+
+**cn04 holds 58% of every repeat in the corpus and is the best-behaved game in it** — 99.6% on
+the flag. It was propping the aggregate up, not dragging it down, which is the opposite of what
+its reputation here (the 454-action outlier) would suggest. Drop it and the corpus reproduces
+its own recorded transitions **worse than a coin flip**.
+
+**9 of the 11 games with ≥5 repeats fail to reproduce their own recorded transition more than
+10% of the time.** Two — ls20 and tu93 — reproduce it perfectly, so this is a per-game property,
+not a blanket statement that the environment is random.
+
+## Three artifacts ruled out in the same run
+
+- **Per-batch board attribution.** `batch_size` is **1 on all 7,938 action events**, so the
+  recorded board belongs to one action. (Worth noting separately: the prompt urges batching and
+  the event stream contains none.)
+- **Mid-animation frames.** The `animation` field is present on 1,841 of 7,938 events. It
+  explains the asymmetric cases sharply — when animation presence *flips* between the two
+  occurrences, reproduction collapses to 6.2% / 8.3% — but those are 28 of 446. The 349 repeats
+  with no animation on either side still reproduce only **58.5%**.
+- **Cosmetic drift.** When it fails, the median difference is **1 cell** but the mean is 24.4 and
+  the max is 320. ⚠️ No claim is made here about *where* those cells sit: a HUD region was
+  guessed at and the guess did not survive its own examples, so it is not reported. The
+  heuristic-free half is the `board_changed` column, which is the harness's own flag and
+  disagrees with itself on 22.2% of repeats corpus-wide and 52.7% outside cn04.
+
+## What this does and does not settle
+
+**Settles:** a verifier keyed on the **observed board** — which is what `history` gives the agent
+— cannot do what B29 asks of it. "Abort on first prediction miss" would fire on roughly half of
+all correct repeats in nine of eleven games. Built as specified, the gate rejects good plans at a
+rate that has nothing to do with the plans.
+
+**Does not settle:** *why*. Either the environment is genuinely non-deterministic, or the visible
+board is not the full state and a better key exists. The animation column is a hint toward the
+second — repeats where both sides carry animation reproduce at **81.2%**, well above the 58.5%
+where neither does. If the sandbox's `history` carries more than the rendered board (segmentation
+objects, internal phase), a verifier keyed on *that* is untested and remains open. Nothing here
+measures it, and nothing here should be quoted as if it did.
+
+**For the frame (B26):** §8 found that §2 cannot be widened by any instrument short of B29's own
+verifier. §9 finds that verifier's premise does not hold on the observed board. So the transition
+model being "wrong" is now joined by a second possibility that the three quotes cannot
+distinguish from it — that the transition model is being learned against a state signal which is
+itself unreliable in most games. **B26 stays open, and this is the sharper form of its question:
+not "is the agent's transition model wrong" but "is a transition model learnable from what the
+agent is shown".**
+
+Cost: zero GPU slots, zero submissions, no model calls.
+
+## Reproduce
+
+`python3 scripts/b27/b29_offline.py`.
