@@ -19,3 +19,6 @@ results/traces/
 localrig/.venv/
 localrig/runs/
 *.egg-info/
+
+# pipeline coordination artifacts (review-fanout etc.) — never commit in a shared repo
+.coord/

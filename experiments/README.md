@@ -16,6 +16,9 @@ directory its siblings live in. No chain needs both.
 | chain | needs | run from repo root |
 |---|---|---|
 | `sp80_s11` `sp80_s12` `sp80_s13` | `swap` at the repo root | `PYTHONPATH=. python experiments/sp80_s13.py` |
+| `sp80_s14_twinmerge` `sp80_s15` | `swap` at the repo root (+ `sp80_s13`, a sibling here) | `PYTHONPATH=. python experiments/sp80_s15.py` |
+| `bp35_b4_l2chain` | `tape` at the repo root | `PYTHONPATH=. python experiments/bp35_b4_l2chain.py` |
+| `tr87_b2_l3chain` | nothing outside this directory | `PYTHONPATH=. python experiments/tr87_b2_l3chain.py` |
 | `wa30_b2_l3chain` | `haul` at the repo root | `PYTHONPATH=. python experiments/wa30_b2_l3chain.py` |
 | `dc22_c4_hidden` `dc22_c5_soundchain` | `probes/dc22_c2_l2chain`, `probes/dc22_c3_verify` | `PYTHONPATH=probes python experiments/dc22_c5_soundchain.py` |
 | `re86_b2_l6chain` | `probes/re86_b1_bfs` | `PYTHONPATH=probes python experiments/re86_b2_l6chain.py` |

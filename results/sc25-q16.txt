@@ -1,0 +1,84 @@
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-13 22:31:06 | INFO | Got anonymous API key: 2600862b-0618-4a0b-8f88-73c08aa16dfa
+2026-08-13 22:31:06 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-13 22:31:07 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-13 22:31:07 | INFO | Created new scorecard: fa1bc229-8cb9-48e6-a157-76e8f849c8a6
+2026-08-13 22:31:08 | INFO | Successfully fetched metadata for game sc25
+2026-08-13 22:31:08 | INFO | Successfully loaded game class Sc25 from environment_files\sc25\635fd71a\sc25.py
+walk built: 481 states (480 transitions), 480 distinct of 480 target, 1 harmless duplicate revisit(s), max edges-popcount touched=3 (never 4)
+--- life1: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+pattern[0] (start, idx=0) OK:  2  0  2 |  0  2  0 |  2  0  2  stripe14=128
+  [checkpoint] visited=16/480 idx=15 life=1 stripe14=92 census= 2  0  2 |  0  2  0 | 14  0  2
+  [checkpoint] visited=32/480 idx=31 life=1 stripe14=52 census= 2  0  2 |  0  2  0 |  2  0 14
+life 1: budget low (45 actions), pattern idx=44 corners=01110 edges=0001 -- resetting
+--- life2: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census= 2 14 14 |  0 14  0 | 14  0  2
+  [checkpoint] visited=48/480 idx=47 life=2 stripe14=112 census=14 14  2 |  0  2  0 | 14  0  2
+  [checkpoint] visited=64/480 idx=63 life=2 stripe14=72 census=14 14  2 |  0  2  0 |  2  0 14
+  [checkpoint] visited=80/480 idx=79 life=2 stripe14=32 census=14 14 14 | 14  2  0 | 14  0  2
+life 2: budget low (45 actions), pattern idx=84 corners=11011 edges=0011 -- resetting
+--- life3: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 6 clicks -> OK census=14 14 14 | 14  2  0 | 14  0 14
+  [checkpoint] visited=96/480 idx=95 life=3 stripe14=88 census=14 14 14 | 14  2  0 |  2  0 14
+  [checkpoint] visited=112/480 idx=111 life=3 stripe14=44 census= 2  0 14 | 14  2  0 | 14  0  2
+life 3: budget low (45 actions), pattern idx=122 corners=11100 edges=0010 -- resetting
+--- life4: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census= 2  0  2 | 14 14  0 | 14  0 14
+  [checkpoint] visited=128/480 idx=127 life=4 stripe14=108 census= 2  0 14 | 14  2  0 |  2  0 14
+  [checkpoint] visited=144/480 idx=143 life=4 stripe14=64 census= 2  0 14 | 14 14 14 | 14  0  2
+  [checkpoint] visited=160/480 idx=159 life=4 stripe14=24 census= 2  0 14 | 14 14 14 |  2  0 14
+life 4: budget low (45 actions), pattern idx=162 corners=10011 edges=0111 -- resetting
+--- life5: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 6 clicks -> OK census=14 14 14 | 14  2 14 |  2  0 14
+  [checkpoint] visited=176/480 idx=175 life=5 stripe14=80 census=14 14 14 | 14 14 14 | 14  0  2
+  [checkpoint] visited=192/480 idx=191 life=5 stripe14=40 census=14 14 14 | 14 14 14 |  2  0 14
+life 5: budget low (45 actions), pattern idx=200 corners=00011 edges=0101 -- resetting
+--- life6: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census=14 14 14 |  0  2 14 |  2  0  2
+  [checkpoint] visited=208/480 idx=207 life=6 stripe14=100 census=14 14  2 |  0 14 14 | 14  0  2
+  [checkpoint] visited=224/480 idx=223 life=6 stripe14=60 census=14 14  2 |  0 14 14 |  2  0 14
+  [checkpoint] visited=240/480 idx=239 life=6 stripe14=20 census= 2  0  2 |  0 14 14 | 14  0  2
+life 6: budget low (45 actions), pattern idx=240 corners=01101 edges=0100 -- resetting
+--- life7: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census=14  0  2 |  0 14 14 | 14  0  2
+  [checkpoint] visited=256/480 idx=255 life=7 stripe14=80 census= 2  0  2 |  0 14 14 |  2  0 14
+  [checkpoint] visited=272/480 idx=271 life=7 stripe14=40 census= 2  0  2 |  0 14 14 |  2 14  2
+life 7: budget low (45 actions), pattern idx=280 corners=11000 edges=1100 -- resetting
+--- life8: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census= 2  0  2 |  0  2 14 | 14 14 14
+  [checkpoint] visited=288/480 idx=287 life=8 stripe14=100 census= 2  0  2 |  0 14 14 | 14 14 14
+  [checkpoint] visited=304/480 idx=303 life=8 stripe14=60 census=14 14  2 |  0 14 14 |  2 14  2
+  [checkpoint] visited=320/480 idx=319 life=8 stripe14=20 census=14 14  2 |  0 14 14 | 14 14 14
+  [checkpoint] visited=320/480 idx=320 life=8 stripe14=16 census=14  0  2 |  0 14 14 | 14 14 14
+life 8: budget low (45 actions), pattern idx=320 corners=11101 edges=1100 -- resetting
+--- life9: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 6 clicks -> OK census=14  0  2 |  0 14 14 | 14 14 14
+  [checkpoint] visited=336/480 idx=336 life=9 stripe14=72 census=14  0 14 | 14 14 14 |  2 14  2
+  [checkpoint] visited=352/480 idx=352 life=9 stripe14=32 census=14  0 14 | 14 14 14 | 14 14 14
+life 9: budget low (45 actions), pattern idx=358 corners=10111 edges=1010 -- resetting
+--- life10: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 6 clicks -> OK census=14  0 14 | 14 14  0 |  2 14 14
+  [checkpoint] visited=368/480 idx=368 life=10 stripe14=88 census= 2  0 14 | 14 14  0 |  2 14  2
+  [checkpoint] visited=384/480 idx=384 life=10 stripe14=48 census= 2  0 14 | 14 14  0 | 14 14 14
+life 10: budget low (45 actions), pattern idx=396 corners=10000 edges=1011 -- resetting
+--- life11: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census= 2 14  2 | 14  2  0 |  2 14 14
+  [checkpoint] visited=400/480 idx=400 life=11 stripe14=108 census= 2 14 14 | 14  2  0 |  2 14  2
+  [checkpoint] visited=416/480 idx=416 life=11 stripe14=68 census= 2 14 14 | 14  2  0 | 14 14 14
+  [checkpoint] visited=432/480 idx=432 life=11 stripe14=28 census=14 14 14 |  0  2  0 |  2 14  2
+life 11: budget low (45 actions), pattern idx=436 corners=00101 edges=1001 -- resetting
+--- life12: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census=14 14  2 |  0 14  0 |  2 14  2
+  [checkpoint] visited=448/480 idx=448 life=12 stripe14=88 census=14 14 14 |  0  2  0 | 14 14 14
+  [checkpoint] visited=464/480 idx=464 life=12 stripe14=48 census=14  0  2 |  0  2  0 |  2 14  2
+life 12: budget low (45 actions), pattern idx=476 corners=01011 edges=1000 -- resetting
+--- life13: reset --- census= 2  0  2 |  0  2  0 |  2  0  2
+  rebuild 4 clicks -> OK census=14  0 14 |  0  2  0 | 14 14  2
+  [checkpoint] visited=480/480 idx=480 life=13 stripe14=108 census=14  0  2 |  0  2  0 | 14 14 14
+
+=== WALK LOOP DONE: patterns_visited=480/480 idx=480/480 done=False lives_used=13 total_actions=549 elapsed=0s ===
+no win_event: no click ever changed levels_completed or moved state away from NOT_FINISHED/GAME_OVER during the walk
+
+FINAL: patterns_visited=480 of 480 target (512 - 32 penalty class)
+done
+EXIT_CODE=0

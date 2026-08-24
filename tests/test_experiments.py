@@ -31,12 +31,16 @@ EXPERIMENTS = ROOT / "experiments"
 # Each chain needs exactly ONE directory besides its own on the path, because a script's
 # own directory is sys.path[0]. `experiments/README.md` publishes this same table.
 CHAIN_PATH = {
+    "bp35_b4_l2chain": ".",
     "dc22_c4_hidden": "probes",
     "dc22_c5_soundchain": "probes",
     "re86_b2_l6chain": "probes",
     "sp80_s11": ".",
     "sp80_s12": ".",
     "sp80_s13": ".",
+    "sp80_s14_twinmerge": ".",
+    "sp80_s15": ".",
+    "tr87_b2_l3chain": ".",
     "wa30_b2_l3chain": ".",
 }
 
