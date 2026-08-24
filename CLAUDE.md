@@ -1323,3 +1323,15 @@ builders live in git history — `git show 0757309^:duckv<N>/...` and earlier). 
 - The discipline that stays regardless of numbering: builder self-check + in-kernel
   teeth proven red on mutation BEFORE any push; smoke before full; `eval/rank_runs.py`
   is the only scoreboard; results land in `notes/LEDGER-all-runs.md` the same day.
+- ⚠️ **A builder's self-check must compare against the BASE the build claims, not against
+  `SRC_NB`.** Every builder here renders from `duckmod/taaf-duck-mod.ipynb` and edits a few
+  cells, so `assert out["cells"][N] == src["cells"][N]` for a cell the builder never touches
+  is a tautology: it passes by construction and prints a reassuring line. duckv25 shipped
+  that way (2026-08-25) — its cell 12 carried duckmod's 14,355-char patch block while every
+  artifact called it "v10 exact", and a kernel was pushed and run on it. **Assert against
+  `duckv10/taaf-duck-v10.ipynb` (or whatever the row names as the base), and name the block
+  that must be ABSENT** — an equality test alone does not say which side is wrong.
+- ⚠️ **In-kernel teeth do not cover the cells they do not touch.** duckv25's teeth were
+  genuinely red 5/5 on the rendered setup command in cell 8, and cell 12 went untested in the
+  same build. A green teeth report is evidence about its own subject and nothing else; state
+  which cells it graded.

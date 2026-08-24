@@ -1,5 +1,11 @@
 """Build duckv25/taaf-duck-v25.ipynb -- v10 plus ONE change: the sampler is PINNED.
 
+FIXED 2026-08-25: this builder read duckmod as its source and never replaced cell 12, so
+the notebook it produced -- and the kernel pushed from it -- carried duckmod's 14,355-char
+patch block while every artifact described it as v10-exact. The self-check asserted cell 12
+against that same source, which passes by construction. Cell 12 now comes from duckv10 and
+the assertion names the block that must be absent.
+
 `LOCAL_ANALYZER_SEED` is injected into the harness's setup_env. Nothing else differs from
 duckv10: same anim bundle, same Qwen3.8-27B-FP8, output UNCAPPED, upscale 4, no KV flag, no
 cell-12 patch, temperature LEFT AT 0.6.
@@ -71,6 +77,11 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SRC_NB = REPO / "duckmod" / "taaf-duck-mod.ipynb"
+# duckv10 is the BASE this build claims to be: cell 12 has to come from it, not from
+# SRC_NB. Asserting cell 12 against SRC_NB is a tautology -- the builder never touches
+# that cell -- and it shipped duckmod's 14.4k-char patch block into a run advertised as
+# "v10 + seed". v10 drops those patches on purpose (R8: zero adoption on the June tree).
+V10_NB = REPO / "duckv10" / "taaf-duck-v10.ipynb"
 OUT_NB = REPO / "duckv25" / "taaf-duck-v25.ipynb"
 
 SEED = "20260825"
@@ -143,6 +154,12 @@ def main() -> None:
     assert OLD_LOOP in c8, "cell 8: expected setup loop not found"
     nb["cells"][8]["source"] = c8.replace(OLD_LOOP, new_loop)
 
+    v10 = json.loads(V10_NB.read_text(encoding="utf-8"))
+    c12_v10 = "".join(v10["cells"][12]["source"])
+    assert "duckv10" in c12_v10 and len(c12_v10) < 1000, \
+        "duckv10 cell 12 is not the stock hook -- refusing to copy it blind"
+    nb["cells"][12]["source"] = c12_v10
+
     OUT_NB.parent.mkdir(parents=True, exist_ok=True)
     OUT_NB.write_text(json.dumps(nb, indent=1), encoding="utf-8")
     print(f"wrote {OUT_NB} ({OUT_NB.stat().st_size} bytes)")
@@ -151,7 +168,7 @@ def main() -> None:
     src = json.loads(SRC_NB.read_text(encoding="utf-8"))
     out = json.loads(OUT_NB.read_text(encoding="utf-8"))
     diff = [i for i in range(len(src["cells"])) if src["cells"][i]["source"] != out["cells"][i]["source"]]
-    assert diff == [6, 8], f"unexpected diff cells: {diff}"
+    assert diff == [6, 8, 12], f"unexpected diff cells: {diff}"
     for idx in diff:
         compile("".join(out["cells"][idx]["source"]), f"cell{idx}", "exec")
     print(f"syntax OK: cells {diff} compile")
@@ -164,9 +181,13 @@ def main() -> None:
     assert "LOCAL_ANALYZER_TEMPERATURE': '0" not in o8.replace("'0.6'", ""), \
         "v25 must not set temperature; only assert it"
     assert "TEETH FAIL" in o8, "in-kernel teeth missing"
-    assert o12 == "".join(src["cells"][12]["source"]), "cell 12 must stay v10 exact (no patch)"
+    # Teeth, not a tautology: compare against v10, and name the patch block that must be gone.
+    assert o12 == c12_v10, "cell 12 must be duckv10's stock hook"
+    assert "duckmod: inject HUD auto-flag" not in o12, \
+        "duckmod's patch block survived into cell 12 -- this build is duckmod+seed, not v10+seed"
+    assert len(o12) < 1000, f"cell 12 is {len(o12)} chars; v10's stock hook is ~253"
 
-    print("self-check OK: cells [6, 8]; v10 config exact + seed pinned; cell 12 untouched")
+    print("self-check OK: cells [6, 8, 12]; v10 config exact + seed pinned; cell 12 = v10 stock hook")
     print(f"seed = {SEED}; temperature deliberately left at the harness default 0.6")
 
 
