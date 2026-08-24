@@ -522,3 +522,113 @@ Cost: zero GPU slots, zero submissions, no model calls.
 ## Reproduce
 
 `python3 scripts/b27/b29_offline.py`.
+
+---
+
+# §10 — B28's designed test is confounded, and the fix is free
+
+B28 asks whether v22's ported BFS instruction moves search usage off its ~2% base rate. As
+written the test is one run against a baseline, pooled over turns, Fisher exact. That can
+only rank something if runs which were **not** prompted differently agree with each other.
+Nobody had measured whether they do. The corpus can answer it for zero slots.
+
+Instrument: §6's exact pattern list, over the five-run corpus. Validated before use — it
+reproduces §6's **31/1973 = 1.6%** on v10cal+thuiv1 exactly, and the Fisher implementation
+reproduces both a published significant value (§3's `0/263 vs 5/182` → 0.0111) and a
+published null (§6(f)'s `43/88 vs 7/12` → 0.760).
+
+## The probe reads one section of the transcript, and the choice nearly doubles the answer
+
+A transcript is `[SYSTEM PROMPT] [USER PROMPT] [THINKING]* [ASSISTANT] [ANALYZER STATUS]`,
+and `<parameter=code>` appears in **both** `[THINKING]` and `[ASSISTANT]` — 1,009 blocks
+against 1,432 over the pair. §6 says *"inside the tool call's `<parameter=code>`"*, and only
+`[ASSISTANT]` is a tool call; `[THINKING]` is code the model drafted and did not run. Joining
+both gives **72/1973 = 3.65%** where §6 published 31. That is not a detail:
+
+| run | turns | ran | rate | + drafted | rate |
+|---|---|---|---|---|---|
+| v10cal | 974 | 19 | 1.95% | 21 | 2.16% |
+| thuiv1 | 999 | **12** | **1.20%** | **51** | **5.11%** |
+| v18 | 1062 | 30 | 2.82% | 36 | 3.39% |
+| v19 | 969 | 19 | 1.96% | 28 | 2.89% |
+| v23 | 1048 | 39 | 3.72% | 40 | 3.82% |
+
+**thuiv1 drafts search 4.3× more often than it runs it**, while its same-build twin v10cal
+drafts barely more than it runs (2.16% vs 1.95%). So the two channels are not two views of
+one quantity — the drafted one carries most of the between-run variation. B28's prompt says
+*use BFS*, which is likelier to move drafting than execution, and reading the drafted channel
+**after** the executed one shows nothing is a forking path. **Declare the section before the
+run.** Everything below is the executed channel.
+
+## Unprompted runs separate 4 times in 10
+
+| pair | rates | Fisher p |
+|---|---|---|
+| v10cal vs thuiv1 | 1.95% / 1.20% | 0.2070 |
+| v10cal vs v18 | 1.95% / 2.82% | 0.2467 |
+| v10cal vs v19 | 1.95% / 1.96% | 1.0000 |
+| **v10cal vs v23** | 1.95% / 3.72% | **0.0226** |
+| **thuiv1 vs v18** | 1.20% / 2.82% | **0.0117** |
+| thuiv1 vs v19 | 1.20% / 1.96% | 0.2063 |
+| **thuiv1 vs v23** | 1.20% / 3.72% | **0.0003** |
+| v18 vs v19 | 2.82% / 1.96% | 0.2469 |
+| v18 vs v23 | 2.82% / 3.72% | 0.2715 |
+| **v19 vs v23** | 1.96% / 3.72% | **0.0227** |
+
+None of these five runs was prompted to search. **Four of the ten pairs separate at p<0.05**,
+the worst at p=0.0003. The whole-corpus spread is 1.20% → 3.72% = **2.52 pp**.
+
+And the test is sensitive enough to be fooled: simulated, one v22-sized run (~1,010 turns)
+against the 5,052-turn baseline of **119/5052 = 2.36%** detects a lift of **+2 pp** at 80%
+power (measured 0.92). The detectable lift is *smaller than the unprompted spread*. Run B28
+as designed and a significant result is not evidence about the prompt.
+
+⚠️ The same-build pair is the reassuring one and it is the misleading one: v10cal vs thuiv1
+is 0.75 pp apart, p=0.21. Reading only that pair — the obvious control — says the probe is
+stable. It is stable **for that pair**, and the corpus contains three pairs it is not.
+
+## Stratifying on the game removes all four, and the null has a floor
+
+Paired sign-flip permutation on the per-game rate difference, 25 shared games, 100k perms —
+the same unit and test family §1 used:
+
+| pair | games | mean diff | p |
+|---|---|---|---|
+| v10cal vs thuiv1 | 25 | +1.11 pp | 0.2517 |
+| v10cal vs v18 | 25 | −0.68 pp | 0.6078 |
+| v10cal vs v19 | 25 | −0.09 pp | 0.9329 |
+| v10cal vs v23 | 25 | −1.71 pp | 0.1865 |
+| thuiv1 vs v18 | 25 | −1.79 pp | 0.1780 |
+| thuiv1 vs v19 | 25 | −1.20 pp | 0.1373 |
+| thuiv1 vs v23 | 25 | −2.81 pp | 0.1102 |
+| v18 vs v19 | 25 | +0.59 pp | 0.6142 |
+| v18 vs v23 | 25 | −1.02 pp | 0.6199 |
+| v19 vs v23 | 25 | −1.61 pp | 0.4026 |
+
+**0 of 10 stratified against 4 of 10 unstratified.** The confound is entirely the game mix —
+the same thing §6 dismissed design (b) for, arriving here as a property of the runs rather
+than of the arms.
+
+Floor for the stratified test, by planting a lift into v10cal's per-game rates and measuring
+detection: **+3 pp per game at 80% power** (measured 0.88). The largest unprompted stratified
+difference is 2.81 pp, just inside it — so this null is narrow, not vacuous, and it is not a
+comfortable margin.
+
+## What B28 should do
+
+1. **Stratify on the game.** Paired sign-flip over the 25 shared games, never a pooled Fisher.
+   Free, and it is the difference between a test that separates unprompted runs 40% of the
+   time and one that separates none of them.
+2. **v22 must reach roughly 2.4% → 5.4% to be readable.** A "usage rose from 2% to 3.5%"
+   outcome ranks nothing, and 3.5% is already inside the unprompted range.
+3. **Fix the transcript section before the run** — `[ASSISTANT]` (executed) is what §6's base
+   rate means, and the drafted channel is where the variation lives.
+
+None of this changes B28's prior, which §6 already lowered: even a clean usage lift is not on
+its own a route to more levels. It changes what the slot buys.
+
+Cost: zero GPU slots, zero submissions, no model calls.
+
+## Reproduce
+
+`python3 scripts/b27/b28_baseline.py`.
