@@ -1,4 +1,4 @@
-# R29 — the feature its own author never ran: grid lines
+# R34 — the feature its own author never ran: grid lines
 
 2026-08-24. think-research pass over "what lever is still unclosed after B26-B29", toolbox =
 local corpus (bundle sources in scratchpad `bundlecmp/`, events on disk). Web deliberately

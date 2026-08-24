@@ -3,8 +3,8 @@
 2026-08-25. Offline, 0 slots, 0 submissions. Instrument: `eval/score_shape.py`, five controls
 gating it, every one proven red on a mutation, exit 0.
 
-Numbered **R37** deliberately, leaving R34–R36 free for the pending renumber of the three
-colliding pairs (R28/R29/R30). It reads only `eval/fixtures/*.json`, so unlike everything under
+Numbered **R37** deliberately, and the three colliding pairs were renumbered in the same change:
+`R29-grid-lines` → R34, `R28-usage-distribution` → R35, `R30-untried-ledger` → R36. It reads only `eval/fixtures/*.json`, so unlike everything under
 `scripts/b27/` it runs on any checkout — no `~/Claude/arc-artifacts/` corpus needed.
 
 ## The answer

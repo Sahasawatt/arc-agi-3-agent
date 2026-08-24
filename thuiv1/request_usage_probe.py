@@ -28,7 +28,7 @@ That is what this file records, at about 200 bytes per request instead of 150 KB
 ⚠️ ANSWERED — and the 91% above is the PRIOR this probe was built to test, not a result.
 Measured, the share is **68.4%**. The whole paragraph is left standing on purpose: it is the
 reason the probe exists, and overwriting an assumption with its answer deletes the record of
-what was assumed. Read `notes/R28-usage-distribution.md` for what the run actually found —
+what was assumed. Read `notes/R35-usage-distribution.md` for what the run actually found —
 §"Two corrections to what was assumed when the probe was written" (`:50-51`) carries this
 correction in the author's own words, and the section above it kills the cap idea
 structurally: the distribution has **no fat tail**, so every cap that saves meaningfully cuts

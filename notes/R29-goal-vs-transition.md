@@ -11,7 +11,7 @@ B27's method was to pair a stuck run from v18/v19/v21 against a clearing run fro
 one of those pairs carries a knob change, so a difference is confounded.
 
 Two runs on disk are a **cleaner pair**: `v10cal` (4.71) and `thui-v1` (3.20). thui-v1 is v10
-plus the cell-12 usage probe, which R28 established is inert, and `eval/rank_runs.py` reads the
+plus the cell-12 usage probe, which R35 established is inert, and `eval/rank_runs.py` reads the
 two as **NOT-DISTINGUISHABLE, p=0.3027**. So per-game differences between them are rollout
 variance on one build, not a lever.
 
@@ -131,7 +131,7 @@ still live two months later, on the best build.
 
 - **`request_error` on 4.0% (v10cal) / 3.2% (thui-v1) of analysis turns** — `[ANALYZER STATUS]`
   carries `HTTPConnectionPool(host='127.0.0.1', port=1234): Read timed out. (read
-  timeout=398.2)`. The turn produces no model output at all. R28 measured 2.5% from the usage
+  timeout=398.2)`. The turn produces no model output at all. R35 measured 2.5% from the usage
   probe, which by construction only sees requests that returned; this is the same phenomenon
   counted at the turn.
 - **The model responds with no assistant prose on ~29-33% of turns** (`MODEL RESPONSE META`
