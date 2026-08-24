@@ -107,6 +107,37 @@ is **483 s**, so 900 s is only ~1.9x the slowest honest request. A liveness time
 dwarf the slowest legitimate unit; at 1.9x it is already close to scheduled killing, and
 lowering it converts healthy long requests into lost turns with a graceful-looking result.
 
+## Where the prompt budget goes — B5(b) is aimed at 20% of it
+
+`B5(b)` on the map reads *"slim the 14.5k-char system prompt (dedupe the 6 addenda, target
+<8k)"*. The probe records `prompt_tokens` per request, so the split between the static
+preamble and accumulated history is measurable, and it had not been measured.
+
+**Every game's first request is 4,410-4,430 prompt tokens.** All 25, a 20-token spread — that
+is the static floor: system prompt + tool schemas + the first board.
+
+| | tokens |
+|---|---|
+| first request (static floor) | **4,420** median, range 4,410-4,430 |
+| median across all requests | 22,274 |
+| last request of a game | 24,650 median |
+| max seen | 29,686 (window is 32,768) |
+| growth per action | **+192** median, per-game slope +51 to +800 |
+
+So the static part is **20%** of the median prompt and ~18% of the last one; the other ~17,900
+tokens are accumulated history. Halving the preamble — B5(b)'s target — removes roughly
+**2,200 tokens from 22,274, about 10% of the prompt**, and prompt runs 10.7:1 against output,
+so ~9% of total tokens.
+
+⚠️ **This is not an argument for compacting history instead.** Both are throughput levers and
+the throughput axis is closed by B16 and B25 — capacity has twice converted into more actions
+and fewer levels. The finding is narrower and only that: **if prompt-size work is ever done,
+B5(b) as written targets the smaller fifth**, and the number to beat is history growth at +192
+tokens per action, not the preamble.
+
+Also visible: several games reach 26-29k against a 32,768 window, so retention is running near
+the ceiling by the end of a game. What the harness does at that ceiling is not measured here.
+
 ## Instrument notes
 
 - `final_uncached_input_tokens` and `final_generated_tokens` are **0 for all 25 games** in
