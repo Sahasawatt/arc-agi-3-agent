@@ -25,6 +25,10 @@ merely unresolved.
     It is not free: CONTROL 4 fails the run if any cell scores ABOVE its derived cap, which
     is what a non-contiguous clear would produce.
 
+    Games with no anchor are not left blank: bound_totals() brackets them from the same
+    identity (score <= cap holds in every cell, anchored or not). That is what unblocked
+    B35's "is re86 deep or shallow" -- see the BOUNDS block and CONTROL 6.
+
 EXIT CODES: 0 = ran and all controls passed, 1 = a control failed (no numbers are printed
 past the failure), 2 = usage/data error.
 
@@ -82,6 +86,49 @@ def derive_totals(runs: dict, games: list) -> tuple[dict, dict]:
             derived[g] = max(votes, key=lambda k: len(votes[k]))
             votes_all[g] = votes
     return derived, votes_all
+
+
+def bound_totals(runs: dict, games: list) -> dict:
+    """Bound total_levels for games that have NO exact cap anchor.
+
+    derive_totals() can only speak where a cell sits exactly on the completion cap. For
+    every other game the total was reported UNKNOWN and nothing downstream could use it --
+    including B35's blocker, which needs to know whether re86 (the largest single
+    contributor to per-game variance) is a deep game worth chasing or a shallow swingy one.
+
+    A bound is available without an anchor, from the same identity. score = min(raw, cap)
+    is <= cap = 100 * tri(cleared) / tri(total) in EVERY scoring cell, anchored or not, so
+
+        tri(total) <= 100 * tri(cleared) / score
+
+    holds for each cell independently; take the tightest over the game's cells. The lower
+    bound is the deepest level any run actually reached there.
+
+    Note the constant is 100 and not SDK_CAP=115: 115 caps a LEVEL's score, while the GAME
+    is capped at 100 * sum(done)/sum(1..total). Using 115 gives a valid but 15% looser
+    bound. Measured: the anchored games do NOT catch that substitution -- every one of them
+    has total <= 10, and tri(k+1)/tri(k) only drops under 1.15 at k >= 14, so a 15% slack
+    cannot reach the next triangular number and the bound still lands on the right value.
+    CONTROL 6 therefore carries a synthetic deep game where it can, which is the only part
+    of it with teeth against this particular error.
+
+    Returns {game: (lo, hi)} for every game with at least one scoring cell.
+    """
+    bounds = {}
+    for g in games:
+        lo = max(gs[g]["levels"] for gs in runs.values())
+        hi = None
+        for _r, gs in runs.items():
+            d = gs[g]
+            if d["levels"] <= 0 or d["score"] <= 0:
+                continue
+            lim = 100.0 * tri(d["levels"]) / d["score"]
+            k = max((k for k in range(1, 60) if tri(k) <= lim + EPS), default=None)
+            if k is not None:
+                hi = k if hi is None else min(hi, k)
+        if hi is not None:
+            bounds[g] = (max(lo, 1), hi)
+    return bounds
 
 
 def classify(runs: dict, games: list, derived: dict) -> dict:
@@ -203,10 +250,38 @@ def main() -> None:
         seen = max(gs[g]["levels"] for gs in runs.values())
         if n < seen:
             fail(5, "%s derived total %d < %d levels actually cleared there" % (g, n, seen))
+
+    bounds = bound_totals(runs, games)
+
+    # ---- CONTROL 6: where a total IS known, the bound must land EXACTLY on it ----
+    # Containment would pass for any constant >= 100 (SDK_CAP=115 included) and for a lower
+    # bound hardcoded to 1. Equality on both ends is what gives this teeth.
+    for g, n in sorted(derived.items()):
+        if g not in bounds:
+            fail(6, "%s has a derived total %d but no bound at all" % (g, n))
+            continue
+        lo, hi = bounds[g]
+        if hi != n:
+            fail(6, "%s bound upper %d != derived total %d (the identity is wrong, not loose)"
+                    % (g, hi, n))
+        seen = max(gs[g]["levels"] for gs in runs.values())
+        if lo != seen:
+            fail(6, "%s bound lower %d != %d levels actually cleared" % (g, lo, seen))
+        if lo > hi:
+            fail(6, "%s empty bound [%d, %d]" % (g, lo, hi))
+    # synthetic deep game: at total=20 a 15% slack DOES clear the next triangular number,
+    # so this is where SDK_CAP=115 in place of the game cap 100 becomes visible.
+    synth = {"x": {"deep": {"score": 100.0 * tri(4) / tri(20), "levels": 4, "actions": 1}}}
+    got = bound_totals(synth, ["deep"]).get("deep")
+    if got != (4, 20):
+        fail(6, "synthetic total=20 game bounded %s, want (4, 20) -- the constant is not the "
+                "game cap 100" % (got,))
     gate()
     print("CONTROL 5  closure: %d levels derived over %d games, %d left for the other %d "
           "(mean %.1f): OK" % (used, len(derived), left, len(unknown_games),
                                left / max(1, len(unknown_games))))
+    print("CONTROL 6  bound lands exactly on the derived total in all %d anchored games, and "
+          "a synthetic total=20 game pins the constant to the game cap: OK" % len(derived))
     gate()
     print()
 
@@ -237,6 +312,24 @@ def main() -> None:
         n = derived[g]
         caps = [100 * tri(k) / tri(n) for k in range(1, min(6, n + 1))]
         print("  %-6s %5d | %s" % (g, n, " ".join("%6.2f" % c for c in caps)))
+    print()
+
+    print("BOUNDS ON THE UNRESOLVED (no cap anchor, so tri(total) <= 100*tri(cleared)/score):")
+    print("  %-6s %-12s %s" % ("game", "total", "tightest cell -- the one that sets the upper bound"))
+    for g in sorted(unknown_games):
+        if g not in bounds:
+            print("  %-6s %-12s never scored in any run -- no anchor of any kind" % (g, "?"))
+            continue
+        lo, hi = bounds[g]
+        best = min(((100.0 * tri(runs[r][g]["levels"]) / runs[r][g]["score"], r)
+                    for r in runs
+                    if runs[r][g]["levels"] > 0 and runs[r][g]["score"] > 0), default=(0, "?"))
+        rng = "%d" % lo if lo == hi else "%d..%d" % (lo, hi)
+        width = hi - lo
+        print("  %-6s %-12s %s (L%d, %.2f)%s"
+              % (g, rng, best[1], runs[best[1]][g]["levels"], runs[best[1]][g]["score"],
+                 "   <- too wide to use" if width >= 8 else ""))
+    print("  -> a bound is not a total: it rules out shallow, it does not pick a value.")
     print()
 
     # per-game volatility across the runs LEDGER treats as samples of one build
@@ -276,6 +369,8 @@ def main() -> None:
             "cap_share_of_decided": round(100 * n_cap / decided, 1),
             "derived_totals": derived,
             "unresolved_games": unknown_games,
+            "bounds": {g: list(bounds[g]) for g in unknown_games if g in bounds},
+            "no_anchor": [g for g in unknown_games if g not in bounds],
             "headroom_public": {r: round(head.get(r, 0.0) / len(games), 4) for r in sorted(runs)},
             "volatility_top6": [[g, round(sd, 3)] for g, sd in vol[:6]],
             "actions_buy_levels": {"agree": agr, "disagree": dis, "flat": flt,

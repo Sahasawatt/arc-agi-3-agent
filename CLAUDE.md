@@ -1055,8 +1055,14 @@ is stronger than it reads: for most game-runs depth is the ONLY thing, and a lev
 efficiency or on behaviour is working on the other 23%.
 
 `eval/score_shape.py` computes this from `eval/fixtures/*.json` alone -- no GPU slot, no Kaggle
-call, no `~/Claude/arc-artifacts/` corpus, so it runs on any checkout. Five controls gate it and
+call, no `~/Claude/arc-artifacts/` corpus, so it runs on any checkout. Six controls gate it and
 each is proven red on a mutation; a failing control prints no numbers.
+
+The 11 games with no cap anchor are BOUNDED rather than left unknown (`bound_totals`): since
+`score <= cap` holds in every cell, `tri(total) <= 100 * tri(cleared) / score` per cell, tightest
+wins. That is how re86 -- the largest single contributor to per-game variance -- was placed at
+4..8 levels without a slot. A bound rules out shallow; it does not pick a value, so a build
+needing the exact total is still blocked.
 
 ## Layout, in dependency order
 
