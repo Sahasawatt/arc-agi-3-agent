@@ -88,4 +88,7 @@ lowering it converts healthy long requests into lost turns with a graceful-looki
 - `summary.txt` reports `total tokens: 2,158,107`; the probe's output sum is **2,461,226**,
   14% apart. Two different quantities, unreconciled — do not mix them in one column.
 - The probe cost nothing in score: public **3.20**, inside the `[2.82, 4.71]` band, levels 22
-  equal to v10out. See the ledger row.
+  equal to v10out. `rank_runs.py` on this run's `benchmark.json` confirms it against both
+  in-band neighbours: vs **v10cal** delta -1.51 **p=0.3027**, vs **v19** delta +0.38
+  **p=0.7579**, NOT-DISTINGUISHABLE both ways. Four samples of v10 now span 1.89, so a
+  rerun of this build is the one action that provably teaches nothing.
