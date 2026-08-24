@@ -150,22 +150,17 @@ def main() -> None:
     assert "'fp8'" not in o8, "v20 must not carry v14's KV flag"
     assert "'MULTIMODAL_UPSCALE': '8'" not in o8, "v20 must not carry v18's upscale change"
 
-    # Teeth: run the shipped replace chain over the bundle's own model block and check the
-    # rewrite actually fires, rather than only appearing in the source.
-    bundle = (
-        "MODEL_OWNER = 'driessmit1'\n"
-        "MODEL_SLUG = 'vrfai-qwen3-6-27b-fp8-hf-snapshot'\n"
-        "SERVED_MODEL_NAME = 'vrfai/Qwen3.6-27B-FP8'\n"
-    )
-    patched = (
-        bundle.replace("MODEL_OWNER = 'driessmit1'", f"MODEL_OWNER = '{MOE_OWNER}'")
-        .replace("MODEL_SLUG = 'vrfai-qwen3-6-27b-fp8-hf-snapshot'", f"MODEL_SLUG = '{MOE_SLUG}'")
-        .replace("SERVED_MODEL_NAME = 'vrfai/Qwen3.6-27B-FP8'", f"SERVED_MODEL_NAME = '{MOE_SERVED}'")
-    )
-    assert MOE_SLUG in patched and MOE_OWNER in patched and MOE_SERVED in patched, (
-        "teeth: the replace chain does not fire on the bundle's own model block"
-    )
-    assert "driessmit1" not in patched and "vrfai" not in patched, "teeth: an old value survived"
+    # A "teeth" block used to sit here — same defect as duckv18's, removed the same day
+    # (2026-08-24). It built a local `bundle` string already containing the three literals the
+    # chain searches for, ran the chain over it, and asserted the replacements landed. The
+    # fixture was hand-written to match the search strings, so it could not fail, while its
+    # comment claimed it ran "over the bundle's own model block". The property IS guarded,
+    # twice, and neither guard is here:
+    #   - build time, line ~114: `assert OLD_LOOP in c8` — the REAL source notebook must still
+    #     carry the seam, or this script dies before writing anything.
+    #   - run time, on Kaggle, inside NEW_LOOP (lines ~90-91): the `not in command` asserts run
+    #     against the bundle's own setup string and kill the kernel if a rewrite missed.
+    # The `o8` asserts above are source-text checks only. Do not re-add a fixture.
 
     print("self-check OK: cells [6, 8, 12]; anim bundle + Qwen3.6-35B-A3B-FP8 MoE, no cap, upscale 4")
 

@@ -117,18 +117,18 @@ def main() -> None:
     assert "'fp8'" not in o8, "v18 must not carry v14's KV flag"
     assert "'MULTIMODAL_UPSCALE': '8'" in o8, "v18: the upscale rewrite is missing"
 
-    # Teeth: the rewrite must actually fire against the REAL setup command, not just
-    # appear in the source. Run the same .replace chain over the bundle's own text.
-    bundle_env = (
-        "    'LOCAL_ANALYZER_ENABLE_THINKING': 'true',\n"
-        "    'MULTIMODAL_CONTEXT': 'current_grid',\n"
-        "    'MULTIMODAL_UPSCALE': '4',\n"
-        "}\n"
-    )
-    patched = bundle_env.replace("'MULTIMODAL_UPSCALE': '4'", "'MULTIMODAL_UPSCALE': '8'")
-    assert "'MULTIMODAL_UPSCALE': '8'" in patched and "': '4'" not in patched, (
-        "teeth: the replace does not fire on the bundle's own env block"
-    )
+    # A "teeth" block used to sit here. It built a local `bundle_env` string that already
+    # contained `'MULTIMODAL_UPSCALE': '4'`, ran the replace over it, and asserted the result
+    # contained '8'. That cannot fail — the fixture was hand-written to match the search
+    # string, so it asserted a tautology while its comment claimed it ran "against the REAL
+    # setup command". Removed 2026-08-24. The property it claimed to guard is guarded twice,
+    # for real, and neither guard is here:
+    #   - build time, line ~84: `assert OLD_LOOP in c8` — the REAL source notebook must still
+    #     carry the seam, or this script dies before writing anything.
+    #   - run time, on Kaggle, inside NEW_LOOP: the asserts over `command` (the bundle's own
+    #     setup string) kill the kernel if the upscale rewrite missed.
+    # The `o8` asserts above are source-text checks only — NEW_LOOP's own code text contains
+    # the literal, so they pass whether or not the rewrite fires. Do not re-add a fixture.
 
     print("self-check OK: cells [6, 8, 12]; anim bundle + 3.8, no cap, upscale 4->8")
 

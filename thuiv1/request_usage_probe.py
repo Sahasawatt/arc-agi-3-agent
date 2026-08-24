@@ -25,6 +25,15 @@ we know 91% of requests want more than 768 tokens and nothing about the shape ab
 Placing a safe cap needs the **distribution**, which means `completion_tokens` per request.
 That is what this file records, at about 200 bytes per request instead of 150 KB.
 
+⚠️ ANSWERED — and the 91% above is the PRIOR this probe was built to test, not a result.
+Measured, the share is **68.4%**. The whole paragraph is left standing on purpose: it is the
+reason the probe exists, and overwriting an assumption with its answer deletes the record of
+what was assumed. Read `notes/R28-usage-distribution.md` for what the run actually found —
+§"Two corrections to what was assumed when the probe was written" (`:50-51`) carries this
+correction in the author's own words, and the section above it kills the cap idea
+structurally: the distribution has **no fat tail**, so every cap that saves meaningfully cuts
+the body. A cap at 8,192 saves 0.98% of output; at 12,288 it saves nothing at all.
+
 WHAT IT RECORDS — one JSONL row per request, written next to the run's other artifacts
 using the harness's own path convention (`<game>_usage.jsonl`):
 
