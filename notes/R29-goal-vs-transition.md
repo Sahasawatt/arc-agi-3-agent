@@ -315,3 +315,320 @@ not. That rests on quoted text, and B29's justification rests on it alone.
 `scripts/b27/widen.py <runs…>` for §1, `scripts/b27/corpus_search.py <runs…>` for §3; both take
 run names and default to the original pair. Artifacts under `~/Claude/arc-artifacts/`, pulled
 with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
+
+---
+
+# §8 — §2 widened, and it cannot be: the corpus has no structural trace of a wrong transition model
+
+§6 and §7 widened §1 and §3. §2 was left standing on three hand-picked games (lp85, cd82,
+ar25), and §7 closes by naming it *"the load-bearing half … B29's justification rests on it
+alone."* §3 flipped sign under exactly this widening, so §2 is the one claim in R29 that has
+never faced the corpus. This section faces it. **Result: four structural proxies for §2 are
+null, and the corpus cannot resolve the effect they would need to show. §2 is neither
+confirmed nor refuted — it remains a three-quote claim, and no instrument short of B29's own
+verifier can widen it.**
+
+## The instrument had to be rebuilt, because §Reproduce points at nothing
+
+`scripts/b27/widen.py` and `scripts/b27/corpus_search.py` are **not in this repo** — `git
+ls-files` returns zero for `b27` and zero for `widen`, against a control of one tracked file
+under `scripts/`. They are not in the main checkout either. So §1's `97 of 115, p=1.9e-16`
+and §7's whole table were, until now, unreproducible from master.
+
+Rebuilt at `scripts/b27/{corpus,attempts,wm,widen2}.py` and validated against **six** numbers
+this note already published, before it was used for anything new:
+
+| check | R29 | rebuilt |
+|---|---|---|
+| analysis turns, v10cal+thuiv1 | 1,973 | 1,973 ✓ |
+| analysis turns, five runs | 5,052 | 5,052 ✓ |
+| run-games | 125 | 125 ✓ |
+| level-attempts | 237 | 237 ✓ |
+| stuck/cleared pairs | 115 | 115 ✓ |
+| §4 carried model absent | 46.5% / 55.3% | 46.5% / 55.3% ✓ |
+| §4 `Goal model:` stated | 3.0% / 0.0% | 3.0% / 0.0% ✓ |
+| §1 named pairs lp85 / ar25 / cn04 / dc22 | 27v8 / 29v4 / 29v11 / 31v15 | all four ✓ |
+| §1 medians | 31 vs 17 | 31 vs 17 ✓ |
+| B26 row's no-op share | 5% | 5.0% (398 of 7,938) ✓ |
+
+Two things surfaced while matching them, neither of which changes a conclusion:
+
+- **`level_completed` rides the event for the level being ENTERED, not the one being played.**
+  Read naively, level 1 is uncleared in every run and the final stuck level reads as cleared.
+  The rule that reproduces every published pair is *an attempt at level L is cleared iff the
+  run ever reached a level > L*.
+- **§1's `97 of 115` is a strict `>`; the prose beside it says "at least as many", which is
+  `>=` and gives `101 of 115` (87.8%).** There are exactly 4 ties. Same class as the
+  `0.38 = 25%` slip in LEDGER:120 — the pair is right, the wording and the number disagree.
+  Either way the effect is overwhelming.
+
+## What was measured
+
+Unit: the 115 stuck/cleared pairs on the same `(game, level)`, identical to §1. Test: paired
+sign-flip permutation, two-sided, 100k draws, seed 20260824. The carried world model is the
+block between `Working world model carried from earlier turns:` and the literal
+`end of world model.` — **trimming at that second marker is load-bearing**, because the
+boilerplate after it names every prefix (`World model:`, `Goal model:`, `Action model:`, …),
+so an untrimmed read reports every field on 100% of turns and drives any similarity measure
+to ~1.0.
+
+| signal | stuck | cleared | stuck>cleared | p |
+|---|---|---|---|---|
+| **CONTROL+** turns/attempt (§1's own signal) | 30.97 | 17.45 | **97/115** | 1.0e-05 *(permutation floor)* |
+| **CONTROL−** random per attempt | — | — | — | 0.43 |
+| carries `Action model:` | 0.026 | 0.061 | 3/115 | 0.34 |
+| `Open questions:` rate | 0.217 | 0.167 | 26/115 | 0.27 |
+| carried model present at all | 0.542 | 0.593 | 58/115 | 0.27 |
+| stasis — consecutive-block similarity | 0.901 | 0.878 | 26/51 | 0.39 |
+
+The positive control reproduces §1 exactly (97/115, same direction), so the machinery works.
+⚠️ The negative control was drawn twice on independently seeded noise and returned **p=0.43
+and p=0.088** — a single draw of a random control is itself noise and proves little; the
+positive control is what carries this table.
+
+## Why the null is weak, and why that is the finding
+
+**The agent almost never writes a transition model down.** `Action model:` — the field the
+harness's own prompt offers for exactly this — appears on **1.6% of turns** across five runs
+and **0 times in either v10cal or thuiv1**, the two runs §2's three quotes come from. Across
+the 230 attempts in the 115 pairs it is non-zero on **10**.
+
+So the floor was computed rather than assumed: plant a lift in the stuck arm and ask when this
+test finds it (200 sims, confirmed at both 1.5k and 100k permutations).
+
+| planted lift | detected |
+|---|---|
+| +5 pp | 0% |
+| +10 pp | 18% |
+| **+15 pp** | **74%** |
+| +20 pp | 97% |
+
+The observed difference is **−3.5 pp** — the wrong direction for §2, on 10 informative pairs.
+This corpus resolves nothing below roughly **+15 pp**. That is not evidence against §2; it is
+the measurement declining to speak.
+
+## What this means for B29
+
+§2 claims the *content* of a belief is wrong. Every proxy above measures whether a transition
+model is **maintained, questioned or revised** — never whether it is **correct**. Nothing in a
+transcript marks a belief as false, which is why the null arrives underpowered by
+construction rather than by sample size. **The only instrument that can widen §2 is a verifier
+that checks stated beliefs against recorded transitions — which is B29's own mechanism.** As
+it stands, B29's justification and B29's test are the same object.
+
+**That is fixable for zero slots, and it is the recommended next step.** The corpus already
+holds every transition such a verifier needs: **7,938 action events across the five runs, with
+`action_name`, `board_ascii` and `board_changed` populated on 100% of them.** Run B29's
+verifier offline over that corpus before building anything:
+
+- fires often on stuck attempts and rarely on cleared ones → §2 is confirmed at corpus scale
+  and B29 is justified on more than three quotes;
+- fires alike on both → §2 does not generalise, and B29 dies before it costs a GPU slot.
+
+Either way it is read-only, costs no submission and no GPU quota, and is the only route that
+does not spend a slot to learn what §2 already asserts.
+
+## Reproduce
+
+`python3 scripts/b27/attempts.py` prints the validation table; `python3 scripts/b27/widen2.py`
+prints the signal table. Both read `~/Claude/arc-artifacts/{v10cal,thuiv1,v18,v19,v23}`,
+pulled with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
+
+---
+
+# §9 — B29's verifier premise, tested offline: the recorded transition does not predict
+
+§8 closed by proposing B29's own verifier be run offline over the corpus before anything is
+built, for zero slots. Done. **It does not get as far as grading beliefs, because the premise
+underneath it fails first: a recorded transition does not predict the next one from the same
+observed state.**
+
+B29 is *"draft k candidate short plans in the sandbox, check each against `history`'s recorded
+transitions, execute only the best-verified one, abort on first prediction miss."* Every clause
+after "check" assumes that if the agent has seen `(state, action) → outcome` once, seeing the
+same `(state, action)` again means the same outcome. That is checkable directly, with no model
+in the loop: find every case where a run revisited an exact `(level, board, action)` it had
+already fired, and ask whether the outcome reproduced.
+
+**446 such repeats across the five runs.** They reproduce the exact board **58.7%** of the time
+and the harness's own `board_changed` flag **77.8%** of the time.
+
+## The aggregate is one game, and it inverts without it
+
+| game | repeats | board reproduced | changed-flag reproduced |
+|---|---|---|---|
+| cn04 | 260 | 70.4% | **99.6%** |
+| ls20 | 32 | **100.0%** | 100.0% |
+| s5i5 | 28 | 10.7% | 17.9% |
+| sb26 | 26 | 15.4% | 26.9% |
+| ft09 | 18 | 50.0% | 50.0% |
+| dc22 | 14 | **0.0%** | **0.0%** |
+| lp85 | 12 | 25.0% | 33.3% |
+| su15 | 12 | 16.7% | 25.0% |
+| tu93 | 11 | **100.0%** | 100.0% |
+| sc25 | 8 | 62.5% | 62.5% |
+| vc33 | 7 | **0.0%** | **0.0%** |
+| **ALL** | **446** | **58.7%** | **77.8%** |
+| **excluding cn04** | **186** | **42.5%** | **47.3%** |
+
+**cn04 holds 58% of every repeat in the corpus and is the best-behaved game in it** — 99.6% on
+the flag. It was propping the aggregate up, not dragging it down, which is the opposite of what
+its reputation here (the 454-action outlier) would suggest. Drop it and the corpus reproduces
+its own recorded transitions **worse than a coin flip**.
+
+**9 of the 11 games with ≥5 repeats fail to reproduce their own recorded transition more than
+10% of the time.** Two — ls20 and tu93 — reproduce it perfectly, so this is a per-game property,
+not a blanket statement that the environment is random.
+
+## Three artifacts ruled out in the same run
+
+- **Per-batch board attribution.** `batch_size` is **1 on all 7,938 action events**, so the
+  recorded board belongs to one action. (Worth noting separately: the prompt urges batching and
+  the event stream contains none.)
+- **Mid-animation frames.** The `animation` field is present on 1,841 of 7,938 events. It
+  explains the asymmetric cases sharply — when animation presence *flips* between the two
+  occurrences, reproduction collapses to 6.2% / 8.3% — but those are 28 of 446. The 349 repeats
+  with no animation on either side still reproduce only **58.5%**.
+- **Cosmetic drift.** When it fails, the median difference is **1 cell** but the mean is 24.4 and
+  the max is 320. ⚠️ No claim is made here about *where* those cells sit: a HUD region was
+  guessed at and the guess did not survive its own examples, so it is not reported. The
+  heuristic-free half is the `board_changed` column, which is the harness's own flag and
+  disagrees with itself on 22.2% of repeats corpus-wide and 52.7% outside cn04.
+
+## What this does and does not settle
+
+**Settles:** a verifier keyed on the **observed board** — which is what `history` gives the agent
+— cannot do what B29 asks of it. "Abort on first prediction miss" would fire on roughly half of
+all correct repeats in nine of eleven games. Built as specified, the gate rejects good plans at a
+rate that has nothing to do with the plans.
+
+**Does not settle:** *why*. Either the environment is genuinely non-deterministic, or the visible
+board is not the full state and a better key exists. The animation column is a hint toward the
+second — repeats where both sides carry animation reproduce at **81.2%**, well above the 58.5%
+where neither does. If the sandbox's `history` carries more than the rendered board (segmentation
+objects, internal phase), a verifier keyed on *that* is untested and remains open. Nothing here
+measures it, and nothing here should be quoted as if it did.
+
+**For the frame (B26):** §8 found that §2 cannot be widened by any instrument short of B29's own
+verifier. §9 finds that verifier's premise does not hold on the observed board. So the transition
+model being "wrong" is now joined by a second possibility that the three quotes cannot
+distinguish from it — that the transition model is being learned against a state signal which is
+itself unreliable in most games. **B26 stays open, and this is the sharper form of its question:
+not "is the agent's transition model wrong" but "is a transition model learnable from what the
+agent is shown".**
+
+Cost: zero GPU slots, zero submissions, no model calls.
+
+## Reproduce
+
+`python3 scripts/b27/b29_offline.py`.
+
+---
+
+# §10 — B28's designed test is confounded, and the fix is free
+
+B28 asks whether v22's ported BFS instruction moves search usage off its ~2% base rate. As
+written the test is one run against a baseline, pooled over turns, Fisher exact. That can
+only rank something if runs which were **not** prompted differently agree with each other.
+Nobody had measured whether they do. The corpus can answer it for zero slots.
+
+Instrument: §6's exact pattern list, over the five-run corpus. Validated before use — it
+reproduces §6's **31/1973 = 1.6%** on v10cal+thuiv1 exactly, and the Fisher implementation
+reproduces both a published significant value (§3's `0/263 vs 5/182` → 0.0111) and a
+published null (§6(f)'s `43/88 vs 7/12` → 0.760).
+
+## The probe reads one section of the transcript, and the choice nearly doubles the answer
+
+A transcript is `[SYSTEM PROMPT] [USER PROMPT] [THINKING]* [ASSISTANT] [ANALYZER STATUS]`,
+and `<parameter=code>` appears in **both** `[THINKING]` and `[ASSISTANT]` — 1,009 blocks
+against 1,432 over the pair. §6 says *"inside the tool call's `<parameter=code>`"*, and only
+`[ASSISTANT]` is a tool call; `[THINKING]` is code the model drafted and did not run. Joining
+both gives **72/1973 = 3.65%** where §6 published 31. That is not a detail:
+
+| run | turns | ran | rate | + drafted | rate |
+|---|---|---|---|---|---|
+| v10cal | 974 | 19 | 1.95% | 21 | 2.16% |
+| thuiv1 | 999 | **12** | **1.20%** | **51** | **5.11%** |
+| v18 | 1062 | 30 | 2.82% | 36 | 3.39% |
+| v19 | 969 | 19 | 1.96% | 28 | 2.89% |
+| v23 | 1048 | 39 | 3.72% | 40 | 3.82% |
+
+**thuiv1 drafts search 4.3× more often than it runs it**, while its same-build twin v10cal
+drafts barely more than it runs (2.16% vs 1.95%). So the two channels are not two views of
+one quantity — the drafted one carries most of the between-run variation. B28's prompt says
+*use BFS*, which is likelier to move drafting than execution, and reading the drafted channel
+**after** the executed one shows nothing is a forking path. **Declare the section before the
+run.** Everything below is the executed channel.
+
+## Unprompted runs separate 4 times in 10
+
+| pair | rates | Fisher p |
+|---|---|---|
+| v10cal vs thuiv1 | 1.95% / 1.20% | 0.2070 |
+| v10cal vs v18 | 1.95% / 2.82% | 0.2467 |
+| v10cal vs v19 | 1.95% / 1.96% | 1.0000 |
+| **v10cal vs v23** | 1.95% / 3.72% | **0.0226** |
+| **thuiv1 vs v18** | 1.20% / 2.82% | **0.0117** |
+| thuiv1 vs v19 | 1.20% / 1.96% | 0.2063 |
+| **thuiv1 vs v23** | 1.20% / 3.72% | **0.0003** |
+| v18 vs v19 | 2.82% / 1.96% | 0.2469 |
+| v18 vs v23 | 2.82% / 3.72% | 0.2715 |
+| **v19 vs v23** | 1.96% / 3.72% | **0.0227** |
+
+None of these five runs was prompted to search. **Four of the ten pairs separate at p<0.05**,
+the worst at p=0.0003. The whole-corpus spread is 1.20% → 3.72% = **2.52 pp**.
+
+And the test is sensitive enough to be fooled: simulated, one v22-sized run (~1,010 turns)
+against the 5,052-turn baseline of **119/5052 = 2.36%** detects a lift of **+2 pp** at 80%
+power (measured 0.92). The detectable lift is *smaller than the unprompted spread*. Run B28
+as designed and a significant result is not evidence about the prompt.
+
+⚠️ The same-build pair is the reassuring one and it is the misleading one: v10cal vs thuiv1
+is 0.75 pp apart, p=0.21. Reading only that pair — the obvious control — says the probe is
+stable. It is stable **for that pair**, and the corpus contains three pairs it is not.
+
+## Stratifying on the game removes all four, and the null has a floor
+
+Paired sign-flip permutation on the per-game rate difference, 25 shared games, 100k perms —
+the same unit and test family §1 used:
+
+| pair | games | mean diff | p |
+|---|---|---|---|
+| v10cal vs thuiv1 | 25 | +1.11 pp | 0.2517 |
+| v10cal vs v18 | 25 | −0.68 pp | 0.6078 |
+| v10cal vs v19 | 25 | −0.09 pp | 0.9329 |
+| v10cal vs v23 | 25 | −1.71 pp | 0.1865 |
+| thuiv1 vs v18 | 25 | −1.79 pp | 0.1780 |
+| thuiv1 vs v19 | 25 | −1.20 pp | 0.1373 |
+| thuiv1 vs v23 | 25 | −2.81 pp | 0.1102 |
+| v18 vs v19 | 25 | +0.59 pp | 0.6142 |
+| v18 vs v23 | 25 | −1.02 pp | 0.6199 |
+| v19 vs v23 | 25 | −1.61 pp | 0.4026 |
+
+**0 of 10 stratified against 4 of 10 unstratified.** The confound is entirely the game mix —
+the same thing §6 dismissed design (b) for, arriving here as a property of the runs rather
+than of the arms.
+
+Floor for the stratified test, by planting a lift into v10cal's per-game rates and measuring
+detection: **+3 pp per game at 80% power** (measured 0.88). The largest unprompted stratified
+difference is 2.81 pp, just inside it — so this null is narrow, not vacuous, and it is not a
+comfortable margin.
+
+## What B28 should do
+
+1. **Stratify on the game.** Paired sign-flip over the 25 shared games, never a pooled Fisher.
+   Free, and it is the difference between a test that separates unprompted runs 40% of the
+   time and one that separates none of them.
+2. **v22 must reach roughly 2.4% → 5.4% to be readable.** A "usage rose from 2% to 3.5%"
+   outcome ranks nothing, and 3.5% is already inside the unprompted range.
+3. **Fix the transcript section before the run** — `[ASSISTANT]` (executed) is what §6's base
+   rate means, and the drafted channel is where the variation lives.
+
+None of this changes B28's prior, which §6 already lowered: even a clean usage lift is not on
+its own a route to more levels. It changes what the slot buys.
+
+Cost: zero GPU slots, zero submissions, no model calls.
+
+## Reproduce
+
+`python3 scripts/b27/b28_baseline.py`.
