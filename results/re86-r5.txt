@@ -1,0 +1,50 @@
+=== climb to L6, pristine entry snapshot ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-16 05:21:45 | INFO | Got anonymous API key: b1b1daa0-8bd6-49cd-aa36-9abf21614aaf
+2026-08-16 05:21:45 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-16 05:21:46 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-16 05:21:46 | INFO | Created new scorecard: 3cabbf92-2598-4741-8b1d-cc6111e5df71
+2026-08-16 05:21:47 | INFO | Successfully fetched metadata for game re86
+2026-08-16 05:21:47 | INFO | Successfully loaded game class Re86 from environment_files\re86\8af5384d\re86.py
+L6 entry confirmed at action 432, boxes={(12, 6): 9, (9, 9): 9, (30, 9): 9, (12, 27): 9, (45, 30): 11, (54, 30): 11, (15, 48): 0, (45, 57): 11, (54, 57): 11}
+
+=== A. does repeated refusal accumulate? (5x DOWN into the wall from (30,15)) ===
+staged at (30, 15), row15 arm: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+  refused-down #1: marker=(30, 15) state=GameState.NOT_FINISHED lvl=5 row15=[] row18=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] row21=[30] row24=[30] row27=[12, 30] row30=[]
+  refused-down #2: marker=(30, 15) state=GameState.NOT_FINISHED lvl=5 row15=[] row18=[30] row21=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] row24=[30] row27=[12, 30] row30=[]
+  refused-down #3: marker=(30, 15) state=GameState.NOT_FINISHED lvl=5 row15=[] row18=[30] row21=[30] row24=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] row27=[12, 30] row30=[]
+  refused-down #4: marker=(30, 15) state=GameState.NOT_FINISHED lvl=5 row15=[] row18=[30] row21=[30] row24=[30] row27=[12, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] row30=[]
+  refused-down #5: marker=(30, 15) state=GameState.NOT_FINISHED lvl=5 row15=[] row18=[30] row21=[30] row24=[30] row27=[12, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] row30=[]
+
+=== B. does this happen against the BOARD EDGE clamp (not the wall)? ===
+staged at (3, 15) near left edge, row15 arm: [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  refused-left #1 (edge): marker=(0, 15) state=GameState.NOT_FINISHED lvl=5 row15=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  refused-left #2 (edge): marker=(0, 15) state=GameState.NOT_FINISHED lvl=5 row15=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  refused-left #3 (edge): marker=(0, 15) state=GameState.NOT_FINISHED lvl=5 row15=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  refused-left #4 (edge): marker=(0, 15) state=GameState.NOT_FINISHED lvl=5 row15=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+=== C. does the SAME thing happen on L1 (general re86 fact, not L6-specific)? ===
+INFO:arc_agi.scorecard:Initialized ScorecardManager with idle_for=0:15:00 and max_open_for=3 days, 0:00:00
+2026-08-16 05:21:49 | INFO | Got anonymous API key: cc47340b-e0ec-4654-8473-e86d50174fb1
+2026-08-16 05:21:49 | INFO | You can register for an API key at https://three.arcprize.org
+2026-08-16 05:21:51 | INFO | Successfully fetched 25 environment(s) from API
+2026-08-16 05:21:51 | INFO | Created new scorecard: 58f7d3fe-7779-4661-abe3-c67615f0cb38
+2026-08-16 05:21:52 | INFO | Successfully fetched metadata for game re86
+L1 entry marker@(36, 45)
+  L1 press 0: marker=(33, 45) refused=False
+  L1 press 1: marker=(30, 45) refused=False
+  L1 press 2: marker=(27, 45) refused=False
+  L1 press 3: marker=(24, 45) refused=False
+  L1 press 4: marker=(21, 45) refused=False
+  L1 press 5: marker=(18, 45) refused=False
+  L1 press 6: marker=(15, 45) refused=False
+  L1 press 7: marker=(12, 45) refused=False
+
+=== D. does the desync ever resync? (toggle away/back, GAME_OVER/reset) ===
+desynced: marker=(30, 15) row15=[] row18=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+after toggle away: marker=(15, 48) (should be ring native (15,48)) plus row15=[30] plus row18=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
+after toggle back: marker=(30, 15) row15=[] row18=[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] (still desynced? True)
+burned to GameState.GAME_OVER
+after reset(): lvl=5 marker=(15, 48) byte_identical_to_L6_entry=True
+
+=== END re86-r5 ===
