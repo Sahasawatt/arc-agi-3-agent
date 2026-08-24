@@ -11,7 +11,8 @@ four builds ever submitted.
 | **v10cal** | **4.71** | — | 18 | 28 | 1597 | 57.0 | 2.03 | anim | rerun of v10; the campaign's best number |
 | **v10out** | **4.55** | **1.70** | 14 | 22 | 1285 | 58.4 | 1.87 | anim | anim bundle + Qwen3.8, output uncapped. The rebase onto Tufa's animation-awareness branch is the single largest jump in the campaign |
 | **v24** | **3.78** | — | 14 | 20 | 1196 | 59.8 | 2.11 | anim | v10 exact + the B32 untried-ledger nudge (R30): per-level tried/never-tried counting spoken through the hint channel at turns 8/16/24. Rig-verified on an 8B first (fired correctly, model obeyed in 4 actions). On the 27B: **64 fires across 18 games, obedience 30/58 = 52% within 6 actions, with hard refusal streaks** (sb26 ACTION7 named 7x never pressed; tr87 arrows named 9x across 72 turns, untouched) — the channel that carried animation nudges 7/7 carries this one only half the time. `rank_runs.py`: **p=0.304, NOT-DISTINGUISHABLE** (8 up / 9 down / 8 flips). Campaign tally: 11 modifications of v10, 0 above the band. `notes/R30-untried-ledger.md` RESULT |
-| **v23** | **3.32** | — | 15 | 20 | 1634 | 81.7 | 2.21 | anim | v10 + upscale 8 + the grid-line renderer NO ONE had ever run (ported from the newer bundle whose own setup arms 'true' against a == "1" reader — R29) + one system-prompt line saying the lattice is a rendering aid. The note exists because the v23 SMOKE caught ka59 reading the lattice as GAME STRUCTURE and burning a 7k-char turn on the image-vs-ascii contradiction; v23.1's smoke showed the note in 111/111 prompts and the confusion gone. Full run: `rank_runs.py` **p=0.4061, NOT-DISTINGUISHABLE** (8 up / 11 down / 7 flips, levels 28→20). Mid-band — B31 closes: coordinate scaffolding at the perception layer does not move score either. `notes/R29-grid-lines.md` |
+| **v23** | **3.32** | — | 15 | 20 | 1634 | 81.7 | 2.21 | anim | v10 + upscale 8 + the grid-line renderer NO ONE had ever run (ported from the newer bundle whose own setup arms 'true' against a == "1" reader — R29) + one system-prompt line saying the lattice is a rendering aid. The note exists because the v23 SMOKE caught ka59 reading the lattice as GAME STRUCTURE and burning a 7k-char turn on the image-vs-ascii contradiction; v23.1's smoke showed the note in 111/111 prompts and the confusion gone. Full run: `rank_runs.py` **p=0.4061, NOT-DISTINGUISHABLE** (8 up / 11 down / 7 flips, levels 28→20). Mid-band — B31 closes: coordinate scaffolding at the perception layer does not move score either. `notes/R29-grid-lines.md`. Cross-checks from the run artifacts (Watchara, merged 2026-08-25): vs v18 delta −0.28 p=0.8035, vs v19 +0.50 p=0.7325 — indistinguishable from ALL of v10cal/v18/v19; the lattice leaves NO verbal trace (1 of 1,048 turns mentions grid lines — and v18, which renders none, carries the same single mention in the same game re86, so that hit is not the feature); behavioural outlier cn04: 454 actions / 92 turns / 5 RESETs for 0 levels vs 26–41 actions in every sibling run. (His "not built in this repo" note was true when written — duckv23 landed at 3a77b0b and was pruned at 4a42e0b; builder in history) |
+| **thui-v1** | **3.20** | — | 16 | 22 | 1493 | 67.9 | 2.16 | anim | v10 + the per-request usage probe in cell 12 (`thuiv1/request_usage_probe.py`). The instrument is inert by design and the number says so: a **fourth** sample of v10, inside the [2.82, 4.71] band, the same shape v19 has. `rank_runs.py` on this run's own `benchmark.json`: vs **v10cal** delta -1.51, **p=0.3027 NOT-DISTINGUISHABLE**; vs **v19** delta +0.38, **p=0.7579 NOT-DISTINGUISHABLE**. Measured, not inferred. `won: 0`, so a banking graft would still be inert here. What it bought is not the score: 25 `*_usage.jsonl` files carrying `completion_tokens` + `finish_reason` per request, which is the distribution duckv9 was capped without — read, and the answer is **no cap is worth placing**: the distribution has no fat tail, so 8192 saves 0.98% and 12288 saves nothing. It also showed **all 25 games hit `max_runtime_s_per_game=7920`** (min 7920, max 7955), so `gave_up` here is the clock, not the agent, and the score is a throughput number with input:output at 10.7:1. `notes/R28-usage-distribution.md`. Kernel `yocybercode/thui-v1-0`, 2h 12m 35s, 2026-08-23. |
 | **v22** | **2.84** | — | 16 | 20 | 1612 | 80.6 | 1.99 | anim | v10 + the rank-21 team's PYTHON_ADDENDUM ported verbatim (AST-extracted, both import bindings patched, teeth in-kernel: `3817 -> 4571 chars`). `rank_runs.py`: **p=0.0798, NOT-DISTINGUISHABLE** — lands at the very bottom of the [2.82, 4.71] same-build band. B28 rode free: search-construct usage **19/935 = 2.0% (v10cal control, reproduced exactly) -> 22/902 = 2.4%** — the explicit BFS instruction moved nothing globally, and the two games where it DID spike locally both collapsed (tu93 36% of turns, score 5.22->0.08; g50t 20%, 0->0). The last attributed lever from the only public artifact above us closes. `notes/R27-git-sweep.md` RESULT |
 | v12 | 3.72 | — | 17 | 24 | 1810 | 75.4 | 2.19 | anim | v10 + a "be brief" prompt. Below band → the cut-reasoning axis is dead in its soft form too |
 | **v21** | **1.25** | — | 15 | 12 | 2921 | 243.4 | 2.27 | anim | v10 + `reasoning_effort=medium` (the rank-21 team's flag; template default is xhigh). Patch verified in-kernel. Mechanism worked exactly as designed — **tok/action 1271→776 (−39%), actions 1597→2921 (+83%)** — and levels HALVED (28→12). `eval/rank_runs.py`: **p=0.0052, WORSE** — the second result outside the same-build noise, in the opposite direction from the hope. `notes/R26-reasoning-effort.md` |
@@ -128,6 +129,13 @@ Same parquet, same build, **0.38 apart — 25% of the larger value**. So:
   vs v5 0.84 is a 0.16 gap; our own agent's 0.11 is the only number outside it. Two
   builds cannot be ranked on one hidden draw each — the same rule R9 established for
   public runs turns out to hold harder here.
+- ⚠️ **CORRECTED 2026-08-24 by R30 — the 3.05x below mixes a MAX with a MEAN, which is the
+  error this very correction flags one paragraph up about quoting 1.70.** It divides the
+  top TWO public draws by the MEAN of the two hidden ones. `v10cal` 4.71, `v10out` 4.55,
+  `thuiv1` 3.20 and `v19` 2.82 are all the same build, so means on both sides are **3.82
+  public over 1.51 hidden = 2.53x**. It moves the target the easy way: a candidate needs
+  public **7.29** to sit at the 2.88 bar, not 8.83, and B20's 5.80 ceiling is **2.29**
+  hidden — still under the bar, so the depth conclusion is unchanged.
 - **The shrink is worse than recorded**: public [4.55, 4.71] against a hidden mean of
   ~1.51 is **~3.05x**, not the 2.72x the depth table used. The +0 row of that table
   predicted 1.73 and was scored against 1.70; against the mean it over-predicts.
@@ -152,6 +160,16 @@ per-game mechanism predicts: the swing lives in deep-level clears, and a 0.10 bu
 deep clears to flip. A single hidden draw is adequate for a weak build and inadequate for
 precisely the builds worth ranking. What it already rules out is reading any single hidden number as a build's
 value.
+
+⚠️ **NARROWED 2026-08-24 by R30 — the v9-lite row contributes nothing to that conclusion.**
+"Grows with the score" is a restatement of **constant CV**, and the CV is now measured
+twice: **0.249** over the four same-build public draws and **0.178** over this hidden pair.
+At v9-lite's 0.10 that same CV predicts σ = **0.025** — the pair had almost no room to
+differ, whatever is true about how variance scales, so its 0.00 is implied by the v10 pair
+rather than confirming it. The conclusion stands and rests on **one** pair. The public CV
+also gives an INDEPENDENT reading of this build's hidden σ — 0.249 × 1.51 = **0.376**
+against this pair's own **0.269**, agreeing within 1.40, which is what makes the B30
+decision robust where n=2 alone could not.
 
 ### Where the variance comes from — per-game, and the big earners are the unstable ones
 
