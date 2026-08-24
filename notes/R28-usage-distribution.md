@@ -26,7 +26,12 @@ This run, uncapped:
 |---|---|---|---|---|---|
 | 1,376 | 2,538 | 4,716 | 6,111 | 8,586 | 11,262 |
 
-**Answer: there is no cap worth placing.**
+**Answer: there is no cap worth placing** — and the axis was already closed. **B8** recorded
+*"duckv9 = 0.22 — the output cap truncates tool calls. R10's cap lever REFUTED"*, and **B12**
+closed the cut-reasoning axis in both its forms. What this distribution adds is not the
+verdict but its **shape**: the axis was closed by one failed run, and it is now closed
+structurally. That still has live value, because **B5 is `open` on the map and its item (a)
+is `hard output cap LOCAL_ANALYZER_MAX_OUTPUT ~768`** — the same 768 that produced 0.22.
 
 | cap | requests truncated | output tokens saved | % of all output |
 |---|---|---|---|
@@ -49,7 +54,13 @@ Two corrections to what was assumed when the probe was written:
   them, 70,103 output tokens for zero actions. Small, and the one class a cap would help;
   a cap cannot select on `finish_reason`.
 
-## What the data says the constraint actually is
+## The clock — CONFIRMATION of R1, not a finding
+
+⚠️ **This section originally read as a discovery. It is not one.** `R1-forensics.md`
+established it on 2026-08-19 — *"ALL 25 games cut by the 7,920s per-game wall clock (zero
+crashes/surrenders)"* — and R7 restated it as *"binding stop = wall clock only (token
+hypothesis refuted)"*. What follows is a fourth independent measurement of a known fact,
+which is worth having and is worth nothing as news.
 
 **Every game hit the per-game wall clock.** `final_wallclock_seconds` across all 25 games:
 min **7,920**, median **7,921**, max 7,955, against `max_runtime_s_per_game = 7920.0` in the
@@ -69,8 +80,23 @@ a game gets 7,955 s; at the median that is ~78 requests. Observed: 51.6.
 ```
 
 13.4 output tok/s per request x 24.8 concurrent ~ 332 tok/s, against the 271.28 tok/s the
-run reported. The GPU is saturated. **Prefill dominates**, so the only lever the data
-supports for buying more actions per game is prompt size — not output.
+run reported. The GPU is saturated and **prefill dominates**.
+
+⚠️ **Do not read that as "slim the prompt to buy actions".** An earlier draft of this note
+did, and the map refutes it twice by measurement:
+
+- **B16** — v14 bought capacity and spent it the wrong way: actions 1,285 -> 1,633, levels
+  22 -> 19. *"Throughput axis closed."*
+- **B25** — v20 fired **7,656 actions (4.7x v10)** and cleared **3 levels against 28**.
+  *"throughput was not the bottleneck, reasoning-per-decision is."*
+- **B20** — the scorer's second cap, `completion_cap = 100*sum(done levels)/W`, already binds
+  on 7 of 25 games and locks 41% of the score; the whole efficiency axis ceilings at **5.80
+  public (~2.1 hidden)**, below what top-5 needs. *"Depth is the only axis left."*
+
+So the input-side economics here are a **cost measurement**, not a lever recommendation.
+More actions per game is a quantity this campaign has twice bought and twice failed to
+convert. Prompt work is only worth a slot if it changes what the model *decides* — which is
+what B26/B27/B28 are about, and what v22's ported addendum is a live test of.
 
 ## What is NOT a lever, stated so it is not tried
 
