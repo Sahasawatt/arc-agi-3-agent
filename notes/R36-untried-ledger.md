@@ -1,4 +1,4 @@
-# R30 — B32 built: the untried-ledger nudge (duckv24), rig-verified
+# R36 — B32 built: the untried-ledger nudge (duckv24), rig-verified
 
 2026-08-24. The only open build ticket after B26-B31 closed, and the only lever with
 observational evidence behind it (R28: 3/5 clears trace to a probe taken before the

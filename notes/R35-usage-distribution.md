@@ -1,4 +1,4 @@
-# R28 — the output-token distribution, and the question it turned out not to answer
+# R35 — the output-token distribution, and the question it turned out not to answer
 
 Measured 2026-08-23 from `yocybercode/thui-v1-0` (v10 + the cell-12 usage probe), the first
 run to carry `thuiv1/request_usage_probe.py`. **1,291 rows, 25 per-game `*_usage.jsonl`
