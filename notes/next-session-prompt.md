@@ -30,7 +30,21 @@ Clear ≥1 level in EVERY game (user's standing order 2026-08-14: clear ALL leve
 (tu93 100.0 · sb26 100.0 · ls20 43.629 · re86 41.477 · sp80 28.571 · ar25 27.778 · tr87 14.286 · m0r0 14.286 · cd82 10.514 · wa30 6.667 · cn04 4.762 · dc22 4.762 · ka59 3.571 · g50t 3.571 · sk48 2.778 · bp35 2.222 · sc25 0)
 ← **results/sweep-wave14.log** is the current clean gate (wave-14 = glide.py g50t L1, 0/7→1/7; wave-13 = twin.py m0r0 L2; wave-12 = swap.py sp80 L3) (chain: wave-6 → wave-8 [haul's wa30 L2 guards] → wave-9 [mirror L2] → wave-10 [mirror L3] → wave-11 [mirror L4]; every hop diffed with `sweep_diff.py <before> <after> <control>`, a control that DIFFERS, 16 of 17 identical to the digit, no game ever losing a level; pytest 330 throughout). ⚠️ `sweep-tu93win.log` = an aborted MemoryError run — ignore it. Remaining 0-level: sc25 (closed) — and **g50t is REOPENED 2026-08-18: squirrel.py cleared L1 (5th false exhaustion — the proof was single-life; the win uses resets). Landing in flight, see recon tail.**
 
-## STATE AT 2026-08-21 05:00 Thai — v10 IS THE CANDIDATE (public band [4.55, 4.71]); GPU quota exhausted; awaiting user's go to submit
+## STATE AT 2026-08-21 05:00 Thai — v10 IS THE CANDIDATE; GPU quota exhausted; awaiting user's go to submit
+
+⚠️ **CORRECTED 2026-08-24 — the band this section was written around is wrong, and it is the
+number every verdict below was judged against.** This file said v10's public band was
+**[4.55, 4.71]** (0.16 wide). `LEDGER-all-runs.md:81-82` measured a third sample of the same
+build — v19, an inert graft — at **2.82**, so the real same-build spread is **[2.82, 4.71]**,
+**1.89 wide, 40% of the top**. Consequence: every "below band → rejected" verdict in the ladder
+below is void. v12 3.72, v16 3.51, v18 3.60 and v14 2.87 are all *inside* v10's own spread and
+rank nothing. Only two results this campaign have ever landed outside it — v20 **0.18** (B25)
+and v21 **1.25** (B31) — so those two are the only single runs that can rank anything.
+`eval/rank_runs.py` is the tool that decides; a bare mean never is.
+
+⚠️ **The ladder table below is a snapshot frozen at 2026-08-21 and has not tracked the campaign
+since.** It is missing v14, v16, v18, v19, v20, v21, v23 and thui-v1 entirely.
+**`notes/LEDGER-all-runs.md` is the authority for every run number** — read it, not this table.
 
 **One decision is open and it is the user's:** submit **duckv10** (kernel
 `sahasawatt/taaf-duck-v10`, version 2 is the confirmed one) or keep iterating. User's standing
@@ -38,7 +52,7 @@ rule 2026-08-20: **submit only when THEY are satisfied** — never submit unaske
 auto-resubmit is CANCELLED.
 
 **Submit command (only on explicit user go), run from `Desktop\ARC-AGI-3-Kaggle-Starter`:**
-`competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet -k sahasawatt/taaf-duck-v10 -v 2 -m "duck-v10: anim bundle + Qwen3.8-27B-FP8, uncapped; public band [4.55, 4.71]"`
+`competitions submit -c arc-prize-2026-arc-agi-3 -f submission.parquet -k sahasawatt/taaf-duck-v10 -v 2 -m "duck-v10: anim bundle + Qwen3.8-27B-FP8, uncapped; public same-build spread [2.82, 4.71]"`
 with `KAGGLE_API_TOKEN=$(cat .kaggle/access_token) ./.venv/Scripts/kaggle.exe` in front.
 Verify with `competitions submissions` — **NEVER** read success from error text: a
 "0 submissions remaining" line prints after a SUCCESSFUL submit, and that misread cost a
@@ -58,8 +72,8 @@ UNCAPPED**, duckmod's own patches dropped. Verified live in its kernel log:
 
 | build | mean(s) | scoring | levels | note |
 |---|---|---|---|---|
-| **v10** | **4.55, 4.71** | 14, 18 /25 | 22, 28 | band 0.16 = tightest measured |
-| v12 = v10 + brevity prompt | 3.72 | 17 | 24 | below band → rejected |
+| **v10** | **4.55, 4.71** | 14, 18 /25 | 22, 28 | ⚠️ a THIRD sample (v19) came in at 2.82 → real spread [2.82, 4.71] |
+| v12 = v10 + brevity prompt | 3.72 | 17 | 24 | ⚠️ recorded "below band → rejected"; INSIDE the real spread, ranks nothing |
 | v8 = old bundle + 3.8 | 3.31, 2.87 | 15, 13 | 22, 19 | model swap alone |
 | v5 | 2.43, 2.37 | — | — | hidden draw 0.84 |
 | duck-mod | 2.41, 2.16 | 13 | 17, 19 | hidden draw 1.00 = current LB |
@@ -67,7 +81,11 @@ UNCAPPED**, duckmod's own patches dropped. Verified live in its kernel log:
 | v4 | 1.73 | — | — | levers measured inert (R7) |
 | v9 = v10 + cap 768 | 0.22 | — | — | cap truncates tool calls |
 
-Hidden draws so far: duck-mod **1.00** (rank 585/2409), v5 **0.84**, pre-duck agent 0.11.
+Hidden draws so far: duck-mod **1.00** (rank 585/2409), v5 **0.84**, pre-duck agent 0.11, and
+**duck-v10 twice on the identical build — 1.70 (ref 55662656) and 1.32 (ref 55694474)**, added
+2026-08-24 (B14/B21). Those two are the campaign best and the only hidden error bar that exists:
+**0.38 apart = 22% of the larger**, so a hidden delta under ~0.4 ranks nothing and every other
+hidden figure on record is a single draw. Four builds have ever drawn a hidden number at all.
 Leaderboard 2026-08-19: #1 3.57, top-5 bar 2.57.
 
 ### Rules whose violation breaks something (restated, not linked)
