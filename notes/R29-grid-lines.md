@@ -66,3 +66,24 @@ v21/v22 import-by-name trap does not apply. Teeth must still assert
   lines are structure, not pixels — that is the hypothesis v23 exists to test, not a claim.
 - Legibility at scale 4 (3×3px cells) untested; v23 does not test it either (runs at 8).
 - The three "spatial misread" attributions in R28 are one reader's judgment (n=3 of 5).
+
+
+## RESULT (2026-08-25) — measured, in-noise, B31 closed
+
+The v23 smoke (lines only) caught the failure this note's UNVERIFIED section suspected, in
+the opposite direction: ka59 read the lattice as GAME STRUCTURE ("a grid of white cells
+separated by gray grid lines") and burned a 7k-char turn on the image-vs-ascii
+contradiction — because nothing told the model the lines exist. The upstream author never
+ran the feature, so nobody had ever hit this. v23.1 added one system-prompt line (rendering
+aid, not game content; patched at BOTH addendum bindings, tool_agent.py:22 imports by
+name); its smoke showed the note in 111/111 prompts and the ka59 confusion gone.
+
+Full run: **3.32 public, p=0.4061, NOT-DISTINGUISHABLE** from v10cal (8 up / 11 down /
+7 scoring-flips, levels 28→20). Mid-band. Coordinate scaffolding at the perception layer
+does not move score on this stack — consistent with the closer read of R28's cases: the
+spatial errors were REASONING over correct coordinates (the model works from ascii +
+segmentation), not misreads of the image.
+
+Campaign tally after this: 10 modifications of v10 measured, 0 outside the band upward.
+B32 (untried-ledger nudge) is now the only open build ticket, and every prompt-adjacent
+lever measured has landed in-noise or worse.

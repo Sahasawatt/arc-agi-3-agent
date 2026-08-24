@@ -97,12 +97,22 @@ def offline_teeth(cell12: str) -> None:
         return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
     vc.frame_to_png_data_url = stock_frame_to_png_data_url
+
+    # mirror the anim bundle: prompts defines the addendum, tool_agent imports it BY NAME
+    STOCK_ADDENDUM = (
+        "\n\nMultimodal context:\n"
+        "- User turns include an attached image of the current ARC grid.\n"
+    )
+    prompts = types.ModuleType("inference.agent.prompts")
+    prompts.MULTIMODAL_CONTEXT_ADDENDUM = STOCK_ADDENDUM
     ta = types.ModuleType("inference.agent.tool_agent")
+    ta.MULTIMODAL_CONTEXT_ADDENDUM = STOCK_ADDENDUM
     assert not hasattr(ta, "frame_to_png_data_url")
 
     agent_pkg = types.ModuleType("inference.agent")
     agent_pkg.vision_context = vc
     agent_pkg.tool_agent = ta
+    agent_pkg.prompts = prompts
     inference_pkg = types.ModuleType("inference")
     inference_pkg.agent = agent_pkg
     mods = {
@@ -110,14 +120,21 @@ def offline_teeth(cell12: str) -> None:
         "inference.agent": agent_pkg,
         "inference.agent.vision_context": vc,
         "inference.agent.tool_agent": ta,
+        "inference.agent.prompts": prompts,
     }
     saved = {k: sys.modules.get(k) for k in mods}
     sys.modules.update(mods)
     try:
         exec(compile(cell12, str(CELL12_SRC), "exec"), {"__name__": "__duckv23_cell12__"})
-        # the patch must have landed on the stub module
+        # the patches must have landed on the stub modules
         assert vc.frame_to_png_data_url is not stock_frame_to_png_data_url, (
             "offline teeth: patch did not replace frame_to_png_data_url"
+        )
+        assert prompts.MULTIMODAL_CONTEXT_ADDENDUM != STOCK_ADDENDUM, (
+            "offline teeth: prompts addendum unchanged"
+        )
+        assert ta.MULTIMODAL_CONTEXT_ADDENDUM == prompts.MULTIMODAL_CONTEXT_ADDENDUM, (
+            "offline teeth: tool_agent binding diverged from prompts binding"
         )
     finally:
         for k, v in saved.items():
@@ -135,6 +152,10 @@ def main() -> None:
     assert "TEETH FAIL" in cell12, "cell12: the in-kernel teeth are missing (R8)"
     assert 'hasattr(_ta, "frame_to_png_data_url")' in cell12, (
         "cell12: missing the seam guard against a tool_agent direct binding"
+    )
+    assert "_ta.MULTIMODAL_CONTEXT_ADDENDUM = _patched_addendum" in cell12, (
+        "cell12: tool_agent.py:22 imports the addendum by name - patching only prompts "
+        "would be a no-op (the v21/v22 trap)"
     )
 
     offline_teeth(cell12)

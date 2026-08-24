@@ -14,3 +14,8 @@ results/*.log
 
 # issue #7: per-game trace appenders grow without bound - snapshots live in kernel output, not git
 results/traces/
+
+# localrig: venv and run outputs stay local
+localrig/.venv/
+localrig/runs/
+*.egg-info/

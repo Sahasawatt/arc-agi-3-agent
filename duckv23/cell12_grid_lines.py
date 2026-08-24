@@ -1,4 +1,5 @@
-# duckv23 cell 12 — port the newer bundle's grid-line renderer onto the anim bundle.
+# duckv23 cell 12 — port the newer bundle's grid-line renderer onto the anim bundle,
+# plus one line of system prompt telling the model the lattice is a rendering aid.
 #
 # PROVENANCE (notes/R29-grid-lines.md): the post-anim TAAF bundle ships
 # _render_grid_lined_image in inference/agent/vision_context.py, gated on
@@ -8,15 +9,24 @@
 # unconditionally (no env flag — fewer moving parts, and the flag's only failure
 # mode is exactly the bug that killed it upstream).
 #
+# WHY THE PROMPT NOTE (v23.1, measured in the v23 smoke): with lines alone, ka59's
+# opening turn read the lattice as GAME STRUCTURE ("a grid of white cells separated
+# by gray grid lines") and burned a 7k-char turn on the image-vs-ascii contradiction,
+# because nothing tells the model the lines exist. The upstream author never ran the
+# feature, so nobody hit this before us.
+#
 # SEAM (verified against anim source): tool_agent imports current_grid_image_part
 # only, and that function calls frame_to_png_data_url by bare name in-module, so
-# patching the vision_context module attribute lands on every render. The teeth
-# below re-verify both halves in-kernel.
+# patching the vision_context module attribute lands on every render. The prompt
+# note is the v22 seam: tool_agent.py:22 imports MULTIMODAL_CONTEXT_ADDENDUM by
+# name, so BOTH module bindings get patched. The teeth below re-verify all of it
+# in-kernel.
 import base64
 import io
 
 from PIL import Image
 
+import inference.agent.prompts as _prompts
 import inference.agent.tool_agent as _ta
 import inference.agent.vision_context as _vc
 
@@ -64,6 +74,17 @@ def _grid_lined_frame_to_png_data_url(frame, *, upscale=None):
 
 _vc.frame_to_png_data_url = _grid_lined_frame_to_png_data_url
 
+# ---- prompt note: tell the model the lattice is a rendering aid, not game content ----
+_GRID_NOTE = (
+    "- The image draws a thin gray line between adjacent cells as a rendering aid; "
+    "this gray lattice is NOT game content and does not appear in `current_frame.ascii` "
+    "or `segmentation`.\n"
+)
+_stock_addendum = _prompts.MULTIMODAL_CONTEXT_ADDENDUM
+_patched_addendum = _stock_addendum + _GRID_NOTE
+_prompts.MULTIMODAL_CONTEXT_ADDENDUM = _patched_addendum
+_ta.MULTIMODAL_CONTEXT_ADDENDUM = _patched_addendum  # tool_agent.py:22 imports by name
+
 
 # ---- teeth (functional, pixel-level; no string asserts that a comment can satisfy) ----
 def _teeth():
@@ -97,10 +118,25 @@ def _teeth():
     if _vc.frame_to_png_data_url is not _grid_lined_frame_to_png_data_url:
         raise AssertionError("duckv23 TEETH FAIL: vision_context patch did not stick")
 
+    # prompt-note teeth: compare RUNTIME strings only (a comment can never satisfy these).
+    # The binding that actually reaches the prompt is tool_agent's (import-by-name).
+    if _GRID_NOTE not in _ta.MULTIMODAL_CONTEXT_ADDENDUM:
+        raise AssertionError("duckv23 TEETH FAIL: grid note missing from tool_agent binding")
+    if _GRID_NOTE not in _prompts.MULTIMODAL_CONTEXT_ADDENDUM:
+        raise AssertionError("duckv23 TEETH FAIL: grid note missing from prompts binding")
+    if _GRID_NOTE in _stock_addendum:
+        raise AssertionError(
+            "duckv23 TEETH FAIL: stock addendum already carried the note - patch measures nothing"
+        )
+    if not _stock_addendum.strip():
+        raise AssertionError("duckv23 TEETH FAIL: stock addendum empty - wrong module or import order")
+
 
 _teeth()
 print(
     "duckv23: grid-line renderer ported and armed "
-    f"(line color {_GRID_LINE_COLOR}, min cell px {_MIN_CELL_PX}); teeth OK",
+    f"(line color {_GRID_LINE_COLOR}, min cell px {_MIN_CELL_PX}); "
+    f"grid note appended to MULTIMODAL_CONTEXT_ADDENDUM (both bindings, "
+    f"{len(_stock_addendum)} -> {len(_patched_addendum)} chars); teeth OK",
     flush=True,
 )
