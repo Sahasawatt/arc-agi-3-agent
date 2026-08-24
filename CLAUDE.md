@@ -1268,3 +1268,24 @@ its source is exec'd (dataclasses resolve their module at class-creation); local
 `play_local` SSL-fails on the SECOND game per process (first always works — Kaggle's
 gateway is unaffected). Verification state lives in the brief's QUEUE item 0: levels 1-5
 of ls20 replay through the pipe action-for-action; level 6 diverges, under measurement.
+
+
+## Versioning (adopted 2026-08-25, user directive)
+
+The vNN-per-experiment era ended at v24 (11 measured modifications, 0 above band; dead
+builders live in git history — `git show 0757309^:duckv<N>/...` and earlier). From here:
+
+- **major.minor** — `duckv25/` would be a MAJOR: a new lever family or architecture
+  change (new model, new harness structure, new agent line). A MINOR (`v25.1`, `v25.2`)
+  refines the same lever (parameter value, prompt wording, cadence) and lives in the
+  SAME `duckv25/` dir — the builder takes the variant as an argument or a clearly-named
+  cell-12 file per minor, one kernel per major (Kaggle versions give the minor history).
+- Precedent: v23 → v23.1 (grid lines → + rendering-aid note) was already this shape,
+  as two pushes of one kernel.
+- Directory set kept alive: `duckmod/` (SRC_NB every builder reads), `duckv10/`
+  (baseline; the build hidden draws would rerun), `duckv24/` (last measured lever),
+  `localrig/` (local verification rig — README there), `duck/` (upstream June bundle,
+  untracked reference).
+- The discipline that stays regardless of numbering: builder self-check + in-kernel
+  teeth proven red on mutation BEFORE any push; smoke before full; `eval/rank_runs.py`
+  is the only scoreboard; results land in `notes/LEDGER-all-runs.md` the same day.
