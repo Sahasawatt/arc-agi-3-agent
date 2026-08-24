@@ -226,3 +226,46 @@ python eval/score_shape.py --json
 ```
 
 Reads `eval/fixtures/*.json` only. Zero GPU slots, zero submissions, no model calls, no corpus.
+
+---
+
+## Addendum 2026-08-25 (later the same day) — the 11 unresolved games are resolved, and the headline share moves 77% -> 55%
+
+Everything above stands as measured. What changed is the DENOMINATOR, and it changed because the
+thing this note called blocked stopped being blocked.
+
+`clock-2x-v1` (B34) finished and its `summary.txt` prints, per game, `levels=<cleared>/<TOTAL>`.
+The total is a property of the GAME, not of the run, so **one run settles all 25** — and their sum
+is **183**, the figure `score_shape.py`'s CONTROL 5 had been assuming from LEDGER without ever
+being able to check it. Recorded as `eval/fixtures/game-totals.json`.
+
+**Every derivation in this note survives that check.** All 14 totals derived from cap anchors are
+exact, and all 8 bounds contain the truth — including `re86` at **8**, the top of its `4..8`
+bracket, which is what the bracket's own "suggestive, not derived" note had pointed at. The three
+games with no anchor of any kind are `g50t` **7**, `sk48` **8**, `tr87` **6**.
+
+| reading | this note | with the true totals |
+|---|---|---|
+| cap-bound share of decided cells | **77%** (27 of 35) | **55%** (38 of 69) |
+| cells that are UNKNOWN | 17 | **0** |
+| v10cal efficiency headroom | 4.71 -> **5.44** (14 games) | 4.71 -> **5.80** (25 games) |
+
+The share fell because the cells this note could not classify were disproportionately raw-bound —
+a game with no cap anchor is, by definition, a game whose cells never sat on the cap. So 77% is
+the correct share **of the subset anchorable from fixtures alone**, and 55% is the share of the
+whole. Neither is wrong; the first is conditioned on a selection nobody could see from inside it.
+
+⚠️ **`5.44` -> `5.80` is the one that should have been predictable.** This note already wrote that
+5.44 came from 14 of 25 games and that B20's independently-derived ceiling was 5.80, and read the
+gap as two routes converging *near* one wall. With all 25 games in, the two routes agree **exactly**.
+A partial-coverage number that is *close* to an independent estimate is not corroboration — it is
+an estimate missing the games that would close the gap.
+
+⚠️ **What did NOT change**: §Q_C's 12 TIME-limited / 8 FLAT / 2 INVERTED split, the volatility
+concentration (top-6 games = 90.8%), and the argument that every measured lever acts on the
+non-cap remainder. The B35 frame is unaffected except that its stated blocker — *"11 games have no
+derived total, including re86, so whether it is deep and worth chasing is unknown"* — is now closed.
+
+Instrument: `bound_totals` + CONTROL 6 (equality against the derived total, plus a synthetic
+total=20 game that catches an `SDK_CAP=115` substitution the real corpus cannot see) and CONTROL 7
+(external ground truth). Nine mutations proven red, unmutated control green.

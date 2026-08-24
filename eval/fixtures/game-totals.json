@@ -1,0 +1,31 @@
+{
+ "source": "summary.txt of yocybercode/clock-2x-v1, 2026-08-24 -- the only run whose summary was read for the /TOTAL field; totals are a property of the game, not of the run, and their sum reproduces LEDGER's 183",
+ "sum": 183,
+ "totals": {
+  "ar25": 8,
+  "bp35": 9,
+  "cd82": 6,
+  "cn04": 6,
+  "dc22": 6,
+  "ft09": 6,
+  "g50t": 7,
+  "ka59": 7,
+  "lf52": 10,
+  "lp85": 8,
+  "ls20": 7,
+  "m0r0": 6,
+  "r11l": 6,
+  "re86": 8,
+  "s5i5": 8,
+  "sb26": 8,
+  "sc25": 6,
+  "sk48": 8,
+  "sp80": 6,
+  "su15": 9,
+  "tn36": 7,
+  "tr87": 6,
+  "tu93": 9,
+  "vc33": 7,
+  "wa30": 9
+ }
+}

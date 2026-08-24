@@ -1,0 +1,131 @@
+{
+ "label": "clock2x",
+ "source": "yocybercode/clock-2x-v1 (2026-08-24, 4h24m50s)",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 66
+  },
+  "tn36": {
+   "score": 1.2541642171271798,
+   "levels": 1,
+   "actions": 55
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 157
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 69
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 57
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 110
+  },
+  "tu93": {
+   "score": 13.333333333333334,
+   "levels": 3,
+   "actions": 81
+  },
+  "lp85": {
+   "score": 27.77777777777778,
+   "levels": 4,
+   "actions": 68
+  },
+  "ka59": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 152
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 76
+  },
+  "vc33": {
+   "score": 10.714285714285714,
+   "levels": 2,
+   "actions": 137
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 76
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 28
+  },
+  "sc25": {
+   "score": 7.857142857142857,
+   "levels": 2,
+   "actions": 90
+  },
+  "sp80": {
+   "score": 3.4229003510667027,
+   "levels": 1,
+   "actions": 157
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 41
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 72
+  },
+  "cd82": {
+   "score": 2.0909800993993186,
+   "levels": 1,
+   "actions": 100
+  },
+  "re86": {
+   "score": 16.587791495198903,
+   "levels": 3,
+   "actions": 252
+  },
+  "s5i5": {
+   "score": 2.295684113865932,
+   "levels": 1,
+   "actions": 55
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 235
+  },
+  "ft09": {
+   "score": 47.61904761904761,
+   "levels": 4,
+   "actions": 73
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 69
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 319
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 42
+  }
+ }
+}

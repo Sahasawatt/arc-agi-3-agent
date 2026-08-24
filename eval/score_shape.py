@@ -46,7 +46,10 @@ import statistics as st
 import sys
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "*.json")
-PUBLISHED = {"v10cal": 4.71, "v18": 3.60, "v19": 2.82, "v20": 0.18}  # LEDGER's table
+PUBLISHED = {"v10cal": 4.71, "v18": 3.60, "v19": 2.82, "v20": 0.18,
+             "clock2x": 6.40}  # LEDGER's table
+GROUND_TRUTH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "fixtures", "game-totals.json")
 TOTAL_LEVELS_ALL_GAMES = 183  # LEDGER: "20 of 183 levels"
 EPS = 0.02
 
@@ -61,6 +64,8 @@ def load() -> dict:
     for path in sorted(glob.glob(FIXTURES)):
         with open(path, encoding="utf-8") as fh:
             d = json.load(fh)
+        if "games" not in d:
+            continue  # game-totals.json lives here too and is not a run
         runs[d["label"]] = d["games"]
     if not runs:
         print("no fixtures found at %s" % FIXTURES)
@@ -223,6 +228,8 @@ def main() -> None:
     print("CONTROL 2  cap identity 100/36 = 2.7778 resolves, non-triangular 37 does not: OK")
 
     derived, votes_all = derive_totals(runs, games)
+    with open(GROUND_TRUTH, encoding="utf-8") as fh:
+        truth = json.load(fh)["totals"]
 
     # ---- CONTROL 3: no game's derived total may disagree between its own runs ----
     conflicts = {g: v for g, v in votes_all.items() if len(v) > 1}
@@ -231,7 +238,10 @@ def main() -> None:
     print("CONTROL 3  cross-run agreement on derived total_levels (%d games, 0 conflicts): OK"
           % len(derived))
 
-    buckets = classify(runs, games, derived)
+    # From here the TRUE totals drive the tables: derive_totals() speaks for 17 of 25 games and
+    # bound_totals() only brackets the rest, while CONTROL 7's reference settles all 25. The
+    # derivation is not replaced -- CONTROL 6 and 7 above still grade it on its own.
+    buckets = classify(runs, games, truth)
 
     # ---- CONTROL 4: teeth on the contiguous-clear assumption ----
     if buckets["anomaly"]:
@@ -239,17 +249,21 @@ def main() -> None:
                 "below is wrong" % [(a[0], a[1]) for a in buckets["anomaly"]])
     print("CONTROL 4  no cell scores above its cap (contiguous-clear assumption holds): OK")
 
-    # ---- CONTROL 5: closure against the known total across all 25 games ----
-    used = sum(derived.values())
-    unknown_games = [g for g in games if g not in derived]
-    left = TOTAL_LEVELS_ALL_GAMES - used
-    if left < len(unknown_games):
-        fail(5, "derived totals (%d) leave %d levels for %d unresolved games"
-                % (used, left, len(unknown_games)))
-    for g, n in sorted(derived.items()):
+    # ---- CONTROL 5: no game may be credited fewer levels than a run actually cleared ----
+    # This was a closure argument (do the derived totals leave room for the unresolved games?)
+    # while the unresolved set was non-empty. CONTROL 7's external reference settles all 25, so
+    # the arithmetic became vacuous -- "57 left for the other 0" -- and a control that cannot
+    # fail is a constant. What survives is the half that can still bite, now against the totals
+    # the tables actually use.
+    unknown_games = [g for g in games if g not in truth]
+    if unknown_games:
+        fail(5, "no total for %d games: %s" % (len(unknown_games), unknown_games))
+    for g in sorted(truth):
+        if g not in games:
+            continue
         seen = max(gs[g]["levels"] for gs in runs.values())
-        if n < seen:
-            fail(5, "%s derived total %d < %d levels actually cleared there" % (g, n, seen))
+        if truth[g] < seen:
+            fail(5, "%s total %d < %d levels actually cleared there" % (g, truth[g], seen))
 
     bounds = bound_totals(runs, games)
 
@@ -269,6 +283,24 @@ def main() -> None:
             fail(6, "%s bound lower %d != %d levels actually cleared" % (g, lo, seen))
         if lo > hi:
             fail(6, "%s empty bound [%d, %d]" % (g, lo, hi))
+    # ---- CONTROL 7: EXTERNAL ground truth, from outside this instrument entirely ----
+    # summary.txt of a Kaggle run prints "levels=<cleared>/<TOTAL>" per game. The total is a
+    # property of the GAME, so one run settles all 25 -- and it can contradict a derivation
+    # that fixtures alone cannot check. This is the only control here whose reference was not
+    # computed by this file.
+    if sum(truth.values()) != TOTAL_LEVELS_ALL_GAMES:
+        fail(7, "ground truth sums to %d, CONTROL 5 assumes %d"
+                % (sum(truth.values()), TOTAL_LEVELS_ALL_GAMES))
+    missing = [g for g in games if g not in truth]
+    if missing:
+        fail(7, "ground truth is missing %d games: %s" % (len(missing), missing))
+    for g, n in sorted(derived.items()):
+        if truth.get(g) != n:
+            fail(7, "%s derived %d but the game has %s levels" % (g, n, truth.get(g)))
+    for g, (lo, hi) in sorted(bounds.items()):
+        if g in truth and not lo <= truth[g] <= hi:
+            fail(7, "%s bound [%d, %d] excludes the true total %d" % (g, lo, hi, truth[g]))
+
     # synthetic deep game: at total=20 a 15% slack DOES clear the next triangular number,
     # so this is where SDK_CAP=115 in place of the game cap 100 becomes visible.
     synth = {"x": {"deep": {"score": 100.0 * tri(4) / tri(20), "levels": 4, "actions": 1}}}
@@ -277,11 +309,12 @@ def main() -> None:
         fail(6, "synthetic total=20 game bounded %s, want (4, 20) -- the constant is not the "
                 "game cap 100" % (got,))
     gate()
-    print("CONTROL 5  closure: %d levels derived over %d games, %d left for the other %d "
-          "(mean %.1f): OK" % (used, len(derived), left, len(unknown_games),
-                               left / max(1, len(unknown_games))))
+    print("CONTROL 5  every one of the %d games has a total, and none is below the deepest "
+          "level any run reached there: OK" % len(games))
     print("CONTROL 6  bound lands exactly on the derived total in all %d anchored games, and "
           "a synthetic total=20 game pins the constant to the game cap: OK" % len(derived))
+    print("CONTROL 7  EXTERNAL: %d derived exact and %d bounds contain the true total, "
+          "sum %d: OK" % (len(derived), len(bounds), sum(truth.values())))
     gate()
     print()
 
@@ -306,10 +339,10 @@ def main() -> None:
               % (r, cur, cur + gain, gain, len(unknown_games)))
     print()
 
-    print("WHAT ONE MORE LEVEL PAYS (cap at k cleared, per game):")
+    print("WHAT ONE MORE LEVEL PAYS (cap at k cleared, per game -- TRUE totals, all 25):")
     print("  %-6s %5s | %s" % ("game", "total", "k=1     2      3      4      5"))
-    for g in sorted(derived):
-        n = derived[g]
+    for g in sorted(truth):
+        n = truth[g]
         caps = [100 * tri(k) / tri(n) for k in range(1, min(6, n + 1))]
         print("  %-6s %5d | %s" % (g, n, " ".join("%6.2f" % c for c in caps)))
     print()
@@ -368,6 +401,7 @@ def main() -> None:
             "cap_bound": n_cap, "raw_bound": n_raw, "unknown": n_unk,
             "cap_share_of_decided": round(100 * n_cap / decided, 1),
             "derived_totals": derived,
+            "true_totals": truth,
             "unresolved_games": unknown_games,
             "bounds": {g: list(bounds[g]) for g in unknown_games if g in bounds},
             "no_anchor": [g for g in unknown_games if g not in bounds],

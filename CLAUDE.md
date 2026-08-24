@@ -1047,22 +1047,38 @@ consequences worth holding on to:
 sources, including a retraction of the "5× human median" action cap that is not a rule.
 
 **Measured 2026-08-25 (`notes/R37-the-cap-decides-most-cells.md`): the cap is not an edge case,
-it is the usual case.** Over the four runs with per-game fixtures, **27 of 35 decided cells = 77%**
-are cap-bound, i.e. `score = 100 * sum(done)/sum(1..total)` exactly and no action saved can move
-them. Two runs of one game at the same level count differ in score by a median **2.16%** while
-differing in actions by **32.9%**; at different level counts, **100%**. So "depth is everything"
-is stronger than it reads: for most game-runs depth is the ONLY thing, and a lever that acts on
-efficiency or on behaviour is working on the other 23%.
+it is the usual case.** `score = 100 * sum(done)/sum(1..total)` exactly wherever it binds, and no
+action saved can move those cells. Two runs of one game at the same level count differ in score by
+a median **2.16%** while differing in actions by **32.9%**; at different level counts, **100%**.
+So "depth is everything" is stronger than it reads: for most game-runs depth is the ONLY thing,
+and a lever that acts on efficiency or on behaviour is working on the remainder.
+
+⚠️ **The SHARE in R37 was 77% (27 of 35) and it is now 55% (38 of 69)** -- not a correction of
+that measurement but a consequence of resolving what it could not: R37 could only classify a cell
+whose game had a derivable total, and 11 games had none, so 17 cells sat UNKNOWN and were excluded
+from its denominator. The clock2x run's `summary.txt` prints `levels=<cleared>/<TOTAL>` per game,
+settling all 25 at once (sum **183**, which is the figure CONTROL 5 had been assuming), and the
+newly-decided cells are disproportionately raw-bound. Both readings are of the same world; the
+77% describes the subset that could be anchored from fixtures alone.
 
 `eval/score_shape.py` computes this from `eval/fixtures/*.json` alone -- no GPU slot, no Kaggle
-call, no `~/Claude/arc-artifacts/` corpus, so it runs on any checkout. Six controls gate it and
-each is proven red on a mutation; a failing control prints no numbers.
+call, no `~/Claude/arc-artifacts/` corpus, so it runs on any checkout. Seven controls gate it and
+each is proven red on a mutation (9 mutations, one control green); a failing control prints no
+numbers.
 
-The 11 games with no cap anchor are BOUNDED rather than left unknown (`bound_totals`): since
-`score <= cap` holds in every cell, `tri(total) <= 100 * tri(cleared) / score` per cell, tightest
-wins. That is how re86 -- the largest single contributor to per-game variance -- was placed at
-4..8 levels without a slot. A bound rules out shallow; it does not pick a value, so a build
-needing the exact total is still blocked.
+Two layers sit under the totals and BOTH are still graded, because replacing a derivation with a
+reference is how a derivation stops being checked:
+
+- `derive_totals` anchors a game whose score sits exactly on the cap (17 of 25 games).
+- `bound_totals` brackets the rest: `score <= cap` holds in every cell, so
+  `tri(total) <= 100 * tri(cleared) / score` per cell, tightest wins.
+- `eval/fixtures/game-totals.json` is the EXTERNAL reference for all 25, and CONTROL 7 grades the
+  other two against it -- every derived total exact (17 of 17), every bound containing (22 of 22).
+  The tables downstream use the reference; the derivation is not replaced by it.
+
+**`re86` is 8 levels**, which its bound had placed at 4..8 -- the largest single contributor to
+per-game variance, and not a shallow game. Efficiency headroom over all 25 games now reads
+**v10cal 4.71 -> 5.80**, meeting B20's independently-derived ceiling of 5.80 exactly.
 
 ## Layout, in dependency order
 
