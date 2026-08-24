@@ -106,10 +106,8 @@ reach and buy real margin.
 3. **`tr87` and `ls20` dominate the reach** (239 and 140 of 682 suppressions at k=20). Two games
    of 25, exactly as R32 found for the B29 brake (32 of 39 in `ls20`). The 25.9% is not spread
    evenly and the headline overstates what a typical game sees.
-4. **Where the brake is enforced is unwritten.** The action set reaches the model through the
-   prompt; whether removal happens there or at the harness's action-validation layer decides
-   whether this is a prompt change (weak, per B32) or a structural gate (the point). This is the
-   design question to answer first.
+4. ~~**Where the brake is enforced is unwritten.**~~ **ANSWERED 2026-08-25 — see §7. It can be
+   structural, and the harness already ships the pattern.**
 5. **STABLE was measured across runs; the harness sees one run.** The brake's trigger is
    within-run (`k` fires since the last level-up) and needs no population label, which is what
    keeps it from overfitting the public 25 — but it also means it cannot target STABLE
@@ -126,3 +124,50 @@ kaggle kernels output yocybercode/clock-2x-v1 -p <dir>
 Then the population table is `eval/score_shape.py` plus `eval/fixtures/*.json`; §2 and §3 read
 `<dir>/artifacts/*_events.jsonl` directly — `type == "action"` rows carry `level` and
 `action_display`, which is everything the sweep needs.
+
+## 7. Where the brake goes — answered by reading the harness, 2026-08-25
+
+Read from the vendored bundle at `duck/bundle/src/ARC3-Inference/inference/agent/tool_agent.py`
+(untracked upstream reference, so the line numbers are for that file, not for anything this repo
+tracks). This was §5's item 4, the one that decides whether B38 is a real gate or another B32.
+
+**There is exactly one choke point, and it is not the prompt.** The model never emits an action
+directly: it writes Python, the sandbox runs it, and every action reaches the game through
+`_handle_action(actions)` (`tool_agent.py:1495`), which is the only caller of
+`self._step_env_callback` (`:1529`). Nothing else touches the environment.
+
+**The reject-and-explain pattern already exists in that same function.** When the game is in a
+terminal state, `_handle_action` returns *without calling the callback at all* (`:1498-1526`) and
+hands back `executed: False`, `stopped_early: True`, `stop_reason`, `stop_detail`. A family brake
+is that branch with a different predicate.
+
+**The action shape carries what the family key needs.** `_normalize_python_actions` (`:1378-1414`)
+yields `{"action": "MOUSE", "row": N, "col": M}` or `{"action": "UP"}`, so `(MOUSE, row)` and
+`(KEY, name)` are both available at the choke point. The level for the reset is on the result
+(`compact["level"]`, `compact["level_completed"]`, `:1416-1428`).
+
+**The refusal reaches the model twice.** `stop_reason`/`stop_detail` survive
+`_compact_action_result` (`:1442-1445`), land in the sandbox-visible runtime state as
+`last_action_result` (`:1486`) — which the system prompt already tells the model it receives
+(`:157`, `:1223`) — and are rendered into the next turn's summary line as `stop_reason=...`
+(`:1100-1102`).
+
+So the loop closes without asking the agent to cooperate: the action does not happen, and the
+reason is in front of it both inside the code it is running and in its next prompt. That is the
+one property B32 lacked — its ledger spoke through the hint channel and the 27B obeyed it 52% of
+the time. **Here there is nothing to disobey.**
+
+⚠️ **One real limitation found while checking.** `valid_actions` is a list of action NAMES
+(`"MOUSE"`, `"UP"`), with no row (`_normalize_valid_actions`, `:167-175`). A row-level family
+therefore cannot be removed from the advertised action set — dropping `MOUSE` wholesale would be
+far too blunt. The brake must announce itself through `stop_reason` rather than by shrinking
+`valid_actions`, which means the model learns a family is closed by *trying it once more*, not by
+seeing a smaller menu. Cost: one wasted action per family per brake event.
+
+⚠️ **Second one.** A single `python` tool call may invoke `action()` many times, and each call may
+carry a list. The counter has to advance per action ITEM at the choke point, not per tool call, or
+one code block can walk a whole row before the brake sees anything.
+
+**What this does NOT settle** is §5's item 2, which is still the one that decides the outcome: a
+blocked action is not a better action. The gate can fire correctly, cheaply, and structurally, and
+the agent may simply lock onto the next family. Nothing measured here speaks to that.
