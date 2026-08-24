@@ -161,3 +161,83 @@ Artifacts (events + `benchmark.json` for both runs, 124 MB) copied out of a sess
 to `~/Claude/arc-artifacts/{v10cal,thuiv1}/`. Scripts in the workspace repo under
 `scripts/b27/`: `pairs.py` (enumerate stuck/cleared pairs from `benchmark.json`), `dossier.py`
 (dump carried model + prose + actions for one pair).
+
+---
+
+# §6 — extension, same day: §3 does not survive it
+
+§3 above reported that search constructs appear on 0 of 263 stuck turns and 5 of 182 clearing
+turns, Fisher exact p = 0.0111, and called it "the first test of the premise B28 and B29 rest
+on". Widened from the 11 paired levels to all 1,973 turns of both runs, **that result does not
+generalise, and the headline is withdrawn.**
+
+## Base rate — the instrument agrees with v17
+
+Search code (`bfs|deque|heapq|itertools.product|permutations|product(|def solve|def search|def
+plan|visited=|frontier|queue=[`) inside the tool call's `<parameter=code>`:
+
+**31 of 1,973 turns = 1.6%.** Counting prose mentions too gives **47/1,973 = 2.4%**, against
+v17's **19/935 = 2.0%** over a smaller corpus. The probe reproduces; nothing is wrong with it.
+
+## Four designs, three of them null
+
+| # | design | stuck / not-searching | cleared / searching | Fisher p |
+|---|---|---|---|---|
+| §3 | matched on (game, level), 11 pairs | 0 / 263 | 5 / 182 = 2.7% | **0.0111** |
+| (b) | corpus-wide, unstratified | 22 / 1308 = 1.7% | 25 / 665 = 3.8% | 0.0072 |
+| (c) | stratified within (run, game) | 17 / 757 = 2.2% | 25 / 665 = 3.8% | **0.1158** |
+| (e) | last 3 turns before a clear vs all others | 42 / 1824 = 2.3% | 5 / 149 = 3.4% | 0.397 |
+| (f) | **the level as the unit** — searched anywhere on it, did it clear? | 43 cleared / 88 = 48.9% | 7 cleared / 12 = 58.3% | **0.760** |
+
+(b) is confounded and is listed only to be dismissed: a game the run never got past contributes
+stuck turns and nothing else, so the split partly measures which games are hard.
+
+**(f) is the test that matters** — it asks the question anyone would act on. Searching somewhere
+on a level goes with clearing it **58.3% vs 48.9%**, p=0.76. Nothing.
+
+⚠️ **Power.** (f) has 100 level-attempts, 12 of them with search code. Only an effect of roughly
+**27 percentage points or larger** is detectable there. "No effect" means "no large effect".
+
+## The 0/263 is the anomaly, not the explanation
+
+Splitting stuck levels by whether the *sibling run of the same build* cleared that exact level:
+
+| stuck levels | turns with search |
+|---|---|
+| ones the sibling run provably cleared (§3's arm) | **0 / 263 = 0.0%** |
+| every other stuck level | 22 / 1045 = 2.1% |
+
+Fisher p = **0.0128**. So the levels where the failing run searched *least* are precisely the
+levels we know are solvable — the opposite shape from "search is what clears levels". Under the
+2.1% base rate, 263 turns should carry ~5.5 hits; zero is a 0.4% outcome. §3's significance came
+from that hole in one arm, not from an excess in the other.
+
+## What was checked and did not hold
+
+`bfs` appears in prose on 35 turns and in code on 16, which invited the reading *"the agent talks
+about search more than it runs it"*. Sampling the 15 prose-only turns refutes it: most are the
+agent **reporting a BFS it ran on an adjacent turn** — *"BFS found a 9-move solution: LG, LG,
+R35G…"*, *"BFS with 6-cell moves found no path (only 11 reachable states) — so my walkable-set or
+move model is wrong"*. Intent-without-execution is not what the gap measures. Claim dropped.
+
+## What still stands
+
+§1 (the stuck level is not a clock problem — 9 of 11 pairs), §2 (the goal is usually right, the
+transition model is not) and §4 (the `goal stated 93%` correction) are untouched by this. They
+rest on turn counts and on quoted text, not on the search probe.
+
+**§3 is withdrawn**: search usage does not predict clearing a level at any effect size this
+corpus can resolve.
+
+## Consequence
+
+- **B28 is unaffected as a question but its prior should be lower.** If v22's addendum lifts
+  search usage, that will still be worth knowing — but §6(f) says raising usage from ~2% is not
+  on its own a route to more levels, so a usage-up/score-flat outcome should be read as the
+  expected one rather than as a surprise.
+- **B29's justification narrows to §2 alone**, which is the stronger half anyway: the belief
+  worth verifying is what an action does, and `transitions` already holds the refutation. The
+  "search separates the populations" argument is no longer available to it.
+- The instrument, the four designs and the power note are in `scripts/b27/corpus_search.py`
+  (workspace repo) so the next widening — more runs, once v18/v19 events are fetched — reuses
+  the same predicate rather than a re-derived one.
