@@ -1046,6 +1046,18 @@ consequences worth holding on to:
 `scoring.py` implements this offline; `docs/competition-rules.md` records the rules with
 sources, including a retraction of the "5× human median" action cap that is not a rule.
 
+**Measured 2026-08-25 (`notes/R37-the-cap-decides-most-cells.md`): the cap is not an edge case,
+it is the usual case.** Over the four runs with per-game fixtures, **27 of 35 decided cells = 77%**
+are cap-bound, i.e. `score = 100 * sum(done)/sum(1..total)` exactly and no action saved can move
+them. Two runs of one game at the same level count differ in score by a median **2.16%** while
+differing in actions by **32.9%**; at different level counts, **100%**. So "depth is everything"
+is stronger than it reads: for most game-runs depth is the ONLY thing, and a lever that acts on
+efficiency or on behaviour is working on the other 23%.
+
+`eval/score_shape.py` computes this from `eval/fixtures/*.json` alone -- no GPU slot, no Kaggle
+call, no `~/Claude/arc-artifacts/` corpus, so it runs on any checkout. Five controls gate it and
+each is proven red on a mutation; a failing control prints no numbers.
+
 ## Layout, in dependency order
 
 One-off probe scripts (the `<game>_<tag>.py` instruments the README cites by bare
