@@ -438,6 +438,27 @@ pulled with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
 
 # §9 — B29's verifier premise, tested offline: the recorded transition does not predict
 
+🔴 **RETRACTED 2026-08-24 by R31 — this section's conclusion is its own instrument, and every
+number below is measured on a key that discards the click.** The action was keyed on
+`action_name`, so all 662 distinct click cells in the corpus are one symbol, `ACTION6`: a click
+at `(58,35)` and one at `(29,22)` fired from the same board were recorded as the same
+`(state, action)` and compared to each other. **135 of the 446 repeats below are clicks, and
+122 of those were different actions.** Key the action as the agent itself issues and reads it
+(`action_display` = `MOUSE(row=58, col=35)`) and the corpus reproduces the `board_changed` flag
+**98.1%** corpus-wide and **311/311 = 100.0%** on keyboard actions, against a majority-class
+null of 89.8%. The residual is **6 misses in one game** (`s5i5`).
+
+The tell is in the per-game table below: every game it reports as failing has repeats that are
+**100% clicks**, and both games it reports at 100% have **zero**. The swap is surgical, not a
+shrink — `action_name` and `action_display` are in bijection for keyboard actions, so the 311
+keyboard repeats are byte-identical under both keys and only the click population moves.
+
+**So B29's premise holds and this section does not refute it.** What still bounds B29 is
+coverage, which is B19's argument and is untouched: only **9.0%** of decisions are taken from a
+board the run had seen before, and 91% of those know exactly one action. Full account, controls
+and reproduce line: `notes/R31-transition-key.md`. Kept below unedited — the measurement was
+sound and the reading of it was not, and the click column was in the data the whole time.
+
 §8 closed by proposing B29's own verifier be run offline over the corpus before anything is
 built, for zero slots. Done. **It does not get as far as grading beliefs, because the premise
 underneath it fails first: a recorded transition does not predict the next one from the same
