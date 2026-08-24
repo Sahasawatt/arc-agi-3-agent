@@ -315,3 +315,121 @@ not. That rests on quoted text, and B29's justification rests on it alone.
 `scripts/b27/widen.py <runs…>` for §1, `scripts/b27/corpus_search.py <runs…>` for §3; both take
 run names and default to the original pair. Artifacts under `~/Claude/arc-artifacts/`, pulled
 with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
+
+---
+
+# §8 — §2 widened, and it cannot be: the corpus has no structural trace of a wrong transition model
+
+§6 and §7 widened §1 and §3. §2 was left standing on three hand-picked games (lp85, cd82,
+ar25), and §7 closes by naming it *"the load-bearing half … B29's justification rests on it
+alone."* §3 flipped sign under exactly this widening, so §2 is the one claim in R29 that has
+never faced the corpus. This section faces it. **Result: four structural proxies for §2 are
+null, and the corpus cannot resolve the effect they would need to show. §2 is neither
+confirmed nor refuted — it remains a three-quote claim, and no instrument short of B29's own
+verifier can widen it.**
+
+## The instrument had to be rebuilt, because §Reproduce points at nothing
+
+`scripts/b27/widen.py` and `scripts/b27/corpus_search.py` are **not in this repo** — `git
+ls-files` returns zero for `b27` and zero for `widen`, against a control of one tracked file
+under `scripts/`. They are not in the main checkout either. So §1's `97 of 115, p=1.9e-16`
+and §7's whole table were, until now, unreproducible from master.
+
+Rebuilt at `scripts/b27/{corpus,attempts,wm,widen2}.py` and validated against **six** numbers
+this note already published, before it was used for anything new:
+
+| check | R29 | rebuilt |
+|---|---|---|
+| analysis turns, v10cal+thuiv1 | 1,973 | 1,973 ✓ |
+| analysis turns, five runs | 5,052 | 5,052 ✓ |
+| run-games | 125 | 125 ✓ |
+| level-attempts | 237 | 237 ✓ |
+| stuck/cleared pairs | 115 | 115 ✓ |
+| §4 carried model absent | 46.5% / 55.3% | 46.5% / 55.3% ✓ |
+| §4 `Goal model:` stated | 3.0% / 0.0% | 3.0% / 0.0% ✓ |
+| §1 named pairs lp85 / ar25 / cn04 / dc22 | 27v8 / 29v4 / 29v11 / 31v15 | all four ✓ |
+| §1 medians | 31 vs 17 | 31 vs 17 ✓ |
+| B26 row's no-op share | 5% | 5.0% (398 of 7,938) ✓ |
+
+Two things surfaced while matching them, neither of which changes a conclusion:
+
+- **`level_completed` rides the event for the level being ENTERED, not the one being played.**
+  Read naively, level 1 is uncleared in every run and the final stuck level reads as cleared.
+  The rule that reproduces every published pair is *an attempt at level L is cleared iff the
+  run ever reached a level > L*.
+- **§1's `97 of 115` is a strict `>`; the prose beside it says "at least as many", which is
+  `>=` and gives `101 of 115` (87.8%).** There are exactly 4 ties. Same class as the
+  `0.38 = 25%` slip in LEDGER:120 — the pair is right, the wording and the number disagree.
+  Either way the effect is overwhelming.
+
+## What was measured
+
+Unit: the 115 stuck/cleared pairs on the same `(game, level)`, identical to §1. Test: paired
+sign-flip permutation, two-sided, 100k draws, seed 20260824. The carried world model is the
+block between `Working world model carried from earlier turns:` and the literal
+`end of world model.` — **trimming at that second marker is load-bearing**, because the
+boilerplate after it names every prefix (`World model:`, `Goal model:`, `Action model:`, …),
+so an untrimmed read reports every field on 100% of turns and drives any similarity measure
+to ~1.0.
+
+| signal | stuck | cleared | stuck>cleared | p |
+|---|---|---|---|---|
+| **CONTROL+** turns/attempt (§1's own signal) | 30.97 | 17.45 | **97/115** | 1.0e-05 *(permutation floor)* |
+| **CONTROL−** random per attempt | — | — | — | 0.43 |
+| carries `Action model:` | 0.026 | 0.061 | 3/115 | 0.34 |
+| `Open questions:` rate | 0.217 | 0.167 | 26/115 | 0.27 |
+| carried model present at all | 0.542 | 0.593 | 58/115 | 0.27 |
+| stasis — consecutive-block similarity | 0.901 | 0.878 | 26/51 | 0.39 |
+
+The positive control reproduces §1 exactly (97/115, same direction), so the machinery works.
+⚠️ The negative control was drawn twice on independently seeded noise and returned **p=0.43
+and p=0.088** — a single draw of a random control is itself noise and proves little; the
+positive control is what carries this table.
+
+## Why the null is weak, and why that is the finding
+
+**The agent almost never writes a transition model down.** `Action model:` — the field the
+harness's own prompt offers for exactly this — appears on **1.6% of turns** across five runs
+and **0 times in either v10cal or thuiv1**, the two runs §2's three quotes come from. Across
+the 230 attempts in the 115 pairs it is non-zero on **10**.
+
+So the floor was computed rather than assumed: plant a lift in the stuck arm and ask when this
+test finds it (200 sims, confirmed at both 1.5k and 100k permutations).
+
+| planted lift | detected |
+|---|---|
+| +5 pp | 0% |
+| +10 pp | 18% |
+| **+15 pp** | **74%** |
+| +20 pp | 97% |
+
+The observed difference is **−3.5 pp** — the wrong direction for §2, on 10 informative pairs.
+This corpus resolves nothing below roughly **+15 pp**. That is not evidence against §2; it is
+the measurement declining to speak.
+
+## What this means for B29
+
+§2 claims the *content* of a belief is wrong. Every proxy above measures whether a transition
+model is **maintained, questioned or revised** — never whether it is **correct**. Nothing in a
+transcript marks a belief as false, which is why the null arrives underpowered by
+construction rather than by sample size. **The only instrument that can widen §2 is a verifier
+that checks stated beliefs against recorded transitions — which is B29's own mechanism.** As
+it stands, B29's justification and B29's test are the same object.
+
+**That is fixable for zero slots, and it is the recommended next step.** The corpus already
+holds every transition such a verifier needs: **7,938 action events across the five runs, with
+`action_name`, `board_ascii` and `board_changed` populated on 100% of them.** Run B29's
+verifier offline over that corpus before building anything:
+
+- fires often on stuck attempts and rarely on cleared ones → §2 is confirmed at corpus scale
+  and B29 is justified on more than three quotes;
+- fires alike on both → §2 does not generalise, and B29 dies before it costs a GPU slot.
+
+Either way it is read-only, costs no submission and no GPU quota, and is the only route that
+does not spend a slot to learn what §2 already asserts.
+
+## Reproduce
+
+`python3 scripts/b27/attempts.py` prints the validation table; `python3 scripts/b27/widen2.py`
+prints the signal table. Both read `~/Claude/arc-artifacts/{v10cal,thuiv1,v18,v19,v23}`,
+pulled with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
