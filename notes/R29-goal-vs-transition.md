@@ -241,3 +241,77 @@ corpus can resolve.
 - The instrument, the four designs and the power note are in `scripts/b27/corpus_search.py`
   (workspace repo) so the next widening — more runs, once v18/v19 events are fetched — reuses
   the same predicate rather than a re-derived one.
+
+---
+
+# §7 — widened to five runs: §1 holds hard, §3 stays dead
+
+2026-08-24, later. §1 and §3 were measured on **one** run pair (v10cal vs thui-v1, 11 games,
+1,973 turns). `taaf-duck-v18`, `taaf-duck-v19` and `taaf-duck-v23` outputs were pulled from
+Kaggle, giving **five** runs of the same family: v10 base, Qwen3.8-27B dense, anim bundle, each
+with one inert-or-small knob (probe · vision upscale · banking graft · grid lines). **v20 is
+excluded on purpose** — it is a different model (MoE), so a difference there is a lever, not
+rollout variance.
+
+Corpus: **5,052 analysis turns · 125 run-games · 237 level-attempts · 115 stuck/cleared pairs**
+over the 10 run pairs.
+
+## §1 widened — 11 pairs became 115, and the effect got stronger
+
+| | 2 runs (§1) | 5 runs (§7) |
+|---|---|---|
+| stuck run had **more** turns on the level than the run that cleared it | 9 of 11 | **97 of 115 = 84.3%** |
+| equal | — | 4 |
+| **fewer** — the clock-starved shape | 1 (re86) | 14 = 12.2% |
+
+Two-sided sign test on the 111 non-ties: **p = 1.9e-16**.
+
+Magnitude: median **31** turns for the stuck run against **17** for the one that cleared the
+same level, ratio median **1.59×**, p90 **4.0×**, max 25×. **44%** of pairs the stuck run spent
+≥2× the turns; **21%** spent ≥3×.
+
+⚠️ **Half of this is true by construction and the note says so**: a run that clears a level
+stops spending turns on it, a run that fails keeps going until the game clock ends. The claim
+this supports is the narrower one, which is also the one the campaign needs — **the failing run
+reached the turn count that sufficed for another run of the same family to clear that exact
+level**, so more time on the level is not the missing ingredient. The 12% with fewer turns are
+the genuinely clock-starved cases.
+
+Which run appears on which side is itself consistent: `v10cal` is the clearing run **33** times
+and the stuck run **14**, the best split of the five; `v23` is the stuck run **30** times, the
+worst.
+
+## §3 stays withdrawn, and the point estimate has now flipped sign
+
+| design | 2 runs | 5 runs |
+|---|---|---|
+| (c) stratified within (run, game) | 2.2% vs 3.8%, p=0.1158 | 2.5% vs 3.9%, **p=0.0176** |
+| (e) last 3 turns before a clear | 3.4% vs 2.3%, p=0.397 | 5.4% vs 3.1%, **p=0.0358** |
+| (d) provably-solvable stuck levels vs all other stuck levels | 0/263 vs 2.1%, p=0.0128 | 0/263 vs 3.2%, **p=0.00046** |
+| **(f) the LEVEL as the unit** | 58.3% vs 48.9%, p=0.760 | **40.6% vs 48.3%, p=0.452** |
+
+**The unit decides the answer, and the two disagree.** (c) and (e) are turn-weighted, so one
+level carrying many search turns dominates; (f) gives each level one vote and is the unit a
+decision is made in. At five runs the turn-weighted tests reach significance while the
+level-weighted test not only stays null but **flips direction** — levels where the run wrote
+search code cleared *less* often, 40.6% against 48.3%.
+
+The detectable-effect floor is now computed rather than quoted: **2 s.e. = 19 percentage
+points** at 237 level-attempts with 32 searching (it was ~27 at two runs). A real effect
+smaller than 19 pp is still invisible here — but nothing in this corpus supports search as a
+route to clearing levels, and the point estimate is on the wrong side.
+
+(d) sharpens instead of resolving: the 263 turns of §3's stuck arm still carry **zero** search
+against a 3.2% base rate that should have produced ~8.5. Whatever selects those levels is not
+explained by this probe.
+
+## §2 is unchanged and remains the load-bearing half
+
+Nothing here touches the reading that the goal is usually right and the transition model is
+not. That rests on quoted text, and B29's justification rests on it alone.
+
+## Reproduce
+
+`scripts/b27/widen.py <runs…>` for §1, `scripts/b27/corpus_search.py <runs…>` for §3; both take
+run names and default to the original pair. Artifacts under `~/Claude/arc-artifacts/`, pulled
+with `kaggle kernels output sahasawatt/taaf-duck-v<n>`.
