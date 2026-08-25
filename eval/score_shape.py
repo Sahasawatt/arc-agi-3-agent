@@ -47,7 +47,7 @@ import sys
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "*.json")
 PUBLISHED = {"v10cal": 4.71, "v18": 3.60, "v19": 2.82, "v20": 0.18,
-             "clock2x": 6.40, "v25": 3.69}  # LEDGER's table
+             "clock2x": 6.40, "v25": 3.69, "thuiv1-1": 5.24}  # LEDGER's table
 GROUND_TRUTH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                             "fixtures", "game-totals.json")
 TOTAL_LEVELS_ALL_GAMES = 183  # LEDGER: "20 of 183 levels"
@@ -211,6 +211,10 @@ def main() -> None:
     games = sorted(next(iter(runs.values())))
 
     # ---- CONTROL 1: the loader reproduces LEDGER's published means ----
+    unlisted = [r for r in runs if r not in PUBLISHED]
+    if unlisted:
+        fail(1, "fixture(s) %s carry no PUBLISHED mean, so CONTROL 1 never grades them -- add the "
+                "LEDGER number or the run is unchecked" % unlisted)
     for label, want in PUBLISHED.items():
         if label not in runs:
             fail(1, "fixture %s missing" % label)
