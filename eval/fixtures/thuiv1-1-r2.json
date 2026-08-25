@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 68,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 1,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 43,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "cn04": {
+   "actions": 27,
+   "levels": 0,
+   "score": 0.0
+  },
+  "dc22": {
+   "actions": 121,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 35,
+   "levels": 3,
+   "score": 28.57142857142857
+  },
+  "g50t": {
+   "actions": 11,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 24,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lf52": {
+   "actions": 42,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 16,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "ls20": {
+   "actions": 38,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 89,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 15,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 154,
+   "levels": 3,
+   "score": 16.666666666666664
+  },
+  "s5i5": {
+   "actions": 51,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sb26": {
+   "actions": 107,
+   "levels": 2,
+   "score": 8.033950617283951
+  },
+  "sc25": {
+   "actions": 85,
+   "levels": 2,
+   "score": 3.0903549873601612
+  },
+  "sk48": {
+   "actions": 30,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 48,
+   "levels": 1,
+   "score": 3.1436011904761907
+  },
+  "su15": {
+   "actions": 48,
+   "levels": 1,
+   "score": 1.1950617283950615
+  },
+  "tn36": {
+   "actions": 38,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 0,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 46,
+   "levels": 1,
+   "score": 0.5274307838410403
+  },
+  "vc33": {
+   "actions": 91,
+   "levels": 3,
+   "score": 20.973214285714285
+  },
+  "wa30": {
+   "actions": 32,
+   "levels": 0,
+   "score": 0.0
+  }
+ },
+ "label": "thuiv1-1-r2",
+ "source": "kaggle yocybercode/thui-v1-1-r2 v1, 2026-08-25"
+}
