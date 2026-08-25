@@ -1,0 +1,131 @@
+{
+ "label": "v25",
+ "source": "sahasawatt/taaf-duck-v25 v1 (2026-08-24, 2h12m30s) -- build 1504012d, i.e. duckmod+seed",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 21
+  },
+  "tn36": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 22
+  },
+  "m0r0": {
+   "score": 2.1164021164021163,
+   "levels": 1,
+   "actions": 63
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 1
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 21
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 33
+  },
+  "tu93": {
+   "score": 1.3927469135802468,
+   "levels": 1,
+   "actions": 34
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 27
+  },
+  "ka59": {
+   "score": 3.3293697978596914,
+   "levels": 1,
+   "actions": 52
+  },
+  "wa30": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 110
+  },
+  "vc33": {
+   "score": 10.714285714285714,
+   "levels": 2,
+   "actions": 35
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 24
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 13
+  },
+  "sc25": {
+   "score": 14.285714285714285,
+   "levels": 2,
+   "actions": 53
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 42
+  },
+  "ar25": {
+   "score": 27.77777777777778,
+   "levels": 4,
+   "actions": 121
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 86
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 37
+  },
+  "re86": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 36
+  },
+  "s5i5": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 30
+  },
+  "ls20": {
+   "score": 3.267620847961113,
+   "levels": 1,
+   "actions": 113
+  },
+  "ft09": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 0
+  },
+  "su15": {
+   "score": 0.382896246192793,
+   "levels": 1,
+   "actions": 86
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 258
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 23
+  }
+ }
+}
