@@ -1,6 +1,6 @@
-"""Build duckv27/taaf-duck-v27.ipynb -- v10 plus ONE change: animation retrieval OFF (B39).
+"""Build thuiv2/taaf-thui-v2.ipynb -- v10 plus ONE change: animation retrieval OFF (B39).
 
-Cell 12 carries duckv27/retrieval_off_patch.py verbatim. Cells 6 and 8 are duckv10's, byte
+Cell 12 carries thuiv2/retrieval_off_patch.py verbatim. Cells 6 and 8 are duckv10's, byte
 for byte -- same anim bundle, same Qwen3.8-27B-FP8, output UNCAPPED, upscale 4, v10's clock,
 temperature and seed untouched.
 
@@ -10,7 +10,7 @@ duckv10/taaf-duck-v10.ipynb -- never against SRC_NB. duckv25 shipped a run adver
 source the builder never touches: a tautology that passes by construction and prints a
 reassuring line (CLAUDE.md §Versioning).
 
-Behavioural teeth for the patch itself are duckv27/prove_teeth.py -- 13 cases against the
+Behavioural teeth for the patch itself are thuiv2/prove_teeth.py -- 13 cases against the
 real vendored source, proved red by 6 mutations. This builder checks only what it builds.
 """
 import json
@@ -19,8 +19,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 SRC_NB = REPO / "duckmod" / "taaf-duck-mod.ipynb"
 V10_NB = REPO / "duckv10" / "taaf-duck-v10.ipynb"
-PATCH = REPO / "duckv27" / "retrieval_off_patch.py"
-OUT_NB = REPO / "duckv27" / "taaf-duck-v27.ipynb"
+PATCH = REPO / "thuiv2" / "retrieval_off_patch.py"
+OUT_NB = REPO / "thuiv2" / "taaf-thui-v2.ipynb"
 
 
 def main() -> None:
@@ -51,8 +51,8 @@ def main() -> None:
     # ⚠️ MULTIMODAL_UPSCALE and LOCAL_ANALYZER_TEMPERATURE are NOT set in the notebook at
     # all -- they come from the bundle's own setup_commands.json (R40 §2). Asserting them
     # here is the mistake duckv26's builder made and caught.
-    assert "'LOCAL_ANALYZER_MAX_OUTPUT': '0'" in o8, "duckv27: output must stay UNCAPPED"
-    assert "LOCAL_ANALYZER_SEED" not in o8, "duckv27 must not pin the seed -- that is B37"
+    assert "'LOCAL_ANALYZER_MAX_OUTPUT': '0'" in o8, "thuiv2: output must stay UNCAPPED"
+    assert "LOCAL_ANALYZER_SEED" not in o8, "thuiv2 must not pin the seed -- that is B37"
     # the patch's own identity, so a stale or truncated copy cannot ship
     assert "duckmod: inject HUD auto-flag" not in o12, "duckmod's patch block leaked into cell 12"
     assert "_sess.animation_record = _no_retrieval" in o12, "edit 1 (retrieval) missing"

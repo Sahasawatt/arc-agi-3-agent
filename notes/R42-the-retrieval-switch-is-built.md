@@ -1,4 +1,4 @@
-# R42 — B39 built as `duckv27`, and our bundle has one switch where upstream has two
+# R42 — B39 built as `thuiv2`, and our bundle has one switch where upstream has two
 
 2026-08-25, offline, 0 slots. Builds the retrieval kill-switch R39 designed. **Not pushed.**
 
@@ -28,7 +28,7 @@ event rows.
 
 ## 2. What was built
 
-`duckv27/retrieval_off_patch.py` (cell 12), two edits:
+`thuiv2/retrieval_off_patch.py` (cell 12), two edits:
 
 1. **`_HarnessGameSession.animation_record` → always `None`.** `step_env` then returns
    `{"executed": False, "query": "animation", "record": None}` — byte-identical to the shape it
@@ -60,7 +60,7 @@ rebinds `tool_agent.STRUCTURED_RUNTIME_STATE_ADDENDUM` and then **reads the buil
 
 ## 4. Rig: 13 cases against the real vendored source, 6 mutations proved red
 
-`duckv27/prove_teeth.py`. `inference.agent.tool_agent` imports cleanly on this machine, so edit
+`thuiv2/prove_teeth.py`. `inference.agent.tool_agent` imports cleanly on this machine, so edit
 2 is tested end to end through `_build_system_prompt`; `inference.framework.solver` cannot
 (`arcengine`, `taaf`, a plotting stack), so edit 1 is asserted structurally by AST — and the
 patch carries the same two asserts at runtime, where the real module is present.
@@ -87,18 +87,32 @@ prefix so it swallows an awareness line → 0 · rewrite an awareness prefix as 
    invisible to it — the probe was a second implementation of the thing under test. It now
    AST-extracts `_ADVERT` and `_AWARE` from the patch file itself.
 
-## 5. Versioning: a MAJOR, by the same elimination R41 used
+## 5. Versioning: `thuiv2`, a MAJOR of the thui line
+
+Named on our own line rather than the duck sequence, following what `thuiv1/` already does:
+directory `thuiv2/`, notebook `taaf-thui-v2.ipynb`, kernel `yocybercode/thui-v2-0`, title
+`Thui v2.0` — the same shape as `thuiv1/taaf-thui-v1.ipynb` / `thui-v1-0` / `Thui v1.0`, read
+off those files rather than invented here.
+
+MAJOR by §Versioning's own test — a MINOR *"refines the same lever"* and shares its major's
+directory, so the question is which existing lever this refines:
 
 | build | its lever | does B39 refine it |
 |---|---|---|
+| `thuiv1` | per-request usage probe (instrumentation) | no — that observes, this changes behaviour |
+| `thuiv1/v1-1` | sampler seed pin | no — and B37 closed it |
 | `duckv24` | untried-ledger nudge | no |
 | `duckv25` | sampler seed pin | no |
 | `duckv26` | family brake on executed actions | no — that constrains what the model may DO; this removes a thing it may LOOK AT |
 | `clock2x` | per-game clock | no |
 
 It refines none, and *one kernel per major* forces the same answer from the other side.
-`duckv27/`. The notebook is **v10 with exactly one cell changed** — verified directly against
+The notebook is **v10 with exactly one cell changed** — verified directly against
 `duckv10/taaf-duck-v10.ipynb`, differing cells `[12]`, with `duckv26` as the control.
+
+⚠️ **`is_private` is `true`, unlike `thui-v1-0` and `thui-v1-1`, which are both public.**
+Kept private deliberately: publishing a kernel publishes the approach, and that is a separate
+decision from building it. Flip it only on purpose.
 
 ## 6. What this build cannot tell you
 

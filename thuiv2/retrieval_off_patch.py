@@ -1,4 +1,4 @@
-# duckv27 cell 12 — B39: turn the animation retrieval OFF, keep the awareness ON.
+# thuiv2 cell 12 — B39: turn the animation retrieval OFF, keep the awareness ON.
 #
 # WHY (notes/R39-the-newer-bundle-turned-a-feature-off.md): upstream wrote its own A/B
 # verdict into the post-anim source. `animation_retrieval` ships default **False** there,
@@ -43,8 +43,8 @@ import inference.framework.solver as _solver
 
 # --- edit 1: retrieval returns nothing ---------------------------------------------
 _sess = getattr(_solver, "_HarnessGameSession", None)
-assert _sess is not None, "duckv27: _HarnessGameSession not found in inference.framework.solver"
-assert hasattr(_sess, "animation_record"), "duckv27: animation_record is gone -- bundle changed"
+assert _sess is not None, "thuiv2: _HarnessGameSession not found in inference.framework.solver"
+assert hasattr(_sess, "animation_record"), "thuiv2: animation_record is gone -- bundle changed"
 
 _orig_animation_record = _sess.animation_record
 
@@ -71,26 +71,26 @@ _AWARE = (
 )
 
 _before = _ta.STRUCTURED_RUNTIME_STATE_ADDENDUM
-assert isinstance(_before, str) and _before, "duckv27: addendum missing from tool_agent"
+assert isinstance(_before, str) and _before, "thuiv2: addendum missing from tool_agent"
 _lines = _before.split("\n")
 _kept = [ln for ln in _lines if not any(ln.startswith(p) for p in _ADVERT)]
 _removed = len(_lines) - len(_kept)
-assert _removed == 3, f"duckv27: expected to drop 3 advertisement lines, dropped {_removed}"
+assert _removed == 3, f"thuiv2: expected to drop 3 advertisement lines, dropped {_removed}"
 
 _after = "\n".join(_kept)
 for _p in _AWARE:
-    assert _p in _after, f"duckv27: awareness line was destroyed: {_p!r}"
-assert "animation(" not in _after, "duckv27: an animation() advertisement survived the cut"
+    assert _p in _after, f"thuiv2: awareness line was destroyed: {_p!r}"
+assert "animation(" not in _after, "thuiv2: an animation() advertisement survived the cut"
 
 _ta.STRUCTURED_RUNTIME_STATE_ADDENDUM = _after
 # Read it back off the module the prompt builder actually reads, not off our local name.
-assert _ta.STRUCTURED_RUNTIME_STATE_ADDENDUM == _after, "duckv27: rebind did not stick"
+assert _ta.STRUCTURED_RUNTIME_STATE_ADDENDUM == _after, "thuiv2: rebind did not stick"
 assert "animation(" not in _ta._build_system_prompt(tool_output_tokens=1024), (
-    "duckv27: the built prompt still advertises animation() -- the rebind missed its target"
+    "thuiv2: the built prompt still advertises animation() -- the rebind missed its target"
 )
 
 print(
-    f"duckv27: retrieval OFF (animation_record -> None), prompt -{_removed} advert lines, "
+    f"thuiv2: retrieval OFF (animation_record -> None), prompt -{_removed} advert lines, "
     f"{len(_before) - len(_after)} chars; awareness lines kept",
     flush=True,
 )

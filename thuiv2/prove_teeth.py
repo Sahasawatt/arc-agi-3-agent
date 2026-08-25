@@ -1,4 +1,4 @@
-"""Teeth for duckv27's two edits, run against the REAL vendored source.
+"""Teeth for thuiv2's two edits, run against the REAL vendored source.
 
 Edit 2 (the prompt) is tested behaviourally end to end, because it is the edit with a
 silent failure mode: `tool_agent` imports the addendum BY VALUE, so the obvious patch --
@@ -20,7 +20,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 RIG = REPO / "localrig" / "ARC3-Inference"
 SOLVER = RIG / "inference" / "framework" / "solver.py"
-PATCH = REPO / "duckv27" / "retrieval_off_patch.py"
+PATCH = REPO / "thuiv2" / "retrieval_off_patch.py"
 sys.path.insert(0, str(RIG))
 
 ok = 0
