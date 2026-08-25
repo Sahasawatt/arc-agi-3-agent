@@ -272,9 +272,21 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--slug", help="Kaggle kernel slug (defaults to the notebook stem)")
     ap.add_argument(
         "--seed",
-        help="pin LOCAL_ANALYZER_SEED in cell 8 (MAP B37). Omit for the inert v1.0 instrument.",
+        help="pin LOCAL_ANALYZER_SEED in cell 8 (MAP B37); an integer >= 0, since the "
+             "runtime drops any seed < 0. Omit for the inert v1.0 instrument.",
     )
     args = ap.parse_args(argv)
+
+    # The runtime sets payload["seed"] only under `seed is not None and seed >= 0`
+    # (openai_compat.build_chat_payload), and -1 is its own default for "no seed"
+    # (tool_agent._get_env_int("LOCAL_ANALYZER_SEED", -1)). A negative value therefore builds a
+    # notebook that passes this file's post-build self-check AND the four in-kernel teeth --
+    # every one of which tests for the literal string, never the sign -- and prints
+    # "sampler pinned" over inference that was never seeded.
+    assert args.seed is None or (args.seed.lstrip("+-").isdigit() and int(args.seed) >= 0), (
+        f"--seed {args.seed!r}: must be an integer >= 0; the runtime drops any seed < 0, so a "
+        "negative value ships a build advertising a pinned sampler it does not have"
+    )
 
     assert not (args.slug and not args.owner), (
         "--slug names a new kernel: pass --owner too, or the id inherits the SOURCE kernel's "

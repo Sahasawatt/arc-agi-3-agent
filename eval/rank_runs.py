@@ -20,6 +20,9 @@ CONTROLS (verification-layers: both poles, same invocation, real artifacts):
     negative: v10cal vs v19  — same build, inert graft => must be NOT-DISTINGUISHABLE
     positive: v10cal vs v20  — dense vs MoE, 4.71 vs 0.18 => must be DISTINGUISHABLE
   A harness that cannot pass both poles is a broken instrument, not a strict one.
+  --selftest says nothing about malformed INPUT: it loads three known-clean fixtures and
+  checks only the verdict labels. Non-finite scores are refused in load() instead, because
+  a NaN there is laundered into a confident "WORSE" rather than a crash (see _finite).
 
 EXIT CODES: 0 = ran (verdict is in stdout, never in the exit code — a crash must not be
 readable as a verdict), 2 = usage, 3 = data error.
@@ -35,6 +38,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import math
 import random
 import sys
 
@@ -43,11 +47,29 @@ PERMS = 20000
 SEED = 0  # fixed: a measurement that re-randomises between runs is one sample of a distribution
 
 
+def _finite(games: dict, path: str) -> dict:
+    """A non-finite score is a DATA ERROR, never a verdict.
+
+    One NaN poisons ``sum(d_score)``; inside ``perm_test`` every ``abs(m) >= obs - 1e-12`` is
+    then a NaN comparison and therefore False, so ``hits`` stays 0 and ``p`` is exactly 0.0;
+    ``compare`` reads ``p < ALPHA`` as True and ``sum(d_score) > 0`` as False, and returns a
+    confident "WORSE". ``json.load`` accepts a bare unquoted ``NaN`` by default, so it arrives
+    silently, and ``--selftest`` cannot see it: it loads three known-clean fixtures and only
+    checks the verdict labels. Refuse it here, while it is still a data error (exit 3).
+    """
+    for g, d in games.items():
+        for k in ("score", "levels"):
+            v = d.get(k)
+            if not isinstance(v, (int, float)) or not math.isfinite(v):
+                raise SystemExit(f"data error: {path} game {g!r} has non-finite {k}: {v!r}")
+    return games
+
+
 def load(path: str) -> dict:
     with open(path, encoding="utf-8") as fh:
         raw = json.load(fh)
     if "games" in raw:  # fixture shape
-        return {"label": raw.get("label", path), "games": raw["games"]}
+        return {"label": raw.get("label", path), "games": _finite(raw["games"], path)}
     # full benchmark.json shape
     games: dict = {}
     for r in raw["game_runs"]:
@@ -60,7 +82,7 @@ def load(path: str) -> dict:
             else sum(x[1] if isinstance(x, (list, tuple)) else x for x in (a or []))
         )
         games[g] = {"score": r["final_score"], "levels": r["levels_completed"], "actions": acts}
-    return {"label": raw.get("label", path), "games": games}
+    return {"label": raw.get("label", path), "games": _finite(games, path)}
 
 
 def perm_test(deltas: list[float], perms: int = PERMS) -> float:
