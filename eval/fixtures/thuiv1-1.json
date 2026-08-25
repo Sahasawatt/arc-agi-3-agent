@@ -1,0 +1,131 @@
+{
+ "label": "thuiv1-1",
+ "source": "kaggle yocybercode/thui-v1-1 v1, 2026-08-25",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 22
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 57
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 33
+  },
+  "bp35": {
+   "score": 0.34887860448558206,
+   "levels": 1,
+   "actions": 63
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 46
+  },
+  "dc22": {
+   "score": 4.31222436945642,
+   "levels": 1,
+   "actions": 65
+  },
+  "tu93": {
+   "score": 6.666666666666667,
+   "levels": 2,
+   "actions": 45
+  },
+  "lp85": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 38
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 32
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "vc33": {
+   "score": 10.714285714285714,
+   "levels": 2,
+   "actions": 38
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 50
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 28
+  },
+  "sc25": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 40
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 43
+  },
+  "ar25": {
+   "score": 41.66666666666667,
+   "levels": 5,
+   "actions": 139
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 45
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 66
+  },
+  "re86": {
+   "score": 16.64776441124845,
+   "levels": 3,
+   "actions": 152
+  },
+  "s5i5": {
+   "score": 1.3211784912141633,
+   "levels": 1,
+   "actions": 37
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 21
+  },
+  "ft09": {
+   "score": 25.414472566672334,
+   "levels": 3,
+   "actions": 86
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 22
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 57
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 49
+  }
+ }
+}
