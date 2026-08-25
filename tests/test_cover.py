@@ -2,7 +2,8 @@
 
 import numpy as np
 
-from cover import at, boxes, candidates, group_plan, route, signature, swatch_zone, swatches
+from cover import (Cover, at, boxes, candidates, group_plan, route, signature,
+                   swatch_zone, swatches)
 
 BG = 5
 
@@ -106,3 +107,35 @@ def test_swatch_zone_is_the_block_dilated_by_the_shape():
     # an arm reaching +3 keeps centres 3 left of the block out too
     zone = swatch_zone({(0, 0), (3, 0)}, [(5, 5, 8, 8)])
     assert (1, 5) in zone
+
+
+def test_swatches_skips_a_background_block():
+    # The docstring's own clause: "the background exclusion is what keeps a
+    # solid piece of a shape from reading as a station". A ringed pool of
+    # BACKGROUND must not become a swatch keyed on the background colour.
+    g = np.full((64, 64), BG, dtype=int)
+    g[4:10, 4:10] = 2                # ring colour
+    g[5:9, 5:9] = BG                 # interior is plain background
+    assert swatches(g, BG) == {}
+
+
+def test_swatches_skips_a_one_wide_block():
+    # "the block-size floor is what keeps the 1x1 framed boxes out" -- and a
+    # 1xN sliver is the same artifact stretched: not a station.
+    g = np.full((64, 64), BG, dtype=int)
+    g[4:10, 4:7] = 2
+    g[5:9, 5:6] = 12                 # inner 1x4
+    assert swatches(g, BG) == {}
+
+
+def test_candidates_allows_a_centre_on_column_zero():
+    # The board is 0..63 on both axes and route() clamps INTO that range, so a
+    # covering centre sitting on the edge column is a legal parking spot.
+    got = candidates({"pos": (0, 45), "offs": {(0, 0)}}, {(0, 9): 9}, set())
+    assert got == [(frozenset({(0, 9)}), (0, 9))]
+
+
+def test_cover_switches_on_with_exactly_its_five_actions():
+    # {1..4, TOGGLE} available and nothing more is still this family's board.
+    assert Cover([1, 2, 3, 4, 5]).on
+    assert not Cover([1, 2, 3, 4]).on

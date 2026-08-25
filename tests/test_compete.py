@@ -9,7 +9,9 @@ GAME; only the positions belong to the level.
 
 import numpy as np
 
-from compete import build_model, slid
+from types import SimpleNamespace
+
+from compete import build_model, coherent, slid, tank_colours, windowed_step
 from discover import Model
 
 
@@ -250,3 +252,50 @@ def test_without_a_record_of_where_it_has_been_it_does_not_guess():
     g, m = board(), prior()
     assert confirm(g, m, (5, 5), once={}, redirects={}, goals={(200, 200)},
                    stood=None) is None
+
+
+def test_coherent_needs_four_live_readings_on_two_axes():
+    # The docstring's contract: four displacements, two perpendicular axes,
+    # opposite in pairs. Inert (0, 0) readings are not evidence and must not
+    # be counted toward the four.
+    assert coherent({1: (0, -3), 2: (0, 3), 3: (-3, 0), 4: (3, 0)})
+    assert not coherent({1: (0, 0), 2: (0, 3), 3: (-3, 0), 4: (3, 0)})
+    # ar25's trap: two controls answering the same sign is not a believable set
+    assert not coherent({1: (0, -3), 2: (0, 3), 3: (3, 0), 4: (3, 0)})
+
+
+def test_tank_colours_latches_on_windowed_boards_only():
+    # "Windowed only -- everywhere else refills() is already stable": a gate
+    # that is not windowed must neither consult nor grow its latch.
+    gate = SimpleNamespace(tank={99})          # no `windowed` attribute at all
+    got = tank_colours([], gate)
+    assert 99 not in got
+    assert gate.tank == {99}                   # untouched
+
+
+def _obs(g):
+    return SimpleNamespace(frame=[g.tolist()])
+
+
+def test_windowed_step_rejects_a_board_that_merely_redraws():
+    # The docstring's own cost case: latching on "a lot changed" cost cd82,
+    # m0r0 and ar25 their only level each. A shifted fog that ALSO redraws
+    # (5% of cells corrupted) may still agree with the piece's step better
+    # than standing still -- that alone must not read as a window.
+    rng = np.random.RandomState(7)
+    before = np.full((64, 64), 7, dtype=int)
+    before[20:41, 20:41] = 3
+    after = np.full((64, 64), 7, dtype=int)
+    after[20:41, 23:44] = 3                    # content moved with the piece
+    after[rng.rand(64, 64) < 0.05] = 5         # ... but the board also redrew
+    assert not windowed_step(_obs(before), _obs(after), (3, 0), rows=64)
+
+
+def test_windowed_step_accepts_a_clean_slide():
+    # The positive pole, so the rejection above cannot pass by rejecting
+    # everything: the same fog shifted exactly by the step IS a window.
+    before = np.full((64, 64), 7, dtype=int)
+    before[20:41, 20:41] = 3
+    after = np.full((64, 64), 7, dtype=int)
+    after[20:41, 23:44] = 3
+    assert windowed_step(_obs(before), _obs(after), (3, 0), rows=64)

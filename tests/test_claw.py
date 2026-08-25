@@ -18,3 +18,14 @@ def test_signature_claims_the_claw_socket_and_four_pads():
 
 def test_signature_rejects_a_blank_board():
     assert not signature(np.zeros((64, 64), dtype=int))
+
+
+def test_signature_rejects_the_wrong_pad_trap():
+    # The module's own docstring: the game "sets a TRAP" -- a board that has
+    # the right COUNT of pads but the wrong shape must not read as cn04.
+    # Four 2x2 pads keep len(blobs) == 4 while every blob fails (3, 3, 9).
+    g = board()
+    g[:, 35:] = 1                    # wipe the four good pads
+    for x, y in ((40, 5), (50, 5), (40, 15), (50, 15)):
+        g[y:y + 2, x:x + 2] = 8      # rebuild them wrong: 2x2, not 3x3
+    assert not signature(g)

@@ -190,6 +190,17 @@ def test_act_gives_up_on_a_station_a_full_turn_never_answers():
     assert d.done is True
 
 
+def test_act_retires_when_the_combination_is_unreadable():
+    # hints ("a", "a", "c"): one icon names two stations, combination() drops
+    # it and answers {} -- fewer than two targets is a misread board, and the
+    # driver must RETIRE (done = True), not merely pass this frame: a driver
+    # that answers None while staying live is re-consulted forever.
+    d = driver()
+    g = board(hints=("a", "a", "c"), pairs=(("a", "c"),))
+    assert d.act(g, 0) is None
+    assert d.done is True
+
+
 def test_act_moves_on_rather_than_giving_up_while_another_station_is_live():
     d = driver()
     g = board(room=("b", "b", "b"), clamp=STATIONS[0])
