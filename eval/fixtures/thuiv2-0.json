@@ -1,0 +1,131 @@
+{
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 139
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 64
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 52
+  },
+  "bp35": {
+   "score": 0.6125,
+   "levels": 1,
+   "actions": 58
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 34
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 109
+  },
+  "tu93": {
+   "score": 4.809222926825545,
+   "levels": 2,
+   "actions": 46
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 38
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 21
+  },
+  "wa30": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 59
+  },
+  "vc33": {
+   "score": 0.8928571428571429,
+   "levels": 1,
+   "actions": 46
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 60
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 24
+  },
+  "sc25": {
+   "score": 6.222337192006726,
+   "levels": 2,
+   "actions": 71
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 33
+  },
+  "ar25": {
+   "score": 7.858126721763085,
+   "levels": 2,
+   "actions": 109
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 66
+  },
+  "cd82": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 30
+  },
+  "re86": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 90
+  },
+  "s5i5": {
+   "score": 0.2712673611111111,
+   "levels": 1,
+   "actions": 79
+  },
+  "ls20": {
+   "score": 2.204810495626822,
+   "levels": 1,
+   "actions": 46
+  },
+  "ft09": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 42
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 32
+  },
+  "tr87": {
+   "score": 3.857142857142857,
+   "levels": 1,
+   "actions": 62
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 15
+  }
+ },
+ "label": "thuiv2-0",
+ "source": "kaggle yocybercode/thui-v2-0 v1, 2026-08-25"
+}

@@ -47,7 +47,10 @@ import sys
 
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "*.json")
 PUBLISHED = {"v10cal": 4.71, "v18": 3.60, "v19": 2.82, "v20": 0.18,
-             "clock2x": 6.40, "v25": 3.69, "thuiv1-1": 5.24}  # LEDGER's table
+             "clock2x": 6.40, "v25": 3.69, "thuiv1-1": 5.24, "thuiv1-1-r2": 4.33,
+             "thuiv2-0": 2.86}  # LEDGER's table -- except thuiv2-0, whose LEDGER row
+# has not landed yet: 2.86 is read from that kernel's own summary.txt, which is an
+# independent source from the loader either way, and is what CONTROL 1 needs.
 GROUND_TRUTH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                             "fixtures", "game-totals.json")
 TOTAL_LEVELS_ALL_GAMES = 183  # LEDGER: "20 of 183 levels"
