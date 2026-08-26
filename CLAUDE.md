@@ -1082,6 +1082,22 @@ reference is how a derivation stops being checked:
 per-game variance, and not a shallow game. Efficiency headroom over all 25 games now reads
 **v10cal 4.71 -> 5.80**, meeting B20's independently-derived ceiling of 5.80 exactly.
 
+`eval/abandoned_tokens.py` reads the one quantity no committed artifact carries: the
+`note="tokens=N"` field on each game's `[finished]` line, which is larger than the `tokens=M`
+that `summary.txt` totals and that the LEDGER's `Mtok` column reports. **N − M is generation still
+in flight when the game hit `max_runtime_s_per_game`**, and it is **9.1%–25.0% of every one of 17
+runs** (B45, 2026-08-26) — so every `Mtok` and every tok/action figure derived from one counts only
+the requests that came back. Individual games reach **100%**: four runs contain a game that took
+**0 actions while generating 96 k–133 k tokens**, which is the mechanism under the zero-action
+stalls this repo had recorded three times without one. It pulls logs through
+`KaggleApi().kernels_logs(<slug>)` rather than `kernels output`, which writes the log last and dies
+on the 250 MB `vllm-site-packages` directory; no GPU slot, no run. ⚠️ Two things it does not
+establish: what `note=` counts is INFERRED (three checks in the module docstring, none decisive
+alone), and no cap that would bound the leak has ever been measured — `v9` proved 768 fatal and
+nothing between 768 and unbounded has run. `--check` grades the slug→run mapping by asserting the
+parsed action totals equal the LEDGER's, 17 of 17 exactly; the assertion is the only thing tying a
+slug to a row, since `kernels_logs` always returns a slug's LATEST version.
+
 ## Layout, in dependency order
 
 One-off probe scripts (the `<game>_<tag>.py` instruments the README cites by bare
