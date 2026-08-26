@@ -159,6 +159,46 @@ def classify(runs: dict, games: list, derived: dict) -> dict:
     return out
 
 
+# ---------------------------------------------------------------- B35 target table
+# R38 partitioned the 25 games over the four same-family runs it had. The partition is the
+# frame's operative output -- it says which games are worth a lever and which kind -- so it
+# is re-derived here over every same-family fixture on disk rather than left at n=4. The
+# rule is R38's verbatim: STABLE = the identical level count in EVERY run (the wall is
+# deterministic), NEVER = zero levels everywhere, ALL-OR-NOTHING = scores in some runs and
+# zero in others, VARIES = scores every run at differing depth.
+#
+# v20 is excluded because it is a different MODEL (MoE, mean 0.18); its level counts answer
+# a question about the model, not about the game. That is R38's own exclusion, kept by name
+# because "same family" is a fact about the build, not something a fixture declares.
+DIFFERENT_MODEL = ("v20",)
+
+# R38's published partition, over the four runs it was computed on. CONTROL 8 replays the
+# classifier against exactly those four and requires this back -- a classifier that cannot
+# reproduce a published split is not one whose widened answer means anything.
+R38_PARTITION = {
+    "STABLE": "lf52 s5i5 sb26 sp80 su15 vc33".split(),
+    "ALL-OR-NOTHING": "bp35 cd82 cn04 dc22 ft09 ka59 ls20 m0r0 r11l tn36 wa30".split(),
+    "VARIES": "ar25 lp85 re86 sc25 tu93".split(),
+    "NEVER": "g50t sk48 tr87".split(),
+}
+
+
+def populations(runs: dict, games: list, fam: list) -> dict:
+    """Classify each game by how its LEVEL count behaves across the runs in `fam`."""
+    out = {}
+    for g in games:
+        lv = [runs[r][g]["levels"] for r in fam]
+        if max(lv) == 0:
+            out[g] = "NEVER"
+        elif min(lv) == max(lv):
+            out[g] = "STABLE"
+        elif min(lv) == 0:
+            out[g] = "ALL-OR-NOTHING"
+        else:
+            out[g] = "VARIES"
+    return out
+
+
 FAILURES: list = []
 
 
@@ -401,6 +441,57 @@ def main() -> None:
     print("  FLAT        (%d): %s" % (len(flat_g), " ".join(flat_g)))
     print("  -> the FLAT and INVERTED games carry no reverse-causation confound: their action")
     print("     counts moved 2-6x and their level counts did not, so clock is not what binds there.")
+
+    # ---- B35: the frame's operative output -- which games, and which kind of lever ----
+    fam_all = [r for r in sorted(runs) if r not in DIFFERENT_MODEL]
+    pop = populations(runs, games, fam_all)
+
+    # ---- CONTROL 8: the classifier reproduces R38's published partition on R38's own runs ----
+    fam38 = [r for r in ("clock2x", "v10cal", "v18", "v19") if r in runs]
+    if len(fam38) != 4:
+        fail(8, "R38's four runs are not all on disk (%s) -- the replay cannot be graded"
+                % ",".join(fam38))
+    else:
+        got38 = populations(runs, games, fam38)
+        for cls, want in R38_PARTITION.items():
+            mine = sorted(g for g in games if got38[g] == cls)
+            if mine != sorted(want):
+                fail(8, "%s replayed as %s, R38 published %s" % (cls, mine, sorted(want)))
+    if 8 not in FAILURES:
+        print("CONTROL 8  classifier replays R38's published 6/11/5/3 partition on its own four runs: OK")
+    gate()  # CONTROL 8 lands after the earlier gate() call, so it needs its own
+
+    binds = {}
+    for g in lim:
+        binds[g] = "clock"
+    for g in inv:
+        binds[g] = "inverted"
+    for g in flat_g:
+        binds[g] = "NOT-clock"
+
+    rows = []
+    for g in games:
+        best = max(runs[r][g]["levels"] for r in fam_all)
+        pay = 100.0 * (best + 1) / tri(truth[g])
+        rows.append((pop[g], -pay, g, truth[g], best, pay, binds.get(g, "-")))
+    rows.sort()
+
+    print()
+    print("B35 TARGET TABLE -- populations re-derived over %d same-family runs (%s), R38 had 4"
+          % (len(fam_all), "/".join(fam_all)))
+    print("  pay = what the NEXT level after the deepest ever reached is worth, in that game's points")
+    print("  binds = Q_C above: does spending more actions buy levels here?")
+    print("  %-14s %-6s %5s %5s %8s  %s" % ("population", "game", "total", "best", "pay", "binds"))
+    by_cls = {}
+    for cls, _neg, g, tot, best, pay, b in rows:
+        print("  %-14s %-6s %5d %5d %8.2f  %s" % (cls, g, tot, best, pay, b))
+        by_cls.setdefault(cls, []).append(pay)
+    print()
+    for cls in ("STABLE", "VARIES", "ALL-OR-NOTHING", "NEVER"):
+        if cls in by_cls:
+            s = sum(by_cls[cls])
+            print("  +1 level in every %-14s game (n=%2d) = %7.2f points = %+.2f public"
+                  % (cls, len(by_cls[cls]), s, s / len(games)))
 
     if as_json:
         print()
