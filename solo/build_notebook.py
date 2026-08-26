@@ -75,7 +75,16 @@ def main() -> None:
     )
     assert f'_SOLO_TARGET = "{args.game}"' in o14, "the target was not substituted into cell 14"
     assert o14.count("assert not TRUE_SUBMISSION") == 1, "the never-submit guard is missing"
-    assert o14.count("bm.games = [_g for _g in _solo_before") == 1, "the filter is missing"
+    assert o14.count("bm.games = [_g for _g, _i in zip(_solo_before, _solo_ids)") == 1, (
+        "the filter is missing"
+    )
+    # The filter must key on env_name. taaf.game.Game sets game_id = "" until _start_game(),
+    # so a game_id prefix test matches NOTHING at cell-14 time -- measured, it cost a 20-minute
+    # Kaggle run (sahasawatt/taaf-solo-sk48 v2, 2026-08-26).
+    assert 'getattr(_g, "env_name", None)' in o14, (
+        "the filter no longer reads env_name; a pre-start game_id is the empty string and the "
+        "prefix test would match 0 of 25"
+    )
     assert o14.index(ANCHOR) < o14.index("_solo_before = list(bm.games)"), (
         "the filter runs BEFORE the offline assignment -- it would be overwritten"
     )
@@ -91,22 +100,24 @@ def main() -> None:
     out_nb.parent.mkdir(parents=True, exist_ok=True)
     out_nb.write_text(json.dumps(nb, indent=1), encoding="utf-8")
 
-    meta = {
-        "id": f"{args.owner}/taaf-solo-{args.game}",
-        "title": f"TAAF solo {args.game}",
-        "code_file": out_nb.name,
-        "language": "python",
-        "kernel_type": "notebook",
-        "is_private": True,
-        "enable_gpu": True,
-        "enable_internet": False,
-    }
+    # START from duckv10's metadata and override only what must change. Building a fresh dict
+    # from a list of keys to copy DROPS whatever the list does not name, silently -- and the
+    # first version of this dropped `machine_shape: NvidiaRtxPro6000`, so Kaggle handed the
+    # kernel a Tesla P100 and the setup script died on
+    #   AssertionError: Expected GPU type 'rtx-pro-6000', found ['Tesla P100-PCIE-16GB']
+    # 12 seconds in (sahasawatt/taaf-solo-sk48 v1, 2026-08-26). `docker_image` is in the same
+    # boat. An allowlist is the wrong shape for "same as the thing that works, but renamed".
     src_meta = V10_NB.parent / "kernel-metadata.json"
-    if src_meta.is_file():
-        base = json.loads(src_meta.read_text(encoding="utf-8"))
-        for key in ("dataset_sources", "competition_sources", "kernel_sources", "model_sources"):
-            if key in base:
-                meta[key] = base[key]
+    assert src_meta.is_file(), f"missing base metadata to inherit from: {src_meta}"
+    meta = json.loads(src_meta.read_text(encoding="utf-8"))
+    meta["id"] = f"{args.owner}/taaf-solo-{args.game}"
+    meta["title"] = f"TAAF solo {args.game}"
+    meta["code_file"] = out_nb.name
+    meta["is_private"] = True
+    assert meta.get("machine_shape") == "NvidiaRtxPro6000", (
+        f"base metadata does not select the RTX Pro 6000 (machine_shape="
+        f"{meta.get('machine_shape')!r}); the setup script asserts the GPU type and will die"
+    )
     (out_nb.parent / f"kernel-metadata-{args.game}.json").write_text(
         json.dumps(meta, indent=1), encoding="utf-8"
     )

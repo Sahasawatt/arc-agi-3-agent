@@ -24,11 +24,21 @@ assert not TRUE_SUBMISSION, (
     "solo probe: TRUE_SUBMISSION is set. This build is diagnostic and must never be submitted."
 )
 
+# FILTER ON env_name, NOT game_id. `taaf.game.Game` declares
+#     game_id: str = field(default="", init=False)          (game.py:446)
+# and only `_start_game()` populates it (asserted at game.py:473), so at this point every
+# game_id is the EMPTY STRING and a prefix test on it matches nothing. Cell 14 builds these as
+# GameAPI(env_name=<id>), so env_name is the field carrying the target here. Learned the
+# expensive way: the game_id version matched 0 of 25 and fired this assert 483 s in
+# (sahasawatt/taaf-solo-sk48 v2, 2026-08-26). The rig could not have caught it -- taaf.game_api
+# needs `arcengine`, which is not installed off-Kaggle, so the fake carried whatever shape the
+# author believed. The assert now PRINTS what it saw, so the next mismatch diagnoses itself.
 _solo_before = list(bm.games)
-bm.games = [_g for _g in _solo_before if _g.game_id.startswith(_SOLO_TARGET)]
+_solo_ids = [getattr(_g, "env_name", None) or getattr(_g, "game_id", "") for _g in _solo_before]
+bm.games = [_g for _g, _i in zip(_solo_before, _solo_ids) if str(_i).startswith(_SOLO_TARGET)]
 assert len(bm.games) == 1, (
     f"solo: expected exactly 1 game matching {_SOLO_TARGET!r}, got {len(bm.games)} "
-    f"from {len(_solo_before)} -- prefix wrong, or the offline env set changed"
+    f"from {len(_solo_before)}; ids seen = {sorted({str(_i) for _i in _solo_ids})}"
 )
 # game_weights must stay parallel to games (benchmark.py:101). The notebook nulls it two lines
 # below, but assert rather than rely on that: a newer bundle could stop doing it.
