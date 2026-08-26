@@ -1,0 +1,20 @@
+{
+ "id": "yocybercode/taaf-solo-sk48",
+ "title": "TAAF solo sk48",
+ "code_file": "taaf-solo-sk48.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": false,
+ "dataset_sources": [
+  "driessmit1/arc3-vllm-h100-wheelhouse-v3",
+  "jakobbrggen/taaf-kaggle-source-anim-20260807-anim",
+  "jakobbrggen/qwen3-8-27b-fp8-hf-snapshot"
+ ],
+ "competition_sources": [
+  "arc-prize-2026-arc-agi-3"
+ ],
+ "kernel_sources": [],
+ "model_sources": []
+}
