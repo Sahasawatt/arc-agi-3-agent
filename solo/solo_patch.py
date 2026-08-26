@@ -12,17 +12,23 @@
 # lesson that tool_agent binds build_chat_payload by name. The filter is therefore injected into
 # cell 14, anchored on the offline assignment, and runs between that line and bm.run().
 #
-# WHAT IT PROVES. Every game today shares one vLLM server: an action costs 6.8 s of generation
-# but 170 s of wall, and 6.8 x 25 = 170.7 s reproduces the observed 170.0 s. Solo, the same clock
-# buys ~1,099 actions instead of 46. B43 reads whether that budget converts to levels.
+# WHAT IT PROVES. Every game today shares one vLLM server, so solo removes contention -- it does
+# not lengthen the clock. HOW MUCH it removes is measured, not assumed: aggregate vLLM generation
+# throughput at one running request is 40.4 tok/s against 341.3 at twenty-five, i.e. 40.4 vs 13.7
+# per request, a 3.0x speedup (5.2x on the most generous reading). See MAP B41 and PR #52. That
+# is ~136-238 actions per game on the full 7,920 s clock, against 46 today.
+#
+# The identity "6.8 s of generation x 25 = 170 s of wall" that first motivated this probe cannot
+# support a 25x figure: aggregate = N x per-request is the DEFINITION of aggregate throughput, so
+# it reproduces the observed wall in a world where vLLM batches perfectly and solo gains nothing.
+# B43 reads whether the measured 3x budget converts to levels.
 _SOLO_TARGET = "__TARGET__"
 
-# A solo notebook must never play the competition. It would not even do what its name says --
-# cell 14's TRUE_SUBMISSION branch rebuilds bm.games from the gateway and this filter would run
-# against 110 live games -- but the run would still burn the day's submission on a diagnostic.
-assert not TRUE_SUBMISSION, (
-    "solo probe: TRUE_SUBMISSION is set. This build is diagnostic and must never be submitted."
-)
+# The never-submit guard is NOT here -- it is in solo/solo_guard.py, injected at module level
+# above `if TRUE_SUBMISSION:`. Everything in THIS file runs inside the else branch, so a guard
+# placed here is unreachable whenever TRUE_SUBMISSION is true, which is the only case it is for.
+# The comment that used to sit here also had the mechanism backwards: under TRUE_SUBMISSION this
+# filter does not "run against 110 live games", it does not run at all.
 
 _solo_before = list(bm.games)
 bm.games = [_g for _g in _solo_before if _g.game_id.startswith(_SOLO_TARGET)]
