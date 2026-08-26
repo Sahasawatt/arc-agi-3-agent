@@ -218,10 +218,102 @@ they do not disagree about anything that matters.
   was a public mean over four draws while the family's public band is now `[2.82, 5.24]` over
   **eight** in-band samples. Recomputing one side alone would repeat R30's own error — mixing
   populations across the fraction bar. It needs the current public set, in one deliberate pass.
+  **CLOSED 2026-08-26 by CORRECTION 4 below** — the pass was made; the answer is 2.68x-2.91x.
 
 What did not change: every conclusion CORRECTION 2 and its narrowing reached. Hidden variance
 still grows with the score, a single hidden draw is still inadequate for exactly the builds
 worth ranking, and no hidden comparison this campaign has made sits outside the noise.
+
+### CORRECTION 4 (2026-08-26) — the shrink ratio, recomputed in one pass: 2.68x - 2.91x
+
+Closes the open item CORRECTION 3 left. Both sides were recomputed together rather than one
+of them, which is what that section refused to do.
+
+**The estimator carries a positive control**: fed R30's own inputs it must reproduce
+`3.82 / 1.51 / 2.53`, and it does to four decimal places, before any population is substituted.
+
+R30's membership rule was **"all the same build"**, not "in-band" — load-bearing, because
+almost every run this campaign is NOT-DISTINGUISHABLE from `v10cal` (this file's own tally:
+*"11 modifications of v10, 0 above the band"*), so reading "the family" as "everything that
+ranks nothing" sweeps in `v22`, `v23`, `v24`, `v18`, `v16` and `v12`, whose levers all fired.
+Both readings were therefore computed rather than one being chosen.
+
+- **STRICT (n=6)** — same build as v10, lever proven inert or absent: `v10cal` 4.71 ·
+  `v10out` 4.55 · `thui-v1` 3.20 · `v19` 2.82 · `thui-v1-1` 5.24 · `thui-v1-1-r2` 4.33.
+  Mean **4.14**.
+- **LOOSE (n=9)** — everything this file calls an in-band sample of the family, adding
+  `v25` 3.69 (⚠️ its own row says it *"is NOT v10+seed and must not be quoted as one"*),
+  `v26` 3.19 (brake fired) and `thui-v2-0` 2.86 (retrieval off). Mean **3.84**.
+
+| numerator | denominator | shrink | public needed for the bar |
+|---|---|---|---|
+| STRICT n=6 | all 4 draws, 1.4225 | **2.91x** | 9.23 |
+| STRICT n=6 | attributed 3, 1.4367 | **2.88x** | 9.14 |
+| LOOSE n=9 | all 4 draws | **2.70x** | 8.57 |
+| LOOSE n=9 | attributed 3 | **2.68x** | 8.48 |
+
+**All four land inside 2.68 - 2.91.** The population-boundary question CORRECTION 3 refused to
+guess at turns out not to matter: it opens an 8% spread against a **22-23% CV on the public
+samples themselves**. That is the useful half of this result.
+
+`clock2x` 6.40 is excluded from every row. It is statistically in-band (`p = 0.2761` vs
+`v10cal`) but under `TRUE_SUBMISSION` its cell 12 degrades to v10 by design, so **6.40 is not a
+number the hidden set can ever draw**. Including it gives 2.88x-3.14x, i.e. pushes the ratio the
+same way; it is left out because a predictor built from unreachable configurations predicts
+nothing.
+
+**The consequence is the opposite of R30's.** That correction moved the target *down*, 8.83 to
+7.29, and said so in as many words — *"it moves the target the easy way"*. That has now fully
+reversed, by two movements pulling together: the hidden mean fell 6% (1.51 → 1.42), and
+`thui-v1-1` is the family's **highest** public (5.24) *and* its **lowest** hidden (1.29), so both
+ends of one run push the ratio up.
+
+⚠️ **And the bar itself moved, which no recompute could have caught.** Board re-downloaded
+2026-08-26 01:18 UTC (read-only, no submission spent): the top-5 bar is **3.17, not 2.88**.
+`Lord Han Solo` gained **+1.63** in a day to 4.99, `Tong Hui Kang` 3.39 is new to the top five,
+`Tony G` 3.17 is the bar, and `Daniel Franzen` 2.88 was pushed out of it. `cstl` holds #1 at
+5.99. We are rank **275 / 2,537** on an unchanged **1.70** — the rank slipped 22 places under a
+score that did not move, and the submission count 10 → 12 is draws 3 and 4. **The bar drifted
++0.29 in 23.4 hours**, so a target computed against a stored bar is wrong within a day, in the
+direction that flatters the agent.
+
+**Target against the live bar: public 8.48 - 9.23** — back *above* the 8.83 R30 replaced.
+
+| candidate | public | predicted hidden | vs bar 3.17 |
+|---|---|---|---|
+| v10 family as it stands | 4.14 | 1.42 - 1.55 | MISS by ~1.7 |
+| B20 efficiency ceiling | 5.80 | 1.99 - 2.17 | **MISS** |
+| `clock2x`, best public ever recorded | 6.40 | 2.20 - 2.39 | **MISS**, and unsubmittable |
+| +1 level per game | 12.07 | 4.15 - 4.51 | **CLEARS** |
+
+**The efficiency direction is now closed twice over** — B20 already ceilings it at 5.80 public
+through the scorer's `completion_cap`, and this ratio puts 5.80 at 1.99-2.17 hidden, missing a
+bar that has since moved further away. Independent corroboration in passing: B20 derives
+*"~2.1 hidden"* for that ceiling from the cap arithmetic alone, never from a shrink ratio, and
+2.1 falls inside 1.99-2.17. Two derivations, one number.
+
+**Only structural depth clears, and now with a number attached**: about **+0.7 levels per game**
+reaches 3.17, while the bar moves at +0.29/day. That is the same conclusion the frontier already
+carried — `B34` closed depth-by-time, `B36` is priced under one level per run — but it was not
+previously quantified.
+
+⚠️ **A per-build ratio is unusable and must not be quoted.** Four builds carry both numbers:
+
+| build | public | hidden | ratio |
+|---|---|---|---|
+| duck-mod | 2.41 | 1.00 | 2.41x |
+| v5out | 2.43 | 0.84 | 2.89x |
+| v10out | 4.55 | 1.70 | 2.68x |
+| **thui-v1-1** | **5.24** | **1.29** | **4.06x** |
+
+That spans **2.41x - 4.06x**, i.e. ±34% around its own mean, on a single hidden draw each. The
+ratio-of-means over a population is the only form with any stability, and even it inherits a
+hidden CV of 0.133-0.159. **Predicting one build's hidden score from its public score is not
+supported by this data** — only the population-level target is.
+
+⚠️ Every figure above is a dated reading. The bar moved 10% in one day. Re-download before
+quoting the target; the call is free and read-only. Full pass, with its controls:
+`notes/B-shrink-ratio-recompute-2026-08-26.md` in `Knowless-Crew/arc-agi-pub` (#110).
 
 ### Where the variance comes from — per-game, and the big earners are the unstable ones
 
