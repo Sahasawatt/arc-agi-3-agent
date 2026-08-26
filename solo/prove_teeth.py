@@ -35,14 +35,24 @@ for _name in ("imageio", "imageio.v3", "scipy", "scipy.stats", "pandas", "plotly
 
 import taaf.benchmark  # noqa: E402
 
-GAMES = ["sk48-d8078629", "g50t-5849a774", "lp85-305b61c3", "ar25-0c556536", "ft09-0d8bbf25"]
+GAMES = ["sk48", "g50t", "lp85", "ar25", "ft09"]   # env_name, as cell 14 builds them
 
 
 class _FakeGame:
-    """Only the attribute the filter reads. The real Game is not constructible without a server."""
+    """Shaped like a pre-start GameAPI, which is NOT what a naive fake looks like.
 
-    def __init__(self, gid):
-        self.game_id = gid
+    `taaf.game.Game` declares `game_id: str = field(default="", init=False)` and only
+    `_start_game()` populates it, so before the run every game_id is the EMPTY STRING and the
+    id lives in `env_name`. The first version of this fake set `game_id` to the full run id --
+    the shape the author believed -- so the rig confirmed a filter that matched 0 of 25 on
+    Kaggle. `taaf.game_api` cannot be imported here (it needs `arcengine`), so the real object
+    is out of reach and this fake is the only subject available: it must therefore be built
+    from the SOURCE's declaration, which `test_pre_start_game_id_is_empty` below re-reads.
+    """
+
+    def __init__(self, env_name):
+        self.env_name = env_name
+        self.game_id = ""      # exactly what a pre-start Game carries
 
 
 def _injected_block(nb_path: Path) -> str:
@@ -94,7 +104,7 @@ def main() -> int:
     def _real():
         bm = _run(block, games=GAMES)
         assert len(bm.games) == 1, f"expected 1 game, got {len(bm.games)}"
-        assert bm.games[0].game_id == "sk48-d8078629", bm.games[0].game_id
+        assert bm.games[0].env_name == "sk48", bm.games[0].env_name
     results.append(case("CONTROL real block filters 5 games down to sk48", _real, must_raise=False))
 
     # And it must be a real reduction, not a no-op on an already-single list.
@@ -108,7 +118,7 @@ def main() -> int:
         must_raise=True))
     results.append(case(
         "MUT target matches two games",
-        lambda: _run(block.replace('"sk48"', '"s"'), games=["sk48-a", "sp80-b", "lp85-c"]),
+        lambda: _run(block.replace('"sk48"', '"s"'), games=["sk48", "sp80", "lp85"]),
         must_raise=True))
     results.append(case(
         "MUT TRUE_SUBMISSION is set", lambda: _run(block, games=GAMES, true_submission=True),
@@ -164,6 +174,37 @@ def main() -> int:
         )
     results.append(case("MUT anchor-uniqueness assert catches a quoted copy",
                         _anchor_uniqueness_has_teeth, must_raise=True))
+
+    # The claim this whole rig rests on, re-read from the framework SOURCE rather than assumed:
+    # a pre-start game carries game_id == "" and the id lives in env_name. If a future bundle
+    # changes that, this fails here instead of 483 seconds into a Kaggle run.
+    def _pre_start_game_id_is_empty():
+        src = (REPO / "localrig" / "tufa-arc-agi-framework" / "src" / "taaf" / "game.py"
+               ).read_text(encoding="utf-8")
+        assert 'game_id: str = field(default="", init=False)' in src, (
+            "taaf.game.Game no longer declares game_id as an empty-by-default, init=False "
+            "field -- re-read game.py before trusting env_name as the filter key"
+        )
+        assert "_start_game() must populate game_id" in src, (
+            "the assert that proves game_id is populated only at start is gone from game.py"
+        )
+        api = (REPO / "localrig" / "tufa-arc-agi-framework" / "src" / "taaf" / "game_api.py"
+               ).read_text(encoding="utf-8")
+        assert "env_name: str = field(kw_only=True)" in api, (
+            "GameAPI no longer declares env_name -- the filter key would be wrong"
+        )
+    results.append(case("CONTROL source still says game_id is empty pre-start",
+                        _pre_start_game_id_is_empty, must_raise=False))
+
+    # ...and the filter must actually depend on env_name: a game whose env_name does NOT match
+    # must be excluded even when some other attribute would have matched.
+    def _filters_on_env_name_not_game_id():
+        bm = _run(block, games=GAMES)
+        assert bm.games[0].env_name.startswith("sk48"), bm.games[0].env_name
+        # every input carried game_id == "" -- if the filter read game_id it would have got 0
+        assert all(g.game_id == "" for g in bm.games), "fake no longer models a pre-start game"
+    results.append(case("CONTROL filter keys on env_name while game_id is empty",
+                        _filters_on_env_name_not_game_id, must_raise=False))
 
     ok = all(results)
     print(f"\n{'TEETH OK' if ok else 'TEETH FAIL'}: {sum(results)}/{len(results)} cases behaved")
