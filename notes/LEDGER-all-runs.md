@@ -45,6 +45,185 @@ Never ran: **v13** (retrieval-discipline prompt, held — losing axis), **v15** 
 the batch path was already guarded and "surprise" has no harness-visible definition), **v7/v7b**
 (ERROR twice on an infra flake).
 
+## The solo probes (B41-B43) — one game, the whole clock
+
+Not rows of the table above: these are **1-game** runs, so `public` has no meaning and nothing here
+is comparable to a 25-game mean. Both are `duckv10` exact outside cell 14, `TRUE_SUBMISSION`
+asserted off, diagnostic only. Builder + teeth: `solo/`.
+
+| probe | actions | levels | score | tok | tok/action | that game's 9 shared runs (actions) | B43 bar | verdict |
+|---|---|---|---|---|---|---|---|---|
+| **sk48** solo | **80** | **0/8** | 0.00 | 235,664 | 2,946 | 21–139, median 54 | clear anything | **NO** |
+| **lp85** solo | **14** | **1/8** | 2.78 | 154,026 | 11,002 | 13–70, median 38 | >4 levels | **NO** |
+| `g50t` solo | — | — | — | — | — | 7–403, median 23 | clear anything | **NEVER RAN** |
+
+`sahasawatt/taaf-solo-sk48` v3 (2h 12m 0s) and `sahasawatt/taaf-solo-lp85` v1 (2h 12m 0s), both
+2026-08-26. P1 cleared on both before any score was read — marker `solo: <game> only` exactly 1,
+`LOCAL_ANALYZER_TEMPERATURE` and `MULTIMODAL_UPSCALE` at 1 as positive controls, the duckmod marker
+and the *other* game's marker at 0, `AssertionError` 0 — and the summary read from the **last** of
+the periodically reprinted blocks (28 of them in the sk48 log).
+
+**`g50t` never ran and that is not a design choice.** The push was refused with
+`Maximum weekly GPU quota of 30.00 hours reached` on the `sahasawatt` account; the slug 404s, so
+nothing was created. B42 asked for three games *specifically so no outcome could be a property of
+one lucky game*, and it got two.
+
+### What the probe was built to deliver, and what it delivered
+
+B41's arithmetic said solo buys **1,099 actions** against the 46 a game gets in a 25-game run.
+Measured: **80** and **14** — 7.3% and 1.3% of that. B42's own ⚠️ had already cut the claim to
+2.2–3.9× the human level-1 baseline; the delivered figures are **1.31×** (`sk48` 80 against 61) and
+**0.82×** (`lp85` 14 against 17).
+
+⚠️ **Both land INSIDE their own game's shared-run spread — the probe's central premise is refuted
+by its own instrument.** `sk48`'s 80 is rank 7 of 10 against its nine 25-game runs, below the 88,
+99 and **139** that `v20`, `v18` and `thui-v2-0` gave it *while 24 other games shared the GPU*.
+`lp85`'s 14 is rank 9 of 10, above only `v19`'s 13. Dropping concurrency 25 → 1 moved the per-game
+action count **nowhere outside its historical noise**, in either direction.
+
+### Where the budget went: per-action token spend, not per-action wall
+
+The GPU delivered the same generation in both runs. Total generated tokens (the `note=` field on
+the `[finished]` line, which counts the abandoned final action; the summary's `total tokens` does
+not) are **310,412** and **312,989** — **0.8% apart** — over an identical 7,920 s game budget, i.e.
+39.2 and 39.5 tok/s. Against the shared run's 234.9 tok/s across 25 requests (9.40 each) that is
+**4.2×** per request; on the like-for-like *accounted* figures the summary itself prints it is
+**3.17×** (`sk48` 29.75) and **2.07×** (`lp85` 19.45), which brackets [#52](https://github.com/Sahasawatt/arc-agi-3-agent/pull/52)'s
+3.0× prediction from the vLLM logs.
+
+So throughput rose and actions did not, because **tok/action rose further**: 2,946 and 11,002
+against the campaign band of **1,272.6** (`v10cal`) to **1,603** (`v26`, the previous high) — 1.8×
+and 6.9× the top of that band.
+
+**The spend is bimodal, in both runs, and it is measured from the trajectory the 600 s summaries
+print:**
+
+```
+lp85   actions  1-11   20,689 tok    1,881/action     <- inside the campaign band
+       actions 12-13  115,053 tok   57,527/action
+       action     14   18,284 tok
+       action     15  158,963 tok    NEVER RETURNED — 3,717 s = 47% of the game clock
+sk48   actions  1-13   23,693 tok    1,822/action     <- inside the campaign band
+       actions 18-58   22,470 tok      548/action
+       action     73   47,997 tok
+       action     81   74,748 tok    NEVER RETURNED — 1,916 s = 24% of the game clock
+```
+
+Both runs open inside the campaign's normal token band and then spend the majority of their budget
+on a handful of actions 20–90× more expensive. `lp85`'s final request generated **158,963 tokens in
+one HTTP call** and died on the deadline —
+`analyzer request failed at action 15: … Read timed out. (read timeout=34.23)`, where 34.23 s is
+not a configured timeout but *what was left of the 7,920 s*. During those 62 minutes the log
+carries nothing but the periodic summary reprint.
+
+⚠️ **Solo does NOT cause the runaway — it is campaign-wide, and it was measured after this row was
+first written.** The census below finds abandoned generation in **every one of 17 runs**, 9.1% to
+25.0% of tokens, with individual games reaching **100%**. Solo’s 24.1% and 50.8% sit in the upper
+part of that per-game distribution and outside none of it, on n=2. What the solo runs did was make
+a campaign-wide leak visible, by removing the 24 other games whose progress had been hiding it.
+⚠️ The cross-check that would have said otherwise is blind here: R35 read `thui-v1`’s per-request
+completion tokens and concluded *no cap is worth placing — 8192 saves 0.98%*, but that probe reads
+`*_usage.jsonl`, which a request that never returns never writes.
+
+⚠️ `LOCAL_ANALYZER_MAX_OUTPUT` is 0 (uncapped) here, and `v9` proved a hard cap of 768 destroys the
+run by truncating the tool call that carries the action. Nothing in this campaign has ever measured
+a cap between 768 and unbounded, and these two runs are the first evidence that the upper end costs
+something.
+
+### What B43 can and cannot be told
+
+On the letter of the rule fixed before the runs — *clearing more levels than that game's best-ever
+counts as YES* — both are **NO**: `sk48` 0 against a bar of "clear anything", `lp85` 1 against 4.
+
+⚠️ **That NO does not answer B43's question.** The rule presupposed 1,099 actions, i.e. 17× the
+human level-1 count; at 1.31× and 0.82× a null is the expected outcome of the *budget*, which is
+precisely the failure mode B42's own retarget note warned about — and it warned about it at
+2.2–3.9×, still well above what ran. `lp85` is the sharper case: it **cleared level 1 in 9 actions
+against a human baseline of 17**, then got **5 of the 38 actions** level 2 needs before the clock
+died (`per-level=9/17,5/38,0/31,…`). Its 4-level best-ever is also from `clock2x`, a **double-clock**
+run; under the normal 7,920 s clock its best is 3 levels at 49 actions (`v10cal`).
+
+**What these two runs DO close is B41, not B43.** The budget axis was never tested, because
+concurrency is not what binds the action count — per-action token spend is, and it is not under the
+probe's control. Answering B43 needs the runaway bounded first.
+
+## The abandoned-token census (B45) — 9–25% of every run has never been counted
+
+Surfaced by the solo probes and then measured campaign-wide on **17 runs**, from the `[finished]`
+line each game prints: `tokens=M` is what the summary and the `Mtok` column above report, and the
+trailing `note="tokens=N"` is the larger figure. **N − M is generation that never landed on an
+action** — a request still in flight when the game hit its wall.
+
+| run | actions | Mtok (counted) | generated | abandoned | per-game abandoned % (min/med/max) |
+|---|---|---|---|---|---|
+| clock2x | 2,637 | 4.33 | 4.76 | **9.1%** | 0.0 / 3.5 / 43.2 |
+| thui-v1-1 | 1,325 | 2.10 | 2.37 | 11.5% | 0.0 / 7.0 / 61.5 |
+| v21 | 2,921 | 2.00 ⚠️ | 2.27 | 11.9% | 0.0 / 1.3 / 79.9 |
+| thui-v1-0 | 1,493 | 2.16 | 2.46 | 12.3% | 0.0 / 8.9 / 56.9 |
+| thui-v2-0 | 1,425 | 2.08 | 2.37 | 12.5% | 0.0 / 9.6 / 43.0 |
+| v24 | 1,196 | 2.11 | 2.43 | 13.0% | 0.0 / 6.2 / 64.5 |
+| v23 | 1,634 | 2.21 | 2.58 | 14.1% | 0.0 / 7.9 / 50.1 |
+| v16 | 1,218 | 2.02 | 2.39 | 15.4% | 0.0 / 3.1 / **100.0** |
+| v10cal | 1,597 | 2.03 | 2.41 | 15.6% | 0.0 / 5.0 / 63.5 |
+| v18 | 1,576 | 2.11 | 2.50 | 15.6% | 0.0 / 5.5 / 67.8 |
+| v22 | 1,612 | 1.99 | 2.36 | 15.8% | 0.0 / 13.4 / 52.6 |
+| v19 | 1,638 | 2.02 | 2.41 | 16.2% | 0.0 / 9.2 / 75.6 |
+| thui-v1-1-r2 | 1,260 | 1.94 | 2.39 | 18.5% | 0.0 / 3.5 / **100.0** |
+| v25 | 1,341 | 1.82 | 2.26 | 19.2% | 0.0 / 3.9 / **100.0** |
+| v26 | 1,165 | 1.87 | 2.33 | 19.9% | 0.0 / 12.5 / 92.5 |
+| v20 | 7,656 | 3.00 | 3.93 | 23.7% | 0.0 / 0.0 / 91.8 |
+| v14 | 1,633 | 2.35 | 3.14 | **25.0%** | 0.0 / 9.1 / **100.0** |
+| `sk48` solo | 80 | 0.24 | 0.31 | 24.1% | — (one game) |
+| `lp85` solo | 14 | 0.15 | 0.31 | 50.8% | — (one game) |
+
+**Positive control, and it is what makes the table readable at all: the `actions` column parsed from
+these logs reproduces the table above EXACTLY, 17 of 17 runs** — 1,597 for `v10cal`, 7,656 for
+`v20`, 2,637 for `clock2x`, and so on. So each log is the run the LEDGER row names, and the regex is
+reading the fields it claims to.
+
+⚠️ **What `note="tokens=N"` counts is INFERRED, not documented.** Three checks, none decisive
+alone: (a) games that finish cleanly give **N == M exactly** — every run has a per-game minimum of
+0.0% — so N is not prompt+completion, which at R35's measured 10.7:1 input:output ratio would be
+~11.7× M on *every* game; (b) `lp85` solo's gap of 158,963 matches its 3,717 s stall at that run's
+own generation rate; (c) the actions control above.
+
+### What it changes
+
+**The `Mtok` column and every `tok/action` figure derived from it count only the requests that came
+back.** Real generation is 9–25% higher, unevenly: `v26`'s 1,603 tok/action becomes 2,002, and
+`v10cal`'s 1,272.6 becomes 1,508.
+
+⚠️ **`v21`'s Mtok is the ONLY cell in the table above that is a GENERATED figure** — 2.27 M is its
+generated total, its counted total is 2.00 M. So that row's headline *tok/action 1271→776 (−39%)*
+compares `v10cal`'s **counted** 1,272 against `v21`'s **generated** 776. Like for like it is
+1,272 → **683 (−46%)** counted, or 1,508 → **776 (−49%)** generated. The row's direction survives;
+its magnitude was understated and its units were mixed.
+
+**The zero-action stalls this campaign has recorded three times now have a mechanism.** Every game
+that hit 100% abandoned took **0 actions while generating 96 k–133 k tokens**: `v14`/`ar25`,
+`v16`/`dc22`, `v25`/`ft09`, `thui-v1-1-r2`/`tr87`. They were not idle and they were not blocked —
+they were generating into requests that never returned. `bp35` sits next to `tr87` at **94.4%** on
+1 action, and at **94.9%** on 1 action in `v25`.
+
+⚠️ **That refutes the attribution the `v25` row currently carries.** It reads the `ft09`/`bp35`
+stall as belonging *to the duckmod prompt, not to the harness or the sampler*, on the evidence that
+`thui-v1-1` gave those two 86 and 63 actions. But `thui-v1-1-r2` is the CLEAN v10+seed arm with no
+duckmod anywhere, and it produced the identical signature on `tr87` (0 actions, 100%) and `bp35`
+(1 action, 94.4%). The stall is not duckmod-specific; it moves between games across runs of the same
+build. Left as a flagged inconsistency rather than an edit — which reading is right needs the
+per-request timing that no committed artifact holds.
+
+⚠️ **The solo runs are elevated but cannot be ranked**: 24.1% and 50.8% against a per-game
+distribution whose median is 0–13.4% and whose maximum reaches 100% in four of seventeen runs. n=2.
+
+⚠️ **Nothing here measures a fix.** `v9` proved `LOCAL_ANALYZER_MAX_OUTPUT=768` is fatal
+(`finish_reason=length` 704 times against 68 tool calls) and no value between 768 and unbounded has
+ever been run. R35's *no cap is worth placing — 8192 saves 0.98%* was measured on `*_usage.jsonl`,
+which a request that never returns never writes, so it is silent about exactly this population.
+
+Method: `KaggleApi().kernels_logs(<slug>)`, one call per run, no slot and no GPU.
+Script `eval/abandoned_tokens.py`.
+
 ## What the column that actually explains the score is
 
 Not levels. Not games scoring. **Actions per level.**
