@@ -12,7 +12,9 @@ RETIRED one:
   Qwen3.8-27B-FP8, uncapped); every version patches notebook cells 6/8/12 only. The
   full run history with scores and why each landed there is `notes/LEDGER-all-runs.md`;
   decision tickets are `notes/wayfinder/MAP.md`; two runs are compared with
-  `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 4.71]).
+  `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 4.71]),
+  and several runs of one build are averaged into one arm by `eval/pool_runs.py` first
+  (`k` pooled runs are the arm `bm.n_passes = k` would build, at the same GPU cost).
   Submissions go from `Desktop/ARC-AGI-3-Kaggle-Starter` with `-k sahasawatt/taaf-duck-vNN`.
 - **Retired: the algorithmic line** (root drivers + `kaggle/bundle.py`, hidden 0.11).
   Kept for reference; its per-game search chains live in `experiments/`. Do not extend it
