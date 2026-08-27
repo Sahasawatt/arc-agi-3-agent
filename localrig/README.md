@@ -1,6 +1,6 @@
 # localrig — run the duck harness on THIS machine, $0, no Kaggle quota
 
-Built 2026-08-24 (MAP B33). Purpose: iterate on harness changes locally before
+Built 2026-08-24 (MAP B51 — this row was `B33` until the ids were made unique on 2026-08-27). Purpose: iterate on harness changes locally before
 spending a GPU slot. **A local 8B CANNOT predict the 27B's score** (v20: small
 model = 0.18) — this rig verifies MECHANICS and BEHAVIOUR (a patch fires, a
 ledger computes, the loop does not crash, the model reacts to a nudge), never

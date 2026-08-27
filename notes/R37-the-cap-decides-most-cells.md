@@ -60,8 +60,10 @@ every game at once.
 Two measurements compose, and together they are a proof rather than bad luck:
 
 1. **77% of scoring cells are unreachable by an efficiency lever**, and every lever measured so
-   far — KV fp8 (B16), upscale (B23/B31), brevity (B12), `reasoning_effort` (B31), grid lines
-   (B31), the untried-ledger nudge (B32) — acts on efficiency or on behaviour, never on the cap.
+   far — KV fp8 (B16), upscale (B23/B49), brevity (B12), `reasoning_effort` (B31), grid lines
+   (B49), the untried-ledger nudge (B32) — acts on efficiency or on behaviour, never on the cap.
+   (`B49` was `B31` until 2026-08-27; this line named three different tickets `B31` and is where
+   the collision is easiest to see.)
 2. **Payoff and noise are concentrated in the same handful of games.** Across the three runs
    `rank_runs.py` reads as NOT-DISTINGUISHABLE:
 
