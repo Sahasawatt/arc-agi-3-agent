@@ -68,6 +68,8 @@ RUNS = {
     "thui-v3-0": "yocybercode/thui-v3-0",
     "thui-v4-0": "yocybercode/thui-v4-0",
     "clock2x": "yocybercode/clock-2x-v1",
+    "thui-v3-0": "yocybercode/thui-v3-0",
+    "thui-v4-0": "yocybercode/thui-v4-0",
     "solo-sk48": "sahasawatt/taaf-solo-sk48",
     "solo-lp85": "sahasawatt/taaf-solo-lp85",
 }
@@ -80,6 +82,7 @@ LEDGER_ACTIONS = {
     "thui-v1-0": 1493, "thui-v1-1": 1325, "thui-v1-1-r2": 1260, "thui-v2-0": 1425,
     "thui-v3-0": 1401, "thui-v4-0": 1131,
     "clock2x": 2637,
+    "thui-v3-0": 1401, "thui-v4-0": 1131,
 }
 
 FINISHED = re.compile(
@@ -109,8 +112,11 @@ def games(api, slug):
     rows = FINISHED.findall(raw)
     if not rows:
         raise SystemExit(
-            f"{slug}: no [finished] rows parsed. Either the kernel never reached the benchmark or "
-            f"the line format changed -- re-read one log before trusting any zero from this tool."
+            f"{slug}: no [finished] rows parsed. Three causes: the kernel never reached the "
+            f"benchmark, the line format changed, or -- since 2026-08-28 -- the slug's latest "
+            f"version is a SAVE-ONLY retitle (the cell-0 fix, #81): kernels_logs has no version "
+            f"argument, so the run's real log serves an 800-char stub. The surviving "
+            f"per-level/token data: eval/fixtures/per-level-census.json."
         )
     return [(r[0], r[1], f"{r[2]}/{r[3]}", int(r[5]), int(r[6]), int(r[7])) for r in rows]
 
@@ -328,9 +334,14 @@ def main():
 
     hdr = f"{'run':13s} {'n':>3} {'actions':>8} {'counted':>11} {'generated':>11} {'aband%':>7}   min/med/max %"
     print(hdr)
-    failures = []
+    failures, stubs = [], []
     for name, slug in RUNS.items():
-        rows = games(api, slug)
+        try:
+            rows = games(api, slug)
+        except SystemExit:
+            stubs.append(name)
+            print(f"{name:13s}  -- STUB: latest version is a save-only retitle; log unreachable")
+            continue
         acts = sum(r[3] for r in rows)
         counted = sum(r[4] for r in rows)
         gen = sum(r[5] for r in rows)
@@ -342,11 +353,14 @@ def main():
             failures.append(f"{name}: log says {acts} actions, LEDGER says {LEDGER_ACTIONS[name]}")
 
     if args.check:
-        checked = [n for n in RUNS if n in LEDGER_ACTIONS]
         if failures:
             sys.exit("CONTROL FAILED -- the slug is not the run the LEDGER row names:\n  "
                      + "\n  ".join(failures))
-        print(f"\nactions control: {len(checked)} of {len(checked)} runs match the LEDGER exactly")
+        checked = [n for n in RUNS if n in LEDGER_ACTIONS and n not in stubs]
+        print(f"\nactions control: {len(checked)} runs match the LEDGER exactly; "
+              f"{len(stubs)} UNREACHABLE (stub versions): {', '.join(stubs) or '-'}")
+        if stubs:
+            sys.exit(3)
 
 
 if __name__ == "__main__":
