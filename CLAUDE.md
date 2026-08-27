@@ -1376,8 +1376,30 @@ tracked `*.ipynb`, is idempotent, and takes `--check` for a dry run.
   `localrig/`, not recalled. Cells 2/4/6/14 are placeholder substitution every fork performs and are
   labelled as such rather than claimed.
 
-⚠️ **Kernels already pushed to Kaggle still carry the OLD cell 0.** Fixing those is a separate,
-outward-facing action — it pushes a new kernel version, and one of them has a live submission.
+✅ **All seven kernels on Kaggle were fixed on 2026-08-27** — `thui-v1-0`, `thui-v1-1`,
+`thui-v1-1-r2`, `thui-v2-0`, `clock-2x-v1`, `thui-v4-0`, `thui-v3-0`, each now at **version 2**, 17
+cells, verified per file through the API. **Zero GPU-hours and zero submission slots.**
+
+⚠️ **`kaggle kernels push` was the wrong tool and it is worth knowing why.** It *always runs the
+kernel* — there is no no-run flag, every option (`--timeout`, `--accelerator`) is about the run — so
+pushing seven would have cost roughly **16 GPU-hours to change one markdown cell**, and each run is
+non-deterministic (`B37`), so `thui-v3-0` v2 would have carried a different score from the v1 that
+is submitted. The free path is the editor's **Save Version → Quick Save** (*"save a version of your
+notebook the way it currently looks"*), which finished in ~25 s and left `KernelWorkerStatus`
+`COMPLETE`.
+
+🔴 **Do NOT type the header into the cell — paste it.** The editor's markdown mode auto-continues
+lists, so typing inserts a spurious `- ` on every line after the first bullet and cascades the
+indentation. Measured: the typed version was unusable, the pasted one byte-clean.
+
+⚠️ **Verify the selection is cell-scoped before every paste.** `Cmd+A` selects the *whole page*
+unless the cursor is already inside the cell's editor — the tell is the sidebar and menu bar
+highlighting too. The reliable sequence is double-click on **plain text** (a double-click on a link
+opens a tab instead of entering edit mode), then click the first line, then `Cmd+A`, then look.
+
+**The five duck kernels on `sahasawatt/` could not be fixed from here.** They are readable because
+they are public, but Kaggle only lets the owner edit a notebook, so they need Sahasawat himself. The
+text to paste is `kaggle/cell0_header.md`.
 
 
 ## Versioning (adopted 2026-08-25, user directive)
