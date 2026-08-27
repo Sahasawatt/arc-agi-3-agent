@@ -65,6 +65,8 @@ RUNS = {
     "thui-v1-1": "yocybercode/thui-v1-1",
     "thui-v1-1-r2": "yocybercode/thui-v1-1-r2",
     "thui-v2-0": "yocybercode/thui-v2-0",
+    "thui-v3-0": "yocybercode/thui-v3-0",
+    "thui-v4-0": "yocybercode/thui-v4-0",
     "clock2x": "yocybercode/clock-2x-v1",
     "solo-sk48": "sahasawatt/taaf-solo-sk48",
     "solo-lp85": "sahasawatt/taaf-solo-lp85",
@@ -76,6 +78,7 @@ LEDGER_ACTIONS = {
     "v10cal": 1597, "v14": 1633, "v16": 1218, "v18": 1576, "v19": 1638, "v20": 7656,
     "v21": 2921, "v22": 1612, "v23": 1634, "v24": 1196, "v25": 1341, "v26": 1165,
     "thui-v1-0": 1493, "thui-v1-1": 1325, "thui-v1-1-r2": 1260, "thui-v2-0": 1425,
+    "thui-v3-0": 1401, "thui-v4-0": 1131,
     "clock2x": 2637,
 }
 
@@ -138,8 +141,12 @@ def fetch_usage(api, run, out_dir):
     writes the log. With it, thui-v1-1-r2's 25 usage files arrive in seconds, largest 20 KB.
     Measured 2026-08-27; the trap had been recorded here as unavoidable.
 
-    MEASURED across all 19 slugs in RUNS, 2026-08-27, not assumed: only thui-v1-0, thui-v1-1 and
-    thui-v1-1-r2 carry the rows. The other sixteen return nothing, and the emptiness is real
+    MEASURED across the slugs in RUNS, 2026-08-27: at the time of that sweep only thui-v1-0,
+    thui-v1-1 and thui-v1-1-r2 carried the rows -- and the sweep enumerated RUNS, which is a
+    REGISTRY, not the kernel population. thui-v3-0 already existed with 25 usage files and was
+    simply not in RUNS yet, so the "n=3 ceiling" was false when written; with thui-v4-0 the
+    probe-run count is FIVE. A ceiling measured over a registry expires with the registry's
+    next lag, not with the next run. The other sixteen return nothing, and the emptiness is real
     rather than a filter that missed -- v26 and thui-v2-0 hold 186 output files each with zero
     usage rows, against thui-v1-1's 211 with 25, i.e. exactly the 25 missing. The positive
     control ran in the same invocation (thui-v1-1 -> 25 files), because sixteen zeros and a

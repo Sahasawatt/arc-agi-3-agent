@@ -1113,11 +1113,12 @@ terminated. That is **`LOCAL_ANALYZER_TOOL_STEPS = '0'`**, which **has never bee
 campaign** and is not the `LOCAL_ANALYZER_MAX_OUTPUT` that `v9` set to 768 and died on. ⚠️ **A cap on it did NOT bind
 in 3,090 turns, and the margin is ONE**: the same loop carries `LOCAL_ANALYZER_YIELD_SECONDS = 60`,
 checked at the top of every iteration, so the budget binds and the count never does. Measured over
-all three probe runs — and **only three exist**: `--fetch-usage` against all 19 slugs returns rows
-for `thui-v1-0`, `thui-v1-1` and `thui-v1-1-r2` and nothing for the other sixteen, with a positive
-control in the same invocation and a file census (`v26` and `thui-v2-0`: 186 files, 0 usage;
-`thui-v1-1`: 211 with 25) separating absence from a filter that missed. So n=3 is the ceiling.
-Over those three (3,948 requests): **cap 12 cuts 0 turns**, but
+the probe runs. ⚠️ An earlier version said **only three exist, so n=3 is the ceiling** — that
+sweep enumerated the RUNS **registry**, not the kernel population: `thui-v3-0` already existed
+with 25 usage files outside the registry, and `thui-v4-0` adds another, so the count is **five**
+(n=5: **7,066 requests / 5,199 turns, deepest turn still 11, cap=12 still cuts 0**). The file
+census still separates absence from a broken filter (`v26`/`thui-v2-0`: 186 files, 0 usage;
+`thui-v1-1`: 211 with 25). Over the first three (3,948 requests): **cap 12 cuts 0 turns**, but
 the deepest turn anywhere is **11** — one below it — and reaching 12 needs ≤5.0 s per request
 against that turn's 5.44 s average. So *did not bind*, **not** *cannot bind*: the same
 margin-of-one shape `R43` showed to be untrustworthy for `B38`'s k=20. LEDGER §*Can a TOOL_STEPS
