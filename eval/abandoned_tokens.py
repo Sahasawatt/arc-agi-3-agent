@@ -1,4 +1,4 @@
-"""B45 — how much of a run's generation never landed on an action.
+r"""B45 — how much of a run's generation never landed on an action.
 
 Each game prints one `[finished]` line carrying TWO token figures:
 
@@ -23,12 +23,19 @@ do. See --shape.
   c) the ACTIONS total this same regex extracts reproduces the LEDGER table exactly, 17 of 17 runs,
      which is the control printed by --check below: it proves the log is the run the row names.
 
-Reads logs over the API rather than `kernels output`, which writes the log LAST and dies on the
-250 MB `vllm-site-packages` directory. Costs no slot and no GPU.
+Reads logs over the API rather than a whole-output download, which writes the log LAST and dies on
+the 250 MB `vllm-site-packages` directory. Costs no slot and no GPU.
+
+That trap is avoidable and this module first said it was not. `kernels_output` takes a
+`file_pattern` REGEX, so a run's output can be fetched selectively -- measured 2026-08-27 on
+`yocybercode/thui-v1-1-r2`, `file_pattern=r".*_usage\.jsonl"` returned all 25 usage files, largest
+20 KB, no blob. `kernels_list_files` enumerates first (209 files there). --fetch-usage below is
+that call; it is what makes a per-request question answerable on any run carrying thuiv1's probe.
 
     python eval/abandoned_tokens.py                 # every run, one row each
     python eval/abandoned_tokens.py --check         # + the actions control against LEDGER_ACTIONS
     python eval/abandoned_tokens.py --games v26     # per-game breakdown for one run
+    python eval/abandoned_tokens.py --fetch-usage thui-v1-1-r2 --out /tmp/u   # per-request rows
 """
 import argparse
 import json
@@ -119,6 +126,35 @@ def timeouts(api, slug):
     return raw, recs, sorted(ev)
 
 
+USAGE_PATTERN = r".*_usage\.jsonl"
+
+
+def fetch_usage(api, run, out_dir):
+    """Download ONLY a run's per-request usage rows, not its whole output.
+
+    `kernels_output` takes a file_pattern regex. Without it the call pulls the entire output --
+    on these runs 209 files including a 250 MB vllm-site-packages tree -- and dies before it
+    writes the log. With it, thui-v1-1-r2's 25 usage files arrive in seconds, largest 20 KB.
+    Measured 2026-08-27; the trap had been recorded here as unavoidable.
+
+    Only runs carrying thuiv1's request_usage_probe write these: thui-v1-0, thui-v1-1,
+    thui-v1-1-r2. duckv10 does not, so neither solo run has them.
+    """
+    if run not in RUNS:
+        raise SystemExit(f"unknown run {run!r}; known: {', '.join(RUNS)}")
+    out = pathlib.Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    api.kernels_output(RUNS[run], str(out), file_pattern=USAGE_PATTERN, page_size=200)
+    got = sorted(out.glob("*_usage.jsonl"))
+    if not got:
+        raise SystemExit(
+            f"{run}: no *_usage.jsonl in the output. Only runs carrying thuiv1's probe have them."
+        )
+    print(f"{run} -> {out}  ({len(got)} files, largest {max(p.stat().st_size for p in got):,} B)")
+    for p in got:
+        print(f"  {p.name}  {p.stat().st_size:>8,} B")
+
+
 def shape(api):
     """B46 -- which of the two candidate mechanisms the abandoned generation is in.
 
@@ -174,10 +210,17 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true", help="assert actions match LEDGER_ACTIONS")
     ap.add_argument("--games", metavar="RUN", help="per-game breakdown for one run")
+    ap.add_argument("--fetch-usage", metavar="RUN", dest="fetch_usage",
+                    help="download ONLY that run's *_usage.jsonl (needs --out)")
+    ap.add_argument("--out", default="usage", help="directory for --fetch-usage")
     ap.add_argument("--shape", action="store_true",
                     help="B46: split the abandonment into hung / terminal / unbounded-loop")
     args = ap.parse_args()
     api = _api()
+
+    if args.fetch_usage:
+        fetch_usage(api, args.fetch_usage, args.out)
+        return
 
     if args.shape:
         shape(api)
