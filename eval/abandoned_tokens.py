@@ -131,8 +131,15 @@ def shape(api):
 
     Then ask whether those two account for the abandonment, pricing each interval at the run's
     average per-game token rate. They do not: the residual is the work inside actions that never
-    terminated, because LOCAL_ANALYZER_TOOL_STEPS is 0 -- a step is bounded at 900 s, the LOOP is
-    bounded by nothing but the game wall.
+    terminated, with LOCAL_ANALYZER_TOOL_STEPS = 0.
+
+    WARNING: this module first said the loop is "bounded by nothing but the game wall". The
+    tool-step loop also carries LOCAL_ANALYZER_YIELD_SECONDS = 60, checked at the TOP of every
+    iteration (tool_agent.py:2161,2167), so at the measured 72-126 s per request it breaks after
+    ONE step and a cap of 12 could never bind. Whether the runaway is that loop or the outer turn
+    loop (solver.py:316, which has no counter on any of its three no-action continues) is
+    UNRESOLVED; req_in_turn in the banked usage rows separates them. See the LEDGER section
+    "Can a TOOL_STEPS cap even bind".
 
     The residual is an ESTIMATE for a 25-game run (a hung request may generate at a rate other
     than the average). It is NOT an estimate for the solo runs: they log zero hangs, so there is
