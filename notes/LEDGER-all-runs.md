@@ -464,6 +464,81 @@ predicts `max(req_in_turn) == 1` and is refuted by any other value.
 
 Method: `eval/abandoned_tokens.py --shape`. Same logs, same API, no slot.
 
+## Why games pass and why they fail — the per-level census (B52)
+
+Every `[finished]` line carries `per-level=SPENT/HUMAN,…` — actions this run spent on each level
+against that game's own human baseline. Nine runs of prose never parsed it. Parsed for all 21 runs
+(477 game-runs; the in-band family below = 17 runs × 25 = 425), two internal closures asserted per
+row and passing 477/477: `sum(SPENT) == actions` and `len(pairs) == level total`. Script
+`eval/per_level_census.py`, data banked in `eval/fixtures/per-level-census.json`.
+
+⚠️ **Banked because the source went dark mid-analysis.** The cell-0 retitle (#81) was pushed to the
+live kernels as save-only versions, and `kernels_logs` takes no version argument — so **every
+`yocybercode/` slug now serves an 800-char nbconvert stub** and the real logs of `thui-v1-0`, `thui-v1-1`, `thui-v1-1-r2`,
+`thui-v2-0`, `thui-v3-0`, `thui-v4-0` and `clock2x` are unreachable from the API (probed 2026-08-28; `sahasawatt/`
+slugs unaffected). The fixture, built from logs fetched 2026-08-27/28 with the LEDGER-actions
+control passing 21/21, is the surviving copy. `--check` in `eval/abandoned_tokens.py` now reports
+those seven as UNREACHABLE and exits 3 instead of claiming 17/17.
+
+### Why games pass: they clear the cheap levels, faster than the human count
+
+377 levels cleared across the family. **Median cost 0.78× the human baseline** (p25 0.55, p75 1.14)
+— when reasoning fits the level, the agent beats the human action count more often than not. And
+the levels it clears are the cheap ones: **human baseline median 26 actions, against 44 for the
+levels it dies on**. Efficiency on cleared levels is not the problem; the problem is that deeper
+levels cost ~1.7× more while the wall stays fixed.
+
+### Why games fail: three shapes, and the budget reading is refuted for two of them
+
+Every family game-run ends `gave_up` (0 wins, 425/425). The dying level splits them:
+
+| shape | count | share | meaning |
+|---|---|---|---|
+| STARVED (`SPENT < HUMAN` at death) | 286 | **67.3%** | the wall arrived before the human's action count |
+| STUCK (`SPENT ≥ HUMAN`) | 131 | 30.8% | had the budget, did not solve |
+| ZERO (0 actions all run) | 8 | 1.9% | B40's population |
+
+⚠️ **STARVED is the shape of the corpse, not the cause of death.** Both causal tests are above in
+this file: `clock2x` DOUBLED the wall for +2 levels, and solo `sk48` got **1.31×** its human count
+and stayed 0/8. Budget converts to levels only where reasoning already works — solo `lp85` cleared
+L1 at 9/17 then starved at L2 5/38. And SPENT counts **executed** actions only: B40's no-action
+turns (~30% of turns) and B45's abandoned generation burn clock without appearing in any SPENT.
+
+### The cut that is new: 60% of stalls are variance, 40% are walls
+
+For each stall, ask whether **any sibling run of the same family ever cleared that level**:
+
+```
+BEHIND the game's own frontier (a sibling cleared that exact level):  255  (60%)  <- draw variance
+AT the frontier (no family run has ever cleared it):                  170  (40%)  <- real walls
+best-ever oracle (sum of each game's deepest level):                   47  vs best single run 30
+```
+
+The build already "knows how" to clear **47 levels** — spread across draws; any one draw collects
+25–30. That is the arithmetic behind the spread lever (`thui-v4-0`) and behind the board keeping
+MAX: most of what a draw loses, another draw of the same build has already won. The frontier
+levels are the expensive ones — human baselines 31–189, median ~61, against 26 for cleared levels.
+
+### The named walls
+
+- **`g50t` — the only game with zero clears in all 17 runs**, STARVED in every one (0.26× median,
+  human L1 = 78). ⚠️ **The only never-clear game that has never had its causal test**: its solo run
+  was refused on GPU quota (B42) and never re-pushed. If a probe slot ever exists, it goes here.
+- **`sb26`** — clears L1 in 17/17, then STUCK on L2 at **2.0× the human count**: the cleanest pure
+  reasoning wall in the corpus.
+- **`tr87` / `bp35` / `dc22` / `cn04` / `m0r0` / `tn36`** — die on L1 with STUCK dominant
+  (0.9–1.3×): they get the budget and do not solve. `tr87` doubles as B40's zero-action case.
+- **`sk48`** — STARVED-shaped in shared runs (0.56×) but solo PROVED it STUCK (1.31× → 0/8): the
+  worked example of why the 67% headline cannot be read as "more budget would fix 67%".
+
+### Hidden draws cannot be decomposed this way at all
+
+The submissions API exposes score and `scriptVersionId` only, and **all three duck-v10 hidden
+draws (1.70 / 1.32 / 1.38) share ONE scriptVersionId (`343774931`)** — the hidden rerun is a
+private per-submission artifact with no log surface (probed 2026-08-27; `kernels output` was
+already proven to ignore the version). Why hidden passes or fails is answerable only through the
+public failure mix above plus the shrink ratio (CORRECTION 4: 2.68×).
+
 ## What the column that actually explains the score is
 
 Not levels. Not games scoring. **Actions per level.**
