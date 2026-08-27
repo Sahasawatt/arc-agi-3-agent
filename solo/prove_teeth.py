@@ -33,7 +33,18 @@ for _name in ("imageio", "imageio.v3", "scipy", "scipy.stats", "pandas", "plotly
             sys.modules[_name] = mod
             _STUBBED.append(_name)
 
-import taaf.benchmark  # noqa: E402
+# NOT stubbable the way the rendering deps are: taaf.game imports `arcengine` and `matplotlib`
+# before taaf.benchmark can load. arcengine is not vendored anywhere in this repo (`git ls-files`
+# has no match) and taaf.game uses `arcengine.GameAction` as a real type, so a callable stub
+# raises at class-definition time -- faking it would mean inventing the vendor's API. On a
+# checkout without a wheelhouse install this file used to die HERE, before case 1. Now the
+# Benchmark-backed cases report SKIPPED with the reason, and the reachability cases still run.
+try:
+    import taaf.benchmark  # noqa: E402
+    _BENCH_ERR = ""
+except Exception as _exc:  # noqa: BLE001
+    taaf = None  # type: ignore[assignment]
+    _BENCH_ERR = f"{type(_exc).__name__}: {_exc}"
 
 GAMES = ["sk48", "g50t", "lp85", "ar25", "ft09"]   # env_name, as cell 14 builds them
 
@@ -64,7 +75,14 @@ def _injected_block(nb_path: Path) -> str:
     return "".join(ln[4:] if ln.startswith("    ") else ln for ln in block.splitlines(True))
 
 
+class _Skipped(Exception):
+    """Raised when a case cannot run at all. Caught BEFORE the must_raise logic, so a mutation
+    case is never credited for 'raising' when what it raised was the rig giving up."""
+
+
 def _run(block, *, games, true_submission=False, weights=None):
+    if _BENCH_ERR:
+        raise _Skipped(_BENCH_ERR)
     bm = taaf.benchmark.Benchmark()
     bm.games = [_FakeGame(g) for g in games]
     bm.game_weights = weights
@@ -73,9 +91,72 @@ def _run(block, *, games, true_submission=False, weights=None):
     return bm
 
 
+# duckv10's own line, above BOTH splice points and present in every build. Starting the region at
+# `if TRUE_SUBMISSION:` instead would exclude the module-level guard, which sits above it -- the
+# region would then miss the very thing it is meant to reach and report a correct build as broken.
+REGION_START = 'os.environ.setdefault("RECORDINGS_DIR"'
+REGION_END = "bm.n_passes = 1"
+LIVE_GAMES = [f"h{i:03d}" for i in range(110)]   # what the gateway hands back on a submission
+
+
+class _FakeBenchmark:
+    """Stand-in for the reachability cases ONLY.
+
+    The cases above use the real vendored Benchmark, because what they test is the filter
+    operating on it. These test whether cell 14's branch structure REACHES the injected code at
+    all, which touches nothing but `games` and `game_weights` -- so a real Benchmark buys no
+    coverage here and would make the one group guarding a never-submit rule unrunnable on any
+    checkout lacking arcengine.
+    """
+
+    def __init__(self):
+        self.games = None
+        self.game_weights = None
+
+
+def _branch_region(nb_path: Path) -> str:
+    """Cell 14 from REGION_START to `bm.n_passes`, WITHOUT dedenting.
+
+    _injected_block strips the 4-space indent, which lifts the filter out of the else branch it
+    lives in. That is right for testing the block's logic and structurally blind to whether the
+    block is REACHED: a guard spliced into the else branch passes every dedented mutation and is
+    skipped by the notebook whenever TRUE_SUBMISSION is true. Keeping the if/else intact is the
+    only way to see it.
+    """
+    src = json.loads(nb_path.read_text(encoding="utf-8"))["cells"][14]["source"]
+    lines = src.splitlines(True)
+    start = next(i for i, ln in enumerate(lines) if ln.startswith(REGION_START))
+    end = next(i for i, ln in enumerate(lines) if ln.startswith(REGION_END))
+    assert start < end, "cell 14 no longer has the branch above bm.n_passes"
+    region = "".join(lines[start:end])
+    assert "if TRUE_SUBMISSION:" in region, "the region lost the branch it exists to exercise"
+    return region
+
+
+def _run_region(region, *, true_submission):
+    """Execute the branch region with the if/else INTACT; fake only the game-list builders."""
+    bm = _FakeBenchmark()
+    env = {
+        "bm": bm,
+        "TRUE_SUBMISSION": true_submission,
+        "print": lambda *a, **k: None,
+        "os": __import__("os"),
+        "Path": Path,
+        "WORKING_DIR": Path("/tmp/solo-teeth"),
+        "_competition_games": lambda: [_FakeGame(g) for g in LIVE_GAMES],
+        "_offline_games": lambda _d: [_FakeGame(g) for g in GAMES],
+        "_wait_for_gateway": lambda _url, timeout_s=600.0: None,
+    }
+    exec(compile(region, "<cell14-branch>", "exec"), env)  # noqa: S102 -- the subject under test
+    return bm
+
+
 def case(name, fn, *, must_raise):
     try:
         fn()
+    except _Skipped as exc:
+        print(f"  SKIP  {name:<52} could not run: {str(exc)[:56]}")
+        return None
     except Exception as exc:  # noqa: BLE001
         got = type(exc).__name__
         ok = must_raise
@@ -92,11 +173,16 @@ def main() -> int:
     block = _injected_block(nb)
     assert '_SOLO_TARGET = "sk48"' in block, "sliced the wrong region out of cell 14"
 
-    print(f"Benchmark under test: {taaf.benchmark.Benchmark.__module__}."
-          f"{taaf.benchmark.Benchmark.__qualname__} (the real vendored class)")
-    print(f"stubbed to reach it: {_STUBBED or 'nothing'}")
-    print("  -- all rendering/stats deps of taaf.diagnostics; none is on the path the filter "
-          "touches, which is bm.games and bm.game_weights only\n")
+    if _BENCH_ERR:
+        print(f"Benchmark under test: UNAVAILABLE on this checkout -- {_BENCH_ERR}")
+        print("  the filter cases below are SKIPPED, not passed; the reachability cases "
+              "still run and do not need Benchmark\n")
+    else:
+        print(f"Benchmark under test: {taaf.benchmark.Benchmark.__module__}."
+              f"{taaf.benchmark.Benchmark.__qualname__} (the real vendored class)")
+        print(f"stubbed to reach it: {_STUBBED or 'nothing'}")
+        print("  -- all rendering/stats deps of taaf.diagnostics; none is on the path the filter "
+              "touches, which is bm.games and bm.game_weights only\n")
 
     results = []
 
@@ -206,8 +292,47 @@ def main() -> int:
     results.append(case("CONTROL filter keys on env_name while game_id is empty",
                         _filters_on_env_name_not_game_id, must_raise=False))
 
-    ok = all(results)
-    print(f"\n{'TEETH OK' if ok else 'TEETH FAIL'}: {sum(results)}/{len(results)} cases behaved")
+    # ---- reachability: the two cases the dedented rig above cannot see ------------------
+    region = _branch_region(nb)
+    assert "if TRUE_SUBMISSION:" in region and "_solo_before = list(bm.games)" in region, (
+        "sliced the wrong region -- it must hold both the branch and the injected filter"
+    )
+
+    # CONTROL: with the branch intact the offline path must still filter. Without this, the
+    # mutation below could be raising for a reason that has nothing to do with the guard.
+    def _region_offline():
+        bm = _run_region(region, true_submission=False)
+        assert len(bm.games) == 1, f"offline path gave {len(bm.games)} game(s)"
+    results.append(case("CONTROL branch intact, offline path still filters to one game",
+                        _region_offline, must_raise=False))
+
+    # NOT must_raise=True: both outcomes raise AssertionError -- the guard's own, or the one this
+    # function throws to report a miss -- so must_raise would credit the failure as a pass. Assert
+    # WHICH assertion surfaced instead. Red on the build that shipped without solo_guard.py:
+    # TRUE_SUBMISSION=True returned 110 games and raised nothing.
+    def _region_true_submission():
+        try:
+            bm = _run_region(region, true_submission=True)
+        except AssertionError as exc:
+            assert "must never be submitted" in str(exc), (
+                f"the branch raised, but not from the never-submit guard: {str(exc)[:80]}"
+            )
+            return
+        raise AssertionError(
+            f"NEVER-SUBMIT GUARD IS UNREACHABLE: TRUE_SUBMISSION=True did not raise; "
+            f"bm.games holds {len(bm.games)} game(s) and the run would submit"
+        )
+    results.append(case("GUARD never-submit fires with the branch intact",
+                        _region_true_submission, must_raise=False))
+
+    ran = [r for r in results if r is not None]
+    skipped = len(results) - len(ran)
+    ok = all(ran)
+    note = f", {skipped} SKIPPED (Benchmark unavailable: {_BENCH_ERR})" if skipped else ""
+    print(f"\n{'TEETH OK' if ok else 'TEETH FAIL'}: {sum(ran)}/{len(ran)} cases behaved{note}")
+    if skipped:
+        print("  a SKIPPED case is not a passed one -- run this on a checkout with the "
+              "wheelhouse installed to exercise the filter against the real Benchmark")
     return 0 if ok else 1
 
 
