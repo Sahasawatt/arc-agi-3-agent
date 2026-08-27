@@ -68,7 +68,7 @@ v21/v22 import-by-name trap does not apply. Teeth must still assert
 - The three "spatial misread" attributions in R28 are one reader's judgment (n=3 of 5).
 
 
-## RESULT (2026-08-25) — measured, in-noise, B31 closed
+## RESULT (2026-08-25) — measured, in-noise, B49 closed (this ticket was `B31` until 2026-08-27)
 
 The v23 smoke (lines only) caught the failure this note's UNVERIFIED section suspected, in
 the opposite direction: ka59 read the lattice as GAME STRUCTURE ("a grid of white cells
