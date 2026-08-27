@@ -138,8 +138,19 @@ def fetch_usage(api, run, out_dir):
     writes the log. With it, thui-v1-1-r2's 25 usage files arrive in seconds, largest 20 KB.
     Measured 2026-08-27; the trap had been recorded here as unavoidable.
 
-    Only runs carrying thuiv1's request_usage_probe write these: thui-v1-0, thui-v1-1,
-    thui-v1-1-r2. duckv10 does not, so neither solo run has them.
+    MEASURED across all 19 slugs in RUNS, 2026-08-27, not assumed: only thui-v1-0, thui-v1-1 and
+    thui-v1-1-r2 carry the rows. The other sixteen return nothing, and the emptiness is real
+    rather than a filter that missed -- v26 and thui-v2-0 hold 186 output files each with zero
+    usage rows, against thui-v1-1's 211 with 25, i.e. exactly the 25 missing. The positive
+    control ran in the same invocation (thui-v1-1 -> 25 files), because sixteen zeros and a
+    broken pattern look identical without one.
+
+    So n=3 is the CEILING for anything read off these rows -- B47's step distribution, the
+    usage == note N check, the token-budget fit -- and n=4 needs a new run, not another fetch.
+
+    The trap is thui-v2-0: it is a thui build and it has NO probe. request_usage_probe is
+    thuiv1's cell 12, and v2-0 overwrote that cell with B39's retrieval kill-switch. The family
+    name does not predict the artifact; count the files.
     """
     if run not in RUNS:
         raise SystemExit(f"unknown run {run!r}; known: {', '.join(RUNS)}")
