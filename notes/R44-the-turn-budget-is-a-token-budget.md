@@ -115,7 +115,12 @@ So the size of this lever is **not established**. Its mechanism is.
 
 ## 8. Not known
 
-1. **n = 1 run.** No other run carries the probe, so none of this has a second sample.
+1. ~~**n = 1 run.** No other run carries the probe, so none of this has a second sample.~~
+   ⚠️ **ANSWERED 2026-08-27 by `notes/R47-the-yield-gate-moves-with-the-knob.md`** — `thui-v3-0`
+   (B48) carries the probe and ran at `YIELD = 180`. Every figure above reproduces (R47's selftest
+   re-derives 15 of them), §3's gate is now proven by intervention rather than inferred, and §6's
+   over-prediction is **worse** at the second point (53% vs 43%). §2 item 2 is also answered:
+   moving `YIELD_SECONDS` does **not** move score (p = 0.5370 / 0.8145 / 0.4759).
 2. **Whether moving `YIELD_SECONDS` moves score.** Unmeasured, and §6 says the cheap estimate of
    its headroom is wrong in the optimistic direction.
 3. **It is a reallocation, not more clock** — unlike B34, which doubled the budget and returned

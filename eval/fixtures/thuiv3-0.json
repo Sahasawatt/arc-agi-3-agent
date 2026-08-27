@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 144,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 30,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 52,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "cn04": {
+   "actions": 72,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "dc22": {
+   "actions": 116,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 27,
+   "levels": 3,
+   "score": 28.57142857142857
+  },
+  "g50t": {
+   "actions": 27,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 27,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lf52": {
+   "actions": 83,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 25,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "ls20": {
+   "actions": 31,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 40,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 9,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 170,
+   "levels": 0,
+   "score": 0.0
+  },
+  "s5i5": {
+   "actions": 81,
+   "levels": 1,
+   "score": 0.2712673611111111
+  },
+  "sb26": {
+   "actions": 67,
+   "levels": 1,
+   "score": 0.6944444444444444
+  },
+  "sc25": {
+   "actions": 48,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "sk48": {
+   "actions": 40,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 15,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "su15": {
+   "actions": 45,
+   "levels": 1,
+   "score": 2.2222222222222223
+  },
+  "tn36": {
+   "actions": 47,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "tr87": {
+   "actions": 70,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 62,
+   "levels": 3,
+   "score": 13.333333333333334
+  },
+  "vc33": {
+   "actions": 17,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "wa30": {
+   "actions": 56,
+   "levels": 1,
+   "score": 2.2222222222222223
+  }
+ },
+ "label": "thuiv3-0",
+ "source": "kaggle yocybercode/thui-v3-0 v1, 2026-08-27"
+}
