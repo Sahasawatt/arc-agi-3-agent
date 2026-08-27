@@ -224,6 +224,77 @@ which a request that never returns never writes, so it is silent about exactly t
 Method: `KaggleApi().kernels_logs(<slug>)`, one call per run, no slot and no GPU.
 Script `eval/abandoned_tokens.py`.
 
+### What SHAPE the leak has (B46) — neither of the two candidates, and the knob has never been touched
+
+The Fog asked whether the abandoned generation is **one very long request** or **many that time
+out**. It is measurably a third thing, and the discriminator was already in the logs: every run
+prints exactly one kind of error line, and its `read timeout=` VALUE splits it into two populations.
+
+| population | events/run | when | what it is |
+|---|---|---|---|
+| `read timeout=900.0` **exactly** | 8–35 | spread through the run | a request killed at `analyzer_timeout=900`, and **the action retries** |
+| clamped, `< 900` | **21–25** | **inside the last 1% of the run**, 19–24 of them at one instant | the terminal cancellation, one per game still mid-request at the wall; the value is the budget that was left |
+
+638 unique events over 19 logs. Every log duplicates stderr **exactly ×2.0**, uniformly, so the
+dedupe is safe. The retries are directly observed, not inferred: `v26` fires action **18** at
+t=6434.8 **and** 7335.9, action **48** at 6660.6 and 7561.8, action **37** at 6813.4 and 7714.5 —
+deltas **901.1 / 901.2 / 901.1**. Nothing bounds the retry count.
+
+**Then price both populations and see whether they add up.** Charging every hang 900 s and every
+terminal request its own clamp, at the run's average per-game token rate:
+
+```
+                 hung     terminal    RESIDUAL          residual as % of abandoned
+v10cal        174,076      45,875     156,802                42%
+v14           113,291      58,390     613,799                78%
+v26           147,836      58,565     258,401                56%
+clock2x       323,305      66,185      41,416                10%
+thui-v1-1     192,608      59,988      18,988                 7%     <- the tightest
+solo sk48           0       1,761      72,987                98%
+solo lp85           0       1,353     157,610                99%
+```
+
+**Median residual across the 17 shared runs is ~45%, and for the two solo runs it is 98–99% with
+ZERO hang events to model.** So the dominant mechanism is neither of the Fog's candidates: it is
+generation inside requests that **completed successfully**, in an action that never terminated.
+
+### The knob
+
+```
+LOCAL_ANALYZER_MAX_OUTPUT = '0'      unbounded output per response
+LOCAL_ANALYZER_TOOL_STEPS = '0'      unbounded tool steps per ACTION      <- this one
+```
+
+One action is an unbounded tool-calling loop. A **step** is bounded — 900 s, and it is killed and
+retried when it blows. The **loop** is bounded by nothing but the game wall. `lp85` solo is the
+clean case: between its last completed action (t=4609) and the wall it spent **3,682 s and ~159 k
+tokens with zero failures logged** — every request in that window returned, and the action simply
+never finished.
+
+**So the two fixes the Fog named are aimed at the smaller half.** An output cap is
+`LOCAL_ANALYZER_MAX_OUTPUT`, which bounds ONE response — `v9` set it to 768 and killed the run by
+truncating the tool call that carries the action. A shorter request timeout attacks the 900 s
+population. Neither bounds the loop. **`LOCAL_ANALYZER_TOOL_STEPS` is `0` in every run this
+campaign has produced and has never been changed** — a different knob from the one `v9` poisoned,
+and the first untried thing this axis has offered.
+
+⚠️ **The residual is an ESTIMATE for the 25-game runs**, and the error source is named: it prices a
+hang at the run's *average* per-game rate, and a hung request may generate faster, slower, or not at
+all. It is **not** an estimate for the solo runs — with no hang events there is nothing to model.
+
+⚠️ **Solo's zero hangs does NOT show that contention causes them.** At the shared per-action hang
+rate (256 events over 33,327 actions = 0.0077/action) the solo runs' 94 actions predict **0.72**
+events, and observing zero has probability **0.49**. The reading is consistent with either world and
+discriminates nothing.
+
+⚠️ **The solver config line lies about the per-game clock, and `clock2x` is the proof.** Every run
+prints `max_runtime_s_per_game=7920.0` — including `clock2x`, whose games actually ran **15,891 s**
+(`duration: 4h 24m 50s`, and B34's whole point). The field is the value *before* the override lands,
+so it is not evidence of the budget in force; the run duration is. `--shape` flags the mismatch
+rather than trusting either number.
+
+Method: `eval/abandoned_tokens.py --shape`. Same logs, same API, no slot.
+
 ## What the column that actually explains the score is
 
 Not levels. Not games scoring. **Actions per level.**
