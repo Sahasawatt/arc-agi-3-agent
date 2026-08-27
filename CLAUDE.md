@@ -1091,8 +1091,13 @@ runs** (B45, 2026-08-26) — so every `Mtok` and every tok/action figure derived
 the requests that came back. Individual games reach **100%**: four runs contain a game that took
 **0 actions while generating 96 k–133 k tokens**, which is the mechanism under the zero-action
 stalls this repo had recorded three times without one. It pulls logs through
-`KaggleApi().kernels_logs(<slug>)` rather than `kernels output`, which writes the log last and dies
-on the 250 MB `vllm-site-packages` directory; no GPU slot, no run. ⚠️ Two things it does not
+`KaggleApi().kernels_logs(<slug>)` rather than a whole-output download, which writes the log last
+and dies on the 250 MB `vllm-site-packages` directory; no GPU slot, no run. ⚠️ **That trap is
+avoidable and this repo recorded it as if it were not**: `kernels_output` takes a `file_pattern`
+REGEX and `kernels_list_files` enumerates — measured 2026-08-27, `file_pattern=r".*_usage\.jsonl"`
+on `yocybercode/thui-v1-1-r2` returns all 25 usage files (largest 20 KB, no blob) out of 209.
+`eval/abandoned_tokens.py --fetch-usage <run>` is that call, and it is what makes any per-request
+question free on a run carrying `thuiv1`'s probe. ⚠️ Two things it does not
 establish: what `note=` counts is INFERRED (three checks in the module docstring, none decisive
 alone), and no cap that would bound the leak has ever been measured — `v9` proved 768 fatal and
 nothing between 768 and unbounded has run. `--check` grades the slug→run mapping by asserting the
