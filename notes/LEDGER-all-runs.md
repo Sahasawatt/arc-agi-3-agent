@@ -244,7 +244,9 @@ been measuring one thing from two sides.
 
 `tr87` spent **7,914 s of a 7,920 s clock** on 63 requests, **none longer than 147.6 s** — so it
 carries no 900 s hang either, and instrument 2's bound is met from the other direction. It is
-**63 steps of one action that never ended**, which is `LOCAL_ANALYZER_TOOL_STEPS = '0'` read
+**63 requests under one action that never ended** ⚠️ (whether they are steps of ONE tool-step loop
+or one step each of 63 successive turns is not settled by this table — see *Can a TOOL_STEPS cap
+even bind* below), which is `LOCAL_ANALYZER_TOOL_STEPS = '0'` read
 directly rather than by residual. **The discriminator is the action-id count, not the request
 count**: the healthy control advances through 23 ids on *fewer* requests than `tr87` fired under one.
 
@@ -298,7 +300,8 @@ R35's sample all along and its 0.98% already prices them, which follows directly
 `usage sum == N`: if every returned request writes a row and the sum equals `N`, the sample R35 read
 IS the generated population. **So the cap axis gains nothing from a re-probe** — the reason to leave
 `LOCAL_ANALYZER_MAX_OUTPUT` alone is now a measurement rather than `v9`'s wreck, and B46's
-`LOCAL_ANALYZER_TOOL_STEPS` is the only untried knob on this axis.
+`LOCAL_ANALYZER_TOOL_STEPS` is the only untried knob on this axis — ⚠️ untried, but not established
+to be REACHABLE; see *Can a TOOL_STEPS cap even bind* below.
 
 Method: `KaggleApi().kernels_logs(<slug>)`, one call per run, no slot and no GPU.
 Script `eval/abandoned_tokens.py`.
@@ -352,8 +355,10 @@ LOCAL_ANALYZER_MAX_OUTPUT = '0'      unbounded output per response
 LOCAL_ANALYZER_TOOL_STEPS = '0'      unbounded tool steps per ACTION      <- this one
 ```
 
-One action is an unbounded tool-calling loop. A **step** is bounded — 900 s, and it is killed and
-retried when it blows. The **loop** is bounded by nothing but the game wall. `lp85` solo is the
+One action is a tool-calling loop. A **step** is bounded — 900 s, and it is killed and retried when
+it blows. ⚠️ **The loop is NOT bounded only by the game wall — see *Can a TOOL_STEPS cap even bind*
+below.** It carries a second bound this section missed, `LOCAL_ANALYZER_YIELD_SECONDS = 60`, and on
+measured request costs that bound fires **14–25× sooner than a cap of 12 ever could**. `lp85` solo is the
 clean case: between its last completed action (t=4609) and the wall it spent **3,682 s and ~159 k
 tokens with zero failures logged** — every request in that window returned, and the action simply
 never finished.
@@ -361,9 +366,10 @@ never finished.
 **So the two fixes the Fog named are aimed at the smaller half.** An output cap is
 `LOCAL_ANALYZER_MAX_OUTPUT`, which bounds ONE response — `v9` set it to 768 and killed the run by
 truncating the tool call that carries the action. A shorter request timeout attacks the 900 s
-population. Neither bounds the loop. **`LOCAL_ANALYZER_TOOL_STEPS` is `0` in every run this
-campaign has produced and has never been changed** — a different knob from the one `v9` poisoned,
-and the first untried thing this axis has offered.
+population. **`LOCAL_ANALYZER_TOOL_STEPS` is `0` in every run this campaign has produced and has
+never been changed** — a different knob from the one `v9` poisoned. ⚠️ **Whether a cap on it can
+bind at all is UNRESOLVED, and this section first asserted that it could**; the arithmetic against
+it, and the one-line check that settles it, are in *Can a TOOL_STEPS cap even bind* below.
 
 ⚠️ **The residual is an ESTIMATE for the 25-game runs**, and the error source is named: it prices a
 hang at the run's *average* per-game rate, and a hung request may generate faster, slower, or not at
@@ -379,6 +385,63 @@ prints `max_runtime_s_per_game=7920.0` — including `clock2x`, whose games actu
 (`duration: 4h 24m 50s`, and B34's whole point). The field is the value *before* the override lands,
 so it is not evidence of the budget in force; the run duration is. `--shape` flags the mismatch
 rather than trusting either number.
+
+### Can a TOOL_STEPS cap even bind — the arithmetic says no, and one field settles it
+
+`tool_agent.py` is byte-identical across all five vendored copies (`856bf9b8`), and the loop a
+`TOOL_STEPS` cap acts on carries a **second** bound this section originally missed:
+
+```python
+_LOCAL_ANALYZER_TOOL_STEPS = _get_env_int("LOCAL_ANALYZER_TOOL_STEPS", 12)   # :151  default 12; we ship 0
+turn_started_at = time.monotonic()                                           # :2151 once per analyze()
+def control_yield_reason():
+    if self._yield_seconds is not None and (time.monotonic() - turn_started_at) >= self._yield_seconds:
+        return "turn_time_budget"                                            # :2161  yield = 60
+while self._tool_steps is None or turn_count < self._tool_steps:             # :2167
+    if control_yield_reason() is not None: break                             # checked at the TOP
+    turn_count += 1
+    ...one request...
+```
+
+`turn_started_at` is set **once per `analyze()` call**, and the yield is checked **before** each
+iteration. So the first request that costs more than 60 s makes iteration 2 break — **`turn_count`
+= 1**. Against `tr87`'s measured **125.6 s** mean per request and `bp35`'s **72.0 s** (their own
+`sum wall_s / rows`, from the table above), a cap of 12 could only bind at **≤5 s per request** —
+**14–25× away**. Two consequences: a `TOOL_STEPS` cap is inert at this latency, and the `0` this
+campaign has always shipped has been indistinguishable from the harness's own default of 12.
+
+**The loop that has no bound is one level out**, `framework/solver.py:316`:
+
+```python
+while not self.should_stop():                 # stop = event | run complete | GAME WALL | max_actions(None)
+    result = self.analyzer.analyze(...)
+    if result.retryable_failure:  ... continue    # no counter
+    if result.yielded_control:    ... continue    # no counter
+    if not result.step_executed:      continue    # no counter
+```
+
+All three no-action exits `continue` with nothing counting them, and a yield keeps the history
+(`preserve_history = True`) and reuses the same `analysis_step`, so a turn that yields resumes
+rather than restarts. That is the shape B40 measures at **30.5% / 30.2%** of turns.
+
+⚠️ **Both readings fit every number banked.** `tr87`'s 63 requests under one action id are either
+63 iterations of the inner loop (one `analyze()`) or one iteration each of 63 successive turns
+(63 `analyze()` calls) — and `analysis_step` cannot tell them apart, because a yield sets
+`retry_analysis_step = analysis_step` and the counter does not advance.
+
+**The field that does is `req_in_turn`**, which the usage probe resets on every `analyze()` call —
+*"A turn is one analyze() call; requests within it are numbered from 1"*
+(`thuiv1/request_usage_probe.py:109`). On any banked `*_usage.jsonl`:
+
+```
+max(req_in_turn) for tr87 == 1    ->  63 turns, the OUTER loop; a TOOL_STEPS cap is inert
+max(req_in_turn) for tr87 == 63   ->  one turn, the INNER loop; a cap binds and is worth a probe
+```
+
+⚠️ **Not run here** — no `*_usage.jsonl` is banked on this machine, and `duckv10` (both solo runs)
+does not carry the probe at all; it is `thuiv1`'s cell 12. `thui-v1-1-r2`'s Kaggle output does hold
+them. The check costs no slot. ⚠️ The code reading above is a reading, not an execution: it
+predicts `max(req_in_turn) == 1` and is refuted by any other value.
 
 Method: `eval/abandoned_tokens.py --shape`. Same logs, same API, no slot.
 
