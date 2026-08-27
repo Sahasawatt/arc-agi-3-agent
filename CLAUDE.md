@@ -1098,6 +1098,19 @@ nothing between 768 and unbounded has run. `--check` grades the slug→run mappi
 parsed action totals equal the LEDGER's, 17 of 17 exactly; the assertion is the only thing tying a
 slug to a row, since `kernels_logs` always returns a slug's LATEST version.
 
+`--shape` answers **where** it is (B46). The `read timeout=` value on the one error line any run
+prints splits cleanly into hangs at `analyzer_timeout=900` (8–35/run, and the action retries at
+~901 s intervals) and the terminal cancellation at the wall (21–25/run = one per game). Pricing
+both leaves a **median ~45% residual** on the shared runs and **98–99% on the solo runs, which log
+zero hangs** — so the bulk is generation inside requests that SUCCEEDED, in an action that never
+terminated. That is **`LOCAL_ANALYZER_TOOL_STEPS = '0'`**: a step is bounded at 900 s, the LOOP is
+bounded only by the game wall, and **this knob has never been changed in any run of this campaign**
+— it is not the `LOCAL_ANALYZER_MAX_OUTPUT` that `v9` set to 768 and died on. ⚠️ The residual is an
+estimate for 25-game runs and not for solo, and solo's zero hangs discriminates nothing (p = 0.49
+under the shared per-action rate). ⚠️ It also flags a config that lies: **every run prints
+`max_runtime_s_per_game=7920.0`, `clock2x` included, whose games ran 15,891 s** — that field is
+pre-override, so read the run duration instead.
+
 ## Layout, in dependency order
 
 One-off probe scripts (the `<game>_<tag>.py` instruments the README cites by bare

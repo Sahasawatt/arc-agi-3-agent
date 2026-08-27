@@ -25,6 +25,7 @@ Reads logs over the API rather than `kernels output`, which writes the log LAST 
     python eval/abandoned_tokens.py --games v26     # per-game breakdown for one run
 """
 import argparse
+import json
 import os
 import pathlib
 import re
@@ -97,12 +98,77 @@ def games(api, slug):
     return [(r[0], r[1], f"{r[2]}/{r[3]}", int(r[5]), int(r[6]), int(r[7])) for r in rows]
 
 
+FAILED = re.compile(r"analyzer request failed at action (\d+): .*?\(read timeout=([\d.]+)\)")
+PER_GAME_CFG = re.compile(r"max_runtime_s_per_game=([\d.]+)")
+
+
+def timeouts(api, slug):
+    """Unique (t, action, read_timeout) triples. Every log duplicates stderr exactly x2."""
+    raw = api.kernels_logs(slug)
+    raw = raw if isinstance(raw, str) else str(raw)
+    recs = json.loads(raw)
+    ev = {(round(r.get("time", 0), 2), int(m.group(1)), float(m.group(2)))
+          for r in recs for line in r.get("data", "").split("\n")
+          if (m := FAILED.search(line))}
+    return raw, recs, sorted(ev)
+
+
+def shape(api):
+    """B46 -- which of the two candidate mechanisms the abandoned generation is in.
+
+    Split the only error line any run prints by its read-timeout VALUE:
+      == 900.0  a request killed at analyzer_timeout, mid-run. The action RETRIES: v26 fires
+                action 18 at t=6434.8 and 7335.9, 48 at 6660.6 and 7561.8, 37 at 6813.4 and
+                7714.5 -- deltas 901.1 / 901.2 / 901.1, and nothing bounds the count.
+      <  900.0  the terminal cancellation at the wall, one per game still mid-request. Always
+                inside the last 1% of the run; the value is the budget that was left.
+
+    Then ask whether those two account for the abandonment, pricing each interval at the run's
+    average per-game token rate. They do not: the residual is the work inside actions that never
+    terminated, because LOCAL_ANALYZER_TOOL_STEPS is 0 -- a step is bounded at 900 s, the LOOP is
+    bounded by nothing but the game wall.
+
+    The residual is an ESTIMATE for a 25-game run (a hung request may generate at a rate other
+    than the average). It is NOT an estimate for the solo runs: they log zero hangs, so there is
+    nothing to model and ~98% of their abandonment is measured directly.
+    """
+    print(f"{'run':14s} {'wall(cfg)':>9} {'wall(log)':>9} {'hung':>5} {'term':>5} "
+          f"{'abandoned':>10} {'hung tok':>9} {'term tok':>8} {'RESIDUAL':>10} {'%':>5}")
+    for name, slug in RUNS.items():
+        raw, recs, ev = timeouts(api, slug)
+        rows = games(api, slug)
+        n = len(rows)
+        gen = sum(r[5] for r in rows)
+        aband = gen - sum(r[4] for r in rows)
+        t0 = min((r["time"] for r in recs if "benchmark.label" in r.get("data", "")), default=0)
+        t1 = max((r["time"] for r in recs if "[finished]" in r.get("data", "")), default=0)
+        wall_log = t1 - t0
+        wall_cfg = float(PER_GAME_CFG.findall(raw)[0])
+        rate = gen / n / wall_log
+        hung_ev = [e for e in ev if abs(e[2] - 900.0) < 0.01]
+        term_ev = [e for e in ev if abs(e[2] - 900.0) >= 0.01]
+        hung = 900.0 * len(hung_ev) * rate
+        term = sum(e[2] for e in term_ev) * rate
+        res = aband - hung - term
+        # The config echo is printed BEFORE any override lands: clock2x says 7920 and gave its
+        # games 15,890 s. Flag it rather than trusting either number silently.
+        flag = "  <- cfg != actual" if abs(wall_cfg - wall_log) > 300 else ""
+        print(f"{name:14s} {wall_cfg:>9.0f} {wall_log:>9.0f} {len(hung_ev):>5} {len(term_ev):>5} "
+              f"{aband:>10,} {hung:>9,.0f} {term:>8,.0f} {res:>10,.0f} "
+              f"{100.0 * res / aband:>4.0f}%{flag}")
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true", help="assert actions match LEDGER_ACTIONS")
     ap.add_argument("--games", metavar="RUN", help="per-game breakdown for one run")
+    ap.add_argument("--shape", action="store_true",
+                    help="B46: split the abandonment into hung / terminal / unbounded-loop")
     args = ap.parse_args()
     api = _api()
+
+    if args.shape:
+        shape(api)
+        return
 
     if args.games:
         if args.games not in RUNS:
