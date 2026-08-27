@@ -11,20 +11,23 @@ a lever.
 | `v1.0` | `thuiv1/` | the per-request usage probe in cell 12 | 3.20 | [v1-0](v1/v1-0.md) |
 | `v1.1` | `thuiv1/v1-1/` | probe **+** `LOCAL_ANALYZER_SEED` — `B37`'s clean arm | **5.24** | [v1-1](v1/v1-1.md) |
 | `v2.0` | `thuiv2/` | animation retrieval **OFF** (`B39`) | 2.86 | [v2-0](v2/v2-0.md) |
+| `v3.0` | `thuiv3/` | `LOCAL_ANALYZER_YIELD_SECONDS` 60 → 180 (`B48`) | 4.01 | [v3-0](v3/v3-0.md) |
 
 Numbers are dated readings from `notes/LEDGER-all-runs.md` as of **2026-08-27**; that file is the
 authority.
 
-⚠️ **`v3.0` exists as a branch and is NOT merged.** `thuiv3/` — `LOCAL_ANALYZER_YIELD_SECONDS`
-60 → 180, ticket `B48` — lives on `thuiv3-yield` and has no directory at `master`, so it has no
-page here yet. A page pointing at a directory that does not exist is worse than no page.
+⚠️ **`v3.0` landed on `master` 2026-08-27**, after the run closed `B48`. It was on the
+`thuiv3-yield` branch while it was in flight, and that branch is now behind `master` on everything
+else — only its `thuiv3/` commit was taken.
 
 ## Why the line exists
 
-`thui-v1-1-r2` is **the only run of the eight on disk that carries `req_in_turn`** — the other
-seven have no `*_usage.jsonl` at all. Every per-request finding this campaign has (`R44`'s decode
-rate, the turn-budget mechanism, the ReadTimeout count) rests on that single run, at **n = 1**.
-Extending that n is most of what a thui run buys regardless of what it scores.
+`thui-v1-1-r2` was for two days **the only run on disk carrying `req_in_turn`**, so every
+per-request finding this campaign has (`R44`'s decode rate, the turn-budget mechanism, the
+ReadTimeout count) rested on one run at **n = 1**. `thui-v3-0` is the second, and because it moved
+the knob rather than repeating the build it did more than double the n — it turned `R44` §3's
+inferred gate into a measured one (`R47`). Extending that n is most of what a thui run buys
+regardless of what it scores, and this is the worked example.
 
 ## The versioning convention
 
