@@ -1352,6 +1352,34 @@ gateway is unaffected). Verification state lives in the brief's QUEUE item 0: le
 of ls20 replay through the pipe action-for-action; level 6 diverges, under measurement.
 
 
+### Line B's cell 0 is INHERITED, and it used to carry someone else's name
+
+Every Line B builder copies its base notebook and patches one cell, so **cell 0 has never been
+touched by any builder** — it came down the chain verbatim from Tufa Labs' published notebook. The
+result was 14 tracked notebooks, and every kernel built from them, titled *"Tufa Labs ARC3
+submission"* with their logo, their author list, and their first-person claim to a **1.21** milestone
+score, on a Thuitanium submission. Nothing in this repo recorded that (`Tufa`: 0 hits in this file,
+`cell 0`: 0 hits, before this section).
+
+`kaggle/fix_cell0_attribution.py` owns cell 0 now. It stamps `kaggle/cell0_header.md` into every
+tracked `*.ipynb`, is idempotent, and takes `--check` for a dry run.
+
+- **The header is build-agnostic ON PURPOSE.** Builders copy their base, so a per-build "what I
+  changed" list would be inherited by the next build and be *wrong there*. The header names the
+  fork's changes at the level of the LINE (cell 8, cell 12, and Tufa's `__TAAF_*__` placeholders)
+  and points at each build's own cell comment and `build_notebook.py` for the specific lever.
+- **`localrig/` is skipped.** Those two notebooks are Tufa's own vendored files; retitling them
+  would be the same error in the other direction.
+- **Rebuilding does not undo it** — a build copies the fixed base, so the fix propagates. Verified:
+  `thuiv3/build_notebook.py` reproduces its notebook byte-identically after the fix.
+- The "what we modified" list was **measured** by diffing `duckv10` against the upstream template in
+  `localrig/`, not recalled. Cells 2/4/6/14 are placeholder substitution every fork performs and are
+  labelled as such rather than claimed.
+
+⚠️ **Kernels already pushed to Kaggle still carry the OLD cell 0.** Fixing those is a separate,
+outward-facing action — it pushes a new kernel version, and one of them has a live submission.
+
+
 ## Versioning (adopted 2026-08-25, user directive)
 
 The vNN-per-experiment era ended at v24 (11 measured modifications, 0 above band; dead
