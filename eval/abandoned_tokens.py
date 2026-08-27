@@ -36,6 +36,7 @@ that call; it is what makes a per-request question answerable on any run carryin
     python eval/abandoned_tokens.py --check         # + the actions control against LEDGER_ACTIONS
     python eval/abandoned_tokens.py --games v26     # per-game breakdown for one run
     python eval/abandoned_tokens.py --fetch-usage thui-v1-1-r2 --out /tmp/u   # per-request rows
+    python eval/abandoned_tokens.py --steps /tmp/u0 /tmp/u1 /tmp/u2   # can a step cap bind?
 """
 import argparse
 import json
@@ -155,6 +156,70 @@ def fetch_usage(api, run, out_dir):
         print(f"  {p.name}  {p.stat().st_size:>8,} B")
 
 
+def steps(dirs):
+    r"""Steps per turn, and the token-budget fit, over directories of *_usage.jsonl.
+
+    A turn is one analyze() call, and req_in_turn restarts at 1 in each -- so the runs of rows
+    between successive 1s ARE the turns. Feed it directories written by --fetch-usage.
+
+    What it answers: whether a LOCAL_ANALYZER_TOOL_STEPS cap could bind. Measured over the three
+    runs that carry the probe (2026-08-27): 3,948 requests, 3,090 turns, and a cap of 12 cuts
+    ZERO turns. But the deepest turn anywhere is 11, so the margin is ONE -- the same shape R43
+    showed to be untrustworthy for B38's k=20. It did not bind; it is not shown that it cannot.
+
+    The bound is always the 60 s budget, never the count: the six deepest turns are all one game
+    (thui-v1-1 bp35, action 63) whose requests cost 4.6-12.0 s against a corpus median of 101.9,
+    and each of those turns totals ~60 s. Reaching 12 needs <= 5.0 s per request; the deepest
+    turn averaged 5.44.
+    """
+    import collections, json, pathlib
+    per_turn, pts, sums = [], [], {}
+    for d in dirs:
+        p = pathlib.Path(d)
+        files = sorted(p.glob("*_usage.jsonl"))
+        if not files:
+            raise SystemExit(f"{d}: no *_usage.jsonl -- run --fetch-usage first")
+        n, cur_total = 0, 0
+        for f in files:
+            rows = [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()]
+            if not rows or "req_in_turn" not in rows[0]:
+                raise SystemExit(f"{f.name}: no req_in_turn -- not a probe usage file")
+            n += len(rows)
+            turn = 0
+            for r in rows:
+                if r["req_in_turn"] == 1:
+                    if turn:
+                        per_turn.append(turn)
+                    turn = 1
+                else:
+                    turn += 1
+                if r.get("completion_tokens") is not None and r.get("wall_s") is not None:
+                    pts.append((r["completion_tokens"], r["wall_s"]))
+                    cur_total += r["completion_tokens"]
+            if turn:
+                per_turn.append(turn)
+        sums[p.name] = (n, cur_total)
+    if sum(per_turn) != sum(v[0] for v in sums.values()):
+        raise SystemExit("closure failed: turns do not account for every row")
+    dist = collections.Counter(per_turn)
+    print(f"requests {sum(v[0] for v in sums.values()):,}   turns {len(per_turn):,}   "
+          f"deepest {max(per_turn)}")
+    for k in sorted(dist):
+        print(f"  {k:>3} steps: {dist[k]:>5}")
+    for cap in (2, 4, 5, 12):
+        print(f"  cap={cap:<3} cuts {sum(v for k, v in dist.items() if k > cap):>5} turns")
+    # wall_s = a + b*completion_tokens. #65 measured -1.6 + 0.0786x, R^2 0.9835 on thui-v1-1-r2.
+    n = len(pts); mx = sum(p[0] for p in pts)/n; my = sum(p[1] for p in pts)/n
+    b = sum((x-mx)*(y-my) for x, y in pts) / sum((x-mx)**2 for x, _ in pts)
+    a = my - b*mx
+    ss_res = sum((y-(a+b*x))**2 for x, y in pts)
+    ss_tot = sum((y-my)**2 for _, y in pts)
+    print(f"\nwall_s = {a:.2f} + {b:.4f} * completion_tokens   R^2 {1-ss_res/ss_tot:.4f}   "
+          f"decode {1/b:.1f} tok/s   60 s ~= {(60-a)/b:.0f} tokens")
+    for name, (rows, ct) in sums.items():
+        print(f"  {name}: {rows:,} rows, {ct:,} completion tokens")
+
+
 def shape(api):
     """B46 -- which of the two candidate mechanisms the abandoned generation is in.
 
@@ -213,10 +278,16 @@ def main():
     ap.add_argument("--fetch-usage", metavar="RUN", dest="fetch_usage",
                     help="download ONLY that run's *_usage.jsonl (needs --out)")
     ap.add_argument("--out", default="usage", help="directory for --fetch-usage")
+    ap.add_argument("--steps", nargs="+", metavar="DIR",
+                    help="steps per turn + the token-budget fit over --fetch-usage dirs")
     ap.add_argument("--shape", action="store_true",
                     help="B46: split the abandonment into hung / terminal / unbounded-loop")
     args = ap.parse_args()
     api = _api()
+
+    if args.steps:
+        steps(args.steps)
+        return
 
     if args.fetch_usage:
         fetch_usage(api, args.fetch_usage, args.out)

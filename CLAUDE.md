@@ -1110,11 +1110,14 @@ prints splits cleanly into hangs at `analyzer_timeout=900` (8–35/run, and the 
 both leaves a **median ~45% residual** on the shared runs and **98–99% on the solo runs, which log
 zero hangs** — so the bulk is generation inside requests that SUCCEEDED, in an action that never
 terminated. That is **`LOCAL_ANALYZER_TOOL_STEPS = '0'`**, which **has never been changed in any run of this
-campaign** and is not the `LOCAL_ANALYZER_MAX_OUTPUT` that `v9` set to 768 and died on. ⚠️ **But a
-cap on it may be unreachable**: the same loop carries `LOCAL_ANALYZER_YIELD_SECONDS = 60`, checked
-at the top of every iteration, and at the measured 72–126 s per request that fires after ONE step —
-14–25× before a cap of 12 could. Unresolved; the discriminator is `req_in_turn` in the banked usage
-rows. LEDGER §*Can a TOOL_STEPS cap even bind*. ⚠️ The residual is an
+campaign** and is not the `LOCAL_ANALYZER_MAX_OUTPUT` that `v9` set to 768 and died on. ⚠️ **A cap on it did NOT bind
+in 3,090 turns, and the margin is ONE**: the same loop carries `LOCAL_ANALYZER_YIELD_SECONDS = 60`,
+checked at the top of every iteration, so the budget binds and the count never does. Measured over
+all three probe runs (`--fetch-usage` then `--steps`, 3,948 requests): **cap 12 cuts 0 turns**, but
+the deepest turn anywhere is **11** — one below it — and reaching 12 needs ≤5.0 s per request
+against that turn's 5.44 s average. So *did not bind*, **not** *cannot bind*: the same
+margin-of-one shape `R43` showed to be untrustworthy for `B38`'s k=20. LEDGER §*Can a TOOL_STEPS
+cap even bind*. ⚠️ The residual is an
 estimate for 25-game runs and not for solo, and solo's zero hangs discriminates nothing (p = 0.49
 under the shared per-action rate). ⚠️ It also flags a config that lies: **every run prints
 `max_runtime_s_per_game=7920.0`, `clock2x` included, whose games ran 15,891 s** — that field is

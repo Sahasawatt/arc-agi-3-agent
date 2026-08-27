@@ -439,9 +439,26 @@ max(req_in_turn) for tr87 == 1    ->  63 turns, the OUTER loop; a TOOL_STEPS cap
 max(req_in_turn) for tr87 == 63   ->  one turn, the INNER loop; a cap binds and is worth a probe
 ```
 
-⚠️ **Not run here** — no `*_usage.jsonl` is banked on this machine, and `duckv10` (both solo runs)
-does not carry the probe at all; it is `thuiv1`'s cell 12. `thui-v1-1-r2`'s Kaggle output does hold
-them. The check costs no slot. ⚠️ The code reading above is a reading, not an execution: it
+✅ **RUN 2026-08-27, on all three probe runs.** `tr87` is **2** — so the pure-outer-loop reading
+above is wrong too, and `#65` reached the same number first. What it settles is the conclusion, not
+either prediction: over `thui-v1-0`, `thui-v1-1` and `thui-v1-1-r2` — **3,948 requests, 3,090
+turns** — a cap of **12 cuts 0 turns**, and 82.6% of turns are a single step.
+
+⚠️ **The margin is ONE, which is the shape `R43` just showed to be untrustworthy.** The deepest
+turn in the corpus is **11**, in `thui-v1-1`/`bp35` at `action=63`; the six deepest are all that one
+game, their requests cost **4.6–12.0 s** against a corpus median of **101.9 s**, and each totals
+~60 s. So the binding constraint is always the budget — but reaching 12 needs ≤5.0 s per request
+and that turn averaged **5.44 s**. **Did not bind ≠ cannot bind.**
+
+Three things replicate at n=3 that were n=1 before. **`usage sum == note N` on all three runs**
+(2,461,226 / 2,369,874 / 2,386,886, exact), so RETURNED-NOT-COUNTED is no longer one run. **The
+token-budget fit holds** — R² **0.9870 / 0.9886 / 0.9835**, decode **13.1 / 13.3 / 12.7 tok/s**,
+60 s ≈ **811 / 817 / 784** completion tokens; the `-r2` row reproduces `#65`'s published
+`-1.6 + 0.0786x`, R² 0.9835, 12.7 tok/s, 784 to every digit. And **R35's own published number
+reproduces**: a cap at 8,192 saves **0.98%** of `thui-v1-0`'s output and 12,288 saves **0.00%**,
+which is the external control on the parse.
+
+Method: `eval/abandoned_tokens.py --fetch-usage <run> --out <dir>` then `--steps <dirs>`. No slot. ⚠️ The code reading above is a reading, not an execution: it
 predicts `max(req_in_turn) == 1` and is refuted by any other value.
 
 Method: `eval/abandoned_tokens.py --shape`. Same logs, same API, no slot.
