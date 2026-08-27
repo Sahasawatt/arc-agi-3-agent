@@ -6,9 +6,15 @@ Each game prints one `[finished]` line carrying TWO token figures:
         tokens=154026 per-level=9/17,5/38,... note="tokens=312989"
 
 `tokens=` is what `summary.txt` totals and what the LEDGER's `Mtok` column reports. The trailing
-`note="tokens=N"` is larger, and the gap is generation that was still in flight when the game hit
-`max_runtime_s_per_game`. No committed artifact carries either field — they exist only in the
-Kaggle kernel log, which is why nine runs of analysis never mentioned them.
+`note="tokens=N"` is larger, and the gap is generation that RETURNED but was never credited to an
+action. No committed artifact carries either field -- they exist only in the Kaggle kernel log,
+which is why nine runs of analysis never mentioned them.
+
+The gap was first read as generation still IN FLIGHT at the wall. That is refuted, from two
+instruments: per-request usage rows on thui-v1-1-r2 sum to exactly N on 25 of 25 games (a request
+in flight writes no row, so in-flight would give a sum BELOW N -- Watchara, arc-agi-pub #146), and
+in the solo runs a 3,682 s stall printed no 900 s timeout, which a single long request could not
+do. See --shape.
 
 ⚠️ What `note=` counts is INFERRED. The reading survives three checks and none is decisive alone:
   a) games that finish cleanly give note == tokens EXACTLY, so `note` is not prompt+completion --

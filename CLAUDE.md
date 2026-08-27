@@ -1084,8 +1084,9 @@ per-game variance, and not a shallow game. Efficiency headroom over all 25 games
 
 `eval/abandoned_tokens.py` reads the one quantity no committed artifact carries: the
 `note="tokens=N"` field on each game's `[finished]` line, which is larger than the `tokens=M`
-that `summary.txt` totals and that the LEDGER's `Mtok` column reports. **N − M is generation still
-in flight when the game hit `max_runtime_s_per_game`**, and it is **9.1%–25.0% of every one of 17
+that `summary.txt` totals and that the LEDGER's `Mtok` column reports. **N − M is generation that
+returned but was never credited to an action** — ⚠️ NOT generation in flight, which was the first
+reading and is refuted (B46 + `arc-agi-pub` #146) — and it is **9.1%–25.0% of every one of 17
 runs** (B45, 2026-08-26) — so every `Mtok` and every tok/action figure derived from one counts only
 the requests that came back. Individual games reach **100%**: four runs contain a game that took
 **0 actions while generating 96 k–133 k tokens**, which is the mechanism under the zero-action
