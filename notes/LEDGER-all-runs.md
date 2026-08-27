@@ -128,9 +128,10 @@ first written.** The census below finds abandoned generation in **every one of 1
 25.0% of tokens, with individual games reaching **100%**. Solo’s 24.1% and 50.8% sit in the upper
 part of that per-game distribution and outside none of it, on n=2. What the solo runs did was make
 a campaign-wide leak visible, by removing the 24 other games whose progress had been hiding it.
-⚠️ The cross-check that would have said otherwise is blind here: R35 read `thui-v1`’s per-request
-completion tokens and concluded *no cap is worth placing — 8192 saves 0.98%*, but that probe reads
-`*_usage.jsonl`, which a request that never returns never writes.
+⚠️ **This paragraph claimed R35 was blind here. It is not** (corrected 2026-08-27, and it is the
+one claim §What the gap actually is left standing). R35 read `thui-v1-0`’s per-request completion
+tokens and concluded *no cap is worth placing — 8192 saves 0.98%*; **its denominator is the
+GENERATED total, not the counted one** — see below.
 
 ⚠️ `LOCAL_ANALYZER_MAX_OUTPUT` is 0 (uncapped) here, and `v9` proved a hard cap of 768 destroys the
 run by truncating the tool call that carries the action. Nothing in this campaign has ever measured
@@ -232,6 +233,21 @@ turns that produced no action**, which is `B40`'s population — *every `analysi
 tool_calls`*, measured at **30.5%** of turns on `clock2x` and **30.2%** on `v25`. B45 and B40 have
 been measuring one thing from two sides.
 
+**What the same rows say about the SHAPE, and it is B46's loop seen per request** (added
+2026-08-27, same probe, same files):
+
+| game | rows | distinct `action` ids | max `wall_s` | sum `wall_s` | finish |
+|---|---|---|---|---|---|
+| `cd82` (43 actions, control) | 45 | **23** | 612.7 | 7,912.2 | 44 `tool_calls`, 1 RTO |
+| `bp35` (1 action, 94.4%) | 110 | **2** | 164.0 | 7,915.8 | 109 `tool_calls`, 1 RTO |
+| `tr87` (0 actions, 100%) | 63 | **1** | 147.6 | 7,914.0 | 62 `tool_calls`, 1 RTO |
+
+`tr87` spent **7,914 s of a 7,920 s clock** on 63 requests, **none longer than 147.6 s** — so it
+carries no 900 s hang either, and instrument 2's bound is met from the other direction. It is
+**63 steps of one action that never ended**, which is `LOCAL_ANALYZER_TOOL_STEPS = '0'` read
+directly rather than by residual. **The discriminator is the action-id count, not the request
+count**: the healthy control advances through 23 ids on *fewer* requests than `tr87` fired under one.
+
 ⚠️ **n = 1 run for instrument 1** — the other three 100% games (`v14`/`ar25`, `v16`/`dc22`,
 `v25`/`ft09`) have no banked usage files and are untested. ⚠️ **What `M` counts is inferred, not
 read from the harness** — *"turns that produced an action"* fits every row, but the code was not
@@ -252,8 +268,11 @@ its magnitude was understated and its units were mixed.
 **The zero-action stalls this campaign has recorded three times now have a mechanism.** Every game
 that hit 100% abandoned took **0 actions while generating 96 k–133 k tokens**: `v14`/`ar25`,
 `v16`/`dc22`, `v25`/`ft09`, `thui-v1-1-r2`/`tr87`. They were not idle and they were not blocked —
-they were generating into requests that never returned. `bp35` sits next to `tr87` at **94.4%** on
-1 action, and at **94.9%** on 1 action in `v25`.
+they were generating inside an action that never terminated. `bp35` sits next to `tr87` at **94.4%**
+on 1 action, and at **94.9%** on 1 action in `v25`.
+
+⚠️ **This sentence read *"into requests that never returned"* until 2026-08-27** — see
+§What the gap actually is, above.
 
 ⚠️ **That refutes the attribution the `v25` row currently carries.** It reads the `ft09`/`bp35`
 stall as belonging *to the duckmod prompt, not to the harness or the sampler*, on the evidence that
@@ -268,8 +287,18 @@ distribution whose median is 0–13.4% and whose maximum reaches 100% in four of
 
 ⚠️ **Nothing here measures a fix.** `v9` proved `LOCAL_ANALYZER_MAX_OUTPUT=768` is fatal
 (`finish_reason=length` 704 times against 68 tool calls) and no value between 768 and unbounded has
-ever been run. R35's *no cap is worth placing — 8192 saves 0.98%* was measured on `*_usage.jsonl`,
-which a request that never returns never writes, so it is silent about exactly this population.
+ever been run. ⚠️ **The line that stood here — *R35's 8192 saves 0.98% was measured on `*_usage.jsonl`, which a
+request that never returns never writes, so it is silent about exactly this population* — is
+REFUTED by this table's own arithmetic, 2026-08-27.** It is the last surviving consequence of the
+in-flight reading. R35's three cap rows share one denominator: **24,173 / 0.0098**,
+**318,137 / 0.129** and **847,994 / 0.344** all give **2.466 M**. That is `thui-v1-0`'s
+**generated** 2.46 in the table above, not its **counted** 2.16 — a 14% gap that lands inside this
+census's 9.1–25.0% band, and `thui-v1-0`'s own row says **12.3%**. The abandoned tokens were inside
+R35's sample all along and its 0.98% already prices them, which follows directly from
+`usage sum == N`: if every returned request writes a row and the sum equals `N`, the sample R35 read
+IS the generated population. **So the cap axis gains nothing from a re-probe** — the reason to leave
+`LOCAL_ANALYZER_MAX_OUTPUT` alone is now a measurement rather than `v9`'s wreck, and B46's
+`LOCAL_ANALYZER_TOOL_STEPS` is the only untried knob on this axis.
 
 Method: `KaggleApi().kernels_logs(<slug>)`, one call per run, no slot and no GPU.
 Script `eval/abandoned_tokens.py`.
