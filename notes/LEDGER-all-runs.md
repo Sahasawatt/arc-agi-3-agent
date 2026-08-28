@@ -452,6 +452,17 @@ game, their requests cost **4.6–12.0 s** against a corpus median of **101.9 s*
 ~60 s. So the binding constraint is always the budget — but reaching 12 needs ≤5.0 s per request
 and that turn averaged **5.44 s**. **Did not bind ≠ cannot bind.**
 
+⚠️ **CROSSED 2026-08-28, on the fourth run.** `thui-v5-0` (yield 180 × temp 1.0, B53) runs
+**53 of 789 turns deeper than 12** — max **15**, with the distribution spiking at 12–15 (69 turns
+≥12) — so the harness default `TOOL_STEPS=12` **binds in this regime**: it would cut 80 of 2,274
+requests (3.5%), and the campaign's `0` stops being a no-op exactly here. *Did not bind* was a
+yield-60 fact; the margin-of-one warning above cashed. Verified from v5's own usage rows, not the
+run report. Two more numbers from the same rows: **within-run CV is super-additive like the
+depth** — 95.3% (base) → 101.9% (yield alone) → 115.3% (temp alone) → **138.7%** (both; +43.4
+against +26.6 if additive). ⚠️ And two statistics travel under one name: #86's *req_in_turn mean
+3.97* is the mean of the FIELD over rows, which weights deep turns quadratically; requests/turns
+is **2.88**. Max agrees at 15 — cite either only with its definition.
+
 Three things replicate at n=3 that were n=1 before. **`usage sum == note N` on all three runs**
 (2,461,226 / 2,369,874 / 2,386,886, exact), so RETURNED-NOT-COUNTED is no longer one run. **The
 token-budget fit holds** — R² **0.9870 / 0.9886 / 0.9835**, decode **13.1 / 13.3 / 12.7 tok/s**,
