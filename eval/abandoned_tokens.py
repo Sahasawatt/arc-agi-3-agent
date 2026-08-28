@@ -67,9 +67,8 @@ RUNS = {
     "thui-v2-0": "yocybercode/thui-v2-0",
     "thui-v3-0": "yocybercode/thui-v3-0",
     "thui-v4-0": "yocybercode/thui-v4-0",
+    "thui-v5-0": "yocybercode/thui-v5-0",
     "clock2x": "yocybercode/clock-2x-v1",
-    "thui-v3-0": "yocybercode/thui-v3-0",
-    "thui-v4-0": "yocybercode/thui-v4-0",
     "solo-sk48": "sahasawatt/taaf-solo-sk48",
     "solo-lp85": "sahasawatt/taaf-solo-lp85",
 }
@@ -80,9 +79,8 @@ LEDGER_ACTIONS = {
     "v10cal": 1597, "v14": 1633, "v16": 1218, "v18": 1576, "v19": 1638, "v20": 7656,
     "v21": 2921, "v22": 1612, "v23": 1634, "v24": 1196, "v25": 1341, "v26": 1165,
     "thui-v1-0": 1493, "thui-v1-1": 1325, "thui-v1-1-r2": 1260, "thui-v2-0": 1425,
-    "thui-v3-0": 1401, "thui-v4-0": 1131,
+    "thui-v3-0": 1401, "thui-v4-0": 1131, "thui-v5-0": 1333,
     "clock2x": 2637,
-    "thui-v3-0": 1401, "thui-v4-0": 1131,
 }
 
 FINISHED = re.compile(
@@ -190,6 +188,9 @@ def steps(dirs):
     runs that carry the probe (2026-08-27): 3,948 requests, 3,090 turns, and a cap of 12 cuts
     ZERO turns. But the deepest turn anywhere is 11, so the margin is ONE -- the same shape R43
     showed to be untrustworthy for B38's k=20. It did not bind; it is not shown that it cannot.
+    CROSSED 2026-08-28: thui-v5-0 (yield 180 x temp 1.0) runs 53/789 turns deeper than 12
+    (max 15), so the default 12 BINDS in that regime -- the yield-60 conclusion stands only
+    at yield 60.
 
     The bound is always the 60 s budget, never the count: the six deepest turns are all one game
     (thui-v1-1 bp35, action 63) whose requests cost 4.6-12.0 s against a corpus median of 101.9,

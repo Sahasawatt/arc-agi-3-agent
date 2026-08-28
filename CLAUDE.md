@@ -1121,7 +1121,10 @@ census still separates absence from a broken filter (`v26`/`thui-v2-0`: 186 file
 `thui-v1-1`: 211 with 25). Over the first three (3,948 requests): **cap 12 cuts 0 turns**, but
 the deepest turn anywhere is **11** — one below it — and reaching 12 needs ≤5.0 s per request
 against that turn's 5.44 s average. So *did not bind*, **not** *cannot bind*: the same
-margin-of-one shape `R43` showed to be untrustworthy for `B38`'s k=20. LEDGER §*Can a TOOL_STEPS
+margin-of-one shape `R43` showed to be untrustworthy for `B38`'s k=20 — ⚠️ **and it cashed
+2026-08-28**: `thui-v5-0` (yield 180 × temp 1.0) runs 53 of 789 turns deeper than 12, max 15, so
+the harness default `12` BINDS in that regime, cutting 3.5% of requests; the conclusion stands
+only at yield 60. LEDGER §*Can a TOOL_STEPS
 cap even bind*. ⚠️ The residual is an
 estimate for 25-game runs and not for solo, and solo's zero hangs discriminates nothing (p = 0.49
 under the shared per-action rate). ⚠️ It also flags a config that lies: **every run prints
