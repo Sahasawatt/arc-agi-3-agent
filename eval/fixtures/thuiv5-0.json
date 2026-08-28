@@ -1,0 +1,131 @@
+{
+  "label": "thuiv5-0",
+  "source": "benchmark.json of kernel yocybercode/thui-v5-0 v1 (via rank_runs.load), 2026-08-28",
+  "games": {
+    "sk48": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 22
+    },
+    "tn36": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 4
+    },
+    "m0r0": {
+      "score": 0.5662193533774985,
+      "levels": 1,
+      "actions": 110
+    },
+    "bp35": {
+      "score": 0.6443129520052597,
+      "levels": 1,
+      "actions": 51
+    },
+    "cn04": {
+      "score": 4.761904761904762,
+      "levels": 1,
+      "actions": 57
+    },
+    "dc22": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 81
+    },
+    "tu93": {
+      "score": 4.105446009366925,
+      "levels": 2,
+      "actions": 96
+    },
+    "lp85": {
+      "score": 2.7777777777777777,
+      "levels": 1,
+      "actions": 73
+    },
+    "ka59": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 13
+    },
+    "wa30": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 38
+    },
+    "vc33": {
+      "score": 20.866527140156627,
+      "levels": 3,
+      "actions": 73
+    },
+    "lf52": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 29
+    },
+    "r11l": {
+      "score": 4.761904761904762,
+      "levels": 1,
+      "actions": 18
+    },
+    "sc25": {
+      "score": 5.390888033034777,
+      "levels": 2,
+      "actions": 112
+    },
+    "sp80": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 10
+    },
+    "ar25": {
+      "score": 8.333333333333332,
+      "levels": 2,
+      "actions": 77
+    },
+    "sb26": {
+      "score": 2.7777777777777777,
+      "levels": 1,
+      "actions": 25
+    },
+    "cd82": {
+      "score": 1.7018858583130796,
+      "levels": 1,
+      "actions": 142
+    },
+    "re86": {
+      "score": 7.279869401081522,
+      "levels": 2,
+      "actions": 75
+    },
+    "s5i5": {
+      "score": 1.7777777777777781,
+      "levels": 1,
+      "actions": 48
+    },
+    "ls20": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 37
+    },
+    "ft09": {
+      "score": 4.761904761904762,
+      "levels": 1,
+      "actions": 24
+    },
+    "su15": {
+      "score": 6.42716049382716,
+      "levels": 2,
+      "actions": 82
+    },
+    "tr87": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 14
+    },
+    "g50t": {
+      "score": 0.0,
+      "levels": 0,
+      "actions": 22
+    }
+  }
+}
