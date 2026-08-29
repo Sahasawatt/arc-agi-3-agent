@@ -57,6 +57,48 @@ up front: a silently degrading run looks like a normal one.
   ⚠️ A second reading belongs in the same pass: `prompt+completion` must stay under 65,536 on
   every request. The worst case observed today is 39,382; at the new budget it would be 60,117.
 
+### 1b. The build landed 2026-08-29 — and is UNRUN
+
+`thuiv6/`: `build_notebook.py` → `taaf-thui-v6-0.ipynb` + `kernel-metadata.json`, and
+`prove_teeth.py`. One `.replace()` link on cell 8's existing chain, base `thui-v1-1`. Cell 8 is
+the only cell that differs (17/17 compared) and every code cell parses — `ast.parse` is folded
+into the builder because the splice is string surgery, and a build that emits unparseable python
+fails at cell 8 *after* the kernel has paid for cells 0-7 on a GPU. A deliberately broken splice
+is caught, so that check discriminates.
+
+**The anchor was confirmed from two independent sources rather than a log echo.** The tracked
+generator `localrig/ARC3-Inference/inference/framework/kaggle.py:161` emits
+`ANALYZER_CONTEXT_WINDOW = __ANALYZER_CONTEXT_WINDOW__`, substituted at `:100` with
+`repr(int(os.environ.get("LOCAL_ANALYZER_CONTEXT_WINDOW") or cfg.max_model_len))` — a bare
+integer, no quotes. And the bundle on disk carries `ANALYZER_CONTEXT_WINDOW = 32768` exactly
+once, with `32768` occurring exactly once in the whole 10,076-char command; negative control
+`ZZZ_NEGATIVE_CONTROL` reads 0, so the counter discriminates.
+
+Six in-kernel teeth, each proven by its own mutation and none redundant:
+
+| tooth | the mutation that proves it |
+|---|---|
+| `49152` present | anchor moved (double space before `=`) |
+| `32768` absent | bundle already ships a different window (40960) |
+| exactly one assignment | assignment duplicated — two windows would race |
+| assignment still reaches `'LOCAL_ANALYZER_CONTEXT_WINDOW': str(...)` | env rewired off the variable, so the lever edits dead code |
+| `VLLM_MAX_MODEL_LEN = 65536` intact | ceiling lowered to 32768 — **49,152 was sized against that ceiling**, so a lowered one makes this build unsafe rather than merely different |
+| `'LOCAL_ANALYZER_YIELD_SECONDS': '60'` | YIELD crossed to 180 — a second variable |
+
+`prove_teeth.py` resolves its fixture from three sources in priority order and **prints which one
+it used**: `$THUI_SETUP_COMMAND` → the `~/Claude/arc-artifacts/thuiv1-1r2/…` log echo → the bundle
+on disk. It replays the v1-1 chain links when the fixture predates them, so a post-v1-1 log and a
+pre-v1-1 bundle grade the same text. ⚠️ **`thuiv3/prove_teeth.py` and `thuiv5/prove_teeth.py`
+hardcode that home path, which does not exist on this box — neither of those proofs can run
+here at all**, and a proof that cannot run is not a proof. Case 8 also greps all six predicates
+verbatim out of the shipped notebook, so this file cannot drift into being a kinder second
+implementation of the gate it is grading.
+
+⚠️ **Never pushed, never run.** GPU quota is exhausted on `sahasawatt`, and the kernel id is
+`yocybercode/thui-v6-0` — unreachable from this box, because the op vault is dead here and the
+submit gate G4 correctly refuses a `sahasawatt` token for a `yocybercode` kernel. Nothing above
+changes the honest priors: the mechanism is established, the size is not.
+
 ## 2. RESET does not lose the level (closes the full_reset question)
 
 All six RESETs in `duck-v10`'s event streams keep the level, including the two discriminating
