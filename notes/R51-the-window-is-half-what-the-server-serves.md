@@ -27,9 +27,23 @@ steady state, with `history_messages` flat at median 18 / max 36 while games run
 old evidence falls off the back every turn.
 
 **The candidate build is one environment variable and zero code**: `thui-v6-0` = `thui-v1-1` +
-`LOCAL_ANALYZER_CONTEXT_WINDOW=65536`. Budget becomes 64,512; the model can hold roughly **2.9×**
-the current history before eviction — the transitions it observed and the actions it already tried
-stay in view instead of scrolling away.
+`LOCAL_ANALYZER_CONTEXT_WINDOW=49152`.
+
+⚠️ **CORRECTED before any build — this section first said 65536, and that value is UNSAFE.**
+`max_model_len` bounds prompt **plus completion**, not the prompt alone. At a 65,536 window the
+prompt budget is 64,512, and the completion tail measured over **9,147 requests** across the six
+probe runs is p95 **5,148** / p99 **8,325** / max **11,989** — so 64,512 + p99 = **72,837**, past
+the server's 65,536 ceiling. The largest prompt+completion ever observed is 39,382, comfortably
+inside today's limits precisely because the prompt is capped at 31,744.
+
+Sizing it properly: budget + worst observed completion ≤ 65,536 ⇒ budget ≤ 53,547 ⇒ window
+≤ 54,571. **49,152** takes it with room: prompt budget **48,128** (+51.6% over today), and
+48,128 + the 11,989 worst case = 60,117, still **5.4k under** the ceiling. Retainable history rises
+~1.5×, not 2.9×.
+
+The harness does carry a context-length error path (`_is_context_length_error`), so an oversized
+window would likely degrade rather than crash — which is exactly why the arithmetic has to be done
+up front: a silently degrading run looks like a normal one.
 
 ⚠️ Honest priors, stated before any build:
 - This is NOT v16 (dead): v16 *injected* extra state into every turn; this stops *discarding*
@@ -38,8 +52,10 @@ stay in view instead of scrolling away.
   "more time" are cousins, and one is already dead.
 - Long-context degradation on a 27B is real; retained history may be noise, not signal.
 - A single public run cannot rank it (B35). The structural oracle is cheap though:
-  `history_messages` should roughly double and `prompt_tokens` should climb toward the new budget;
+  `history_messages` should rise by roughly half and `prompt_tokens` should climb toward 48,128;
   if they do not move, the knob did not deliver, same shape as P1 discipline everywhere else.
+  ⚠️ A second reading belongs in the same pass: `prompt+completion` must stay under 65,536 on
+  every request. The worst case observed today is 39,382; at the new budget it would be 60,117.
 
 ## 2. RESET does not lose the level (closes the full_reset question)
 
