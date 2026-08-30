@@ -62,6 +62,38 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
+- **Kaggle serves PRIVATE and PUBLIC kernels DIFFERENT `/kaggle/input` layouts, and the base
+  notebook hardcodes the public one — so every private kernel dies at cell 4 with a message that
+  reads like a missing wheel.** Measured 2026-08-30 on two same-day runs of one account: a public
+  kernel gets `/kaggle/input/competitions/<comp>/` with datasets under
+  `/kaggle/input/datasets/<owner>/<slug>`; a private one gets the FLAT form,
+  `/kaggle/input/<comp>/` and `/kaggle/input/<slug>`. `duckv10` cell 4 passes
+  `--find-links /kaggle/input/competitions/.../arc_agi_3_wheels` with `--no-index`, so on the flat
+  layout pip answers *"No matching distribution found for arc-agi"* and `check_call` kills the run
+  at 6.5 s. **The data is all there** — one path segment away.
+  What made this expensive is the shape of the evidence. Four hypotheses were each refuted by a
+  measurement before the real one was found: credentials (the account reads `competitions files`
+  fine), metadata (the REGISTERED spec Kaggle returns for the failed kernel is identical to the
+  running one on `competition_sources`, `dataset_sources`, `docker_image`, `enable_gpu`), the
+  notebook (cell 4 is byte-identical between the failing solo build and the succeeding thui build),
+  and a v1-attachment race (version 2 failed the same way). ⚠️ **`is_private` was then refuted
+  using a run from FOUR DAYS EARLIER as the control** — `taaf-solo-lp85`, private and COMPLETE on
+  2026-08-26 — which is a dated reading standing in for today's behaviour; it was wrong to treat it
+  as a refutation, and `lp85`'s success under the same code remains unexplained.
+  **The instrument that settled it was a throwaway private kernel carrying the failing kernel's
+  exact registered metadata and a notebook that only lists `/kaggle/input`.** It printed
+  `COMP-DIR exists: False` beside a listing containing `arc-prize-2026-arc-agi-3 -> [...
+  arc_agi_3_wheels ...]`, which is the whole finding in two lines and cost seconds.
+  Fixed in `solo/build_notebook.py`: cell 4 resolves the mount from a candidate list and asserts
+  loudly (a silent `None` reaches `os.path.join` and the failure reads as a missing wheel again),
+  and cell 14's `competition_env_files` uses the same resolved dir — patching only cell 4 ships a
+  notebook that installs and then dies later. Teeth grade the resolver by EXECUTING it against a
+  synthetic filesystem (nested-only, flat-only, neither), because a text check cannot tell a
+  resolver from decoration; four mutations, three caught by the builder's self-check and the
+  flat-layout blindness only by the executing case. ⚠️ **`duckv10` cells 4 and 14 still carry the
+  hardcoded path**, so every non-solo build has the same defect latent and would hit it the day one
+  is pushed private. 2026-08-30.
+
 - **An exhaustion proof inherits every scoping assumption of its root and its dropped children —
   and the cheapest refuter is an agent that does not know the level is "closed".** g50t L1 was
   "PROVEN unwinnable" by a single-life BFS (1,854 boards, frontier 0, GAME_OVER children dropped
