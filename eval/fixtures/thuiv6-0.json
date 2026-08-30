@@ -1,0 +1,131 @@
+{
+ "label": "thuiv6-0",
+ "source": "benchmark.json of kernel yocybercode/thui-v6-0 v1 (via rank_runs.load), 2026-08-30",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 47
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 16
+  },
+  "m0r0": {
+   "score": 2.4295432458697768,
+   "levels": 1,
+   "actions": 42
+  },
+  "bp35": {
+   "score": 0.8477508650519032,
+   "levels": 1,
+   "actions": 40
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 28
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 41
+  },
+  "tu93": {
+   "score": 1.0232426303854876,
+   "levels": 1,
+   "actions": 34
+  },
+  "lp85": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 9
+  },
+  "ka59": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 54
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "vc33": {
+   "score": 10.374779541446207,
+   "levels": 2,
+   "actions": 18
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 38
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 13
+  },
+  "sc25": {
+   "score": 27.261904761904763,
+   "levels": 3,
+   "actions": 73
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 39
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 45
+  },
+  "sb26": {
+   "score": 5.916666666666667,
+   "levels": 2,
+   "actions": 100
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 26
+  },
+  "re86": {
+   "score": 16.666666666666664,
+   "levels": 3,
+   "actions": 209
+  },
+  "s5i5": {
+   "score": 1.643655489809336,
+   "levels": 1,
+   "actions": 40
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 158
+  },
+  "ft09": {
+   "score": 47.61904761904761,
+   "levels": 4,
+   "actions": 49
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 70
+  },
+  "tr87": {
+   "score": 4.427842565597667,
+   "levels": 1,
+   "actions": 56
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 49
+  }
+ }
+}
