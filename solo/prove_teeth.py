@@ -146,9 +146,52 @@ def _run_region(region, *, true_submission):
         "_competition_games": lambda: [_FakeGame(g) for g in LIVE_GAMES],
         "_offline_games": lambda _d: [_FakeGame(g) for g in GAMES],
         "_wait_for_gateway": lambda _url, timeout_s=600.0: None,
+        # cell 4 defines this and the notebook shares one module namespace across cells, so the
+        # region legitimately sees it. Seeding it here keeps the harness faithful to that; the
+        # VALUE is irrelevant to this case, and the resolver itself is graded by the MOUNT cases.
+        "_COMP_DIR": "/kaggle/input/competitions/arc-prize-2026-arc-agi-3",
     }
     exec(compile(region, "<cell14-branch>", "exec"), env)  # noqa: S102 -- the subject under test
     return bm
+
+
+def _mount_block(nb_path: Path) -> str:
+    """Cell 4's resolver, up to (not including) the pip call it feeds."""
+    cells = json.loads(nb_path.read_text(encoding="utf-8"))["cells"]
+    src = cells[4]["source"]
+    src = src if isinstance(src, str) else "".join(src)
+    end = src.index("# Install the ARC runtime")
+    block = src[:end]
+    assert "_COMP_DIR = next(" in block, "cell 4 carries no mount resolver -- rebuild"
+    return block
+
+
+class _FakeOsPath:
+    def __init__(self, present):
+        self._present = set(present)
+
+    def isdir(self, p):
+        return p in self._present
+
+    def join(self, *parts):
+        return "/".join(str(x).rstrip("/") for x in parts)
+
+
+class _FakeOs:
+    def __init__(self, present):
+        self.path = _FakeOsPath(present)
+        self._present = set(present)
+
+    def listdir(self, p):
+        pre = p.rstrip("/") + "/"
+        return sorted({q[len(pre):].split("/")[0] for q in self._present if q.startswith(pre)})
+
+
+def _resolve_under(nb_path: Path, present):
+    """Run the built resolver against a synthetic filesystem; return _COMP_DIR."""
+    ns = {"os": _FakeOs(present), "print": lambda *a, **k: None}
+    exec(compile(_mount_block(nb_path), "<cell4-mount>", "exec"), ns)
+    return ns["_COMP_DIR"]
 
 
 def case(name, fn, *, must_raise):
@@ -324,6 +367,43 @@ def main() -> int:
         )
     results.append(case("GUARD never-submit fires with the branch intact",
                         _region_true_submission, must_raise=False))
+
+    # ---- the competition-mount fix (2026-08-30) --------------------------------------------
+    # Kaggle serves a PUBLIC kernel the nested layout and a PRIVATE one the flat layout, and
+    # solo kernels are private. The literal that used to sit here killed two g50t runs at cell 4
+    # while the wheels sat one path segment away, so the resolver is graded by EXECUTION against
+    # a synthetic filesystem rather than by grepping the text for a second path.
+    _NESTED = "/kaggle/input/competitions/arc-prize-2026-arc-agi-3"
+    _FLAT = "/kaggle/input/arc-prize-2026-arc-agi-3"
+
+    def _mount_nested_only():
+        got = _resolve_under(nb, [_NESTED, _NESTED + "/arc_agi_3_wheels"])
+        assert got == _NESTED, f"public layout resolved to {got!r}"
+    results.append(case("MOUNT nested layout (public kernel) resolves",
+                        _mount_nested_only, must_raise=False))
+
+    def _mount_flat_only():
+        got = _resolve_under(nb, [_FLAT, _FLAT + "/arc_agi_3_wheels"])
+        assert got == _FLAT, f"private layout resolved to {got!r}"
+    results.append(case("MOUNT flat layout (private kernel) resolves",
+                        _mount_flat_only, must_raise=False))
+
+    def _mount_neither():
+        _resolve_under(nb, ["/kaggle/input"])
+    results.append(case("MOUNT neither layout present raises, not silently None",
+                        _mount_neither, must_raise=True))
+
+    def _mount_no_hardcode():
+        src4 = json.loads(nb.read_text(encoding="utf-8"))["cells"][4]["source"]
+        src4 = src4 if isinstance(src4, str) else "".join(src4)
+        src14 = json.loads(nb.read_text(encoding="utf-8"))["cells"][14]["source"]
+        src14 = src14 if isinstance(src14, str) else "".join(src14)
+        bad = _NESTED + "/arc_agi_3_wheels"
+        assert bad not in src4, "cell 4 still hardcodes the nested wheels path"
+        assert bad not in src14, "cell 14 still hardcodes the nested env-files path"
+        assert "Path(_COMP_DIR)" in src14, "cell 14 does not use the resolved mount"
+    results.append(case("MOUNT no hardcoded nested path survives in 4 or 14",
+                        _mount_no_hardcode, must_raise=False))
 
     ran = [r for r in results if r is not None]
     skipped = len(results) - len(ran)
