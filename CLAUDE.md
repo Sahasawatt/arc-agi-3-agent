@@ -1183,10 +1183,18 @@ Two readings it produced that are worth carrying, both in B35:
   (`sb26` L1). `clock2x`'s 30 sits on the K=5 rung, so the campaign's best number is what a
   26%-reproducible draw looks like. Base per-level clear rate is **47.3%** (233 of 493 levels
   entered, over the runs with trajectories on disk).
-- **Depth bought at almost any price still pays.** One more level per game at m times the human
-  baseline moves clock2x 6.40 → 8.76 at m=2 and **still 6.88 at m=20**. The completion cap binds,
-  the per-level term does not, so a lever that trades efficiency for a cleared level is worth
-  taking. This is B35's own cap arithmetic expressed as a marginal value, not a new mechanism.
+- **Depth bought at almost any price still pays — PER GAME.** One more level in EVERY one of the
+  25 games, at m times the human baseline, moves clock2x 6.40 → 8.76 at m=2 and **still 6.88 at
+  m=20**. The completion cap binds and the per-level term does not. This is B35's own cap
+  arithmetic expressed as a marginal value, not a new mechanism.
+  🔴 **NARROWED 2026-08-31, and the sentence this replaces was wrong in a way that reads
+  fine**: it said *"so a lever that trades efficiency for a cleared level is worth taking"*, which
+  drops the quantifier the table was computed under. A game's score is a weighted mean over THAT
+  game's levels and its completion cap moves by 1/sum(1..N), so the payoff scales with **how many
+  GAMES gain a level**, not how many levels are gained. Measured: giving each run only its own
+  near-missed levels (`eval/near_miss.py`, 20 of 140 losing cells, ~1.8 levels per run but spread
+  thin) is worth **+0.350 public at m=1, +0.092 at m=2, +0.005 at m=20** — the same trade, two
+  orders of magnitude smaller, because it touches few games. A lever has to be BROAD to pay.
 
 ⚠️ `RESET` is issued on **0.42% of actions** (71 of 16,752) and `prompts.py` never mentions it,
 which reads as an unused lever. It is not evidence: post-reset clear rate is 24.6% against a 47.3%
