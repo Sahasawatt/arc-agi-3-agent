@@ -1167,6 +1167,32 @@ Two traps, both measured 2026-08-31 while building `eval/trajectory_probe.py`.
   events inside one step across all 200 event logs; it counts the steps that ACTED, and reading it
   as a call count overstates model efficiency by up to an order of magnitude.
 
+**The competition scorer is reproducible offline and now is** — `eval/oracle_ceiling.py` lifts the
+level and game formulas from `inference/tools/traces.py` rather than restating them (a level is
+`min((baseline/spent)**2 * 100, 115)` when cleared, a game is the level-weighted mean of those
+CAPPED by `completed_weight/total_weight * 100`, a run is the mean over its 25 games) and
+reproduces **all 19 published public means in `notes/LEDGER-all-runs.md` exactly**. Anything you
+want to price — one more level, a different efficiency, a hypothetical pooled run — can be priced
+against that control instead of argued about.
+
+Two readings it produced that are worth carrying, both in B35:
+
+- **The 47-level oracle is a union of 19 draws and almost none of it is reproducible.** Keeping
+  only the (game, level) pairs at least K runs cleared: K=1 gives 47 levels / 11.89 public, K=5
+  (26% of runs) gives 30 / 5.62, K=10 (53%) gives 20 / 3.54, and **K=19 gives exactly ONE level**
+  (`sb26` L1). `clock2x`'s 30 sits on the K=5 rung, so the campaign's best number is what a
+  26%-reproducible draw looks like. Base per-level clear rate is **47.3%** (233 of 493 levels
+  entered, over the runs with trajectories on disk).
+- **Depth bought at almost any price still pays.** One more level per game at m times the human
+  baseline moves clock2x 6.40 → 8.76 at m=2 and **still 6.88 at m=20**. The completion cap binds,
+  the per-level term does not, so a lever that trades efficiency for a cleared level is worth
+  taking. This is B35's own cap arithmetic expressed as a marginal value, not a new mechanism.
+
+⚠️ `RESET` is issued on **0.42% of actions** (71 of 16,752) and `prompts.py` never mentions it,
+which reads as an unused lever. It is not evidence: post-reset clear rate is 24.6% against a 47.3%
+base, and a reset is issued *because* the level is going badly, so the comparison is confounded by
+selection and n=57.
+
 `--shape` answers **where** it is (B46). The `read timeout=` value on the one error line any run
 prints splits cleanly into hangs at `analyzer_timeout=900` (8–35/run, and the action retries at
 ~901 s intervals) and the terminal cancellation at the wall (21–25/run = one per game). Pricing
