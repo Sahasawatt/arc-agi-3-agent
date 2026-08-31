@@ -1183,18 +1183,34 @@ Two readings it produced that are worth carrying, both in B35:
   (`sb26` L1). `clock2x`'s 30 sits on the K=5 rung, so the campaign's best number is what a
   26%-reproducible draw looks like. Base per-level clear rate is **47.3%** (233 of 493 levels
   entered, over the runs with trajectories on disk).
-- **Depth bought at almost any price still pays — PER GAME.** One more level in EVERY one of the
-  25 games, at m times the human baseline, moves clock2x 6.40 → 8.76 at m=2 and **still 6.88 at
-  m=20**. The completion cap binds and the per-level term does not. This is B35's own cap
-  arithmetic expressed as a marginal value, not a new mechanism.
-  🔴 **NARROWED 2026-08-31, and the sentence this replaces was wrong in a way that reads
-  fine**: it said *"so a lever that trades efficiency for a cleared level is worth taking"*, which
-  drops the quantifier the table was computed under. A game's score is a weighted mean over THAT
-  game's levels and its completion cap moves by 1/sum(1..N), so the payoff scales with **how many
-  GAMES gain a level**, not how many levels are gained. Measured: giving each run only its own
-  near-missed levels (`eval/near_miss.py`, 20 of 140 losing cells, ~1.8 levels per run but spread
-  thin) is worth **+0.350 public at m=1, +0.092 at m=2, +0.005 at m=20** — the same trade, two
-  orders of magnitude smaller, because it touches few games. A lever has to be BROAD to pay.
+- **Depth bought at almost any price moves the SCORE, and does not reach the BAR.** One more level
+  in EVERY one of the 25 games, at m times the human baseline, moves clock2x 6.40 → 8.76 at m=2 and
+  still 6.88 at m=20 — against a target of **10.85–11.79** public. The completion cap binds and the
+  per-level term does not, which is B35's own cap arithmetic expressed as a marginal value, not a
+  new mechanism.
+  \U0001f534 **NARROWED TWICE on 2026-08-31, and the first version of this bullet was wrong in a way
+  that reads fine.** It said *"so a lever that trades efficiency for a cleared level is worth
+  taking"*, dropping the quantifier the table was computed under.
+  - **BREADTH** (`eval/near_miss.py`, this repo): a game's score is a weighted mean over THAT
+    game's levels and its completion cap moves by 1/sum(1..N), so the payoff scales with how many
+    **games** gain a level. Giving each run only its own near-missed levels — 20 of 140 losing
+    cells, ~1.8 levels per run, spread thin — is worth **+0.350 public at m=1, +0.092 at m=2,
+    +0.005 at m=20**: the same trade, two orders of magnitude smaller, because it touches few games.
+  - **PRICE** (`arc-agi-pub` `notes/B35-what-one-more-level-must-cost-2026-08-31.md`): the price
+    **never stops mattering**. A shippable base needs the extra level at **m = 1.140–1.145**, and
+    at 1.2× human it already misses. `clock2x` would need 1.39 and can never ship anyway — cell 12
+    degrades to v10 under `TRUE_SUBMISSION`, so hidden cannot draw it.
+  - **So a lever must be BOTH broad and cheap**, and the earlier wording here — *"broad before the
+    price stops mattering"* — is retired. Nothing has ever been broad: against `v10cal` the best any
+    of the other 18 runs managed is `clock2x` **gaining in 6 of 25 games while losing 4**, and the
+    requirement is 25 of 25.
+  ⚠️ **`m ≤ 1.14` is a SPECIFICATION, not an observation, and the cheap half is already routine.**
+  Of the 392 levels any run cleared, **292 (74.5%)** came in at or under 1.145 and the median m is
+  **0.804**. The levels the requirement is about are the ones the runs did **not** clear, which have
+  no clearing price at all — only a spent/human of what was burned without clearing (median 0.689).
+  ⚠️ **The 10.85–11.79 target is a DATED reading**, from the live bar 4.05 at 2026-08-31T07:12Z and
+  a 2.68–2.91× shrink. That bar moved 3.58 → 4.05 in 2 h 58 m the same day. Re-run
+  `notes/probes/b35_target_crossing.py` in `arc-agi-pub` rather than quoting this number.
 
 ⚠️ `RESET` is issued on **0.42% of actions** (71 of 16,752) and `prompts.py` never mentions it,
 which reads as an unused lever. It is not evidence: post-reset clear rate is 24.6% against a 47.3%
