@@ -166,6 +166,77 @@ def q2(runs, *, shuffle=False, rng=None):
     return cheaper, dearer, ties
 
 
+def q3(runs, *, shuffle=False, rng=None):
+    """Step 2 -- a control for "A is simply a better run", oriented by an EXTERNAL yardstick.
+
+    ⚠️ The first version of this function was VACUOUS and its output looked like a strong
+    result. It walked every ORDERED pair (a,b) and (b,a). On a game where the two runs tie,
+    whichever is cheaper increments the control in one direction and the dearer one increments
+    it in the other, so control_cheaper == control_dearer EXACTLY and the share is 0.500 by
+    construction -- in the observed data and in every permutation alike. The test then reduced
+    to Q2 with extra steps, and printed "GAME-SPECIFIC, p 0.015" on a comparison against a
+    mathematical identity. A control that cannot take any value but one is not a control.
+
+    The fix orients each UNORDERED pair by something outside the comparison: total levels
+    cleared across all 25 games, i.e. how good the run was overall. Pairs with equal totals
+    carry no orientation and are dropped. Then:
+
+      FOCAL    games where the globally-BETTER run also went deeper -> is it cheaper there?
+      CONTROL  games where the two TIED on depth -> is the globally-better run cheaper anyway?
+
+    "A is simply better" predicts the control share sits ABOVE 0.5 too, and by a similar
+    margin. A game-specific effect predicts the control sits at chance while the focal does not.
+    """
+    usable = {r: g for r, g in runs.items() if r not in EXCLUDED}
+    names = sorted(usable)
+    depth = {r: {g: rec["levels"] for g, rec in usable[r].items()} for r in names}
+    if shuffle:
+        games = sorted({g for r in names for g in depth[r]})
+        for g in games:
+            holders = [r for r in names if g in depth[r]]
+            vals = [depth[r][g] for r in holders]
+            rng.shuffle(vals)
+            for r, v in zip(holders, vals):
+                depth[r][g] = v
+    # the external yardstick, recomputed from the (possibly shuffled) depths so the null is
+    # internally consistent rather than orienting on the observed totals
+    total = {r: sum(depth[r].values()) for r in names}
+
+    f_ch = f_de = c_ch = c_de = 0
+    oriented = dropped = 0
+    for i, a in enumerate(names):
+        for b in names[i + 1:]:
+            if total[a] == total[b]:
+                dropped += 1
+                continue
+            oriented += 1
+            hi, lo = (a, b) if total[a] > total[b] else (b, a)
+            for g in usable[hi]:
+                if g not in usable[lo]:
+                    continue
+                dh, dl = depth[hi][g], depth[lo][g]
+                rh, rl = usable[hi][g], usable[lo][g]
+                if dh > dl and dl >= 1:
+                    sh_, sl = prefix_spend(rh, dl), prefix_spend(rl, dl)
+                    if sh_ is None or sl is None:
+                        continue
+                    if sh_ < sl:
+                        f_ch += 1
+                    elif sh_ > sl:
+                        f_de += 1
+                elif dh == dl and dh >= 1:
+                    sh_, sl = prefix_spend(rh, dh), prefix_spend(rl, dh)
+                    if sh_ is None or sl is None:
+                        continue
+                    if sh_ < sl:
+                        c_ch += 1
+                    elif sh_ > sl:
+                        c_de += 1
+    fs = f_ch / (f_ch + f_de) if (f_ch + f_de) else float("nan")
+    cs = c_ch / (c_ch + c_de) if (c_ch + c_de) else float("nan")
+    return fs, cs, f_ch + f_de, c_ch + c_de, (oriented, dropped)
+
+
 def main() -> int:
     if not CENSUS.is_file():
         print(f"FAIL: census missing: {CENSUS}", file=sys.stderr)
@@ -247,9 +318,39 @@ def main() -> int:
     print("  NOTE: the min/max range is NOT the test. At 200 permutations this probe printed "
           "'INSIDE the range -> not separable from chance' while the p was 0.045; the envelope "
           "of a few hundred draws is wide and says little. The permutation p decides.")
-    print("  CAVEAT: the 545 pairs are NOT independent -- 17 runs generate them, so each run "
-          "appears in many. The within-game shuffle absorbs part of that and not all of it, so "
-          "read this p as optimistic.")
+    print("")
+    print("=== Q3 (step 2)  is the effect GAME-SPECIFIC, or just 'A is a better run'? ===")
+    fs, cs, nf, nc, (oriented, dropped) = q3(runs)
+    print(f"  FOCAL   games where A went deeper : {nf} comparisons, A cheaper on {fs:.3f}")
+    print(f"  CONTROL games at EQUAL depth      : {nc} comparisons, A cheaper on {cs:.3f}")
+    print(f"  difference (focal - control)      : {fs - cs:+.3f}")
+    print(f"  pairs oriented by total levels: {oriented}; dropped for a tied total: {dropped}")
+    rng3 = random.Random(20260830)
+    sh3 = []
+    for _ in range(2000):
+        f, c, _a, _b, _o = q3(runs, shuffle=True, rng=rng3)
+        if f == f and c == c:
+            sh3.append(f - c)
+    p3 = (sum(1 for s in sh3 if s >= (fs - cs)) + 1) / (len(sh3) + 1)
+    print(f"  null difference over {len(sh3)} within-game permutations: "
+          f"mean {st.mean(sh3):+.3f}  sd {st.pstdev(sh3):.3f}")
+    print(f"  permutation p (one-sided, difference >= observed): {p3:.3f}")
+    if p3 < 0.05:
+        print("  -> GAME-SPECIFIC: A's cheapness concentrates where it went deeper, which "
+              "'A is simply better' does not predict")
+    else:
+        print("  -> NOT separable from 'A is simply a better run'. Q2's signal survives as a "
+              "description of run QUALITY and not as a transfer target.")
+    print("  CAVEAT 1: the comparisons are NOT independent -- 17 runs generate all of them, so "
+          "each run appears in many. The within-game shuffle absorbs part of that and not all, "
+          "so read both p values as optimistic.")
+    print("  CAVEAT 2: Q3's focal set needs the shallower run to have cleared at least one "
+          "level, so the widest gaps (0 vs 2+) are excluded from it. The effect is measured on "
+          "the pairs where both runs got somewhere.")
+    print("  CAVEAT 3: still correlation. A census holding no trajectories cannot separate "
+          "'spent less because it understood' from 'understood and therefore spent less', and "
+          "only the first supports caching an opening.")
+
     return 0
 
 
