@@ -24,27 +24,107 @@ CONTROLS (verification-layers: both poles, same invocation, real artifacts):
   checks only the verdict labels. Non-finite scores are refused in load() instead, because
   a NaN there is laundered into a confident "WORSE" rather than a crash (see _finite).
 
+THE BASELINE IS A CHOICE (MAP B57): four runs of the v10 build are banked, and which one is
+passed as the baseline moves the p-value by 1.7x-7.1x — clock2x reads 0.2761 against v10cal and
+0.0828 against v19. Nothing in this script's output ever recorded that a choice was available,
+so B34 was closed on one of six numbers with no artifact naming the other five. A single run of
+a multi-run arm is now REFUSED (exit 4) with the pooling command printed, or accepted with
+--single-baseline REASON, which is printed into the report. Membership is declared in
+eval/fixtures/arms.json and is never inferred from a p-value: almost every run of this campaign
+is NOT-DISTINGUISHABLE from v10cal, so "reads the same" is not evidence of "same build".
+
 EXIT CODES: 0 = ran (verdict is in stdout, never in the exit code — a crash must not be
-readable as a verdict), 2 = usage, 3 = data error.
+readable as a verdict), 2 = usage, 3 = data error, 4 = unpooled member of a multi-run arm.
 
 LIMITS, stated: n=25 games; exchangeability under H0 is the assumption; the hidden set is
 OOD vs public (R22), so NOT-DISTINGUISHABLE here says nothing about hidden, and even a
 public DISTINGUISHABLE only predicts hidden direction, not size. Hidden n=2 spread is 0.38.
 
 Usage:
-  python eval/rank_runs.py eval/fixtures/v10cal.json <candidate benchmark.json>
+  python eval/pool_runs.py POOLED_ARM.json eval/fixtures/thuiv1-1.json \
+      eval/fixtures/thuiv1-1-r2.json eval/fixtures/v10cal.json eval/fixtures/v19.json
+  python eval/rank_runs.py POOLED_ARM.json CANDIDATE.json
   python eval/rank_runs.py --selftest
 """
 from __future__ import annotations
 
 import json
 import math
+import os
 import random
+import re
 import sys
 
 ALPHA = 0.05
 PERMS = 20000
 SEED = 0  # fixed: a measurement that re-randomises between runs is one sample of a distribution
+
+ARMS_FILE = "arms.json"
+# Shape, never a word list. A guard's own remediation line is the exact string an operator
+# pastes back, and a placeholder check built from English keywords was defeated on this machine
+# by a non-English argument that was long enough to pass the length floor.
+_PLACEHOLDER = re.compile(r"<[^>]*>|\{\{|PASTE_|\bTODO\b", re.IGNORECASE)
+
+
+def _fixtures_dir() -> str:
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
+
+
+def load_arms(path: str | None = None) -> dict:
+    """{arm name: sorted member labels}. Raises; the caller reports blindness rather than hiding it."""
+    with open(path or os.path.join(_fixtures_dir(), ARMS_FILE), encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return {name: sorted(spec["members"]) for name, spec in raw["arms"].items()}
+
+
+def arm_of(label: str, arms: dict):
+    """The arm this label is ONE unpooled run of, or None.
+
+    A pooled fixture needs no special case: pool_runs.py labels its output ``pool(a+b)``, which is
+    never a member label, so exact membership already excludes it. An explicit startswith("pool(")
+    branch was written here first and removed -- its control could not be made to fail, and a check
+    that cannot fail is not a check.
+    """
+    for name, members in arms.items():
+        if label in members:
+            return name, members
+    return None
+
+
+def check_reason(reason: str):
+    """None if usable, else why not."""
+    r = reason.strip()
+    if len(r) < 12:
+        return "--single-baseline needs a sentence, not a token"
+    if _PLACEHOLDER.search(r):
+        return "--single-baseline was handed the placeholder, not a reason"
+    return None
+
+
+def refusal(hits: list, argv: list) -> str:
+    """hits: [(path, label, arm, members)]. Every command printed here is runnable as printed."""
+    out = [f"REFUSED: {lab!r} ({pth}) is ONE run of the {arm!r} arm, which has "
+           f"{len(mem)} banked runs: {', '.join(mem)}"
+           for pth, lab, arm, mem in hits]
+    _, _, _, members = hits[0]
+    other = argv[1] if hits[0][0] == argv[0] else argv[0]
+    srcs = " ".join(os.path.join("eval", "fixtures", m + ".json") for m in members)
+    out += [
+        "",
+        "  Which one is picked moves the p-value by 1.7x-7.1x, and nothing in the output would",
+        "  record that a choice was available. Pool the arm first -- 0 GPU, 0 submission slots:",
+        f"    python eval/pool_runs.py POOLED_ARM.json {srcs}",
+        f"    python eval/rank_runs.py POOLED_ARM.json {other}",
+    ]
+    if len(hits) > 1:
+        out.append("  (both sides are arm members; repeat for the other one)")
+    out += [
+        "",
+        "  Or state why this one run is the right baseline here. The reason is printed into the",
+        "  report, which is the artifact B57 says has never existed:",
+        "    --single-baseline PASTE_YOUR_REASON_HERE",
+    ]
+    return "\n".join(out)
 
 
 def _finite(games: dict, path: str) -> dict:
@@ -136,11 +216,14 @@ def report(r: dict) -> None:
           f"{r['scoring_flips']} flipped scoring<->zero")
     print(f"  sign-flip permutation p = {r['p_score']}  (alpha {r['alpha']})")
     print(f"  VERDICT: {r['verdict']}")
+    if r.get("arm_check_blind"):
+        print(f"  ARM CHECK BLIND: {r['arm_check_blind']} — this verdict is UNGUARDED by B57")
+    if r.get("single_baseline"):
+        print(f"  SINGLE-BASELINE (not pooled), reason given: {r['single_baseline']}")
     print("  caveat: public-only; the hidden set is OOD (R22) and its own n=2 spread is 0.38")
 
 
 def selftest() -> None:
-    import os
     fx = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
     v10 = load(os.path.join(fx, "v10cal.json"))
     v19 = load(os.path.join(fx, "v19.json"))
@@ -153,22 +236,85 @@ def selftest() -> None:
     print("\n== positive control (26x apart, MUST distinguish) ==")
     report(pos)
 
-    ok_neg = neg["verdict"] == "NOT-DISTINGUISHABLE"
-    ok_pos = pos["verdict"] in ("BETTER", "WORSE")
-    if not (ok_neg and ok_pos):
-        print("\nSELFTEST FAIL: the instrument cannot pass both poles — do not use its verdicts")
+    fails = []
+    if neg["verdict"] != "NOT-DISTINGUISHABLE":
+        fails.append("negative pole: same build was separated")
+    if pos["verdict"] not in ("BETTER", "WORSE"):
+        fails.append("positive pole: 26x apart was not separated")
+
+    # --- B57 guard controls. A manifest that matched everything, or nothing, would pass a
+    # one-pole check; each side is asserted here in the same invocation.
+    try:
+        arms = load_arms()                                # a missing manifest reddens here
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        print(f"\nSELFTEST FAIL: the B57 arm manifest is unreadable ({exc}) — the guard cannot "
+              f"fire, and a guard that cannot fire is not a strict one")
         raise SystemExit(3)
-    print("\nSELFTEST OK: both poles behave; verdicts are usable")
+    if not arm_of("v10cal", arms) or len(arm_of("v10cal", arms)[1]) < 2:
+        fails.append("guard-positive: v10cal does not resolve to an arm of 2 or more")
+    if arm_of("v20", arms) is not None:
+        fails.append("guard-negative: v20 (its own build) was claimed by an arm")
+    ghosts = [m for ms in arms.values() for m in ms
+              if not os.path.exists(os.path.join(fx, m + ".json"))]
+    if ghosts:
+        fails.append(f"guard-ghost: declared members with no banked fixture: {ghosts}")
+    if not check_reason("<one sentence: why this run>"):
+        fails.append("guard-reason: the placeholder was accepted as a reason")
+    if check_reason("v19 is the only banked run on this per-game clock"):
+        fails.append("guard-reason: a real reason was rejected")
+
+    if fails:
+        print("\nSELFTEST FAIL — do not use its verdicts:")
+        for f in fails:
+            print("  " + f)
+        raise SystemExit(3)
+    print("\nSELFTEST OK: both poles behave, and the B57 arm guard has teeth "
+          "(positive, negative, ghost, reason x2) — 6 controls")
 
 
 def main(argv: list[str]) -> int:
     if len(argv) == 1 and argv[0] == "--selftest":
         selftest()
         return 0
+    reason = None
+    if "--single-baseline" in argv:
+        i = argv.index("--single-baseline")
+        if i + 1 >= len(argv):
+            print("usage: --single-baseline needs a reason argument")
+            return 2
+        reason = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
+        bad = check_reason(reason)
+        if bad:
+            print(bad)
+            return 2
     if len(argv) != 2:
         print(__doc__)
         return 2
-    report(compare(load(argv[0]), load(argv[1])))
+
+    a, b = load(argv[0]), load(argv[1])
+    try:
+        arms = load_arms()
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        arms = None
+        blind = str(exc)
+        print(f"ARM CHECK DID NOT RUN ({exc}) — the B57 single-baseline guard is BLIND for this "
+              f"run; a gate cannot report its own skip, so this line is the report")
+    hits = []
+    for path, doc in ((argv[0], a), (argv[1], b)):
+        found = arm_of(doc["label"], arms) if arms else None
+        if found:
+            hits.append((path, doc["label"], found[0], found[1]))
+    if hits and reason is None:
+        print(refusal(hits, argv))
+        return 4
+
+    r = compare(a, b)
+    if arms is None:
+        r["arm_check_blind"] = blind
+    if reason is not None:
+        r["single_baseline"] = reason
+    report(r)
     return 0
 
 

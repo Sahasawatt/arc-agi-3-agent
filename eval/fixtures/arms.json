@@ -1,0 +1,37 @@
+{
+ "_doc": [
+  "Which banked fixtures are the SAME BUILD, and the evidence for each membership.",
+  "Read by rank_runs.py so that comparing a candidate against ONE run of a multi-run arm is a",
+  "refusal rather than a habit (MAP B57). It is NOT read by pool_runs.py: pooling is still an",
+  "explicit act, and this file only says which pools are legitimate.",
+  "",
+  "MEMBERSHIP IS DECLARED, NEVER INFERRED. A p-value cannot supply it: almost every run of this",
+  "campaign is NOT-DISTINGUISHABLE from v10cal (LEDGER: '11 modifications of v10, 0 above the",
+  "band'), so 'reads the same' would sweep in v22/v23/v24/v18/v16/v12, whose levers all fired.",
+  "The rule is the LEDGER's STRICT rule -- same build, lever proven inert or absent -- and every",
+  "member below carries the measurement that put it there.",
+  "",
+  "MEMBERS ARE BANKED FIXTURES, NOT RUNS THAT EXIST. 'siblings' means files in this directory,",
+  "because a pool can only average what is on disk. Two known runs are outside the arm for that",
+  "reason alone (not_banked below), and thui-v3-0 has a second run (kernel version 3, LEDGER:17)",
+  "that is likewise not banked -- so an arm's size here is a lower bound on the real one.",
+  "",
+  "ADDING A MEMBER IS A CLAIM. It needs the same shape of evidence as the four below: a named",
+  "measurement showing the lever was inert or absent, not a score that landed in the band."
+ ],
+ "arms": {
+  "v10": {
+   "rule": "same build as v10, lever proven inert or absent (LEDGER, STRICT n=6)",
+   "members": {
+    "v10cal": "the reference run of the v10 build",
+    "v19": "v10 + the fork's banking graft, verified installed and never reached -- banking fires only on a full-game WIN and all 25 games ended gave_up, 0 WINs (LEDGER: 'v19 is v10 with an inert graft, i.e. a THIRD sample of the same build')",
+    "thuiv1-1": "v10 exact + LOCAL_ANALYZER_SEED=20260825 only, temperature untouched. B37 measured the pin inert by MECHANISM, not by a p-value: adoption 0 of 25 games against a control of 369, and p=0.8001 vs v10cal",
+    "thuiv1-1-r2": "byte-identical notebook to thuiv1-1 at the same seed -- the repeat that answers B37, so the pair is one reading rather than two datapoints (LEDGER)"
+   },
+   "not_banked": {
+    "v10out": "STRICT member, public 4.55, no fixture in this directory",
+    "thui-v1": "STRICT member, public 3.20, no fixture in this directory"
+   }
+  }
+ }
+}
