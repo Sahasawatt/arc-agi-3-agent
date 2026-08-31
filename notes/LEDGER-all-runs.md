@@ -59,7 +59,7 @@ asserted off, diagnostic only. Builder + teeth: `solo/`.
 |---|---|---|---|---|---|---|---|---|
 | **sk48** solo | **80** | **0/8** | 0.00 | 235,664 | 2,946 | 21–139, median 54 | clear anything | **NO** |
 | **lp85** solo | **14** | **1/8** | 2.78 | 154,026 | 11,002 | 13–70, median 38 | >4 levels | **NO** |
-| `g50t` solo | — | — | — | — | — | 7–403, median 23 | clear anything | **NEVER RAN** |
+| **g50t** solo | **112** | **0/7** | 0.00 | 285,735 | 2,551 | 7–403, median 23 | clear anything | **NO** |
 
 `sahasawatt/taaf-solo-sk48` v3 (2h 12m 0s) and `sahasawatt/taaf-solo-lp85` v1 (2h 12m 0s), both
 2026-08-26. P1 cleared on both before any score was read — marker `solo: <game> only` exactly 1,
@@ -67,10 +67,29 @@ asserted off, diagnostic only. Builder + teeth: `solo/`.
 and the *other* game's marker at 0, `AssertionError` 0 — and the summary read from the **last** of
 the periodically reprinted blocks (28 of them in the sk48 log).
 
-**`g50t` never ran and that is not a design choice.** The push was refused with
-`Maximum weekly GPU quota of 30.00 hours reached` on the `sahasawatt` account; the slug 404s, so
-nothing was created. B42 asked for three games *specifically so no outcome could be a property of
-one lucky game*, and it got two.
+**`g50t` ran on 2026-08-30, four days late, and it answers the question the other two could not.**
+`sahasawatt/taaf-solo-g50t` (2 h 18 m 48 s, wall 8,328 s). P1 cleared before any score was read —
+`solo: g50t only` exactly 1, `LOCAL_ANALYZER_TEMPERATURE` and `MULTIMODAL_UPSCALE` at 1 as positive
+controls, `duckmod` 0, `AssertionError` 0, `Traceback` 0.
+
+**112 actions against g50t's human level-1 baseline of 78 is 1.44×, and it cleared NOTHING.** That
+is B42's own reading rule: at or above the human count, a zero is a reasoning problem and not a
+clock problem. **`g50t` is a WALL**, alongside `sk48`, and B52's *"the one never-clear game with no
+causal test"* is answered. It also spent **285,735** accounted tokens (`note=` 310,595) on one game
+— roughly 5× what a game gets in a 25-game run — for nothing.
+
+⚠️ **The delivered budget again fell short of the row that asked for it.** B42's corrected figure
+projected 1.7–3.0× the human baseline from the full clock; 1.44× is above the threshold that makes
+the reading meaningful and about a fifth below the projection, so the third probe repeats the
+pattern the other two set rather than escaping it.
+
+⚠️ **The four-day delay was not the quota it was recorded as.** The original push was refused with
+`Maximum weekly GPU quota of 30.00 hours reached` and nothing was created; a scheduled retry then
+died silently (its own log ends `sleeping 388 min until 00:15Z` then `[killed]`), so *"waiting on
+g50t"* was carried as true for a day. When it was finally retried the quota was fine and the run
+died at cell 4 instead, on the intermittent `/kaggle/input` layout documented in CLAUDE.md's traps
+— two unrelated failures wearing one label. B42 asked for three games *specifically so no outcome
+could be a property of one lucky game*; it now has three.
 
 ### What the probe was built to deliver, and what it delivered
 
