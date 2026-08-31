@@ -62,15 +62,28 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 
 ## Traps that have already cost a session
 
-- **Kaggle serves PRIVATE and PUBLIC kernels DIFFERENT `/kaggle/input` layouts, and the base
-  notebook hardcodes the public one — so every private kernel dies at cell 4 with a message that
-  reads like a missing wheel.** Measured 2026-08-30 on two same-day runs of one account: a public
-  kernel gets `/kaggle/input/competitions/<comp>/` with datasets under
-  `/kaggle/input/datasets/<owner>/<slug>`; a private one gets the FLAT form,
-  `/kaggle/input/<comp>/` and `/kaggle/input/<slug>`. `duckv10` cell 4 passes
+- **Kaggle serves a kernel one of TWO `/kaggle/input` layouts and WHICH ONE VARIES BETWEEN RUNS,
+  while the base notebook hardcodes one — so a run dies at cell 4 with a message that reads like a
+  missing wheel, intermittently.** The layouts are the nested form,
+  `/kaggle/input/competitions/<comp>/` with datasets under `/kaggle/input/datasets/<owner>/<slug>`,
+  and the FLAT form, `/kaggle/input/<comp>/` and `/kaggle/input/<slug>`. `duckv10` cell 4 passes
   `--find-links /kaggle/input/competitions/.../arc_agi_3_wheels` with `--no-index`, so on the flat
   layout pip answers *"No matching distribution found for arc-agi"* and `check_call` kills the run
   at 6.5 s. **The data is all there** — one path segment away.
+  🔴 **This entry first said the layout follows `is_private`, and the run that the fix unblocked
+  REFUTED that within the hour.** Same-day evidence, one account: `taaf-solo-g50t` v1 and v2
+  private → FLAT (both ERROR) · the throwaway probe private → FLAT · `thui-v6-0` public → NESTED ·
+  and then **`taaf-solo-g50t` private → NESTED**, printing
+  `solo: competition mount = /kaggle/input/competitions/arc-prize-2026-arc-agi-3` and running to
+  COMPLETE. Four runs of two private kernels, both layouts. So privacy is not the variable, and the
+  correlation held only while every sample happened to agree — the shape a small consistent sample
+  always has. It also un-mysteries `taaf-solo-lp85`, private and COMPLETE on 2026-08-26, which the
+  privacy story could not explain and which was wrongly used as a refutation of it.
+  ⚠️ **Two consequences.** The resolver is still the right fix — it accepts either layout and fails
+  loudly on neither — but it is **not why that run succeeded**: the flat branch was never taken, and
+  the old hardcoded literal would have worked on that draw too. And because the failure is
+  intermittent, *"it works now"* on this path is **one draw, not a repair**; only a run that prints
+  the FLAT mount and still completes will have exercised the fix.
   What made this expensive is the shape of the evidence. Four hypotheses were each refuted by a
   measurement before the real one was found: credentials (the account reads `competitions files`
   fine), metadata (the REGISTERED spec Kaggle returns for the failed kernel is identical to the
