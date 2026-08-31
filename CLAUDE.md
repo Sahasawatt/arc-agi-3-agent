@@ -1149,6 +1149,24 @@ nothing between 768 and unbounded has run. `--check` grades the slug→run mappi
 parsed action totals equal the LEDGER's, 17 of 17 exactly; the assertion is the only thing tying a
 slug to a row, since `kernels_logs` always returns a slug's LATEST version.
 
+⚠️ **That same `file_pattern` call reaches a per-action TRAJECTORY nobody had used, and it
+outlives the logs.** Every run also wrote `<game>-<id>_p0_events.jsonl` per game into its output —
+one JSON object per event, carrying the board, `board_changed`, `reward`, `level_completed` and the
+model's own transcript. `file_pattern=r"_p0_events\.jsonl$"` fetches all 25 for ~60 MB per run, and
+`kernels_list_files` shows **all 22 `sahasawatt/` kernels still serve them** even where
+`kernels_logs` returns the 800-char stub — the retitle push cost the logs, not the trajectories.
+Two traps, both measured 2026-08-31 while building `eval/trajectory_probe.py`.
+
+- **`level` on an action event is the level AFTER it.** The action that clears level N arrives
+  carrying N+1 *and* `level_completed`, so splitting rows on the raw field puts that action, and the
+  clear, on the next level's row. **The per-game totals still close** — `actions 1597 vs 1597`,
+  `cleared 28 vs 28`, OK on all 10 runs — while the per-LEVEL split is wrong on 18 of 25 games. A
+  total is blind to an attribution error by construction: bind a trajectory to the census through
+  `per_level`, never through the game total.
+- **`analysis_step` is not a model call.** `arc-agi-pub`'s `CLAUDE.md` measured up to 14 `analysis`
+  events inside one step across all 200 event logs; it counts the steps that ACTED, and reading it
+  as a call count overstates model efficiency by up to an order of magnitude.
+
 `--shape` answers **where** it is (B46). The `read timeout=` value on the one error line any run
 prints splits cleanly into hangs at `analyzer_timeout=900` (8–35/run, and the action retries at
 ~901 s intervals) and the terminal cancellation at the wall (21–25/run = one per game). Pricing
