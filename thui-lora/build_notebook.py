@@ -97,7 +97,11 @@ _hidden = int(_t["hidden_size"])
 _heads = int(_t["num_attention_heads"])
 _kv_heads = int(_t.get("num_key_value_heads", _heads))
 _head_dim = int(_t.get("head_dim") or _hidden // _heads)
-_lt = _t.get("layer_types") or ["full_attention"] * int(_t["num_hidden_layers"])
+_lt = _t.get("layer_types")
+# No silent fallback: a missing layer_types would target ALL 64 layers, 48 of which are
+# linear_attention with no q_proj/v_proj -- exactly the mismatch this smoke must not
+# manufacture itself. (review 03a4e62, LOW, confirmed)
+assert _lt, "thui-lora-v0: config carries no layer_types -- refuse to guess the target layers"
 _full = [_i for _i, _x in enumerate(_lt) if "full" in _x]
 assert _full, "thui-lora-v0: no full-attention layers found in layer_types"
 _R = 8
@@ -171,13 +175,23 @@ _choice = (_resp.get("choices") or [{}])[0].get("message", {})
 _txt = _choice.get("content") or _choice.get("reasoning_content") or ""
 print("thui-lora-v0 P2: adapter completion ->", repr(_txt[:80]), flush=True)
 assert _txt.strip(), "thui-lora-v0 P2 FAIL: adapter-addressed completion came back empty"
-
-bm.games = bm.games[:@GAMES@]
-bm.solver.max_runtime_s_per_game = @CLOCK@.0
-print(f"thui-lora-v0 P3: {len(bm.games)} games at @CLOCK@s/game -- numbers are smoke, not score",
-      flush=True)
 # ==================================================================================
-'''.replace("@GAMES@", str(SMOKE_GAMES)).replace("@CLOCK@", str(GAME_CLOCK_S))
+'''
+
+# The game slice and clock cap go into cell 14, AFTER `bm.games = _offline_games(...)`.
+# A cell-12 slice is INERT: cell 14 unconditionally reassigns bm.games on both branches,
+# so the v0 run as first built played all 25 offline games at 900 s each (~6 h) while
+# printing "3 games". Review 03a4e62 (HIGH x2, confirmed); the eval builder already used
+# this seam. The P1/P2 asserts above are unaffected -- they fire before any game runs.
+CELL14_ANCHOR = "    bm.games = _offline_games(competition_env_files)\n"
+CELL14_SMOKE = (
+    "    # thui-lora-v0 P3: smoke slice -- the REAL seam, after the offline list is built.\n"
+    "    bm.games = bm.games[:@GAMES@]\n"
+    "    bm.solver.max_runtime_s_per_game = @CLOCK@.0\n"
+    "    assert len(bm.games) == @GAMES@, f\"thui-lora-v0 P3: expected @GAMES@ games, got {len(bm.games)}\"\n"
+    "    print(f\"thui-lora-v0 P3: {len(bm.games)} games at @CLOCK@s/game -- numbers are smoke, not score\",\n"
+    "          flush=True)\n"
+).replace("@GAMES@", str(SMOKE_GAMES)).replace("@CLOCK@", str(GAME_CLOCK_S))
 
 
 def main() -> None:
@@ -201,15 +215,21 @@ def main() -> None:
     c8 = c8.replace(teeth_anchor, CELL8_TEETH + teeth_anchor)
     cells[8]["source"] = (CELL8_PREFIX + c8).splitlines(keepends=True)
 
-    # cell 12: append the smoke block after the inherited probe
+    # cell 12: append the P1/P2 asserts after the inherited probe (no bm.games here -- inert)
     c12 = "".join(cells[12]["source"])
     assert "bm.games" not in c12, "cell 12 already slices bm.games -- double build?"
     cells[12]["source"] = (c12 + CELL12_SUFFIX).splitlines(keepends=True)
 
-    # teeth on the build itself: exactly cells 0, 8, 12 changed
+    # cell 14: the smoke slice + clock, right after the offline game list is built
+    c14 = "".join(cells[14]["source"])
+    assert c14.count(CELL14_ANCHOR) == 1, "offline bm.games assignment not found once in cell 14"
+    assert "smoke slice" not in c14, "cell 14 already carries the smoke slice -- double build?"
+    cells[14]["source"] = c14.replace(CELL14_ANCHOR, CELL14_ANCHOR + CELL14_SMOKE).splitlines(keepends=True)
+
+    # teeth on the build itself: exactly cells 0, 8, 12, 14 changed
     after = ["".join(c["source"]) for c in cells]
     changed = [i for i, (a, b) in enumerate(zip(before, after)) if a != b]
-    assert changed == [0, 8, 12], f"cells changed {changed}, expected [0, 8, 12]"
+    assert changed == [0, 8, 12, 14], f"cells changed {changed}, expected [0, 8, 12, 14]"
 
     OUT_NB.write_text(json.dumps(nb, ensure_ascii=False, indent=1), encoding="utf-8")
     meta = json.loads((REPO / "thuiv1" / "v1-1" / "kernel-metadata.json").read_text(encoding="utf-8"))
