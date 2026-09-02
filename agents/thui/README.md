@@ -13,7 +13,7 @@ a lever.
 | `v2.0` | `thuiv2/` | animation retrieval **OFF** (`B39`) | 2.86 | — | [v2-0](v2/v2-0.md) |
 | `v3.0` | `thuiv3/` | `LOCAL_ANALYZER_YIELD_SECONDS` 60 → 180 (`B48`) | 4.01 / 4.518 | 1.63 / 1.59 | [v3-0](v3/v3-0.md) |
 | `v3.1` | `thuiv3/` | **nothing** — third draw of the same build | 5.17 | **2.03** | [v3-1](v3/v3-1.md) |
-| `v3.2` | `thuiv3/` | **nothing** — fourth draw of the same build | 3.85 | **pending** | [v3-2](v3/v3-2.md) |
+| `v3.2` | `thuiv3/` | **nothing** — fourth draw of the same build | 3.85 | **1.35** | [v3-2](v3/v3-2.md) |
 | `v4.0` | `thuiv4/` | `LOCAL_ANALYZER_TEMPERATURE` 0.6 → 1.0 at yield 60 | 1.92 | — | [v4-0](v4/v4-0.md) |
 | `v5.0` | `thuiv5/` | temperature 1.0 at yield 180 (`B53`) | 3.08 | — | [v5-0](v5/v5-0.md) |
 | `v6.0` | `thuiv6/` | `LOCAL_ANALYZER_CONTEXT_WINDOW` 32768 → 49152 (`B54`) | **6.05** | 1.26 | [v6-0](v6/v6-0.md) |
