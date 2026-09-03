@@ -72,7 +72,7 @@ UPSCALE_REPORT = (
     "          \"(as shipped -- deliberately not pinned to 4)\", flush=True)\n"
 )
 
-CELL0_MD = """# thui-avo-v0 — the upstream AVO bundle, unmodified, on the thui chassis
+CELL0_MD = """# thui-avo-v0 (Thuitanium / Knowless Crew) — the upstream AVO bundle, unmodified, on the thui chassis
 
 **This kernel swaps ONE thing against `thui-v1-1`: the source bundle.**
 `jakobbrggen/taaf-kaggle-source` (branch `experiment/avo`) ships `avo_agent=True` in its
