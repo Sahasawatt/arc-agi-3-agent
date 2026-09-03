@@ -1,0 +1,131 @@
+{
+ "label": "thui-prior-v1-r2",
+ "source": "sahasawatt/thui-prior-v1-r2 summary.txt 2026-09-02",
+ "games": {
+  "ar25": {
+   "score": 2.78,
+   "levels": 1,
+   "actions": 41
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 33
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 54
+  },
+  "cn04": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 72
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 29
+  },
+  "ft09": {
+   "score": 14.29,
+   "levels": 2,
+   "actions": 28
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 36
+  },
+  "ka59": {
+   "score": 3.57,
+   "levels": 1,
+   "actions": 51
+  },
+  "lf52": {
+   "score": 1.82,
+   "levels": 1,
+   "actions": 56
+  },
+  "lp85": {
+   "score": 16.67,
+   "levels": 3,
+   "actions": 64
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 86
+  },
+  "m0r0": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 54
+  },
+  "r11l": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 18
+  },
+  "re86": {
+   "score": 16.67,
+   "levels": 3,
+   "actions": 142
+  },
+  "s5i5": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 102
+  },
+  "sb26": {
+   "score": 0.66,
+   "levels": 1,
+   "actions": 75
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 24
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 36
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 148
+  },
+  "su15": {
+   "score": 2.22,
+   "levels": 1,
+   "actions": 67
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 52
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 41
+  },
+  "tu93": {
+   "score": 1.39,
+   "levels": 1,
+   "actions": 66
+  },
+  "vc33": {
+   "score": 21.43,
+   "levels": 3,
+   "actions": 56
+  },
+  "wa30": {
+   "score": 2.22,
+   "levels": 1,
+   "actions": 79
+  }
+ }
+}
