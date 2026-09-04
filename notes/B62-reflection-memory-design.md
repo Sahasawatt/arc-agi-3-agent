@@ -90,3 +90,37 @@ Paired **levels** vs the same-seed base pair (`thui-v1-1` 28 levels / `thui-v1-1
 ## Rebased 2026-09-04 onto the B48 chassis
 
 Builder default is now `--base=v3` = `thuiv3/taaf-thui-v3-0.ipynb` (thui-v1-1 + yield 180: the build that drew the standing best 2.03 and holds the campaign's only 4-run public pool). The cell-12/14 seams are identical in that chassis (anchors asserted once; cell 8 asserted to carry the yield-180 injection twice). **Baseline for the paired read is the `thuiv3` arm** declared in `eval/fixtures/arms.json` (thuiv3-0 4.01 / thuiv3-0-r2 4.52 / thuiv3-1 5.17 / thuiv3-2 3.85; the three new fixtures banked from each run's `benchmark.json`, means reproducing the LEDGER), pooled as `eval/fixtures/thuiv3-pool.json`. Read: `python3 eval/rank_runs.py eval/fixtures/thuiv3-pool.json <candidate-pool>.json`, +1 level in >= 6 of 25 games on both candidate draws. `--base=v1` keeps the thui-v1-1 chassis for a control build only.
+
+## 2026-09-04 — smoke pushed from the mac as `yocybercode/thui-reflect-v0`
+
+Built in a detached worktree at `d3e72ba` with `python3 thui-reflect/build_notebook.py --owner=yocybercode --base=v3`; the
+notebook came out **byte-identical to the tracked `taaf-thui-reflect-v0.ipynb`** (only `kernel-metadata.json`'s `id` moved),
+cell 12 `ast.parse` clean. `scripts/kaggle_push_kernel.py` (G4: token identity `yocybercode` matches the
+id's owner) → `Kernel version 1 successfully pushed`, status `QUEUED` — so the `sahasawatt` weekly quota was the only
+blocker and the `yocybercode` account had room. **GPU quota only, no submission slot.** Smoke oracle unchanged (P1 / P2 / P3
+above); the read is appended below once the run completes.
+
+### Smoke read (`yocybercode/thui-reflect-v0`, COMPLETE 2026-09-04 ~10:24Z, wall 1,319 s)
+
+Read twice, independently (Sahasawat via `kernels output`, Watchara via `kernels logs`); every number agrees.
+Queue wait ~2h40m (pushed 07:20Z, RUNNING ~10:01Z).
+
+- **P3 PASS** — 3 games finished (`tr87` 10 actions / `sk48` 33 / `sc25` 28 with **1 level**), `wrapper error` 0,
+  `call FAILED` 0. The cadence fired **7** reflection calls (6 `reason=k`, 1 `reason=level` — exactly on
+  `sc25`'s clear), latency 19.9–22.1 s, mean 20.7 s.
+- **P1 FAIL BY MECHANISM** — all 7 calls returned `fields=[] content_chars=0` with ~3.5k tokens billed each.
+  Cause (read from `setup_commands.json` and `tool_agent.py`): the harness runs every analyzer call with
+  `LOCAL_ANALYZER_ENABLE_THINKING=true`; `_chat_completion` reads the module global at call time
+  (`tool_agent.py:1533`), so the memory call inherited thinking and spent its whole 700-token cap inside
+  `<think>` — latency ≈ 700 tok at ~35 tok/s confirms. **The pre-registered `empty ≥ half` kill rule fires on
+  this draw, but it fires on a build defect, not on the design's ceiling — B62 is not closed on it.**
+- **P2 vacuous** — `P2 injected lines=3-4` were the model's own volunteered prefixes, not the reflection's.
+
+**Next: `thui-reflect-v0-1`** — thinking OFF for the memory call only (`_ta._LOCAL_ANALYZER_ENABLE_THINKING`
+patched inside `_reflect`, restored in `finally`), cap 700 → 1200, and a fallback that parses the seven lines out
+of `reasoning_content` when `content` is still empty; the log line now prints `completion=` and
+`from_reasoning=`. Same smoke, same oracle. Pushed from the mac 2026-09-04 10:53Z as
+`yocybercode/thui-reflect-v0-1`, QUEUED.
+
+**Lesson for every extra LLM call inside duck:** thinking is on globally, so any capped side-call must switch it
+off for that call or budget for it.

@@ -38,7 +38,7 @@ OWNER = "sahasawatt"
 SMOKE_GAMES = ("tr87", "sk48", "sc25")
 GAME_CLOCK_S = 900
 REFLECT_K = 10            # executed steps between reflections (Reki/forge: ~10)
-REFLECT_MAX_TOKENS = 700  # cap on the reflection reply
+REFLECT_MAX_TOKENS = 1200  # cap on the reflection reply (v0 at 700: every reply empty, the cap was spent inside <think>)
 REFLECT_TIMEOUT_S = 90    # one reflection call may not eat the turn budget
 REFLECT_HISTORY = 12      # most recent history messages rendered into the reflection prompt
 
@@ -51,6 +51,10 @@ duck already injects into each prompt (`World model / Goal model / Action model 
 Open questions / Plan / Cross-level notes`) from the recent transcript. The call never issues an
 action and never edits history. Cell 14 filters to tr87 / sk48 / sc25 at 900 s each. Numbers are
 meaningless and must never be quoted. Design: `notes/B62-reflection-memory-design.md`.
+
+**v0-1 (2026-09-04):** v0's seven memory replies were all EMPTY — the call inherited the harness's
+thinking mode and spent its 700-token cap inside `<think>`. This build turns thinking OFF for the memory
+call only, raises the cap to 1200, and falls back to parsing the seven lines out of `reasoning_content`.
 
 Solver credit: Tufa Labs (Harold Bessis, Jeroen Cottaar, Isaiah Pressman, Andries Smit,
 Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset. This is a
@@ -140,6 +144,12 @@ def _reflect(agent, state_path, reason):
     user = f"CURRENT WORLD MODEL (may be stale or empty):\n{current}\n\nRECENT TRANSCRIPT (oldest first):\n{history}"
     saved_max = agent._max_output_tokens
     agent._max_output_tokens = _REFLECT_MAX_TOKENS
+    # v0 lesson: the harness runs every analyzer call with LOCAL_ANALYZER_ENABLE_THINKING=true and
+    # _chat_completion reads the module global at call time (tool_agent.py:1533), so the memory call
+    # inherited thinking and spent its whole 700-token cap inside <think>: 7 of 7 replies had
+    # content_chars=0. Thinking OFF for this one call only, restored in finally.
+    saved_think = _ta._LOCAL_ANALYZER_ENABLE_THINKING
+    _ta._LOCAL_ANALYZER_ENABLE_THINKING = False
     t0 = _time.monotonic()
     try:
         result = agent._chat_completion(
@@ -153,6 +163,7 @@ def _reflect(agent, state_path, reason):
         return
     finally:
         agent._max_output_tokens = saved_max
+        _ta._LOCAL_ANALYZER_ENABLE_THINKING = saved_think
     latency = _time.monotonic() - t0
     _REFLECT_STATS["latency_s"] += latency
     try:
@@ -161,7 +172,17 @@ def _reflect(agent, state_path, reason):
         pass
     content = _ta._normalize_message_content(result.message.get("content"))
     note = _ta._extract_scientist_note(content)
-    filled = {k: v for k, v in note.items() if k in _REFLECT_FIELDS and v and v.strip().lower() != "unknown"}
+    def _filled(n):
+        return {k: v for k, v in n.items() if k in _REFLECT_FIELDS and v and v.strip().lower() != "unknown"}
+    filled = _filled(note)
+    from_reasoning = False
+    if not filled:  # fallback: the seven lines may sit in reasoning_content when the model thought anyway
+        try:
+            rtext = _ta._extract_reasoning_text(result.message)
+            filled = _filled(_ta._extract_scientist_note(rtext))
+            from_reasoning = bool(filled)
+        except Exception:
+            pass
     if filled:
         for k, v in filled.items():
             agent._summarized_knowledge[k] = v
@@ -170,7 +191,8 @@ def _reflect(agent, state_path, reason):
         _REFLECT_STATS["empty"] += 1
     usage = result.usage if isinstance(result.usage, dict) else {}
     print(f"thui-reflect: game={game} reason={reason} fields={sorted(filled)} latency={latency:.1f}s "
-          f"tokens={usage.get('total_tokens', '?')} content_chars={len(content)}", flush=True)
+          f"tokens={usage.get('total_tokens', '?')} completion={usage.get('completion_tokens', '?')} "
+          f"content_chars={len(content)} from_reasoning={from_reasoning}", flush=True)
 
 
 _orig_analyze = _ta.ToolAgent.analyze
@@ -217,6 +239,8 @@ def _reflect_analyze(self, state_path, action_count, *args, **kwargs):
 _ta.ToolAgent.analyze = _reflect_analyze
 assert _ta.ToolAgent.analyze is _reflect_analyze, "thui-reflect: analyze wrap did not land"
 assert callable(getattr(_ta, "_extract_scientist_note", None)), "thui-reflect: upstream note parser missing"
+assert callable(getattr(_ta, "_extract_reasoning_text", None)), "thui-reflect: upstream reasoning extractor missing"
+assert hasattr(_ta, "_LOCAL_ANALYZER_ENABLE_THINKING"), "thui-reflect: thinking flag not where v0 measured it"
 print(f"thui-reflect-v0: ToolAgent.analyze wrapped (reflect every {_REFLECT_K} executed steps or on level completion; "
       f"max {_REFLECT_MAX_TOKENS} tokens, {_REFLECT_TIMEOUT_S}s timeout; never issues an action)", flush=True)
 # ======================================================================================

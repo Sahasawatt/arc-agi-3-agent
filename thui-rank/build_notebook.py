@@ -11,7 +11,11 @@ thui-v1-1 byte-for-byte except three cells: cell 0 markdown, cell 12 appended pa
 (tr87 / sk48 / sc25, 900 s/game). `--full` drops the cell-14 filter; `--suffix=-r2` names a
 second run.
 
-    python3 build_notebook.py [--full] [--suffix=-r2] [--owner=yocybercode] [--base=v3|v1]   # owner must match the pushing token (G4); base defaults to the B48 build
+    python3 build_notebook.py [--full] [--suffix=-r2] [--owner=yocybercode] [--base=v3|v1] [--min-obs=N]   # owner must match the pushing token (G4); base defaults to the B48 build
+
+`--min-obs=N` (smoke only, refused with `--full`) lowers the arming threshold so a 900 s smoke can
+reach the veto path at all: v0 measured 3-11 executed actions per game against a design threshold of 20,
+so the branch the design is about never ran (2026-09-04).
 """
 from __future__ import annotations
 
@@ -31,7 +35,8 @@ OWNER = "sahasawatt"
 SMOKE_GAMES = ("tr87", "sk48", "sc25")
 GAME_CLOCK_S = 900
 VETO_P = 0.15          # veto when predicted change-probability is below this
-VETO_MIN_OBS = 20      # a cold prior vetoes nothing
+VETO_MIN_OBS = int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--min-obs=")), 20))  # a cold prior vetoes nothing; design = 20
+VETO_MIN_OBS_DESIGN = 20
 VETO_PER_STEP = 2      # third proposal in a step always executes
 
 CELL0_MD_SMOKE = """# thui-rank-v0 — B61 smoke: frame-change prior as a VETO over the LLM's proposals
@@ -42,7 +47,7 @@ online on this game's own executed actions; a proposal predicted inert (p < 0.15
 observations, ≤ 2 vetoes per step) is answered with the harness's own invalid-action payload and
 the LLM re-picks. **The prior never issues an action.** Cell 14 filters to tr87 / sk48 / sc25 at
 900 s each. Numbers are meaningless and must never be quoted. Design: `notes/B61-prior-as-ranker-design.md`.
-
+@SMOKE_VARIANT@
 Solver credit: Tufa Labs (Harold Bessis, Jeroen Cottaar, Isaiah Pressman, Andries Smit,
 Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset. This is a
 Knowless Crew / Thuitanium fork; none of their scores are ours.
@@ -312,7 +317,13 @@ def main(full: bool = False, slug_suffix: str = "", owner: str = OWNER) -> None:
     slug = ("thui-rank-v1" if full else "thui-rank-v0") + slug_suffix
     out_nb = HERE / f"taaf-{slug}.ipynb"
 
-    cells[0]["source"] = (CELL0_MD_FULL if full else CELL0_MD_SMOKE).splitlines(keepends=True)
+    if full:
+        assert VETO_MIN_OBS == VETO_MIN_OBS_DESIGN, f"--full must run the design threshold {VETO_MIN_OBS_DESIGN}, not --min-obs={VETO_MIN_OBS}"
+    variant = "" if VETO_MIN_OBS == VETO_MIN_OBS_DESIGN else (
+        f"\n**Smoke variant (2026-09-04):** arming threshold lowered to **{VETO_MIN_OBS}** observations (design: {VETO_MIN_OBS_DESIGN}) "
+        "so the veto path is exercised at all inside 900 s -- v0 never armed. Proves the PATH, not the lever.\n")
+    cells[0]["source"] = (CELL0_MD_FULL if full else CELL0_MD_SMOKE.replace("@SMOKE_VARIANT@", variant)).splitlines(keepends=True)
+    assert "@SMOKE_VARIANT@" not in "".join(cells[0]["source"])
     c12 = "".join(cells[12]["source"])
     assert "thui-rank" not in c12, "cell 12 already carries the ranker -- double build?"
     assert "@VETO" not in CELL12_SUFFIX, "placeholder not substituted"

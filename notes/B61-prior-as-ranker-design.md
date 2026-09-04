@@ -72,3 +72,32 @@ a quota message twice today.
 ## Rebased 2026-09-04 onto the B48 chassis
 
 Builder default is now `--base=v3` = `thuiv3/taaf-thui-v3-0.ipynb` (thui-v1-1 + yield 180: the build that drew the standing best 2.03 and holds the campaign's only 4-run public pool). The cell-12/14 seams are identical in that chassis (anchors asserted once; cell 8 asserted to carry the yield-180 injection twice). **Baseline for the paired read is the `thuiv3` arm** declared in `eval/fixtures/arms.json` (thuiv3-0 4.01 / thuiv3-0-r2 4.52 / thuiv3-1 5.17 / thuiv3-2 3.85; the three new fixtures banked from each run's `benchmark.json`, means reproducing the LEDGER), pooled as `eval/fixtures/thuiv3-pool.json`. Read: `python3 eval/rank_runs.py eval/fixtures/thuiv3-pool.json <candidate-pool>.json`, +1 level in >= 6 of 25 games on both candidate draws. `--base=v1` keeps the thui-v1-1 chassis for a control build only.
+
+## 2026-09-04 — smoke pushed from the mac as `yocybercode/thui-rank-v0`
+
+Built in a detached worktree at `d3e72ba` with `python3 thui-rank/build_notebook.py --owner=yocybercode --base=v3`; the
+notebook came out **byte-identical to the tracked `taaf-thui-rank-v0.ipynb`** (only `kernel-metadata.json`'s `id` moved),
+cell 12 `ast.parse` clean, 0 `propose(` calls. `scripts/kaggle_push_kernel.py` (G4: token identity `yocybercode` matches the
+id's owner) → `Kernel version 1 successfully pushed`, status `QUEUED` — so the `sahasawatt` weekly quota was the only
+blocker and the `yocybercode` account had room. **GPU quota only, no submission slot.** Smoke oracle unchanged (P1 / P2 / P3
+above); the read is appended below once the run completes.
+
+### Smoke read (`yocybercode/thui-rank-v0`, COMPLETE 2026-09-04 ~10:27Z, wall 1,347 s)
+
+Read twice, independently — Sahasawat from `kernels output` (log + `_p0_events` sidecars + `benchmark.json`),
+Watchara from `kernels logs` on the mac — every number agrees. Queue wait **~2h35m** (pushed 07:20Z, RUNNING
+~09:55Z): the first measured queue wait on record; earlier notes had 38 min once and "no wait" twice.
+
+- **P3 PASS** — 3 games finished (`tr87` 3 actions / `sk48` 11 / `sc25` 10, 0 levels), `wrapper error` 0,
+  `observe skipped` 0, no action ever issued by the prior.
+- **P2 PASS** — the one training update is finite: `thui-rank: update n=25 buf=10 loss=1.8076`.
+- **P1 NOT EXERCISED** — `VETO` 0, `BATCH-DROP` 0. The veto arms at ≥ 20 observations per game and no game got
+  past 11 executed actions in 900 s, so the branch the design is about never ran. Not a refutation: the smoke
+  measured the harness path only.
+
+**Next: `thui-rank-v0-1`** — same 900 s / 3-game smoke with the arming threshold lowered to **5** observations
+(`build_notebook.py --min-obs=5`, smoke only; `--full` with any non-design threshold is refused by assert; cell 0
+carries a "Smoke variant" line). It proves the veto PATH (score → harness invalid-action payload → LLM re-picks
+in the same turn) once per game, and the false-veto proxy. Pushed from the mac 2026-09-04 10:53Z as
+`yocybercode/thui-rank-v0-1`, QUEUED. Oracle unchanged. Then, only if the path behaves, `thui-rank-v1 --full`
+at the design 20, paired vs the thuiv3 pool (2 draws).
