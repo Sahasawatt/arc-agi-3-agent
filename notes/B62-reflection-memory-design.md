@@ -147,3 +147,28 @@ pushed from the mac at **12:05Z** as `yocybercode/thui-reflect-v1`, RUNNING imme
 draw through `scripts/kaggle_submit_gate.py`; if it crashes or the reflection errors on the full clock, the slot
 goes to a `thui-v3-1` resubmit instead. ⚠️ One public draw ranks nothing against the thuiv3 pool
 (`[2.82, 5.24]` band, B35 floor) — the draw is the measurement, the public number is only a sanity gate.
+
+### Full run (`yocybercode/thui-reflect-v1`, 25 games, COMPLETE 2026-09-04 ~14:25Z, wall 8,417 s) — **CLOSED: the memory works and the call is unaffordable at 25-game concurrency**
+
+**Public 1.39 / levels 13 / actions 2613** — below the same-build band `[2.82, 5.24]` and below every member of the
+thuiv3 pool (4.01 / 4.52 / 5.17 / 3.85, levels 23–26). Read from `kernels logs` on the mac; every number below is from
+that log.
+
+- **The lever was delivered**: 314 reflection calls, **294 returned all seven fields, 0 empty**, 20 `call FAILED`
+  (all `ReadTimeout` at the 90 s cap), `wrapper error` 0. Nothing about the memory's CONTENT failed.
+- **The bill is throughput.** Latency per reflection call: **12.1 s mean in the 3-game smoke → 59.8 s mean /
+  88.9 s max / p90 ≈ 76 s on 25 games.** The 25 games share one vLLM server; a reflection is a full ~2.5k-token
+  prompt plus 300–450 completion tokens, and every game issues one per 10 executed steps, so at any moment several games
+  are blocked ~1 min each and the analyzer's own requests queue behind them — the main analyzer logged
+  **20 `analyzer request failed`** timeouts in this run. Games that score in every pool run ended with almost no
+  actions: `tr87` **2**, `tn36` **4**, `ft09` **5**, `sp80` **7** (pool runs: dozens to hundreds).
+- **Why the smoke could not see it**: 3 games on one server leave the server idle between calls; the cost is a
+  contention effect that only appears at the real concurrency. A smoke with a P-oracle on latency needs to run at
+  full width, or budget the call against the per-turn yield (180 s) × 25.
+
+**Verdict.** B62 as built is **closed — null-to-negative on public, mechanism proven, cost measured.** Not drawn on
+hidden (the 09-04 slot went to a `thui-v3-1` resubmit, `56014686`). Re-open only with a memory rewrite that does
+NOT block the game's turn and does not add a full request to the shared server per 10 steps — e.g. piggy-backing the
+seven lines onto the analyzer's existing response (a prompt-side ask, already 0-for-5 on obedience), or an
+asynchronous rewrite that lands between turns and is skipped when the server is behind. Sahasawat's pre-registration
+for a hidden draw (≥ 2.05 / 1.40–2.00 / < 1.40) was never tested because the draw was not taken.
