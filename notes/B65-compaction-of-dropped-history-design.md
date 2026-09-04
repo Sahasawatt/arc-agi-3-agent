@@ -105,3 +105,14 @@ Kill rule as B62: ≥ 2 runs per arm, no hidden draw before the paired read.
 - 2026-09-05 ~20:20Z: **builder written** (`thui-compact/build_notebook.py`, base v3, cells 0/12/14 smoke, 0/12 full; every rewrite anchored, cell 12 parses; smoke = window 8 / K 4, full = window 30 / K 10). **In-kernel teeth** (run at import, before the benchmark): thread-local thinking flag (worker False / main True), diff / fold / strip helpers on synthetic messages, window constant landed. **Offline drive** against a stub harness with a realistic 30-turn loop: fires at turns 12 / 16 / 20 / 24 exactly (window 8 + K 4, then every K), memento folded into the first user message once (marker count 1), previous memento carried into the next summariser prompt, dropped tool-call code carried, 8 assistant turns kept, `wrapper_errors` 0, P2 `landed=True` on every post-fire turn. Notebooks built: `taaf-thui-compact-v0.ipynb` (smoke, sahasawatt) and `taaf-thui-compact-v1.ipynb` (full, yocybercode). **Not pushed** — GPU is Watchara's call after the 09-05 slot decision. Evidence file for
   the numbers above: `thui-v3-1` usage sidecars (`Desktop/archive/arc-traj/thui-v3-1/`, Windows box) and
   `thui-reflect-v1-1` v2 log.
+
+### Push record
+
+- **2026-09-04 ~20:40Z — the smoke cannot be pushed from this box: `sahasawatt`'s weekly GPU quota is exhausted.**
+  `kaggle kernels push -p thui-compact` (metadata id `sahasawatt/thui-compact-v0`, correct for this token under G4)
+  answers `Kernel push error: Maximum weekly GPU quota of 30.00 hours reached.` — **and exits 0**, which is the trap
+  `scripts/kaggle_push_kernel.py` exists to catch: it read the post-push `kernels status` back, found it empty
+  (`404` on the slug), and refused to report success. Same blocker as B61 / B62 / B64 on this account.
+  So **both** the smoke and the full run are Watchara's GPU (`yocybercode`), not just the full run:
+  rebuild with `python3 thui-compact/build_notebook.py --owner=yocybercode` for the smoke (the committed metadata
+  says `sahasawatt` because that is this box's token) and push from the mac. Nothing was created on Kaggle.
