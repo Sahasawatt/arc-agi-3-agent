@@ -214,3 +214,36 @@ calls in flight, so the global flag looked correct there (v0-1: completion mean 
 Instrument (Windows box): `kernels_output` with `file_pattern` for `benchmark.json` / `summary.txt` / `.log` /
 `_usage.jsonl` / `_p0_events.jsonl`; reflect intervals = `latency=` lines (end − latency) plus 90 s for each
 `call FAILED`; events aligned per game by `t_log(first "new memory") − clock(first analysis transcript)`.
+
+### v1-1 paired read (Sahasawat, 2026-09-05 ~00:40Z) — **mechanism proven and priced; score NOT-DISTINGUISHABLE at n=1**
+
+`yocybercode/thui-reflect-v1-1` VERSION 2 (Watchara pushed the thread-local build at `d0600e6` from the mac at 15:07Z;
+version 1 of the slug was a false start from the old builder, cancelled at 83 s — read nothing from it). COMPLETE ~17:25Z,
+wall 8,391 s. Artifacts pulled on the Windows box with `kernels_output` + `file_pattern`.
+
+- **Teeth fired**: `thui-reflect-v1-1: thinking flag is thread-local (worker False, main True)` present once.
+- **Thinking restored for the main analyzer**: completion mean **1,906 / median 1,309** (n=1,237) — v1 read 318 / 253
+  under the confound, `thui-v3-1` reads 1,839 / 1,297. The v1 diagnosis is confirmed by intervention.
+- **Memory delivered**: 105 calls (81 `k`, 24 `level`), **105 returned all seven fields, 0 empty, 0 FAILED**; latency
+  mean 29.6 s / max 50.8 s; sum 3,106 s = **1.6%** of the game clock (v1: 8.9%); max 11 calls in one game (`m0r0`) —
+  the once-per-summary guard held (v1: 30 on `sp80`). In-flight union 33% of the run, now harmless.
+- **Score**: `rank_runs.py thuiv3-pool → thui-reflect-v1-1`: **4.39 → 4.38, levels 24.25 → 24, p = 0.9978,
+  NOT-DISTINGUISHABLE**; 9 up / 13 down / 6 flipped. B35 floor: **+1 level in 1 of 25** (`ar25`) against a floor of 6.
+  Inside `[2.82, 5.24]`. **NOT MEASURABLE, never "no worse".**
+
+**Reading.** Everything the smoke and the v1 post-mortem asked for is now true — the seven fields land in every prompt
+after every 10 steps, the call costs 1.6% of the clock, nothing errors — and the levels do not move. This is another
+in-band sample of the v10 family and the fourth member of the more-context family (`B17` frames, `B54` window, `B48`
+yield, now `B62` memory) to land on the base's mean. What it separates from the v1 read: the memory is not *harmful*;
+what it cannot separate: a +0.5-level effect from zero (B35). A second draw (`--suffix=-r2`) would make the arm a
+pair; the first draw sitting on the pool's mean is not an argument for spending 2.2 h of GPU on it.
+
+**Draw eligibility** (thui-stack composition rule): an arm enters the draw candidate only after clearing the B35 floor on
+both draws — `reflect` does not, so `thui-stack --arms=` stays empty and the draw candidate stays the B48 chassis.
+Drawing `thui-reflect-v1-1` itself on hidden would be a within-band dice roll of a build with one public sample; that is
+Watchara's slot call, and nothing here argues for it over a B48 resubmit.
+
+**Status: closed on measurement** — mechanism proven (P1–P3 + teeth + thinking control), cost measured (1.6%), score
+NOT-DISTINGUISHABLE at n=1, B35 floor not reached. Re-open only with a different memory *policy* (compaction of the
+dropped history block rather than a seven-slot rewrite — see `arc-agi-pub/notes/deep-research-astra-mechanism-2026-09-04.md`
+§4 #1–2 and the B65 design that follows it), not with a second draw of this one.
