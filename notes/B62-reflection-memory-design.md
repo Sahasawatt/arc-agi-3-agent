@@ -124,3 +124,26 @@ of `reasoning_content` when `content` is still empty; the log line now prints `c
 
 **Lesson for every extra LLM call inside duck:** thinking is on globally, so any capped side-call must switch it
 off for that call or budget for it.
+
+### Re-smoke read (`yocybercode/thui-reflect-v0-1`, COMPLETE 2026-09-04 ~11:38Z, wall 1,421 s) — **P1 / P2 / P3 PASS**
+
+Queue wait ~20 min (pushed 10:53Z, RUNNING ~11:13Z). Read from `kernels logs` on the mac.
+
+- **P1 PASS** — 5 reflection calls (all `reason=k`; no level cleared this draw), **every one returned all seven
+  fields** in all three games (`sk48` ×2, `sc25` ×2, `tr87` ×1): `fields=['action_model', 'cross_level_notes',
+  'current_plan', 'goal_model', 'open_questions', 'recent_findings', 'world_model']`, `content_chars` 1,123–1,787,
+  `completion=` 298–441 tokens, `from_reasoning=False` every time — the fallback never had to fire, the fix was
+  thinking-off alone. Against v0: 7 of 7 empty → 0 of 5 empty.
+- **P2 PASS** — `P2 injected lines=9` on every post-reflection turn (v0: 3–4 lines, and those were the model's own
+  prefixes). Nine = the seven fields plus the two header lines `_summarized_knowledge_lines()` emits.
+- **P3 PASS** — 3 games finished (`tr87` 12 actions / `sc25` 20 / `sk48` 30, 0 levels), `wrapper error` 0,
+  `call FAILED` 0. Latency **8.7–14.7 s, mean 12.1 s** (v0: 20.7 s at 700 tokens of pure thinking); kill rules
+  (mean > 30 s, empty ≥ half) both clear.
+
+**Decision (Watchara, 2026-09-04): B62 is the final build for today's draw.** `thui-reflect-v1 --full` was built
+at `f590d2d` (`cells changed [0, 12]`, smoke filter absent, cell 12 parses, thinking-off + cap 1200 present) and
+pushed from the mac at **12:05Z** as `yocybercode/thui-reflect-v1`, RUNNING immediately. Plan: read the public
+25-game result when it lands; if the build completes without harness errors it is submitted as the 09-04 hidden
+draw through `scripts/kaggle_submit_gate.py`; if it crashes or the reflection errors on the full clock, the slot
+goes to a `thui-v3-1` resubmit instead. ⚠️ One public draw ranks nothing against the thuiv3 pool
+(`[2.82, 5.24]` band, B35 floor) — the draw is the measurement, the public number is only a sanity gate.

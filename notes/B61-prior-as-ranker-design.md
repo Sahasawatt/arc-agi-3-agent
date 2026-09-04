@@ -101,3 +101,24 @@ carries a "Smoke variant" line). It proves the veto PATH (score → harness inva
 in the same turn) once per game, and the false-veto proxy. Pushed from the mac 2026-09-04 10:53Z as
 `yocybercode/thui-rank-v0-1`, QUEUED. Oracle unchanged. Then, only if the path behaves, `thui-rank-v1 --full`
 at the design 20, paired vs the thuiv3 pool (2 draws).
+
+### Re-smoke read (`yocybercode/thui-rank-v0-1`, `--min-obs=5`, COMPLETE 2026-09-04 ~11:35Z, wall 1,337 s)
+
+Queue wait ~20 min this time (pushed 10:53Z, RUNNING ~11:13Z) — so the morning's 2h35m was the pool, not a rule.
+
+- **P3 PASS** — 3 games finished (`sc25` 16 actions / `tr87` 18 / `sk48` 8, 0 levels), `wrapper error` 0.
+- **P2 PASS by letter, and the number is the finding** — `update n=25 buf=11 loss=0.0000`, `update n=50 buf=9
+  loss=0.0000`. A loss of exactly zero after 25 steps means every observation carried the **same label**: on these
+  three games, inside 900 s, every executed action changed the board, so the buffer holds no inert example at all.
+- **P1 STILL NOT EXERCISED at threshold 5** — `VETO` 0, `BATCH-DROP` 0, false-veto proxy 0, with 8–18 executed
+  actions per game, i.e. the prior *was* armed. It never vetoed because it had nothing to predict inert with:
+  `score()` returns `None` for any (board, action) already observed to change, and the net trained on all-ones
+  predicts change everywhere else.
+
+**What this closes and what it does not.** The harness path is clean twice over (wrap lands, filter fires, the
+trainer runs, nothing breaks the turn) — that is the whole of what a 900 s smoke can say. The veto PATH (refusal
+payload → LLM re-picks in the same turn) has still never executed, and it cannot be forced on games whose early
+actions all move the board. Proving it needs either a game with inert early actions in the smoke set or the full
+clock. **Not today's build**: B60 measured the same prior family net negative as a fallback, and B61's only
+evidence so far is "does not crash". Left `open`; the next step is a `--full` run at the design threshold paired
+vs the thuiv3 pool, and only when a slot is not better spent (2026-09-04: it was — see B62).
