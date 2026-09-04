@@ -68,3 +68,7 @@ killed `thui-prior-v1-1-r2` earlier today. Two ways forward, both zero-slot:
 Smoke oracle unchanged (P1 ≥1 veto at obs ≥ 20 · P2 finite loss · P3 COMPLETE, 3 games, 0 wrapper
 errors). ⚠️ The gate script should print the CLI's error line verbatim on an empty status — it hid
 a quota message twice today.
+
+## Rebased 2026-09-04 onto the B48 chassis
+
+Builder default is now `--base=v3` = `thuiv3/taaf-thui-v3-0.ipynb` (thui-v1-1 + yield 180: the build that drew the standing best 2.03 and holds the campaign's only 4-run public pool). The cell-12/14 seams are identical in that chassis (anchors asserted once; cell 8 asserted to carry the yield-180 injection twice). **Baseline for the paired read is the `thuiv3` arm** declared in `eval/fixtures/arms.json` (thuiv3-0 4.01 / thuiv3-0-r2 4.52 / thuiv3-1 5.17 / thuiv3-2 3.85; the three new fixtures banked from each run's `benchmark.json`, means reproducing the LEDGER), pooled as `eval/fixtures/thuiv3-pool.json`. Read: `python3 eval/rank_runs.py eval/fixtures/thuiv3-pool.json <candidate-pool>.json`, +1 level in >= 6 of 25 games on both candidate draws. `--base=v1` keeps the thui-v1-1 chassis for a control build only.

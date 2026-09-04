@@ -86,3 +86,7 @@ Paired **levels** vs the same-seed base pair (`thui-v1-1` 28 levels / `thui-v1-1
   `Kernel push error: Maximum weekly GPU quota of 30.00 hours reached.` Same blocker as B61. Unblock:
   weekly reset on `sahasawatt`, or `python3 thui-reflect/build_notebook.py --owner=yocybercode` +
   the gate script from the mac.
+
+## Rebased 2026-09-04 onto the B48 chassis
+
+Builder default is now `--base=v3` = `thuiv3/taaf-thui-v3-0.ipynb` (thui-v1-1 + yield 180: the build that drew the standing best 2.03 and holds the campaign's only 4-run public pool). The cell-12/14 seams are identical in that chassis (anchors asserted once; cell 8 asserted to carry the yield-180 injection twice). **Baseline for the paired read is the `thuiv3` arm** declared in `eval/fixtures/arms.json` (thuiv3-0 4.01 / thuiv3-0-r2 4.52 / thuiv3-1 5.17 / thuiv3-2 3.85; the three new fixtures banked from each run's `benchmark.json`, means reproducing the LEDGER), pooled as `eval/fixtures/thuiv3-pool.json`. Read: `python3 eval/rank_runs.py eval/fixtures/thuiv3-pool.json <candidate-pool>.json`, +1 level in >= 6 of 25 games on both candidate draws. `--base=v1` keeps the thui-v1-1 chassis for a control build only.

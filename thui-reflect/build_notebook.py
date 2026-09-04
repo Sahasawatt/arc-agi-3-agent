@@ -18,7 +18,7 @@ thui-v1-1 byte-for-byte except three cells: cell 0 markdown, cell 12 appended pa
 (wrap ToolAgent.analyze -> reflect after the turn), cell 14 smoke filter (tr87 / sk48 / sc25,
 900 s/game). `--full` drops the cell-14 filter; `--suffix=-r2` names a second run.
 
-    python3 build_notebook.py [--full] [--suffix=-r2] [--owner=yocybercode]   # owner must match the pushing token (G4)
+    python3 build_notebook.py [--full] [--suffix=-r2] [--owner=yocybercode] [--base=v3|v1]   # owner must match the pushing token (G4); base defaults to the B48 build
 """
 from __future__ import annotations
 
@@ -28,7 +28,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
-SRC_NB = REPO / "thuiv1" / "v1-1" / "taaf-thui-v1-1.ipynb"
+# Base chassis: "v3" = thui-v3-0 (the B48 build: thui-v1-1 + LOCAL_ANALYZER_YIELD_SECONDS 180, the build that
+# drew the standing best 2.03 and has a 4-run public baseline pool 4.01 / 4.52 / 5.17 / 3.85); "v1" = thui-v1-1.
+BASE = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--base=")), "v3")
+SRC_NB = {"v3": REPO / "thuiv3" / "taaf-thui-v3-0.ipynb", "v1": REPO / "thuiv1" / "v1-1" / "taaf-thui-v1-1.ipynb"}[BASE]
+META_SRC = {"v3": REPO / "thuiv3" / "kernel-metadata.json", "v1": REPO / "thuiv1" / "v1-1" / "kernel-metadata.json"}[BASE]
 OWNER = "sahasawatt"
 
 SMOKE_GAMES = ("tr87", "sk48", "sc25")
@@ -40,7 +44,7 @@ REFLECT_HISTORY = 12      # most recent history messages rendered into the refle
 
 CELL0_MD_SMOKE = """# thui-reflect-v0 — B62 smoke: reflection memory every 10 steps, into duck's own world-model slot
 
-**Infrastructure smoke, not a scoring run.** `thui-v1-1` byte-for-byte except cells 12 and 14.
+**Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 12 and 14.
 Cell 12 wraps the analyzer: after every turn, once ≥ 10 actions have executed since the last
 reflection (or a level just completed), ONE extra chat call rewrites the seven world-model fields
 duck already injects into each prompt (`World model / Goal model / Action model / Recent findings /
@@ -55,11 +59,11 @@ Knowless Crew / Thuitanium fork; none of their scores are ours.
 
 CELL0_MD_FULL = """# thui-reflect-v1 — B62: reflection memory every 10 steps, full 25 games
 
-`thui-v1-1` byte-for-byte except cell 12: after every turn, once ≥ 10 actions have executed since
+`thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cell 12: after every turn, once ≥ 10 actions have executed since
 the last reflection (or a level just completed), one extra chat call rewrites the seven world-model
 fields duck already injects into each prompt from the recent transcript. The call never issues an
 action and never edits history. Seed, temperature, clock and games inherited unchanged. Oracle:
-paired **levels** vs the same-seed base pair (`thui-v1-1`, `thui-v1-1-r2`), ≥ 2 runs per arm.
+paired **levels** vs the B48 build's public pool (`thui-v3-0` ×2, `thui-v3-1`, `thui-v3-2`: 4.01 / 4.52 / 5.17 / 3.85), ≥ 2 runs per arm.
 Design + record: `notes/B62-reflection-memory-design.md`.
 
 Solver credit: Tufa Labs (Harold Bessis, Jeroen Cottaar, Isaiah Pressman, Andries Smit,
@@ -233,7 +237,11 @@ CELL14_FILTER = (
 def main(full: bool = False, slug_suffix: str = "", owner: str = OWNER) -> None:
     nb = json.loads(SRC_NB.read_text(encoding="utf-8"))
     cells = nb["cells"]
-    assert len(cells) == 17, f"thui-v1-1 source expected 17 cells, found {len(cells)}"
+    assert len(cells) == 17, f"{SRC_NB.name}: expected 17 cells, found {len(cells)}"
+    if BASE == "v3":  # teeth: the base must carry the yield-180 injection AND its own assert, or it is not the B48 build
+        _c8 = "".join(cells[8]["source"])
+        assert _c8.count("'LOCAL_ANALYZER_YIELD_SECONDS': '180'") == 2, "base v3: yield-180 injection/assert not found twice in cell 8"
+    print(f"base = {BASE} ({SRC_NB.relative_to(REPO)})", flush=True)
     before = ["".join(c["source"]) for c in cells]
     slug = ("thui-reflect-v1" if full else "thui-reflect-v0") + slug_suffix
     out_nb = HERE / f"taaf-{slug}.ipynb"
@@ -258,7 +266,7 @@ def main(full: bool = False, slug_suffix: str = "", owner: str = OWNER) -> None:
         ast.parse("".join(cells[i]["source"]), filename=f"cell{i}")
 
     out_nb.write_text(json.dumps(nb, ensure_ascii=False, indent=1), encoding="utf-8")
-    meta = json.loads((REPO / "thuiv1" / "v1-1" / "kernel-metadata.json").read_text(encoding="utf-8"))
+    meta = json.loads(META_SRC.read_text(encoding="utf-8"))
     meta["id"] = f"{owner}/{slug}"; meta["title"] = slug; meta["code_file"] = out_nb.name
     (HERE / "kernel-metadata.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"built {out_nb.name}: cells changed {changed}, id {meta['id']}")
