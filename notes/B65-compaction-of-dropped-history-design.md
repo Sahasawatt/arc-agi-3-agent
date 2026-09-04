@@ -116,3 +116,34 @@ Kill rule as B62: ≥ 2 runs per arm, no hidden draw before the paired read.
   So **both** the smoke and the full run are Watchara's GPU (`yocybercode`), not just the full run:
   rebuild with `python3 thui-compact/build_notebook.py --owner=yocybercode` for the smoke (the committed metadata
   says `sahasawatt` because that is this box's token) and push from the mac. Nothing was created on Kaggle.
+
+### Memento prompt v2 (2026-09-05, before anything ran) — from `arc-agi-pub/notes/think-research-memento-prompt-2026-09-05.md`
+
+A narrow research pass (10 pinned agents, 44 sources, 24 claims: 16 confirmed / 5 refuted / 3 unverified) asked one
+question: does any measured evidence justify changing this prompt's wording? Its verdict was **"ship it close to as
+written"** — every claim carrying an efficacy number is refuted or was measured at frontier tier, and the strongest
+datapoint in the packet is ours (B62's seven-slot graft at this cadence, 105/105 filled, `p = 0.9978`). Two edits were
+adopted anyway because their cost if wrong is near zero, and one was dropped.
+
+- **Adopted — labelled output lines with per-line item caps**: `Rules:` ≤4, `Unknown:` ≤3, `No-op/harmful:` ≤6,
+  `Hypotheses:` ≤2, `Plan:` verbatim, 120 words total. The evidence for the shape is descriptive (checkpoint schemas,
+  Reflexion's episode caps), and the reason that decides it is instrumentation: **a labelled memento is parseable**, so
+  P1 counts filled labels the way B62 counted its seven fields instead of reading a length. The log line now carries
+  `labels=N/5` and names the missing ones, and `_COMPACT_STATS["labels"]` totals them.
+- **Adopted — every claim names the action or step that established it, drop the claim otherwise.** *Never invent
+  evidence* is unenforceable as a prohibition; this is its checkable form, at ~10-15% of the character budget.
+- **Dropped — a `Repeated mistake:` self-critique line.** One claim behind it (Reflexion's EPM ablation 67% → 75%),
+  and the transfer lens objected: frontier model, multi-hop QA, against a 27B model under a 600-token cap with thinking
+  off. Under 120 words it displaces a fact.
+- **Rejected with reasons worth keeping**: an `Active State` / current-position field is *stale by construction* here
+  (written at drop time, refolded for many turns while the live board sits in the surviving window); 1-2 sentence
+  budgets cannot hold the no-op list; importance scoring and two-stage synthesis are extra calls, not wording.
+
+**Third in-kernel teeth added**: every counted label must appear in the prompt (a counter for a field the model was
+never asked for reports a failure that is the harness's, not the model's), and the step-id requirement must be present
+exactly once. Offline drive re-run after the edit: fires at turns 12 / 16 / 20 / 24, `labels=5/5` on labelled replies
+and `0/5` with every name listed on a deliberately unlabelled one, memento folded once, `wrapper_errors` 0.
+
+**Smoke oracle P1 is now**: ≥ 2 fires per game, memento non-empty in ≥ half, and **`labels` ≥ 3 of 5 on at least half
+the fires** — a 27B model under a 600-token cap with thinking off is exactly the case where a five-field format may not
+survive, and if it does not, the finding is the format's, not the mechanism's.

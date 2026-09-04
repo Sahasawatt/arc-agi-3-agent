@@ -121,14 +121,21 @@ _COMPACT_BLOCK_CHARS = @BLOCKCHARS@
 _MEMENTO_MAX_CHARS = @MEMCHARS@
 _MEMENTO_MARK = "MEMENTO (turns older than the window; carried forward):"
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
-                  "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0}
+                  "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0, "labels": 0}
+_MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
-    "You are the memory of an agent playing a grid-based puzzle game. The turns below are about to be deleted "
-    "from its context. Write a short MEMENTO for the next turns of this game. Keep every entry of the previous "
-    "memento unless the turns below contradict it. Then add, from the turns below only: (1) what was established "
-    "about this level's rules and what is still unknown; (2) actions proven no-op or harmful, with the situation "
-    "they were tried in; (3) hypotheses that still need one decisive test; (4) if a 'Plan:' line appears, repeat it "
-    "verbatim. Never invent evidence. Output only the memento, plain lines, under 120 words."
+    "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
+    "context. Rewrite its memento.\n"
+    "Keep every entry of the previous memento unless this transcript contradicts it. Then add what these turns "
+    "established about this level's rules, and what is still unknown. Every claim names the action or step number "
+    "that established it; if you cannot name one, drop the claim. Never invent evidence.\n"
+    "Output exactly these labelled lines, in this order:\n"
+    "Rules: <at most 4>\n"
+    "Unknown: <at most 3>\n"
+    "No-op/harmful: <each action proven to do nothing or to hurt, with the situation it was tried in; at most 6>\n"
+    "Hypotheses: <at most 2, each one decisive test away>\n"
+    "Plan: <repeat any Plan: line from the transcript verbatim; otherwise the best next step>\n"
+    "Under 120 words total. No preamble, no code."
 )
 
 # window shrink (smoke only): the module global is read at call time in _persistent_history_messages
@@ -257,9 +264,12 @@ def _compact_memento(agent, reason):
         _COMPACT_STATS["empty"] += 1
     st["pending_check"] = True
     usage = result.usage if isinstance(result.usage, dict) else {}
+    labels = [lab for lab in _MEMENTO_LABELS if lab in st["memento"]]
+    _COMPACT_STATS["labels"] += len(labels)
     print(f"thui-compact: game={game} reason={reason} dropped_turns={n_buf} latency={latency:.1f}s "
           f"tokens={usage.get('total_tokens', '?')} completion={usage.get('completion_tokens', '?')} "
-          f"memento_chars={len(st['memento'])}", flush=True)
+          f"memento_chars={len(st['memento'])} labels={len(labels)}/{len(_MEMENTO_LABELS)} "
+          f"missing={[l.rstrip(':') for l in _MEMENTO_LABELS if l not in labels]}", flush=True)
 
 
 _orig_persist = _ta.ToolAgent._persistent_history_messages
@@ -367,8 +377,11 @@ assert _u2["content"][0]["text"] == "board B", "thui-compact: fold mutated the o
 _stripped = _compact_strip(_folded)
 assert _stripped[0]["content"] == _u2["content"] and _stripped[1] is _a2, "thui-compact: strip did not restore the message"
 assert _compact_fold(_compact_strip(_folded), "line two")[0]["content"][0]["text"].endswith("line two"), "thui-compact: re-fold failed"
+for _lab in _MEMENTO_LABELS:
+    assert _lab in _COMPACT_SYSTEM, f"thui-compact: label {_lab} is counted but not asked for in the prompt"
+assert _COMPACT_SYSTEM.count("names the action or step number") == 1, "thui-compact: the step-id requirement is missing from the prompt"
 print(f"thui-compact-v0: wraps landed; window={_COMPACT_WINDOW} K={_COMPACT_K} cap={_COMPACT_MAX_TOKENS} timeout={_COMPACT_TIMEOUT_S}s; "
-      f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok", flush=True)
+      f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
 # ======================================================================================
 '''.replace("@WINDOW@", str(WINDOW_TURNS)).replace("@K@", str(COMPACT_K)).replace("@MAXTOK@", str(COMPACT_MAX_TOKENS)) \
    .replace("@TIMEOUT@", str(COMPACT_TIMEOUT_S)).replace("@TURNCHARS@", str(COMPACT_TURN_CHARS)) \
