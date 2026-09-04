@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 51,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "bp35": {
+   "actions": 37,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 112,
+   "levels": 1,
+   "score": 1.9937386719393642
+  },
+  "cn04": {
+   "actions": 21,
+   "levels": 0,
+   "score": 0.0
+  },
+  "dc22": {
+   "actions": 56,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 72,
+   "levels": 4,
+   "score": 42.67524498293729
+  },
+  "g50t": {
+   "actions": 53,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 41,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "lf52": {
+   "actions": 111,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 34,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "ls20": {
+   "actions": 234,
+   "levels": 1,
+   "score": 0.40912933220625536
+  },
+  "m0r0": {
+   "actions": 55,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 8,
+   "levels": 0,
+   "score": 0.0
+  },
+  "re86": {
+   "actions": 128,
+   "levels": 3,
+   "score": 16.666666666666664
+  },
+  "s5i5": {
+   "actions": 48,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sb26": {
+   "actions": 113,
+   "levels": 3,
+   "score": 10.663226263495336
+  },
+  "sc25": {
+   "actions": 38,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sk48": {
+   "actions": 22,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 34,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "su15": {
+   "actions": 32,
+   "levels": 1,
+   "score": 2.2222222222222223
+  },
+  "tn36": {
+   "actions": 27,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "tr87": {
+   "actions": 117,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 52,
+   "levels": 0,
+   "score": 0.0
+  },
+  "vc33": {
+   "actions": 41,
+   "levels": 2,
+   "score": 10.714285714285714
+  },
+  "wa30": {
+   "actions": 98,
+   "levels": 0,
+   "score": 0.0
+  }
+ },
+ "label": "thuiv3-0-r2",
+ "source": "kaggle yocybercode/thui-v3-0 v3 (rerun under the corrected cell 0), 2026-08-28; LEDGER 4.52 / hidden 1.59 (55856045)"
+}

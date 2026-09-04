@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 137,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 22,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 71,
+   "levels": 2,
+   "score": 6.035900126809217
+  },
+  "cn04": {
+   "actions": 36,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "dc22": {
+   "actions": 45,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "ft09": {
+   "actions": 56,
+   "levels": 3,
+   "score": 28.57142857142857
+  },
+  "g50t": {
+   "actions": 22,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 37,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lf52": {
+   "actions": 45,
+   "levels": 1,
+   "score": 0.9194163860830529
+  },
+  "lp85": {
+   "actions": 27,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "ls20": {
+   "actions": 95,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 39,
+   "levels": 1,
+   "score": 2.9679461812425805
+  },
+  "r11l": {
+   "actions": 20,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 222,
+   "levels": 2,
+   "score": 3.2999153450429493
+  },
+  "s5i5": {
+   "actions": 40,
+   "levels": 1,
+   "score": 2.295684113865932
+  },
+  "sb26": {
+   "actions": 57,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 91,
+   "levels": 2,
+   "score": 7.341512992618644
+  },
+  "sk48": {
+   "actions": 20,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 58,
+   "levels": 1,
+   "score": 2.309584548104956
+  },
+  "su15": {
+   "actions": 1,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tn36": {
+   "actions": 26,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 0,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 27,
+   "levels": 1,
+   "score": 1.6574839302112028
+  },
+  "vc33": {
+   "actions": 78,
+   "levels": 2,
+   "score": 3.5296038351924204
+  },
+  "wa30": {
+   "actions": 49,
+   "levels": 0,
+   "score": 0.0
+  }
+ },
+ "label": "thuiv3-2",
+ "source": "kaggle yocybercode/thui-v3-2 v1, 2026-09-01; LEDGER 3.85 / hidden 1.35 (55954708)"
+}

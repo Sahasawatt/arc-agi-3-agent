@@ -32,6 +32,16 @@
     "v10out": "STRICT member, public 4.55, no fixture in this directory",
     "thui-v1": "STRICT member, public 3.20, no fixture in this directory"
    }
+  },
+  "thuiv3": {
+   "rule": "the B48 build (thui-v1-1 + LOCAL_ANALYZER_YIELD_SECONDS 180, seed 20260825, temperature 0.6): every member is the SAME kernel or a byte-identical rebuild of it -- no lever differs between members, so this is one build sampled four times (LEDGER rows thui-v3-0 / thui-v3-0 v3 / thui-v3-1 / thui-v3-2; submission descriptions 55943442 and 55954708 state 'a WITHIN-BUILD REPEAT of the B48 build, not a new build'). It is the chassis thui-rank / thui-reflect / thui-gemma build on since 2026-09-04 (build_notebook.py --base=v3), so their paired reads compare against this arm",
+   "members": {
+    "thuiv3-0": "kernel yocybercode/thui-v3-0 v1 (2026-08-27), public 4.01, hidden 1.63 (55821554)",
+    "thuiv3-0-r2": "kernel yocybercode/thui-v3-0 v3, the same kernel re-run under the corrected cell 0 (2026-08-28), public 4.52, hidden 1.59 (55856045); fixture banked 2026-09-04 from the run's own benchmark.json (per-game final_score / levels_completed / sum(actions_per_level)); mean reproduces the LEDGER's 4.52",
+    "thuiv3-1": "kernel yocybercode/thui-v3-1 v1 (2026-09-01), byte-identical B48 build, public 5.17, hidden 2.03 (55943442); banked 2026-09-04 the same way, mean reproduces 5.17",
+    "thuiv3-2": "kernel yocybercode/thui-v3-2 v1 (2026-09-01), byte-identical B48 build, public 3.85, hidden 1.35 (55954708); banked 2026-09-04 the same way, mean reproduces 3.85"
+   },
+   "not_banked": {}
   }
  }
 }
