@@ -172,3 +172,45 @@ NOT block the game's turn and does not add a full request to the shared server p
 seven lines onto the analyzer's existing response (a prompt-side ask, already 0-for-5 on obedience), or an
 asynchronous rewrite that lands between turns and is skipped when the server is behind. Sahasawat's pre-registration
 for a hidden draw (≥ 2.05 / 1.40–2.00 / < 1.40) was never tested because the draw was not taken.
+
+### Correction, same day (Sahasawat, 2026-09-04 ~15:00Z) — **the v1 number is not a memory result; the closure's mechanism is refuted**
+
+The read above is right about the numbers and wrong about the cause. The run was poisoned by the v0-1 fix itself:
+
+- **Thinking was OFF for the main analyzer, not only for the memory call.** `_reflect` flipped
+  `tool_agent._LOCAL_ANALYZER_ENABLE_THINKING` — a module global that `_chat_completion` reads at call time
+  (`tool_agent.py:1297`) — and the 25 games are **threads of one process** (`framework/solver.py:805`,
+  `ThreadPoolExecutor`). Every game's analyzer request built while any game's memory call was in flight went out
+  with `enable_thinking: false`. Union of in-flight windows (294 ok + 20 timed-out calls, mean concurrent 2.2):
+  **7,324 s of 7,931 s = 92% of the run.**
+- **Same-run control, aligned by the transcript wall-clock** (`| HH:MM:SS |` in every analysis event; the alignment
+  puts 92% of events in-window, matching the union independently): `[THINKING` appears in **1% of the 1,451
+  in-window analysis events vs 41% of the 122 outside**.
+- **Per-request completion**: mean **318 / median 253** (n=3,548) vs **1,839 / 1,297** on `thui-v3-1` (same chassis,
+  n=1,291) and 1,152 on the v0-1 smoke (sparse windows). tok/action **280** vs 1,272–1,439 across the family;
+  actions +80%, levels halved (13) — **B31/v21's signature exactly** (v21: effort cut, 12 levels).
+- **Second defect, the identical-output repeats**: upstream rewrites `_last_step_summary` only when a step
+  EXECUTES (`:1583`) and never clears it, so an idle turn re-reads the previous step's `executed_count` and
+  `level_transition` — `sp80` fired the level reflection **30 times on 7 actions** (26 byte-identical replies),
+  `ar25` 26 on 20 (22 identical). Each one cost the game a minute.
+- **The latency reading stands and is the minor half**: 17,636 s of reflection in flight = **8.9%** of the
+  25 × 7,920 s game clock. The 20 `ReadTimeout`s and the 60 s mean are contention, as written above.
+
+**Consequences.** `rank_runs.py` vs `thuiv3-pool` reads 4.39 → 1.39, p = 0.0002 WORSE — **confounded; it is not
+B62's verdict.** B62 is **unmeasured**, not closed: the arm ran with a second variable the base never had.
+`eval/fixtures/thui-reflect-v1.json` is banked and labelled DEFECTIVE (never pool it). MAP row re-opened.
+
+**Fix — `thui-reflect-v1-1`** (`build_notebook.py --full --suffix=-1`), two changes in the wrapper, none in the memory:
+
+1. `_ReflectThinkFlag` replaces the module global: `bool()` reads a **per-thread** override, else the harness value;
+   the memory call sets its own thread's override and clears it in `finally`. In-kernel teeth: a worker thread
+   turns itself off and reads `False` while the main thread still reads `True`, asserted before the benchmark.
+2. A summary object is counted **once** (`st["seen_summ"]`), so an idle turn cannot re-fire on stale flags.
+
+K = 10, cap 1200, timeout 90 s unchanged — the cost question above is real and is answered by the paired read at the
+real concurrency, not by guessing a K. What the smoke could not see, again: a 3-game smoke rarely has two memory
+calls in flight, so the global flag looked correct there (v0-1: completion mean 1,152, thinking mostly on).
+
+Instrument (Windows box): `kernels_output` with `file_pattern` for `benchmark.json` / `summary.txt` / `.log` /
+`_usage.jsonl` / `_p0_events.jsonl`; reflect intervals = `latency=` lines (end − latency) plus 90 s for each
+`call FAILED`; events aligned per game by `t_log(first "new memory") − clock(first analysis transcript)`.

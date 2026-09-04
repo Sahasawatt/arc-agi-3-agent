@@ -19,6 +19,12 @@ thui-v1-1 byte-for-byte except three cells: cell 0 markdown, cell 12 appended pa
 900 s/game). `--full` drops the cell-14 filter; `--suffix=-r2` names a second run.
 
     python3 build_notebook.py [--full] [--suffix=-r2] [--owner=yocybercode] [--base=v3|v1]   # owner must match the pushing token (G4); base defaults to the B48 build
+
+v1-1 (2026-09-04): `--full --suffix=-1` -> thui-reflect-v1-1. Two defects fixed after the v1 full run, both in the
+wrapper and neither in the memory: (1) thinking-off was a module global shared by the 25 game threads, so the main
+analyzer ran without thinking for 92% of the run -- now a thread-local override (_ReflectThinkFlag, teeth in-kernel);
+(2) upstream never clears _last_step_summary, so a turn that executed nothing re-fired the level reflection with the
+previous step's flags (sp80: 30 reflections on 7 actions) -- now counted once per summary object.
 """
 from __future__ import annotations
 
@@ -70,6 +76,11 @@ action and never edits history. Seed, temperature, clock and games inherited unc
 paired **levels** vs the B48 build's public pool (`thui-v3-0` ×2, `thui-v3-1`, `thui-v3-2`: 4.01 / 4.52 / 5.17 / 3.85), ≥ 2 runs per arm.
 Design + record: `notes/B62-reflection-memory-design.md`.
 
+**v1-1 (2026-09-04):** v1 (public 1.39) was not a memory result — its thinking-off was a module GLOBAL shared by
+the 25 game threads, so the analyzer ran without thinking whenever any game's memory call was in flight (92% of
+the run; `[THINKING` in 1% of in-window analysis events vs 41% outside). This build makes the flag thread-local
+and stops a stale step summary from re-firing the level trigger. K, cap and timeout unchanged.
+
 Solver credit: Tufa Labs (Harold Bessis, Jeroen Cottaar, Isaiah Pressman, Andries Smit,
 Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset. This is a
 Knowless Crew / Thuitanium fork; none of their scores are ours.
@@ -87,6 +98,28 @@ CELL12_SUFFIX = r'''
 import time as _time
 from pathlib import Path as _Path
 from inference.agent import tool_agent as _ta
+import threading as _threading
+
+
+class _ReflectThinkFlag:
+    """Stands in for tool_agent._LOCAL_ANALYZER_ENABLE_THINKING. bool() reads a per-THREAD override
+    when one is set, else the harness's own value. v1 lesson (2026-09-04): the 25 games are threads of one
+    process (framework/solver.py:805 ThreadPoolExecutor) and tool_agent.py:1297 reads the module global at
+    call time, so flipping the global for one memory call switched thinking OFF for every game's analyzer
+    while the call was in flight -- 92% of the run (public 1.39, 13 levels, tok/action 280 vs ~1,400)."""
+
+    def __init__(self, default):
+        self.default = bool(default)
+        self.local = _threading.local()
+
+    def __bool__(self):
+        v = getattr(self.local, "v", None)
+        return self.default if v is None else bool(v)
+
+
+_REFLECT_THINK = _ReflectThinkFlag(_ta._LOCAL_ANALYZER_ENABLE_THINKING)
+assert _REFLECT_THINK.default is True, "thui-reflect: harness thinking is not ON by default -- the v1 diagnosis assumed it is"
+_ta._LOCAL_ANALYZER_ENABLE_THINKING = _REFLECT_THINK
 
 _REFLECT_K = @K@
 _REFLECT_MAX_TOKENS = @MAXTOK@
@@ -145,11 +178,11 @@ def _reflect(agent, state_path, reason):
     saved_max = agent._max_output_tokens
     agent._max_output_tokens = _REFLECT_MAX_TOKENS
     # v0 lesson: the harness runs every analyzer call with LOCAL_ANALYZER_ENABLE_THINKING=true and
-    # _chat_completion reads the module global at call time (tool_agent.py:1533), so the memory call
-    # inherited thinking and spent its whole 700-token cap inside <think>: 7 of 7 replies had
-    # content_chars=0. Thinking OFF for this one call only, restored in finally.
-    saved_think = _ta._LOCAL_ANALYZER_ENABLE_THINKING
-    _ta._LOCAL_ANALYZER_ENABLE_THINKING = False
+    # _chat_completion reads the module global at call time, so the memory call inherited thinking and
+    # spent its whole 700-token cap inside <think>: 7 of 7 replies had content_chars=0.
+    # v1 lesson: v0-1 turned the GLOBAL off for the call -- shared by all 25 game threads -- and poisoned
+    # the whole run (see _ReflectThinkFlag). Thinking OFF on THIS THREAD only, restored in finally.
+    _REFLECT_THINK.local.v = False
     t0 = _time.monotonic()
     try:
         result = agent._chat_completion(
@@ -163,7 +196,7 @@ def _reflect(agent, state_path, reason):
         return
     finally:
         agent._max_output_tokens = saved_max
-        _ta._LOCAL_ANALYZER_ENABLE_THINKING = saved_think
+        _REFLECT_THINK.local.v = None
     latency = _time.monotonic() - t0
     _REFLECT_STATS["latency_s"] += latency
     try:
@@ -215,6 +248,14 @@ def _reflect_analyze(self, state_path, action_count, *args, **kwargs):
     result = _orig_analyze(self, state_path, action_count, *args, **kwargs)
     try:
         summ = self._last_step_summary or {}
+        # v1 lesson: upstream rewrites _last_step_summary only when a step EXECUTES (tool_agent.py:1583) and
+        # never clears it, so a turn that executed nothing re-reads the previous step's executed_count and
+        # level_transition -- v1 fired the level reflection 30 times on sp80 (7 actions) and 26 on ar25 (20),
+        # 26 / 22 of them with byte-identical output. Count a summary object once.
+        if summ is st.get("seen_summ"):
+            summ = {}
+        else:
+            st["seen_summ"] = summ
         try:
             executed = int(summ.get("executed_count") or 0)
         except (TypeError, ValueError):
@@ -240,7 +281,21 @@ _ta.ToolAgent.analyze = _reflect_analyze
 assert _ta.ToolAgent.analyze is _reflect_analyze, "thui-reflect: analyze wrap did not land"
 assert callable(getattr(_ta, "_extract_scientist_note", None)), "thui-reflect: upstream note parser missing"
 assert callable(getattr(_ta, "_extract_reasoning_text", None)), "thui-reflect: upstream reasoning extractor missing"
-assert hasattr(_ta, "_LOCAL_ANALYZER_ENABLE_THINKING"), "thui-reflect: thinking flag not where v0 measured it"
+assert _ta._LOCAL_ANALYZER_ENABLE_THINKING is _REFLECT_THINK, "thui-reflect: thread-local thinking flag not installed"
+_seen = {}
+
+
+def _reflect_flag_probe():
+    _REFLECT_THINK.local.v = False
+    _seen["worker"] = bool(_ta._LOCAL_ANALYZER_ENABLE_THINKING)
+
+
+_t = _threading.Thread(target=_reflect_flag_probe)
+_t.start()
+_t.join()
+assert _seen.get("worker") is False, "thui-reflect: worker thread could not turn its own thinking off"
+assert bool(_ta._LOCAL_ANALYZER_ENABLE_THINKING) is True, "thui-reflect: a worker's thinking-off leaked to another thread (the v1 defect)"
+print("thui-reflect-v1-1: thinking flag is thread-local (worker False, main True)", flush=True)
 print(f"thui-reflect-v0: ToolAgent.analyze wrapped (reflect every {_REFLECT_K} executed steps or on level completion; "
       f"max {_REFLECT_MAX_TOKENS} tokens, {_REFLECT_TIMEOUT_S}s timeout; never issues an action)", flush=True)
 # ======================================================================================

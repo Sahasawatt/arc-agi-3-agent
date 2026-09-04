@@ -1,0 +1,131 @@
+{
+ "label": "thui-reflect-v1",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 20
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 4
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 130
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 173
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 719
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 129
+  },
+  "tu93": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "lp85": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 57
+  },
+  "ka59": {
+   "score": 2.160493827160494,
+   "levels": 1,
+   "actions": 72
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 138
+  },
+  "vc33": {
+   "score": 2.8655809750370733,
+   "levels": 2,
+   "actions": 125
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 152
+  },
+  "r11l": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 61
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 56
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 7
+  },
+  "ar25": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 20
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 180
+  },
+  "cd82": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 143
+  },
+  "re86": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 123
+  },
+  "s5i5": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 51
+  },
+  "ls20": {
+   "score": 0.22837513919559108,
+   "levels": 1,
+   "actions": 112
+  },
+  "ft09": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 5
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 56
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 2
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 27
+  }
+ },
+ "source": "kaggle kernels output yocybercode/thui-reflect-v1 benchmark.json via rank_runs.load(), 2026-09-04. DEFECTIVE RUN (B62 v1: thinking off for 92% of the run) -- never pool into an arm."
+}
