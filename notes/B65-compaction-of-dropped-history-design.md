@@ -101,6 +101,7 @@ Kill rule as B62: ≥ 2 runs per arm, no hidden draw before the paired read.
 
 ## Status
 
-- 2026-09-05: design. Builder not yet written; GPU is Watchara's call after the 09-05 slot decision. Evidence file for
+- 2026-09-05: design.
+- 2026-09-05 ~20:20Z: **builder written** (`thui-compact/build_notebook.py`, base v3, cells 0/12/14 smoke, 0/12 full; every rewrite anchored, cell 12 parses; smoke = window 8 / K 4, full = window 30 / K 10). **In-kernel teeth** (run at import, before the benchmark): thread-local thinking flag (worker False / main True), diff / fold / strip helpers on synthetic messages, window constant landed. **Offline drive** against a stub harness with a realistic 30-turn loop: fires at turns 12 / 16 / 20 / 24 exactly (window 8 + K 4, then every K), memento folded into the first user message once (marker count 1), previous memento carried into the next summariser prompt, dropped tool-call code carried, 8 assistant turns kept, `wrapper_errors` 0, P2 `landed=True` on every post-fire turn. Notebooks built: `taaf-thui-compact-v0.ipynb` (smoke, sahasawatt) and `taaf-thui-compact-v1.ipynb` (full, yocybercode). **Not pushed** — GPU is Watchara's call after the 09-05 slot decision. Evidence file for
   the numbers above: `thui-v3-1` usage sidecars (`Desktop/archive/arc-traj/thui-v3-1/`, Windows box) and
   `thui-reflect-v1-1` v2 log.
