@@ -121,7 +121,11 @@ _COMPACT_TURN_CHARS = @TURNCHARS@
 _COMPACT_BLOCK_CHARS = @BLOCKCHARS@
 _MEMENTO_MAX_CHARS = @MEMCHARS@
 _MEMENTO_MAX_ERRORS = 2   # consecutive failed memento calls before compaction stops for this game
-_MEMENTO_MARK = "MEMENTO (turns older than the window; carried forward):"
+_MEMENTO_MARK = ("[Your own notes from earlier turns of this conversation, kept after those turns were trimmed to save "
+                 "context. Not part of the game.]")
+# The smoke (thui-compact-v0, 2026-09-05) folded the old header "MEMENTO (turns older than the window; carried forward):"
+# as the first line of the user turn, and tr87's model read it as the GAME's title ("The title MEMENTO suggests a memory
+# game"), spent the whole turn on that and yielded with 0 actions. The header now says whose text it is and what it is not.
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
                   "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
                   "labels": 0, "cites": 0, "disabled_games": 0}

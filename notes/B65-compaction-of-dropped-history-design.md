@@ -298,3 +298,30 @@ latency under 25-game concurrency. None of these has a local instrument.
 399 → 399 while turns 5-6 were being dropped) means the model re-emitted the previous memento and
 absorbed nothing — carry-forward working, add not. `labels=5/5` and `cites>0` both stay green through
 that. Read the chars column across fires, not only the labels.
+
+### Smoke read (`yocybercode/thui-compact-v0`, 2026-09-05) — the header read as a TITLE, and the fix is one line
+
+Every oracle Watchara read holds on the kernel output pulled independently (3 fires, labels 5/5, memento
+551 → 622 → 654 chars, latency 4.7–5.3 s, P2 3/3, `wrapper error` 0, `call FAILED` 0, 3 games finished,
+completion mean 1,451). P1 (≥ 2 fires per game) is clock-bound: one `analysis_step` is up to 12 model
+calls, so window 8 fills inside step 1–2 and the first fire lands at the end of step 2 — three fires in
+900 s is the arithmetic, not a defect.
+
+**What the log could not show and the transcript did.** The fold puts the memento as the FIRST text of
+the user turn, ahead of the harness's own `The code executed … Current state: step 3` — and in `tr87`
+the model at step 3 wrote *"The title "MEMENTO" suggests a memory game"*, spent the whole turn on that
+reading and yielded on `turn_time_budget` with **0 actions**. Controls on the same game in the same
+900 s smoke shape: `thui-reflect-v0` and `-v0-1` never produce the word.
+
+| smoke (same 3 games, 900 s) | actions | requests | actions / request |
+|---|---|---|---|
+| `thui-compact-v0` | 20 | 54 | **0.37** |
+| `thui-reflect-v0` | 71 | 60 | 1.18 |
+| `thui-reflect-v0-1` | 62 | 83 | 0.75 |
+| `thui-rank-v0-1` | 42 | 57 | 0.74 |
+
+n = 1 per run, so the ratio is an observation; the mechanism is quoted from the transcript. Fix:
+`_MEMENTO_MARK` now reads *"[Your own notes from earlier turns of this conversation, kept after those
+turns were trimmed to save context. Not part of the game.]"* — strip, fold and the P2 probe all match on
+`startswith(_MEMENTO_MARK)`, so nothing else moves. `thui-compact-v1` (full) was queued from `4dbc9ef`
+with the old header; a run on that build carries this confound for all 25 games.
