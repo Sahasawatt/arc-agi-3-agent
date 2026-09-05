@@ -147,3 +147,36 @@ and `0/5` with every name listed on a deliberately unlabelled one, memento folde
 **Smoke oracle P1 is now**: ≥ 2 fires per game, memento non-empty in ≥ half, and **`labels` ≥ 3 of 5 on at least half
 the fires** — a 27B model under a 600-token cap with thinking off is exactly the case where a five-field format may not
 survive, and if it does not, the finding is the format's, not the mechanism's.
+
+### Prompt lint on a local same-family model (2026-09-05) — the step-id rule was inert, and is now in the format
+
+`thui-compact/prompt_lint.py` runs the SHIPPED prompt (read out of the built notebook, so it cannot drift from a
+copy) over **real dropped-turn blocks** rebuilt from `thui-v3-1`'s event sidecars, against **`qwen3:8b` on this box's
+RTX 4060 Ti** — same family as the served `Qwen3.8-27B-FP8`, one order smaller.
+
+| reading | labels | step citations | words | eval tokens |
+|---|---|---|---|---|
+| v2 prompt, 3 games | 5/5, 5/5, 5/5 | **0, 0, 2** | 42-59 | 78-118 |
+| v3 prompt (step id moved into the FORMAT), same 3 games | 5/5, 5/5, 5/5 | **4, 5, 7** | 40-56 | 78-106 |
+| control: labels removed from the prompt | **1/5** | — | 43 | — |
+
+**What it establishes**: the five-label format is followable on real input by a model an order smaller than the
+served one, well inside the 600-token cap, and the counter discriminates (the control drops to 1/5). **What it does
+not**: whether compaction moves levels, and whether the call is affordable at 25-game concurrency — the first needs
+the full run, the second is the smoke's whole subject.
+
+**The finding worth the run**: at v2 the sentence *"every claim names the action or step number that established
+it"* was **ignored on two of three blocks**. Moving the requirement into the output format (`Rules: <… each ending
+with the step it came from, like (step 12)>` and `(step N)` inside the no-op line) took citations from 0/0/2 to
+4/5/7 with no other change. An instruction the model can skip is not a requirement; a slot in the format is.
+
+⚠️ **`cites=` measures FORM, not accuracy.** Several citations in the v3 readings are `(step 12)` repeated — the
+model attributing to the newest step rather than the one that established the claim. The lint cannot check
+correctness cheaply, so the smoke's oracle must read `cites` as *"the model is filling the slot"*, never as
+*"the memento is correctly sourced"*. A memento that cites the wrong step is a prompt problem to find in the full
+run's transcripts, not a mechanism failure.
+
+**Monotonicity, stated because it is the reason this run is worth anything**: a smaller model of the same family
+passing a FORMAT test is decent evidence the larger one will, and it is no evidence at all about the score. The
+strongest existing datapoint for the format question is not this lint but `thui-reflect-v1-1` — the served 27B,
+thinking off, cap 1200, filling **all seven** labelled fields on **105 of 105** calls.

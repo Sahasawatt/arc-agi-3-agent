@@ -89,6 +89,7 @@ CELL12_SUFFIX = r'''
 # out -> the dropped block -> per-game buffer -> every K dropped turns ONE tool-free chat call
 # rewrites a MEMENTO (previous memento + dropped turns), folded into the first user message of
 # the returned history as a marked text part. Never issues an action, never edits the slots.
+import re as _re
 import time as _time
 from pathlib import Path as _Path
 from inference.agent import tool_agent as _ta
@@ -121,7 +122,8 @@ _COMPACT_BLOCK_CHARS = @BLOCKCHARS@
 _MEMENTO_MAX_CHARS = @MEMCHARS@
 _MEMENTO_MARK = "MEMENTO (turns older than the window; carried forward):"
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
-                  "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0, "labels": 0}
+                  "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
+                  "labels": 0, "cites": 0}
 _MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
     "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
@@ -130,9 +132,9 @@ _COMPACT_SYSTEM = (
     "established about this level's rules, and what is still unknown. Every claim names the action or step number "
     "that established it; if you cannot name one, drop the claim. Never invent evidence.\n"
     "Output exactly these labelled lines, in this order:\n"
-    "Rules: <at most 4>\n"
+    "Rules: <at most 4, each ending with the step it came from, like (step 12)>\n"
     "Unknown: <at most 3>\n"
-    "No-op/harmful: <each action proven to do nothing or to hurt, with the situation it was tried in; at most 6>\n"
+    "No-op/harmful: <each action proven to do nothing or to hurt, with the situation it was tried in and (step N); at most 6>\n"
     "Hypotheses: <at most 2, each one decisive test away>\n"
     "Plan: <repeat any Plan: line from the transcript verbatim; otherwise the best next step>\n"
     "Under 120 words total. No preamble, no code."
@@ -265,10 +267,12 @@ def _compact_memento(agent, reason):
     st["pending_check"] = True
     usage = result.usage if isinstance(result.usage, dict) else {}
     labels = [lab for lab in _MEMENTO_LABELS if lab in st["memento"]]
+    cites = len(_re.findall(r"\bstep\s*\d+", st["memento"], _re.I))
     _COMPACT_STATS["labels"] += len(labels)
+    _COMPACT_STATS["cites"] += cites
     print(f"thui-compact: game={game} reason={reason} dropped_turns={n_buf} latency={latency:.1f}s "
           f"tokens={usage.get('total_tokens', '?')} completion={usage.get('completion_tokens', '?')} "
-          f"memento_chars={len(st['memento'])} labels={len(labels)}/{len(_MEMENTO_LABELS)} "
+          f"memento_chars={len(st['memento'])} labels={len(labels)}/{len(_MEMENTO_LABELS)} cites={cites} "
           f"missing={[l.rstrip(':') for l in _MEMENTO_LABELS if l not in labels]}", flush=True)
 
 
@@ -380,6 +384,7 @@ assert _compact_fold(_compact_strip(_folded), "line two")[0]["content"][0]["text
 for _lab in _MEMENTO_LABELS:
     assert _lab in _COMPACT_SYSTEM, f"thui-compact: label {_lab} is counted but not asked for in the prompt"
 assert _COMPACT_SYSTEM.count("names the action or step number") == 1, "thui-compact: the step-id requirement is missing from the prompt"
+assert _COMPACT_SYSTEM.count("(step") >= 2, "thui-compact: the step id is not part of the output FORMAT (an instruction alone was ignored in the 8B lint)"
 print(f"thui-compact-v0: wraps landed; window={_COMPACT_WINDOW} K={_COMPACT_K} cap={_COMPACT_MAX_TOKENS} timeout={_COMPACT_TIMEOUT_S}s; "
       f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
 # ======================================================================================
