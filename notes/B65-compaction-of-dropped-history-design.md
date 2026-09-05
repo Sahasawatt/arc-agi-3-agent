@@ -325,3 +325,25 @@ n = 1 per run, so the ratio is an observation; the mechanism is quoted from the 
 turns were trimmed to save context. Not part of the game.]"* — strip, fold and the P2 probe all match on
 `startswith(_MEMENTO_MARK)`, so nothing else moves. `thui-compact-v1` (full) was queued from `4dbc9ef`
 with the old header; a run on that build carries this confound for all 25 games.
+
+#### Local A/B on the header (2026-09-05, this box, before any GPU) — the misread reproduces on an 8B and the new header removes it
+
+`thui-compact/replay_header_ab.py` rebuilds the exact request from the kernel's own prompt log
+(`prompts/tr87-cd924810_p0.log`, first `[MODEL INPUT]` block: 17 messages, the folded user turn, the
+seven assistant/tool pairs, 13.7k prompt tokens) and replays it against local `qwen3-8b-16k`, thinking
+ON as on Kaggle, temperature 0.6, with the `python` tool offered — three variants of the first user
+message, 9 replays each:
+
+| first user message starts with | read the header as the game's name | tool call | `action()` in that first call |
+|---|---|---|---|
+| old `MEMENTO (turns older than the window; carried forward):` | **6 / 9** — *"a grid-based puzzle game called MEMENTO"* | 9 / 9 | 6 / 9 |
+| new `[Your own notes from earlier turns of this conversation … Not part of the game.]` | **0 / 9** | 9 / 9 | 3 / 9 |
+| no memento (control) | 0 / 9 | 9 / 9 | 6 / 9 |
+
+Two readings, one weak. The misread is the header's (6/9 vs 0/9, Fisher p ≈ 0.009), and it is the same
+sentence the 27B wrote on Kaggle — a second model, same words, so the mechanism is the text and not the
+model. The `action()` column is the honest half: the new header's first call carried an action in 3 of
+9 against 6 of 9 for both the old header and no memento (p ≈ 0.35, first call of a turn only, on an 8B)
+— not a difference this instrument can see, and not one it rules out. Whether a memento in the first
+user turn costs actions per turn is what the full run's actions total against the `thuiv3` pool answers;
+the smoke's 0.37 actions/request is the same open question, not a second piece of evidence.
