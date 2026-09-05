@@ -146,9 +146,17 @@ assert isinstance(_ta._PERSISTENT_HISTORY_ASSISTANT_TURNS, int), "thui-compact: 
 _ta._PERSISTENT_HISTORY_ASSISTANT_TURNS = _COMPACT_WINDOW
 
 
-def _compact_game(agent):
+def _compact_game(agent, state_path=None):
+    """Four-letter game id for the log lines. From the STATE PATH's stem (`sk48-d8078629_p0_state.json` ->
+    `sk48`), never from `_session_runtime_dir`: on Kaggle every game's state file sits flat in one
+    `artifacts/` dir, so the dir's basename read `arti` for all three smoke games (thui-compact-v0,
+    2026-09-05) and the per-game oracle was unreadable. The id is remembered on the buffer at the
+    first analyze() so the memento/P2 lines, which only hold the agent, read the same value."""
     try:
-        return _Path(str(agent._session_runtime_dir or "????")).name[:4]
+        if state_path is not None:
+            return _Path(str(state_path)).stem.split("_")[0][:4]
+        st = agent.__dict__.get("_compact_state") or {}
+        return st.get("game") or "????"
     except Exception:
         return "????"
 
@@ -293,9 +301,10 @@ def _compact_analyze(self, state_path, action_count, *args, **kwargs):
     st = self.__dict__.get("_compact_state")
     if st is None:
         st = self.__dict__["_compact_state"] = {"buffer": [], "memento": "", "pending_check": False,
-                                                 "seen_summ": None, "should_stop": None}
+                                                 "seen_summ": None, "should_stop": None,
+                                                 "game": _compact_game(self, state_path)}
         _COMPACT_STATS["games"] += 1
-        print(f"thui-compact: new buffer for game #{_COMPACT_STATS['games']} ({_compact_game(self)})", flush=True)
+        print(f"thui-compact: new buffer for game #{_COMPACT_STATS['games']} ({st['game']})", flush=True)
     st["should_stop"] = kwargs.get("should_stop")
     # P2 probe: after a fire, the history the NEXT request is built from must carry the memento.
     if st["pending_check"]:
@@ -397,6 +406,14 @@ for _lab in _MEMENTO_LABELS:
 assert _COMPACT_SYSTEM.count("names the action or step number") == 1, "thui-compact: the step-id requirement is missing from the prompt"
 assert _COMPACT_SYSTEM.count("(step") >= 2, "thui-compact: the step id is not part of the output FORMAT (an instruction alone was ignored in the 8B lint)"
 assert _MEMENTO_MAX_ERRORS >= 1, "thui-compact: the breaker must allow at least one attempt"
+# teeth 3: the game label comes from the state path's stem, not the runtime dir (Kaggle: flat artifacts/ -> "arti")
+assert _compact_game(None, "/kaggle/working/artifacts/sk48-d8078629_p0_state.json") == "sk48", "thui-compact: game label not from the state path"
+class _CompactFakeAgent:
+    _session_runtime_dir = _Path("/kaggle/working/artifacts")
+_fa = _CompactFakeAgent()
+assert _compact_game(_fa) == "????", "thui-compact: label fell back to the runtime dir"
+_fa.__dict__["_compact_state"] = {"game": "tr87"}
+assert _compact_game(_fa) == "tr87", "thui-compact: label not read from the buffer"
 print(f"thui-compact-v0: wraps landed; window={_COMPACT_WINDOW} K={_COMPACT_K} cap={_COMPACT_MAX_TOKENS} timeout={_COMPACT_TIMEOUT_S}s; "
       f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
 # ======================================================================================
