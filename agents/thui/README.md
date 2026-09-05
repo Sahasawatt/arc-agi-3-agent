@@ -65,7 +65,7 @@ or the `B48` build (`thui-v3-0`) plus one change.
 ⚠️ **`notes/LEDGER-all-runs.md` carries a row for exactly one of these runs — `thui-reflect-v1`.** Every
 other number in the table above comes from the ticket's own note (`notes/B60-…`, `notes/B62-…`) or, where
 that is the only record, from the commit that added the builder — each page says which. `thui-reflect-v1-1`'s
-row is in the ledger **as of PR #122**, which was open when these pages were written.
+row reached the ledger separately, in #121.
 
 ⚠️ **Two of these numbers must never be read as a lever's verdict.** `thui-reflect-v1`'s 1.39 is
 **DEFECTIVE** — a module-global thinking flag shared by 25 game threads, not the memory — and
