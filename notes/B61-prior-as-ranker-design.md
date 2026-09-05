@@ -122,3 +122,31 @@ actions all move the board. Proving it needs either a game with inert early acti
 clock. **Not today's build**: B60 measured the same prior family net negative as a fallback, and B61's only
 evidence so far is "does not crash". Left `open`; the next step is a `--full` run at the design threshold paired
 vs the thuiv3 pool, and only when a slot is not better spent (2026-09-04: it was — see B62).
+
+## Full run read (`yocybercode/thui-rank-v1`, 2026-09-05, design threshold 20, B48 chassis) — the veto fired, and bought nothing
+
+Pulled from the kernel output on this box and ranked with `rank_runs.py`, not read from a relay.
+
+| | this run | thuiv3-pool (4 runs) |
+|---|---|---|
+| public | **3.57** | 4.39 |
+| levels | **19** | 24.25 |
+| scoring games | 13 | — |
+| actions | 1,306 | — |
+| `rank_runs.py` | 8 up / 14 down / 9 flipped, sign-flip **p = 0.3862 NOT-DISTINGUISHABLE** | |
+| B35 floor (+1 level vs pool mean) | **1 game** (`vc33`); −1 in **5** (`tu93`, `sp80`, `cd82`, `ls20`, `ft09`) | needs ≥ 6 |
+
+**The branch executed.** 22 `VETO` lines, 0 `BATCH-DROP`, 96 prior updates, `wrapper error` 0, wall
+8,500 s. So killer 2 (*nothing to veto*) is refuted: at the full clock the prior does arm and does
+refuse. Killer 1 (*false vetoes on latent actions*) is **unmeasured** in this read — the 22 veto lines
+have not been matched against what the re-picked action then did, and that is the one reading left
+that could change the sign. Thinking on (completion mean 2,116 / median 1,491, n = 1,193); analyzer
+read-timeouts 32.
+
+**Reading.** −5.25 levels with 14 of 25 games down is the same sign B60's prior showed as a fallback,
+on the same chassis, and it is not distinguishable from noise at n = 1 (p = 0.39). The instrument rule
+(two runs, +1 in at least 6 games) says a second draw would be needed to *read* it; the campaign's rule
+says a within-noise first draw with a negative sign is not worth that draw while B65 is unread.
+**Recommend closing as a build candidate on this read** — the row stays `open` until the owner closes
+it, and re-opening needs the killer-1 reading above, not another full draw. Fixture:
+`eval/fixtures/thui-rank-v1.json`; LEDGER row added the same day.
