@@ -1,0 +1,131 @@
+{
+ "label": "thui-reflect-v1-1",
+ "source": "kaggle yocybercode/thui-reflect-v1-1 v1, 2026-09-04; LEDGER 4.38 / not drawn on hidden; built from the last per-game summary block of kernels logs, 2026-09-05",
+ "games": {
+  "ar25": {
+   "score": 24.02,
+   "levels": 4,
+   "actions": 166
+  },
+  "bp35": {
+   "score": 0.56,
+   "levels": 1,
+   "actions": 59
+  },
+  "cd82": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 58
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 20
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 76
+  },
+  "ft09": {
+   "score": 28.57,
+   "levels": 3,
+   "actions": 81
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 17
+  },
+  "ka59": {
+   "score": 3.57,
+   "levels": 1,
+   "actions": 44
+  },
+  "lf52": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 26
+  },
+  "lp85": {
+   "score": 8.33,
+   "levels": 2,
+   "actions": 25
+  },
+  "ls20": {
+   "score": 3.57,
+   "levels": 1,
+   "actions": 124
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 177
+  },
+  "r11l": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 21
+  },
+  "re86": {
+   "score": 6.63,
+   "levels": 2,
+   "actions": 125
+  },
+  "s5i5": {
+   "score": 1.02,
+   "levels": 1,
+   "actions": 45
+  },
+  "sb26": {
+   "score": 2.78,
+   "levels": 1,
+   "actions": 80
+  },
+  "sc25": {
+   "score": 3.05,
+   "levels": 1,
+   "actions": 51
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 36
+  },
+  "sp80": {
+   "score": 4.76,
+   "levels": 1,
+   "actions": 25
+  },
+  "su15": {
+   "score": 2.22,
+   "levels": 1,
+   "actions": 54
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 19
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 123
+  },
+  "tu93": {
+   "score": 1.82,
+   "levels": 1,
+   "actions": 37
+  },
+  "vc33": {
+   "score": 9.15,
+   "levels": 2,
+   "actions": 29
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 28
+  }
+ }
+}

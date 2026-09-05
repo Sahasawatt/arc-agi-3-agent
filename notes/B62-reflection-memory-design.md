@@ -214,3 +214,36 @@ calls in flight, so the global flag looked correct there (v0-1: completion mean 
 Instrument (Windows box): `kernels_output` with `file_pattern` for `benchmark.json` / `summary.txt` / `.log` /
 `_usage.jsonl` / `_p0_events.jsonl`; reflect intervals = `latency=` lines (end − latency) plus 90 s for each
 `call FAILED`; events aligned per game by `t_log(first "new memory") − clock(first analysis transcript)`.
+
+### Full run (`yocybercode/thui-reflect-v1-1`, 25 games, COMPLETE 2026-09-04 17:27Z, wall 2h 12m 50s) — **the paired read: the fix restores the base, the memory moves nothing**
+
+Read 2026-09-05 from `kernels logs` on the mac (the LAST of the 14 repeated `per-game` summary
+blocks — an earlier block reads exactly like a final result and is not one). Nobody had recorded it;
+this section and the LEDGER row are the first record.
+
+| run | public | levels | actions | tok/action | Mtok |
+|---|---:|---:|---:|---:|---:|
+| `thui-reflect-v1` (global flag) | 1.39 | 13 | 2,613 | 280 | — |
+| **`thui-reflect-v1-1`** (thread-local) | **4.38** | **24** | 1,546 | **1,286** | 1.99 |
+| `thuiv3-pool` (4 runs, mean) | 4.39 | 24.25 | — | 1,272–1,439 | — |
+
+- **`rank_runs.py` vs `thuiv3-pool`**: Δ −0.01, levels 24.25 → 24, per-game 9 up / 13 down /
+  6 flipped, **p = 0.998 NOT-DISTINGUISHABLE**. Selftest ran first (6 controls green).
+- **vs `thui-reflect-v1`** (`--single-baseline`, reason printed — the defective run is not an arm):
+  Δ +3.0, levels +11, 13 up / 4 down, **p = 0.0019 BETTER**. So the 1.39 was the leak and only the
+  leak, as the amendment above argued; tok/action 280 → 1,286 is the mechanism control.
+- **The lever was delivered and it is affordable once the leak is closed**: 105 reflection calls,
+  **0 `call FAILED`**, 0 `wrapper error`, latency mean **29.6 s** / max 50.8 / p90 41.9 (v1: 59.8 /
+  88.9 / ~76). Every game logs `new memory` injections. The four games v1 starved to 2–7 actions
+  ran their clocks: `tr87` 123, `tn36` 19, `ft09` 81, `sp80` 25.
+- ⚠️ **Open reading**: the main analyzer logged **78** `analyzer request failed … Read timed out`
+  against v1's 20. The pool runs' count is not derived here, so this is not a finding about the
+  memory call — it is the next thing to count before anyone re-opens the row on cost grounds.
+
+**Verdict.** NOT MEASURABLE at n = 1 — never *no worse*. The row's own oracle asks for ≥ 2 runs per
+arm and this is one. What one run does settle: the mechanism runs at 25-game width without v1's
+throughput collapse, and rewriting the seven world-model fields every 10 executed steps, with the
+fields arriving, moved neither levels nor score. Closed as a build candidate on that. Re-open costs a
+second run, or a rewrite that changes what the seven fields SAY (the prompt-side ask is 0-for-5 on
+obedience — B32), not how often they are rewritten. Fixture banked at
+`eval/fixtures/thui-reflect-v1-1.json`; it is not a member of any arm.
