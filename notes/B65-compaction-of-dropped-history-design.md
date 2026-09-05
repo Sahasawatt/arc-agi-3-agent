@@ -1,0 +1,300 @@
+# B65 — Compaction of the dropped history block: the vendor's mechanism, ported at the seam duck actually loses history
+
+**Design ticket, 2026-09-05 (Sahasawat).** From `arc-agi-pub/notes/deep-research-astra-source-level-2026-09-05.md`
+(round two, 46 claims, 37 confirmed) on top of `deep-research-astra-mechanism-2026-09-04.md` (round one) and the B62
+v1-1 read. The Provider Adapter harness that takes Astra from 54.8 → 99.9 is two mechanisms: replayed reasoning state
+(duck already has it — `deep-research-arc3-astra-claim` §Code read) and **compaction instead of truncation**. Round two
+found the compaction half as SOURCE: Codex CLI's prompt is six lines (`codex-rs/core/templates/compact/prompt.md`, c#16),
+the rebuilt context is `summary + COMPACT_USER_MESSAGE_MAX_TOKENS = 20_000` of verbatim recent messages (`compact.rs`,
+c#1), the trigger is a threshold (`min(user_limit, 0.9 × window)`, c#4), and the template's known defect is that it
+carries no rule to preserve a prior summary (issue 14347, c#31). Evidence strength for *the mechanism*: **strong,
+source-level**. Evidence that it moves *this* harness: **none** — no open-weight replication exists anywhere (round one
+§3, round two §6), and B62 just landed on the base's mean.
+
+Proposed MAP row:
+
+> | B65 | build | **Compaction of the dropped history block.** duck loses history at `_PERSISTENT_HISTORY_ASSISTANT_TURNS = 30`, not at the token budget: on `thui-v3-1` the budget binds on 0.2% of requests while the turn window drops **22.2 turns per game** (requests − 30, 22 of 25 games exceed 30). B62 rewrote seven slots from the last 12 messages every 10 steps and read `p = 0.9978`; B65 instead summarises **what is being deleted**, when it is deleted, into a memento that is re-injected ahead of the surviving window — the shape Codex CLI ships (c#1, c#2, c#16) plus the cumulative rule its template lacks (c#31, c#32). One call per K=10 dropped turns ≈ 2 per game, priced by B62's measured 29.6 s at 25-game contention. Oracle: paired levels vs `thuiv3-pool`, B35 floor. | open |
+
+## What is measured before a line is written ($0)
+
+| fact | source |
+|---|---|
+| Context budget `31,744 = 32,768 − reply_reserve 512 − safety 512`; estimator `max(1, (len(json)+2)//3)` = chars/3 | `duck/bundle/.../tool_agent.py:945-948`, `:462-467` (localrig copy: `:149/:160/:611`) |
+| History kept = last **30 assistant turns** (`_PERSISTENT_HISTORY_ASSISTANT_TURNS`), applied AFTER the token trim in `_persistent_history_messages`, called in `analyze`'s `finally` after every turn | `tool_agent.py:151`, `:1653-1670`, `:2017` |
+| Token-budget truncation (`_trim_messages_for_context` → `_drop_oldest_history_block`) fires when the estimate exceeds 31,744; on `thui-v3-1` only **2 of 1,291 requests** carried prompt ≥ 30k (0.2%), peak per game median 27,501 | `:1672-1690`, `:1608-1622`; usage sidecars pulled 2026-09-04 |
+| The turn window is the loss site: `thui-v3-1` requests per game median 50 / mean 51.6 / max 94; **22 of 25 games exceed 30**; implied drops Σ(requests − 30)⁺ = **555 = 22.2 per game** | usage sidecars; each request appends one assistant message, so requests ≈ assistant turns |
+| An extra local call at 25-game contention costs **29.6 s mean / 50.8 s max**, and 105 such calls were **1.6%** of the clock with 0 failures | `thui-reflect-v1-1` v2 log (B62 §v1-1 paired read) |
+| Thinking must be switched off **per thread** for a capped side-call (module global shared by 25 game threads) | B62 v1 post-mortem, `_ReflectThinkFlag` in `thui-reflect/build_notebook.py` |
+| Codex CLI's compaction prompt (six lines: stop, write a memento — done vs owed, repeat the plan verbatim, TODOs with locations, what needs tests, bugs/quirks for the next agent); no "carry the previous summary" rule; users add one | round two c#16, c#31, c#32 |
+| Codex rebuilds context as summary + up to 20k tokens of verbatim recent user messages; mid-turn compaction re-injects world state before the last user message | c#1, c#2 |
+| The Foundation's reference agent resets both histories at level transition — the same choice as duck's six-of-seven slot wipe | c#46 |
+
+## Why B62's null does not close this axis
+
+B62 changed the **content** of the seven slots (rewritten from the last 12 messages, i.e. from turns that were still in
+the window) and never touched what was dropped. B65 changes what happens to the **deleted** turns. The two are
+different memory policies at the same seam; the B62 null says the slot rewrite adds nothing to a window that still
+holds those turns, and says nothing about turns the window has already lost. It is also the last untested member of
+the family Astra's evidence points at: after B65, "more context / better memory" has been tried as frames (B17), window
+(B54), yield (B48), slot rewrite (B62) and compaction (B65), and the family closes on measurement either way.
+
+## Seam (builder `thui-compact/build_notebook.py`, base = B48 chassis, cells 0 / 12 / 14)
+
+Cell 12 appends after the chassis's own block; nothing in cells 6/8 changes (same model, wheelhouse, seed, yield):
+
+1. **Class-level wrap of `ToolAgent._persistent_history_messages`.** Before delegating, snapshot the assistant turns in
+   `messages`; after, diff against the returned history — the assistant turns (with their tool results) no longer
+   present are the dropped block. Append them to `self._compact_buffer` (per game; the instance is per game, reset on
+   `_session_runtime_dir` change like the rest of the state).
+2. **Trigger:** `len(buffer) >= K` (K = 10 dropped turns ⇒ ≈ 2 fires per game on the base's 22.2 drops) **or** a level
+   transition with a non-empty buffer. Fire AFTER the turn's `analyze` returned (the B62 placement — the call never
+   blocks an action and never issues one).
+3. **The call:** one tool-free chat completion, thinking OFF on this thread (`_ReflectThinkFlag`, reused verbatim),
+   cap 600 tokens, timeout 90 s. Prompt = the memento template below over (a) the current memento, (b) the buffered
+   dropped turns rendered as text (assistant content + tool result text, images stripped, per-turn cap 600 chars).
+   Then clear the buffer.
+4. **Injection:** the memento is a single user message `MEMENTO (turns older than the window; carried forward):` …
+   placed as the **first** history message, re-inserted by the same wrap on every call (strip any previous memento
+   first, so it is never counted as a turn by `_keep_recent_history_turns` and never dropped as "oldest"). ≤ 600
+   estimator-tokens of every request = ≤ 1.9% of the budget.
+5. **The seven slots are untouched** — B65 is not B62 stacked; the memento is a separate channel.
+
+**Memento template** (Codex's six lines with game nouns, plus the cumulative rule; c#16 + c#32):
+
+> The turns below are about to be deleted from your context. Write a short MEMENTO for the next turns of this game.
+> Keep every entry of the previous memento unless the turns below contradict it. Then add, from the turns below only:
+> (1) what was established about this level's rules and what is still unknown; (2) actions proven no-op or harmful, with
+> the situation they were tried in; (3) hypotheses that still need one decisive test; (4) if a `Plan:` line appears,
+> repeat it verbatim. Never invent evidence. Output only the memento, under 120 words.
+
+## Smoke oracle (thui-compact-v0: tr87 / sk48 / sc25, 900 s each — ⚠️ a 900 s smoke may never exceed 30 turns)
+
+Because the trigger needs 30+ turns and then 10 drops, the smoke sets `_PERSISTENT_HISTORY_ASSISTANT_TURNS` to **8**
+and K to **4** for the smoke build only (asserted in cell 0's text and in-kernel), so the mechanism fires inside 900 s.
+The full build restores 30 / 10. Both values are printed by the in-kernel teeth line.
+
+- **P1 fired** — `thui-compact: game=… reason=k|level dropped_turns=N latency=… completion=… memento_chars=…` at least
+  twice per game; memento non-empty in ≥ half of fires (B62's v0 failed exactly here).
+- **P2 landed** — the request AFTER a fire carries `MEMENTO (` as its first history message (read from the prompt-log
+  snapshot / usage `prompt_tokens` rising by the memento's size), and the previous memento's entries survive into the
+  next one (the cumulative rule; grep one distinctive phrase across consecutive mementos).
+- **P3 harness** — 3 games finish, `wrapper error` 0, `call FAILED` 0, thinking control: main-analyzer completion mean
+  in the base band (≥ 1,000; v1's confound read 318).
+- Kill: mean latency > 60 s at 3 games (would be worse at 25), or memento empty ≥ half, or P2 absent.
+
+## Full-run oracle (thui-compact-v1)
+
+Paired **levels** vs `eval/fixtures/thuiv3-pool.json` (`rank_runs.py`), B35 floor **+1 level in ≥ 6 of 25 games on both
+draws**; a second draw (`--suffix=-r2`) before any hidden slot. Pre-registered readings: (a) floor cleared on both →
+`thui-stack --arms=compact` becomes the draw candidate; (b) NOT-DISTINGUISHABLE → the more-context family closes on
+measurement (five members on the base's mean) and the next lever is not a memory policy; (c) WORSE → the memento is
+misleading the model, read the mementos before killing (a wrong memento is a prompt bug, not a mechanism verdict).
+Kill rule as B62: ≥ 2 runs per arm, no hidden draw before the paired read.
+
+## Not in scope
+
+- B65-b (token-budget keep-rule replacing the 30-turn constant): a keep-rule, not compaction; likeliest to repeat B54's
+  null; run only if B65-a reads positive and the question becomes how much verbatim tail to keep.
+- B65-c (fold the six wiped slots into `cross_level_notes` at level-up): mostly covered by B62's `reason=level`
+  reflections (24 in v1-1, null); park unless B65-a's mementos show level-N facts helping level N+1.
+- Stacking with B62's slot rewrite: two memory policies in one arm cannot be attributed.
+
+## Status
+
+- 2026-09-05: design.
+- 2026-09-05 ~20:20Z: **builder written** (`thui-compact/build_notebook.py`, base v3, cells 0/12/14 smoke, 0/12 full; every rewrite anchored, cell 12 parses; smoke = window 8 / K 4, full = window 30 / K 10). **In-kernel teeth** (run at import, before the benchmark): thread-local thinking flag (worker False / main True), diff / fold / strip helpers on synthetic messages, window constant landed. **Offline drive** against a stub harness with a realistic 30-turn loop: fires at turns 12 / 16 / 20 / 24 exactly (window 8 + K 4, then every K), memento folded into the first user message once (marker count 1), previous memento carried into the next summariser prompt, dropped tool-call code carried, 8 assistant turns kept, `wrapper_errors` 0, P2 `landed=True` on every post-fire turn. Notebooks built: `taaf-thui-compact-v0.ipynb` (smoke, sahasawatt) and `taaf-thui-compact-v1.ipynb` (full, yocybercode). **Not pushed** — GPU is Watchara's call after the 09-05 slot decision. Evidence file for
+  the numbers above: `thui-v3-1` usage sidecars (`Desktop/archive/arc-traj/thui-v3-1/`, Windows box) and
+  `thui-reflect-v1-1` v2 log.
+
+### Push record
+
+- **2026-09-04 ~20:40Z — the smoke cannot be pushed from this box: `sahasawatt`'s weekly GPU quota is exhausted.**
+  `kaggle kernels push -p thui-compact` (metadata id `sahasawatt/thui-compact-v0`, correct for this token under G4)
+  answers `Kernel push error: Maximum weekly GPU quota of 30.00 hours reached.` — **and exits 0**, which is the trap
+  `scripts/kaggle_push_kernel.py` exists to catch: it read the post-push `kernels status` back, found it empty
+  (`404` on the slug), and refused to report success. Same blocker as B61 / B62 / B64 on this account.
+  So **both** the smoke and the full run are Watchara's GPU (`yocybercode`), not just the full run:
+  rebuild with `python3 thui-compact/build_notebook.py --owner=yocybercode` for the smoke (the committed metadata
+  says `sahasawatt` because that is this box's token) and push from the mac. Nothing was created on Kaggle.
+
+### Memento prompt v2 (2026-09-05, before anything ran) — from `arc-agi-pub/notes/think-research-memento-prompt-2026-09-05.md`
+
+A narrow research pass (10 pinned agents, 44 sources, 24 claims: 16 confirmed / 5 refuted / 3 unverified) asked one
+question: does any measured evidence justify changing this prompt's wording? Its verdict was **"ship it close to as
+written"** — every claim carrying an efficacy number is refuted or was measured at frontier tier, and the strongest
+datapoint in the packet is ours (B62's seven-slot graft at this cadence, 105/105 filled, `p = 0.9978`). Two edits were
+adopted anyway because their cost if wrong is near zero, and one was dropped.
+
+- **Adopted — labelled output lines with per-line item caps**: `Rules:` ≤4, `Unknown:` ≤3, `No-op/harmful:` ≤6,
+  `Hypotheses:` ≤2, `Plan:` verbatim, 120 words total. The evidence for the shape is descriptive (checkpoint schemas,
+  Reflexion's episode caps), and the reason that decides it is instrumentation: **a labelled memento is parseable**, so
+  P1 counts filled labels the way B62 counted its seven fields instead of reading a length. The log line now carries
+  `labels=N/5` and names the missing ones, and `_COMPACT_STATS["labels"]` totals them.
+- **Adopted — every claim names the action or step that established it, drop the claim otherwise.** *Never invent
+  evidence* is unenforceable as a prohibition; this is its checkable form, at ~10-15% of the character budget.
+- **Dropped — a `Repeated mistake:` self-critique line.** One claim behind it (Reflexion's EPM ablation 67% → 75%),
+  and the transfer lens objected: frontier model, multi-hop QA, against a 27B model under a 600-token cap with thinking
+  off. Under 120 words it displaces a fact.
+- **Rejected with reasons worth keeping**: an `Active State` / current-position field is *stale by construction* here
+  (written at drop time, refolded for many turns while the live board sits in the surviving window); 1-2 sentence
+  budgets cannot hold the no-op list; importance scoring and two-stage synthesis are extra calls, not wording.
+
+**Third in-kernel teeth added**: every counted label must appear in the prompt (a counter for a field the model was
+never asked for reports a failure that is the harness's, not the model's), and the step-id requirement must be present
+exactly once. Offline drive re-run after the edit: fires at turns 12 / 16 / 20 / 24, `labels=5/5` on labelled replies
+and `0/5` with every name listed on a deliberately unlabelled one, memento folded once, `wrapper_errors` 0.
+
+**Smoke oracle P1 is now**: ≥ 2 fires per game, memento non-empty in ≥ half, and **`labels` ≥ 3 of 5 on at least half
+the fires** — a 27B model under a 600-token cap with thinking off is exactly the case where a five-field format may not
+survive, and if it does not, the finding is the format's, not the mechanism's.
+
+### Prompt lint on a local same-family model (2026-09-05) — the step-id rule was inert, and is now in the format
+
+`thui-compact/prompt_lint.py` runs the SHIPPED prompt (read out of the built notebook, so it cannot drift from a
+copy) over **real dropped-turn blocks** rebuilt from `thui-v3-1`'s event sidecars, against **`qwen3:8b` on this box's
+RTX 4060 Ti** — same family as the served `Qwen3.8-27B-FP8`, one order smaller.
+
+| reading | labels | step citations | words | eval tokens |
+|---|---|---|---|---|
+| v2 prompt, 3 games | 5/5, 5/5, 5/5 | **0, 0, 2** | 42-59 | 78-118 |
+| v3 prompt (step id moved into the FORMAT), same 3 games | 5/5, 5/5, 5/5 | **4, 5, 7** | 40-56 | 78-106 |
+| control: labels removed from the prompt | **1/5** | — | 43 | — |
+
+**What it establishes**: the five-label format is followable on real input by a model an order smaller than the
+served one, well inside the 600-token cap, and the counter discriminates (the control drops to 1/5). **What it does
+not**: whether compaction moves levels, and whether the call is affordable at 25-game concurrency — the first needs
+the full run, the second is the smoke's whole subject.
+
+**The finding worth the run**: at v2 the sentence *"every claim names the action or step number that established
+it"* was **ignored on two of three blocks**. Moving the requirement into the output format (`Rules: <… each ending
+with the step it came from, like (step 12)>` and `(step N)` inside the no-op line) took citations from 0/0/2 to
+4/5/7 with no other change. An instruction the model can skip is not a requirement; a slot in the format is.
+
+⚠️ **`cites=` measures FORM, not accuracy.** Several citations in the v3 readings are `(step 12)` repeated — the
+model attributing to the newest step rather than the one that established the claim. The lint cannot check
+correctness cheaply, so the smoke's oracle must read `cites` as *"the model is filling the slot"*, never as
+*"the memento is correctly sourced"*. A memento that cites the wrong step is a prompt problem to find in the full
+run's transcripts, not a mechanism failure.
+
+**Monotonicity, stated because it is the reason this run is worth anything**: a smaller model of the same family
+passing a FORMAT test is decent evidence the larger one will, and it is no evidence at all about the score. The
+strongest existing datapoint for the format question is not this lint but `thui-reflect-v1-1` — the served 27B,
+thinking off, cap 1200, filling **all seven** labelled fields on **105 of 105** calls.
+
+### A failed memento retried every turn — found on the REAL trimmer, on this box (2026-09-05)
+
+The offline stub drive replaced `_orig_persist`, so it graded the trigger arithmetic and never the
+harness's own drop. The shipped cell-12 payload was exec'd against a **real `ToolAgent`** from
+`localrig/ARC3-Inference` and driven through the **real** `_persistent_history_messages`
+(`_trim_messages_for_context` → `_keep_recent_history_turns` → `_drop_until_first_user_message`)
+with synthetic turns, window 2 / K 1.
+
+⚠️ **`localrig` is NOT the revision Kaggle runs, and the transfer rests on content rather than on that.**
+`duck/bundle/src/ARC3-Inference/.../tool_agent.py` is **2063** lines and `localrig/...` is **2448**;
+this ticket's own citations (`:1653`, `:2017`, `:151`) are the bundle's, and `analyze` differs between
+the two. What makes the measurement transfer is that every function in the drop path is
+**byte-identical** across both (md5 of the parsed source segment):
+
+| symbol | bundle (Kaggle) | localrig | body |
+|---|---|---|---|
+| `_persistent_history_messages` | :1653 | :2037 | identical |
+| `_keep_recent_history_turns` | :1624 | :2008 | identical |
+| `_drop_until_first_user_message` | :1647 | :2031 | identical |
+| `_trim_messages_for_context` | :1672 | :2056 | identical |
+| `_PERSISTENT_HISTORY_ASSISTANT_TURNS` | :151 | :173 | identical |
+| `analyze` | :1706 | :2090 | **differs** |
+
+`analyze` differing is the one that could have bitten: `_compact_analyze` wraps it and reads
+`kwargs.get("should_stop")`. Both signatures are identical and both solvers pass `should_stop=` as a
+**keyword** (`solver.py:301` bundle, `:341` localrig), so the stop guard is reached in both. Checked,
+not assumed.
+
+**What that confirmed** (and the stub could not): the trigger fires on the turn the real trimmer first
+drops a block — `history_out` 3 → 6 → 6 with `dropped_turns` climbing — so `_compact_dropped` reads the
+same drop the harness performs. The wrapper also survived a hard endpoint failure with
+`wrapper_errors 0`, i.e. the pass-through guard works against a real exception rather than a synthetic one.
+
+**The defect it exposed.** `_compact_memento` returns from its `except` **before** `st["buffer"] = []`,
+so a failed call leaves the buffer above K and the trigger re-fires on **every following turn**, each
+paying the full 90 s timeout. Measured: 4 fires on 4 consecutive turns, 368 s burned. A game's clock is
+900 s, so ten such turns end the game — with every smoke oracle still green.
+
+**Worse, the smoke's kill rule cannot see it.** `latency_s` accumulates only *after* the `try`, so the
+failing calls contributed nothing: `latency_s` read **0.0** through the whole outage, and
+*kill if latency mean > 60 s* is unreachable by construction. The only witness was `errors`, which is
+not in the kill rule.
+
+**Fix** (`_MEMENTO_MAX_ERRORS = 2`): on failure drop the block (it is lost either way — that is the
+baseline behaviour), count the failed call's wall time, and stop compacting a game after two
+consecutive failures. A success resets the streak. A/B on the same input, one variable:
+
+| | before | after |
+|---|---|---|
+| fires | 4 | **2** |
+| errors | 4 | 2 |
+| clock burned | 368 s | **184 s** |
+| `latency_s` | **0.0** | 184.1 |
+| mean memento latency | 0.0 s | **92.1 s** (kill rule now fires) |
+| turns 5-6 | 92 s each | **0.0 s each** |
+| `dropped_turns` | 10 | 10 — the control: the drop path is untouched |
+
+⚠️ **Reachability on Kaggle is UNMEASURED.** The endpoint that failed here is this box's 8B, not the
+served 27B; B62's comparable call ran 29.6 s mean against a 90 s timeout, ~3× headroom. What the run
+establishes is not that this will happen but that **if it happens the cost is unbounded and every
+oracle stays green** — and that the latency kill rule was blind to it either way.
+
+### `game=????` in the wrapper log is print ORDER, not a broken label (measured 2026-09-05)
+
+Every line the drive emitted read `game=????`, which would make the smoke's per-game oracle
+(*at least 2 fires per game*) unreadable. Measured on a real `ToolAgent` instead of inferred:
+
+    before _ensure_session: '????'   runtime_dir = None
+    after  _ensure_session: 'ls20'   runtime_dir = .../artifacts/ls20-9607627b
+
+`analyze` calls `_ensure_session(state_path)` as its first act, and that is what sets
+`_session_runtime_dir`. `_compact_analyze` prints its "new buffer" line **before** delegating, so that
+one line per game is `????` by construction; every fire and P2 line runs from `_compact_persist` inside
+analyze's `finally`, i.e. after the session exists, and carries the real four-character id. The drive
+script saw `????` throughout only because it calls `_persistent_history_messages` directly and never
+enters `analyze`. No change made.
+
+### Local gate results — every smoke oracle this box can reach, measured (2026-09-05)
+
+Same drive (`drive_real_trimmer.py`: real `ToolAgent`, real `_persistent_history_messages`, real
+`_chat_completion`), fed the way `analyze` feeds it — `[system, *self._history_messages, new turn]`
+(tool_agent.py:2141), i.e. the **folded** history from the previous call plus one turn. Model
+`qwen2.5:7b` at 10k ctx on the RTX 4060 Ti (see the ollama note below for why not the 8B).
+
+| oracle | shipped 8 / 4, 20 turns | forced 2 / 2, 8 turns |
+|---|---|---|
+| fires | **12 / 16 / 20** (stub drive said 12/16/20/24) | 4 / 6 / 8 |
+| `dropped_turns` | 12 (4 per fire) | 6 (2 per fire) |
+| memento non-empty | 3/3 | 3/3 |
+| labels | **5/5 on every fire** | 5/5 on every fire |
+| P2 landed after every fire | 3/3 | 3/3 |
+| `wrapper_errors` | 0 | 0 |
+| memento chars across fires | 316 → 410 → 447 | 303 → 399 → **399** |
+| mean memento latency | 4.4 s | 4.2 s |
+| strip → re-fold on the odd turns | no re-fire, 0.0 s | no re-fire, 0.0 s |
+
+**Still GPU-only**: three games finishing, completion mean ≥ 1000, the 27B's adherence at cap 600, and
+latency under 25-game concurrency. None of these has a local instrument.
+
+**Two things the drive got wrong first, kept because each is a reading of the artifact:**
+
+- *Feeding the full accumulated transcript every turn* re-detected old drops each call: 5 fires in 5
+  turns at K = 2 and `dropped_turns` 21 against a true 6. The wrapper's diff is between persist's
+  **input** and **output**, and the harness's input is already trimmed — the drive has to be too. A
+  reader of the smoke log who sees a fire on every turn should suspect the FEED before the trigger.
+- *The 8B through `_chat_completion`* timed out on every memento call (90 s). Measured cleanly with the
+  GPU idle: ollama's OpenAI-compatible endpoint **ignores `chat_template_kwargs`** — `/v1/chat/completions`
+  returned `reasoning=True, content=''` with the whole cap spent, while native `/api/chat` with
+  `think:false` answered in 17 tokens. So on this box the memento call cannot turn thinking off through
+  the path the harness uses. **localrig limitation, not B65**: Kaggle serves through vLLM, which honours
+  it (thui-reflect-v1-1: 105/105 thinking-off calls filled all seven fields). It is also what made the
+  breaker bug visible.
+
+**Watch item for the 27B smoke**: `memento_chars` flat across consecutive fires (the forced run's
+399 → 399 while turns 5-6 were being dropped) means the model re-emitted the previous memento and
+absorbed nothing — carry-forward working, add not. `labels=5/5` and `cites>0` both stay green through
+that. Read the chars column across fires, not only the labels.

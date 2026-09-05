@@ -1,0 +1,131 @@
+{
+ "label": "thui-reflect-v1-1",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 36
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 19
+  },
+  "m0r0": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 177
+  },
+  "bp35": {
+   "score": 0.5555555555555556,
+   "levels": 1,
+   "actions": 59
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 20
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 76
+  },
+  "tu93": {
+   "score": 1.8190980095742002,
+   "levels": 1,
+   "actions": 37
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 25
+  },
+  "ka59": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 44
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 28
+  },
+  "vc33": {
+   "score": 9.145138751483971,
+   "levels": 2,
+   "actions": 29
+  },
+  "lf52": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 26
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 21
+  },
+  "sc25": {
+   "score": 3.0476190476190483,
+   "levels": 1,
+   "actions": 51
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 25
+  },
+  "ar25": {
+   "score": 24.017148526077097,
+   "levels": 4,
+   "actions": 166
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 80
+  },
+  "cd82": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 58
+  },
+  "re86": {
+   "score": 6.625952110423768,
+   "levels": 2,
+   "actions": 125
+  },
+  "s5i5": {
+   "score": 1.020304050607081,
+   "levels": 1,
+   "actions": 45
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 124
+  },
+  "ft09": {
+   "score": 28.57142857142857,
+   "levels": 3,
+   "actions": 81
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 54
+  },
+  "tr87": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 123
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 17
+  }
+ },
+ "source": "kaggle kernels output yocybercode/thui-reflect-v1-1 (VERSION 2, the thread-local build at d0600e6) benchmark.json via rank_runs.load(), 2026-09-05"
+}
