@@ -45,6 +45,37 @@ each pair is a byte-identical repeat, so they turn two single-run cells of the t
 2×2 into cells of three — and the (1.0, 60) cell then spans **1.87** against a difference of cell
 means of **0.28**.
 
+## Arm families — a lever family instead of a numbered version
+
+The 2026-09-02/04 wave built seven families that are **not** `thuivN` versions: each is a new lever family
+whose variants are named by kernel slug, so the family name takes the version slot
+(`agents/thui/<family>/<slug>.md`), the way `clock2x` does on the duck line. All of them are `thui-v1-1`
+or the `B48` build (`thui-v3-0`) plus one change.
+
+| family | dir | ticket | what it adds | public | status | pages |
+|---|---|---|---|---|---|---|
+| `prior` | `thui-prior/` | `B60` | an online CNN proposes ONE action on a silent turn | 3.81 / 3.92 / 3.04 | closed, null-to-negative | [v0](prior/thui-prior-v0.md) · [v1](prior/thui-prior-v1.md) · [v1-r2](prior/thui-prior-v1-r2.md) · [v1.1](prior/thui-prior-v1-1.md) |
+| `rank` | `thui-rank/` | `B61` | the same prior VETOES inert proposals; spends no action | — (smokes) | open, veto branch never exercised | [v0](rank/thui-rank-v0.md) · [v0.1](rank/thui-rank-v0-1.md) |
+| `reflect` | `thui-reflect/` | `B62` | a tool-free call every 10 steps rewrites the seven world-model fields | 1.39 ⚠️ / **4.38** | closed as a build candidate | [v0](reflect/thui-reflect-v0.md) · [v0.1](reflect/thui-reflect-v0-1.md) · [v1](reflect/thui-reflect-v1.md) · [v1.1](reflect/thui-reflect-v1-1.md) |
+| `avo` | `thui-avo/` | — | Tufa's own AVO bundle, as they ship it | 4.40 | ran, in-band; hidden open | [v0](avo/thui-avo-v0.md) |
+| `lora` | `thui-lora/` | — | LoRA SFT on our own winning turns | held-out 2.45 / 3.69 | closed null | [v0](lora/thui-lora-v0.md) · [train](lora/thui-lora-train.md) · [e1](lora/thui-lora-e1.md) |
+| `gemma` | `thui-gemma/` | `B64` | Gemma-4-31B-it as the duck agent | — | built, never run (GPU quota) | [v0](gemma/thui-gemma-v0.md) |
+| `stack` | `thui-stack/` | — | chains read-positive arms on one chassis | — | built, never run | [base v1](stack/thui-stack-base-v1.md) · [reflect+rank v0](stack/thui-stack-reflect-rank-v0.md) |
+
+⚠️ **`notes/LEDGER-all-runs.md` carries a row for exactly one of these runs — `thui-reflect-v1`.** Every
+other number in the table above comes from the ticket's own note (`notes/B60-…`, `notes/B62-…`) or, where
+that is the only record, from the commit that added the builder — each page says which. `thui-reflect-v1-1`'s
+row is in the ledger **as of PR #122**, which was open when these pages were written.
+
+⚠️ **Two of these numbers must never be read as a lever's verdict.** `thui-reflect-v1`'s 1.39 is
+**DEFECTIVE** — a module-global thinking flag shared by 25 game threads, not the memory — and
+`thui-prior-v1-1`'s 3.04 is the arm's worst of four draws, which is what closed the row rather than a
+ranking against anything.
+
+⚠️ **One variant exists as a notebook with no page**: `thui-prior-v1-1-r2`. Its push never landed (GPU
+quota) and it was not retried, so there is no run to index — and `B60`'s own arithmetic says the row was
+already decided without it.
+
 ## Where the line stands
 
 **Standing best hidden 2.03** (`v3.1`, `55943442`), against a top-5 bar of **4.45** read
