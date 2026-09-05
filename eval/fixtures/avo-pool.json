@@ -1,0 +1,134 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 66,
+   "levels": 1.5,
+   "score": 5.555555555555555
+  },
+  "bp35": {
+   "actions": 51.5,
+   "levels": 0.5,
+   "score": 0.2914931588340274
+  },
+  "cd82": {
+   "actions": 24,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cn04": {
+   "actions": 46,
+   "levels": 1,
+   "score": 2.8015322911353158
+  },
+  "dc22": {
+   "actions": 49,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 75,
+   "levels": 4,
+   "score": 47.61904761904761
+  },
+  "g50t": {
+   "actions": 32,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 51,
+   "levels": 0.5,
+   "score": 1.7857142857142856
+  },
+  "lf52": {
+   "actions": 23.5,
+   "levels": 0.5,
+   "score": 0.9090909090909091
+  },
+  "lp85": {
+   "actions": 38,
+   "levels": 2,
+   "score": 9.722222222222221
+  },
+  "ls20": {
+   "actions": 643,
+   "levels": 1,
+   "score": 3.286210317460317
+  },
+  "m0r0": {
+   "actions": 23.5,
+   "levels": 0.5,
+   "score": 1.1068476977567887
+  },
+  "r11l": {
+   "actions": 18,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 123.5,
+   "levels": 0.5,
+   "score": 0.0641273744203872
+  },
+  "s5i5": {
+   "actions": 55,
+   "levels": 1,
+   "score": 1.7361111111111112
+  },
+  "sb26": {
+   "actions": 74.5,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 57.5,
+   "levels": 0.5,
+   "score": 1.7492711370262388
+  },
+  "sk48": {
+   "actions": 89.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 50.5,
+   "levels": 0.5,
+   "score": 2.380952380952381
+  },
+  "su15": {
+   "actions": 44.5,
+   "levels": 1,
+   "score": 1.6707133772690486
+  },
+  "tn36": {
+   "actions": 73.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 84,
+   "levels": 0.5,
+   "score": 2.380952380952381
+  },
+  "tu93": {
+   "actions": 40,
+   "levels": 2,
+   "score": 6.666666666666667
+  },
+  "vc33": {
+   "actions": 29.5,
+   "levels": 2,
+   "score": 10.714285714285714
+  },
+  "wa30": {
+   "actions": 82.5,
+   "levels": 0.5,
+   "score": 1.1111111111111112
+  }
+ },
+ "label": "pool(thui-avo-v0-sahasawatt+thui-avo-v0-yocybercode)",
+ "source": [
+  "eval/fixtures/thui-avo-v0-sahasawatt.json",
+  "eval/fixtures/thui-avo-v0-yocybercode.json"
+ ]
+}

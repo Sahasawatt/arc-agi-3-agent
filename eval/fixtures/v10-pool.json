@@ -1,0 +1,136 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 89.75,
+   "levels": 2.75,
+   "score": 16.666666666666668
+  },
+  "bp35": {
+   "actions": 31,
+   "levels": 0.25,
+   "score": 0.08721965112139551
+  },
+  "cd82": {
+   "actions": 67,
+   "levels": 1,
+   "score": 4.014550264550264
+  },
+  "cn04": {
+   "actions": 35,
+   "levels": 0.25,
+   "score": 1.1904761904761905
+  },
+  "dc22": {
+   "actions": 92.5,
+   "levels": 0.75,
+   "score": 4.649484663792676
+  },
+  "ft09": {
+   "actions": 48.5,
+   "levels": 2.25,
+   "score": 19.237948344337386
+  },
+  "g50t": {
+   "actions": 21.25,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 41,
+   "levels": 0.25,
+   "score": 0.5401234567901235
+  },
+  "lf52": {
+   "actions": 49,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 29,
+   "levels": 1.5,
+   "score": 6.249999999999999
+  },
+  "ls20": {
+   "actions": 51.5,
+   "levels": 0.5,
+   "score": 1.709762354847421
+  },
+  "m0r0": {
+   "actions": 73.75,
+   "levels": 0.25,
+   "score": 0.6696428571428571
+  },
+  "r11l": {
+   "actions": 15.25,
+   "levels": 0.75,
+   "score": 3.571428571428571
+  },
+  "re86": {
+   "actions": 176.25,
+   "levels": 2.5,
+   "score": 12.384756455330287
+  },
+  "s5i5": {
+   "actions": 50.5,
+   "levels": 0.75,
+   "score": 1.5069921536677384
+  },
+  "sb26": {
+   "actions": 76,
+   "levels": 1.25,
+   "score": 4.091820987654321
+  },
+  "sc25": {
+   "actions": 55,
+   "levels": 1.5,
+   "score": 6.09328845529485
+  },
+  "sk48": {
+   "actions": 32.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 52.5,
+   "levels": 1,
+   "score": 3.3335221847334884
+  },
+  "su15": {
+   "actions": 42.5,
+   "levels": 1,
+   "score": 1.9654320987654321
+  },
+  "tn36": {
+   "actions": 50.75,
+   "levels": 0.25,
+   "score": 0.33812341504649196
+  },
+  "tr87": {
+   "actions": 97.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 45.5,
+   "levels": 1.5,
+   "score": 3.277141048516969
+  },
+  "vc33": {
+   "actions": 50,
+   "levels": 2.25,
+   "score": 12.373423278591215
+  },
+  "wa30": {
+   "actions": 81.5,
+   "levels": 0.5,
+   "score": 1.1111111111111112
+  }
+ },
+ "label": "pool(v10cal+v19+thuiv1-1+thuiv1-1-r2)",
+ "source": [
+  "eval/fixtures/v10cal.json",
+  "eval/fixtures/v19.json",
+  "eval/fixtures/thuiv1-1.json",
+  "eval/fixtures/thuiv1-1-r2.json"
+ ]
+}

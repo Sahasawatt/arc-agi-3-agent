@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 25,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "bp35": {
+   "actions": 50,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cn04": {
+   "actions": 77,
+   "levels": 1,
+   "score": 0.8411598203658696
+  },
+  "dc22": {
+   "actions": 30,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 57,
+   "levels": 4,
+   "score": 47.61904761904761
+  },
+  "g50t": {
+   "actions": 7,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 59,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lf52": {
+   "actions": 32,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 60,
+   "levels": 3,
+   "score": 16.666666666666664
+  },
+  "ls20": {
+   "actions": 41,
+   "levels": 1,
+   "score": 3.0009920634920633
+  },
+  "m0r0": {
+   "actions": 47,
+   "levels": 1,
+   "score": 2.2136953955135774
+  },
+  "r11l": {
+   "actions": 13,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 146,
+   "levels": 1,
+   "score": 0.1282547488407744
+  },
+  "s5i5": {
+   "actions": 72,
+   "levels": 1,
+   "score": 0.6944444444444444
+  },
+  "sb26": {
+   "actions": 65,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 42,
+   "levels": 1,
+   "score": 3.4985422740524776
+  },
+  "sk48": {
+   "actions": 131,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 37,
+   "levels": 0,
+   "score": 0.0
+  },
+  "su15": {
+   "actions": 65,
+   "levels": 1,
+   "score": 1.1192045323158748
+  },
+  "tn36": {
+   "actions": 122,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 38,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "tu93": {
+   "actions": 41,
+   "levels": 2,
+   "score": 6.666666666666667
+  },
+  "vc33": {
+   "actions": 32,
+   "levels": 2,
+   "score": 10.714285714285714
+  },
+  "wa30": {
+   "actions": 24,
+   "levels": 0,
+   "score": 0.0
+  }
+ },
+ "label": "thui-avo-v0-sahasawatt",
+ "source": "kaggle kernels output sahasawatt/thui-avo-v0 benchmark.json via rank_runs.load(); run 2026-09-02 02:14:48-04:27:21Z, banked 2026-09-05 (1st draw of the AVO arm)"
+}
