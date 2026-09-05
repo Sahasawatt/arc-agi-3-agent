@@ -55,7 +55,8 @@ or the `B48` build (`thui-v3-0`) plus one change.
 | family | dir | ticket | what it adds | public | status | pages |
 |---|---|---|---|---|---|---|
 | `prior` | `thui-prior/` | `B60` | an online CNN proposes ONE action on a silent turn | 3.81 / 3.92 / 3.04 | closed, null-to-negative | [v1](prior/thui-prior-v1.md) · [v1-r2](prior/thui-prior-v1-r2.md) · [v1.1](prior/thui-prior-v1-1.md) |
-| `rank` | `thui-rank/` | `B61` | the same prior VETOES inert proposals; spends no action | — (smokes) | open, veto branch never exercised | [v0](rank/thui-rank-v0.md) · [v0.1](rank/thui-rank-v0-1.md) |
+| `rank` | `thui-rank/` | `B61` | the same prior VETOES inert proposals; spends no action | **3.57** | open — full read −5.25 levels at `p = 0.39`, veto exercised 22×; close vs a second run is the owner's call | [v0](rank/thui-rank-v0.md) · [v0.1](rank/thui-rank-v0-1.md) · [v1](rank/thui-rank-v1.md) |
+| `compact` | `thui-compact/` | `B65` | a memento of the turns the harness's own trimmer drops, rewritten every K drops and folded into the first user message | **4.88** | closed (#130) — on the pre-#128 build; the reworded header is unmeasured | [v0](compact/thui-compact-v0.md) · [v1](compact/thui-compact-v1.md) |
 | `reflect` | `thui-reflect/` | `B62` | a tool-free call every 10 steps rewrites the seven world-model fields | 1.39 ⚠️ / **4.38** | closed as a build candidate | [v0](reflect/thui-reflect-v0.md) · [v0.1](reflect/thui-reflect-v0-1.md) · [v1](reflect/thui-reflect-v1.md) · [v1.1](reflect/thui-reflect-v1-1.md) |
 | `avo` | `thui-avo/` | — | Tufa's own AVO bundle, as they ship it | 4.40 | ran, in-band; hidden open | [v0](avo/thui-avo-v0.md) |
 | `lora` | `thui-lora/` | — | LoRA SFT on our own winning turns | held-out 2.45 / 3.69 | closed null | [v0](lora/thui-lora-v0.md) |

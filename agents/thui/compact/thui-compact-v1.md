@@ -64,3 +64,12 @@ same-build spread.
 
 - [`../reflect/thui-reflect-v1-1.md`](../reflect/thui-reflect-v1-1.md) — `B62`, the same shape at the other seam
 - [`../v3/v3-1.md`](../v3/v3-1.md) — the `B48` chassis this is built on
+
+## Which build this was (added after the read above)
+
+The kernel was pushed at 09:49Z from `4dbc9ef` — **before #127** (every fire line reads `game=arti`) and
+**before #128**, which rewords the memento header: the smoke's `tr87` transcript shows the model reading the
+old header as the game's title and spending a whole turn on it, and a local replay of that exact request on an
+8B reproduced the misread 6/9 with the old header, 0/9 with the new. All 25 games of this draw carried it.
+In-band with levels at the pool says the confound was not catastrophic at full width; it says nothing about
+the `576f9e8` build, which has never run. See [`thui-compact-v0.md`](thui-compact-v0.md) for the smoke.
