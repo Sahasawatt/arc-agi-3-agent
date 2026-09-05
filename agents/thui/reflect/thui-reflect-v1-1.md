@@ -35,9 +35,8 @@ concurrency, not by guessing a K.
 Run 2026-09-04 15:14Z–17:27Z, wall 2h 12m 50s = the full per-game clock. **Inside the same-build band
 `[2.82, 5.24]` and level with the `B48` pool.** **Not drawn on hidden.**
 
-⚠️ **Provenance, stated because it matters**: this row is in `notes/LEDGER-all-runs.md` **as of PR #122**,
-which was still open when this page was written — it is not on `master` at the commit this page lands on.
-The ledger stays the authority; if the row reads differently once merged, the row is right.
+Dated reading from `notes/LEDGER-all-runs.md`, whose row for this run landed on `master` with
+[#121](https://github.com/Sahasawatt/arc-agi-3-agent/pull/121).
 
 | comparison | mean | levels | per-game | p |
 |---|---|---|---|---|
