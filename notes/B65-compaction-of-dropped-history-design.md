@@ -180,3 +180,45 @@ run's transcripts, not a mechanism failure.
 passing a FORMAT test is decent evidence the larger one will, and it is no evidence at all about the score. The
 strongest existing datapoint for the format question is not this lint but `thui-reflect-v1-1` — the served 27B,
 thinking off, cap 1200, filling **all seven** labelled fields on **105 of 105** calls.
+
+### A failed memento retried every turn — found on the REAL trimmer, on this box (2026-09-05)
+
+The offline stub drive replaced `_orig_persist`, so it graded the trigger arithmetic and never the
+harness's own drop. `localrig` runs the same vendored `ARC3-Inference` the Kaggle notebook patches, so
+the shipped cell-12 payload was exec'd against a **real `ToolAgent`** and driven through the **real**
+`_persistent_history_messages` (`_trim_messages_for_context` → `_keep_recent_history_turns` →
+`_drop_until_first_user_message`, tool_agent.py:2037-2054) with synthetic turns, window 2 / K 1.
+
+**What that confirmed** (and the stub could not): the trigger fires on the turn the real trimmer first
+drops a block — `history_out` 3 → 6 → 6 with `dropped_turns` climbing — so `_compact_dropped` reads the
+same drop the harness performs. The wrapper also survived a hard endpoint failure with
+`wrapper_errors 0`, i.e. the pass-through guard works against a real exception rather than a synthetic one.
+
+**The defect it exposed.** `_compact_memento` returns from its `except` **before** `st["buffer"] = []`,
+so a failed call leaves the buffer above K and the trigger re-fires on **every following turn**, each
+paying the full 90 s timeout. Measured: 4 fires on 4 consecutive turns, 368 s burned. A game's clock is
+900 s, so ten such turns end the game — with every smoke oracle still green.
+
+**Worse, the smoke's kill rule cannot see it.** `latency_s` accumulates only *after* the `try`, so the
+failing calls contributed nothing: `latency_s` read **0.0** through the whole outage, and
+*kill if latency mean > 60 s* is unreachable by construction. The only witness was `errors`, which is
+not in the kill rule.
+
+**Fix** (`_MEMENTO_MAX_ERRORS = 2`): on failure drop the block (it is lost either way — that is the
+baseline behaviour), count the failed call's wall time, and stop compacting a game after two
+consecutive failures. A success resets the streak. A/B on the same input, one variable:
+
+| | before | after |
+|---|---|---|
+| fires | 4 | **2** |
+| errors | 4 | 2 |
+| clock burned | 368 s | **184 s** |
+| `latency_s` | **0.0** | 184.1 |
+| mean memento latency | 0.0 s | **92.1 s** (kill rule now fires) |
+| turns 5-6 | 92 s each | **0.0 s each** |
+| `dropped_turns` | 10 | 10 — the control: the drop path is untouched |
+
+⚠️ **Reachability on Kaggle is UNMEASURED.** The endpoint that failed here is this box's 8B, not the
+served 27B; B62's comparable call ran 29.6 s mean against a 90 s timeout, ~3× headroom. What the run
+establishes is not that this will happen but that **if it happens the cost is unbounded and every
+oracle stays green** — and that the latency kill rule was blind to it either way.

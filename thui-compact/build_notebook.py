@@ -120,10 +120,11 @@ _COMPACT_TIMEOUT_S = @TIMEOUT@
 _COMPACT_TURN_CHARS = @TURNCHARS@
 _COMPACT_BLOCK_CHARS = @BLOCKCHARS@
 _MEMENTO_MAX_CHARS = @MEMCHARS@
+_MEMENTO_MAX_ERRORS = 2   # consecutive failed memento calls before compaction stops for this game
 _MEMENTO_MARK = "MEMENTO (turns older than the window; carried forward):"
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
                   "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
-                  "labels": 0, "cites": 0}
+                  "labels": 0, "cites": 0, "disabled_games": 0}
 _MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
     "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
@@ -240,7 +241,14 @@ def _compact_memento(agent, reason):
         )
     except Exception as exc:
         _COMPACT_STATS["errors"] += 1
-        print(f"thui-compact: game={game} reason={reason} call FAILED ({type(exc).__name__}: {str(exc)[:160]})", flush=True)
+        _COMPACT_STATS["latency_s"] += _time.monotonic() - t0   # a stalled endpoint must reach the latency oracle
+        st["errors"] = st.get("errors", 0) + 1
+        st["buffer"] = []          # the block is lost either way; retrying it costs the game clock, not the memory
+        if st["errors"] >= _MEMENTO_MAX_ERRORS:
+            st["disabled"] = True
+            _COMPACT_STATS["disabled_games"] += 1
+        print(f"thui-compact: game={game} reason={reason} call FAILED ({type(exc).__name__}: {str(exc)[:160]}) "
+              f"consecutive={st['errors']} disabled={bool(st.get('disabled'))}", flush=True)
         return
     finally:
         agent._max_output_tokens = saved_max
@@ -259,6 +267,7 @@ def _compact_memento(agent, reason):
             content = ""
     n_buf = sum(1 for l in st["buffer"] if l.startswith("[assistant]"))
     st["buffer"] = []
+    st["errors"] = 0
     if content:
         st["memento"] = content[:_MEMENTO_MAX_CHARS]
         _COMPACT_STATS["ok"] += 1
@@ -331,7 +340,9 @@ def _compact_persist(self, messages, *args, **kwargs):
         transition = bool(summ.get("level_transition"))
         terminal = bool(summ.get("run_complete") or summ.get("game_over"))
         n_buf_turns = sum(1 for l in st["buffer"] if l.startswith("[assistant]"))
-        if st["buffer"] and not terminal and (n_buf_turns >= _COMPACT_K or transition):
+        if st.get("disabled"):
+            st["buffer"] = []
+        elif st["buffer"] and not terminal and (n_buf_turns >= _COMPACT_K or transition):
             should_stop = st.get("should_stop")
             if callable(should_stop) and should_stop():
                 _COMPACT_STATS["skipped_stop"] += 1
@@ -385,6 +396,7 @@ for _lab in _MEMENTO_LABELS:
     assert _lab in _COMPACT_SYSTEM, f"thui-compact: label {_lab} is counted but not asked for in the prompt"
 assert _COMPACT_SYSTEM.count("names the action or step number") == 1, "thui-compact: the step-id requirement is missing from the prompt"
 assert _COMPACT_SYSTEM.count("(step") >= 2, "thui-compact: the step id is not part of the output FORMAT (an instruction alone was ignored in the 8B lint)"
+assert _MEMENTO_MAX_ERRORS >= 1, "thui-compact: the breaker must allow at least one attempt"
 print(f"thui-compact-v0: wraps landed; window={_COMPACT_WINDOW} K={_COMPACT_K} cap={_COMPACT_MAX_TOKENS} timeout={_COMPACT_TIMEOUT_S}s; "
       f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
 # ======================================================================================
