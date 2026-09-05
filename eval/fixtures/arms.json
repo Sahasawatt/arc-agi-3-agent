@@ -42,6 +42,14 @@
     "thuiv3-2": "kernel yocybercode/thui-v3-2 v1 (2026-09-01), byte-identical B48 build, public 3.85, hidden 1.35 (55954708); banked 2026-09-04 the same way, mean reproduces 3.85"
    },
    "not_banked": {}
+  },
+  "avo": {
+   "rule": "Tufa's own AVO bundle run as they ship it (upstream taaf-kaggle-source, live branch experiment/avo-v2 @ 74ff3df, deploy_target avo_agent=True): the two members are the SAME build on two Kaggle accounts, and the sameness is a MEASUREMENT rather than a claim about the builder -- the runs' own artifacts agree field for field (git_status.txt: both submodules 74ff3df clean on experiment/avo-v2; effective_flags.json identical, ARC3_AVO_AGENT true and ARC3_AVO_SETTINGS equal; taaf_setup_env.json identical, LOCAL_ANALYZER_SEED 20260825 / TEMPERATURE 0.6 / YIELD_SECONDS 60 / MULTIMODAL_UPSCALE 8). No lever differs between them, so this is one build sampled twice",
+   "members": {
+    "thui-avo-v0-sahasawatt": "kernel sahasawatt/thui-avo-v0 (2026-09-02), public 4.40, levels 23, 1318 actions -- the arm's first draw, banked 2026-09-05 from that kernel's public output",
+    "thui-avo-v0-yocybercode": "kernel yocybercode/thui-avo-v0 v1 (2026-09-05), public 4.32, levels 21, 2572 actions -- the second draw, the one submitted as 56039729. Same build, and the 1.95x action count is the arm's own within-build spread, not a lever (ls20 alone went 41 -> 1245 actions on the same seed, the AVO supervisor loop)"
+   },
+   "not_banked": {}
   }
  }
 }

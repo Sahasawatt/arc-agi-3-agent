@@ -1,6 +1,6 @@
-# thui `avo v0` — Tufa's own AVO agent, run as they ship it, in-band on public
+# thui `avo v0` — Tufa's own AVO agent, run as they ship it: two draws, in-band on public, first hidden draw pending
 
-**Line** thui · **family** avo · **directory** [`thui-avo/`](../../../thui-avo) · **ticket** none — evidence for `B60` · **status** ran, public read done, hidden open
+**Line** thui · **family** avo · **directory** [`thui-avo/`](../../../thui-avo) · **ticket** none — evidence for `B60` · **status** ran twice, public read done, **hidden PENDING (`56039729`)**
 
 ## The one change
 
@@ -29,38 +29,62 @@ and still hold — and the upscale must not be pinned back to 4 for an as-shippe
 |---|---|
 | builder | `thui-avo/build_notebook.py` |
 | notebook | `thui-avo/taaf-thui-avo-v0.ipynb` |
-| kernel | `sahasawatt/thui-avo-v0` |
+| kernels | `sahasawatt/thui-avo-v0` (1st draw) · `yocybercode/thui-avo-v0` v1 (2nd draw, the submitted one) |
+| fixtures | `eval/fixtures/thui-avo-v0-sahasawatt.json` · `eval/fixtures/thui-avo-v0-yocybercode.json` · pooled `eval/fixtures/avo-pool.json` |
+| arm | declared in `eval/fixtures/arms.json` as `avo` |
 | cited in | `notes/B60-exploration-prior-design.md` (the evidence list) |
 
 ## What it scored
 
-⚠️ **`notes/LEDGER-all-runs.md` has no row for this run.** The public mean and the p-value below are the
-reading recorded in `notes/B60-exploration-prior-design.md`; the levels and the run date are from the
-commit that added the builder (`482accb`). Per-run columns not derived.
+| run | public | hidden | scoring | levels | actions | act/lvl | Mtok |
+|---|---|---|---|---|---|---|---|
+| `sahasawatt/thui-avo-v0`, 2026-09-02 | **4.40** | — | 16 | 23 | 1,318 | 57.3 | 2.39 |
+| `yocybercode/thui-avo-v0` v1, 2026-09-05 | **4.32** | ⏳ `56039729` | 15 | 21 | 2,572 | 122.5 | 2.30 |
+| pooled (`avo-pool`) | **4.36** | — | — | 22.0 | 1,945 | — | — |
 
-| run | public | levels | benchmark name |
-|---|---|---|---|
-| `thui-avo-v0`, 2026-09-02 | **4.40** | 23 | `avo-kaggle` |
+Dated readings; `notes/LEDGER-all-runs.md` is the authority.
 
-Against the `B57` pooled `v10` arm (mean 4.28): delta **+0.13**, `p = 0.946`, **NOT-DISTINGUISHABLE**.
-Inside the same-build band `[2.82, 5.24]`, so **it ranks nothing on public**.
+**The two draws are the SAME BUILD, and that is a measurement, not a claim about the builder**:
+`git_status.txt` shows both submodules at `74ff3df` clean on `experiment/avo-v2` in both runs, and
+`effective_flags.json` + `taaf_setup_env.json` are identical field for field (`ARC3_AVO_AGENT=true`,
+identical `ARC3_AVO_SETTINGS`, seed 20260825, temperature 0.6, yield 60, upscale 8).
+
+| comparison | mean | levels | per-game | p |
+|---|---|---|---|---|
+| pooled `v10` arm (4 runs) → `avo-pool` | 4.28 → 4.36 (Δ +0.09) | 24.0 → 22.0 | 11 up / 11 down / 4 flipped | **0.9609 NOT-DISTINGUISHABLE** |
+| `thuiv3-pool` (4 runs) → `avo-pool` | 4.39 → 4.36 (Δ −0.02) | 24.25 → 22.0 | 10 up / 10 down / 4 flipped | **0.9851 NOT-DISTINGUISHABLE** |
+| draw 1 → draw 2 (`--single-baseline`: the question IS the arm's own spread) | 4.40 → 4.32 (Δ −0.08) | 23 → 21 | 9 up / 6 down / 9 flipped | **0.9318 NOT-DISTINGUISHABLE** |
+
+⚠️ **The two draws differ by 1.95× in ACTIONS on one build** — 1,318 → 2,572, with `ls20` alone going
+**41 → 1,245** on the same seed, the AVO supervisor loop spinning. So act/lvl 122.5 is this arm's own
+spread rather than a lever, and any future AVO read has to carry that spread.
 
 ## Verdict
 
-**In-band, and that is itself the finding this arm contributes.** `B60` reads it as evidence that *the
-harness lane is model-bound at our model class* — every 100-RHAE system trains no weights, and the same
-AVO harness on Qwen3.8 lands where our own chassis lands.
+**In-band on public in both draws, and that is itself the finding this arm contributes.** `B60` reads it
+as evidence that *the harness lane is model-bound at our model class* — every 100-RHAE system trains no
+weights, and the same AVO harness on Qwen3.8 lands where our own chassis lands. Two draws pooled do not
+change that: `p = 0.9609` against the `v10` arm, `p = 0.9851` against the `B48` arm.
 
-**The hidden question is open and costs a slot.** Nothing here answers it.
+**The hidden question is now BEING answered.** `yocybercode/thui-avo-v0` v1 took the 2026-09-05 slot at
+19:53:45Z as **`56039729`**, PENDING at the time of writing — the arm's first hidden draw. The brackets
+were pre-registered in that submission's own description:
 
-🔴 **Blocked from submission as the kernel currently stands.** `kaggle_submit_gate.py --dry-run` on
-`sahasawatt/thui-avo-v0` returned **G2 BLOCKED**: `Tufa Labs` in the solver-credit line sat at char 506,
-ahead of our own identity at 669, so the notebook opened as theirs. The tracked notebook was fixed —
-the H1 now names Thuitanium first, every credit line unchanged, `scan_branding()` returns `None` with a
-positive control firing — but **that fix was never pushed**, because a new kernel version is a GPU run and
-the weekly quota was exhausted on that account. Push the rebuilt notebook before any submission.
+| hidden | reading |
+|---|---|
+| in **[1.26, 2.03]** | keeps `B60`'s "the harness lane is model-bound at our model class" |
+| **> 2.03** | first evidence AVO moves hidden, above our standing best |
+| **< 1.26** | AVO's extra actions cost on hidden |
+
+⚠️ **Dated record, no longer the blocker it was.** `sahasawatt/thui-avo-v0` was **G2-blocked** for
+submission: `Tufa Labs` in the solver-credit line sat at char 506, ahead of our own identity at 669, so
+the notebook opened as theirs. That kernel is still unfixed on his account — only its owner can Quick Save
+it. What was submitted is a **different kernel**: our own `yocybercode/thui-avo-v0`, built from the
+corrected notebook, which passed `kaggle_submit_gate.py` on all five gates (G1 version evidence
+`Version 1 of 1`, G2 branding position clean, G3 slot unspent, G4 token identity `yocybercode`, G5 record
+read back).
 
 ## Read next
 
-- [`thui-prior-v1.md`](../prior/thui-prior-v1.md) — `B60`, which cites this run as its first piece of evidence
-- `docs/` and `scripts/kaggle_submit_gate.py` — G2, the branding-position gate that held here
+- [`../prior/thui-prior-v1.md`](../prior/thui-prior-v1.md) — `B60`, which cites this run as its first piece of evidence
+- `scripts/kaggle_submit_gate.py` — G2, the branding-position gate that held here, and G4, which decides the kernel's owner

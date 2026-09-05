@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 107,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 53,
+   "levels": 1,
+   "score": 0.5829863176680548
+  },
+  "cd82": {
+   "actions": 43,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cn04": {
+   "actions": 15,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "dc22": {
+   "actions": 68,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 93,
+   "levels": 4,
+   "score": 47.61904761904761
+  },
+  "g50t": {
+   "actions": 57,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 43,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "lf52": {
+   "actions": 15,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lp85": {
+   "actions": 16,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "ls20": {
+   "actions": 1245,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 0,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 23,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 101,
+   "levels": 0,
+   "score": 0.0
+  },
+  "s5i5": {
+   "actions": 38,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sb26": {
+   "actions": 84,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 73,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sk48": {
+   "actions": 48,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 64,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "su15": {
+   "actions": 24,
+   "levels": 1,
+   "score": 2.2222222222222223
+  },
+  "tn36": {
+   "actions": 25,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 130,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 39,
+   "levels": 2,
+   "score": 6.666666666666667
+  },
+  "vc33": {
+   "actions": 27,
+   "levels": 2,
+   "score": 10.714285714285714
+  },
+  "wa30": {
+   "actions": 141,
+   "levels": 1,
+   "score": 2.2222222222222223
+  }
+ },
+ "label": "thui-avo-v0-yocybercode",
+ "source": "kaggle kernels output yocybercode/thui-avo-v0 v1 benchmark.json via rank_runs.load(); run 2026-09-05 16:37:18-18:49:46Z, banked 2026-09-05 (2nd draw of the AVO arm)"
+}

@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 52,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "bp35": {
+   "actions": 53,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 48,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cn04": {
+   "actions": 23,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "dc22": {
+   "actions": 82,
+   "levels": 1,
+   "score": 3.692624298549894
+  },
+  "ft09": {
+   "actions": 14,
+   "levels": 2,
+   "score": 14.285714285714285
+  },
+  "g50t": {
+   "actions": 47,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 82,
+   "levels": 1,
+   "score": 2.734375
+  },
+  "lf52": {
+   "actions": 24,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 23,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "ls20": {
+   "actions": 54,
+   "levels": 0,
+   "score": 0.0
+  },
+  "m0r0": {
+   "actions": 96,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 31,
+   "levels": 0,
+   "score": 0.0
+  },
+  "re86": {
+   "actions": 57,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "s5i5": {
+   "actions": 36,
+   "levels": 1,
+   "score": 1.7777777777777781
+  },
+  "sb26": {
+   "actions": 42,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 76,
+   "levels": 2,
+   "score": 14.285714285714285
+  },
+  "sk48": {
+   "actions": 20,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 58,
+   "levels": 0,
+   "score": 0.0
+  },
+  "su15": {
+   "actions": 110,
+   "levels": 1,
+   "score": 2.2222222222222223
+  },
+  "tn36": {
+   "actions": 25,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 102,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 41,
+   "levels": 0,
+   "score": 0.0
+  },
+  "vc33": {
+   "actions": 63,
+   "levels": 3,
+   "score": 21.428571428571427
+  },
+  "wa30": {
+   "actions": 47,
+   "levels": 0,
+   "score": 0.0
+  }
+ },
+ "label": "thui-rank-v1",
+ "source": "kaggle kernels output yocybercode/thui-rank-v1 v1 (B61) benchmark.json via rank_runs.load(); run 2026-09-05 14:05:29-16:19:58Z, banked 2026-09-05"
+}
