@@ -1,0 +1,131 @@
+{
+ "label": "thui-compact-v1",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 17
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 47
+  },
+  "m0r0": {
+   "score": 4.185267857142857,
+   "levels": 1,
+   "actions": 32
+  },
+  "bp35": {
+   "score": 0.95703125,
+   "levels": 1,
+   "actions": 44
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 46
+  },
+  "dc22": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 43
+  },
+  "tu93": {
+   "score": 5.320438957475996,
+   "levels": 2,
+   "actions": 38
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 17
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 52
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 45
+  },
+  "vc33": {
+   "score": 10.714285714285714,
+   "levels": 2,
+   "actions": 60
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 44
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 14
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 58
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 46
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 80
+  },
+  "sb26": {
+   "score": 6.555212620027435,
+   "levels": 2,
+   "actions": 67
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 101
+  },
+  "re86": {
+   "score": 6.819444444444445,
+   "levels": 2,
+   "actions": 158
+  },
+  "s5i5": {
+   "score": 1.2345679012345678,
+   "levels": 1,
+   "actions": 67
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 107
+  },
+  "ft09": {
+   "score": 47.61904761904761,
+   "levels": 4,
+   "actions": 92
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 51
+  },
+  "tr87": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 45
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 10
+  }
+ },
+ "source": "kaggle kernels output yocybercode/thui-compact-v1 (the 09:49Z push, built from 4dbc9ef -- the OLD memento header, before #127/#128) benchmark.json via rank_runs.load(), 2026-09-05"
+}

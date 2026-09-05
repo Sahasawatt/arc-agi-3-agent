@@ -347,3 +347,38 @@ model. The `action()` column is the honest half: the new header's first call car
 — not a difference this instrument can see, and not one it rules out. Whether a memento in the first
 user turn costs actions per turn is what the full run's actions total against the `thuiv3` pool answers;
 the smoke's 0.37 actions/request is the same open question, not a second piece of evidence.
+
+### Full read (`yocybercode/thui-compact-v1`, 2026-09-05, 25 games at window 30 / K 10) — delivered, in-band, and the wrong build
+
+Pulled from the kernel output on this box (`benchmark.json`, `summary.txt`, 25 usage sidecars, the kernel
+log) and ranked with the campaign's instrument, not read from a relay:
+
+| | this run | thuiv3-pool (4 runs) |
+|---|---|---|
+| public | **4.88** | 4.39 |
+| levels | **25** | 24.25 |
+| scoring games | 16 | — |
+| actions | 1,381 | — |
+| `rank_runs.py` | 13 up / 10 down / 8 flipped, sign-flip **p = 0.6794 NOT-DISTINGUISHABLE** | |
+| B35 floor (+1 level vs pool mean) | **2 games** (`ft09`, `tr87`); −1 in 3 (`sc25`, `sp80`, `cd82`) | needs ≥ 6 on both draws |
+
+**Mechanism at full width, every smoke oracle scaled**: 51 fires, labels 5/5 on all 51, P2 landed 51/51,
+memento 458–1,191 chars (mean 760), latency mean 16.8 s / max 29.5 s — about 857 s in total, **0.43 %** of
+the 25 × 7,920 s clock, against the 60 s kill line — `wrapper error` 0, `call FAILED` 0, the breaker
+never tripped, 446 dropped turns folded. Thinking stayed on for the main analyzer (completion mean
+1,916 / median 1,323, n = 1,251, the family's band). Analyzer read-timeouts 36 (reflect-v1-1: 78).
+
+**What this run is NOT.** It was pushed at 09:49Z from `4dbc9ef`, i.e. the build **before** #127 (label
+from the state-path stem) and **before** #128 (the header reword), so:
+
+- every fire line reads `game=arti` — per-game fire counts and per-game memento growth are unreadable
+  from this log; only the totals above are;
+- all 25 games carried the header the smoke's `tr87` model read as *"the title MEMENTO"*. The run still
+  landed in-band with levels at or above the pool, so the misread was **not catastrophic at full width**
+  — but this is a draw of the confounded build, not of B65 as it stands on master (`576f9e8`).
+
+**Verdict on the row: NOT MEASURABLE, never "no worse".** The oracle asks for two draws and the B35
+floor on both; draw 1 sits at +0.75 levels with 2 games over the floor, which is the noise band. The
+next read is a second draw on the `576f9e8` build — it closes the row either way and measures #128's
+effect on actions per request for free (the smoke's open 0.37 question). B61 (`thui-rank-v1`, the
+same day) read −5.25 levels at p = 0.39, so a `stack` of the two arms has no read-positive member.
