@@ -44,5 +44,6 @@ page, and it is worth a page precisely because the notebook exists and looks rea
 
 ## Read next
 
-- [`thui-stack-base-v1.md`](thui-stack-base-v1.md) — the empty stack, i.e. the standing-best build
+- commit `2a552c2` — the empty stack (`thui-stack-base-v1`, no page here) emits the `B48` chassis
+  byte-identical, which is what makes a stacked build's diff readable as the arms and nothing else
 - [`../reflect/thui-reflect-v1-1.md`](../reflect/thui-reflect-v1-1.md) · [`../rank/thui-rank-v0-1.md`](../rank/thui-rank-v0-1.md) — where each arm actually stands

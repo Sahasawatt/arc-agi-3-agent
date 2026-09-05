@@ -52,5 +52,7 @@ more games than intended, so it was not re-run.**
 
 ## Read next
 
-- [`thui-lora-train.md`](thui-lora-train.md) — the offline SFT trainer and the ladder it took to get there
-- [`thui-lora-e1.md`](thui-lora-e1.md) — the held-out eval that closed the arm null
+- `notes/B60-exploration-prior-design.md` — the held-out means that closed this arm null (2.45 / 3.69
+  against base draws 4.61 / 6.35), and the *gain where the base is dead, loss where it is alive* signature
+- commit `e598cbe` — the trainer's 15-push ladder and `thui-lora-e1`'s per-game direction; neither the
+  trainer nor the eval has a page here
