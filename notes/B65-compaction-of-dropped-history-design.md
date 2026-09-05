@@ -184,10 +184,30 @@ thinking off, cap 1200, filling **all seven** labelled fields on **105 of 105** 
 ### A failed memento retried every turn — found on the REAL trimmer, on this box (2026-09-05)
 
 The offline stub drive replaced `_orig_persist`, so it graded the trigger arithmetic and never the
-harness's own drop. `localrig` runs the same vendored `ARC3-Inference` the Kaggle notebook patches, so
-the shipped cell-12 payload was exec'd against a **real `ToolAgent`** and driven through the **real**
-`_persistent_history_messages` (`_trim_messages_for_context` → `_keep_recent_history_turns` →
-`_drop_until_first_user_message`, tool_agent.py:2037-2054) with synthetic turns, window 2 / K 1.
+harness's own drop. The shipped cell-12 payload was exec'd against a **real `ToolAgent`** from
+`localrig/ARC3-Inference` and driven through the **real** `_persistent_history_messages`
+(`_trim_messages_for_context` → `_keep_recent_history_turns` → `_drop_until_first_user_message`)
+with synthetic turns, window 2 / K 1.
+
+⚠️ **`localrig` is NOT the revision Kaggle runs, and the transfer rests on content rather than on that.**
+`duck/bundle/src/ARC3-Inference/.../tool_agent.py` is **2063** lines and `localrig/...` is **2448**;
+this ticket's own citations (`:1653`, `:2017`, `:151`) are the bundle's, and `analyze` differs between
+the two. What makes the measurement transfer is that every function in the drop path is
+**byte-identical** across both (md5 of the parsed source segment):
+
+| symbol | bundle (Kaggle) | localrig | body |
+|---|---|---|---|
+| `_persistent_history_messages` | :1653 | :2037 | identical |
+| `_keep_recent_history_turns` | :1624 | :2008 | identical |
+| `_drop_until_first_user_message` | :1647 | :2031 | identical |
+| `_trim_messages_for_context` | :1672 | :2056 | identical |
+| `_PERSISTENT_HISTORY_ASSISTANT_TURNS` | :151 | :173 | identical |
+| `analyze` | :1706 | :2090 | **differs** |
+
+`analyze` differing is the one that could have bitten: `_compact_analyze` wraps it and reads
+`kwargs.get("should_stop")`. Both signatures are identical and both solvers pass `should_stop=` as a
+**keyword** (`solver.py:301` bundle, `:341` localrig), so the stop guard is reached in both. Checked,
+not assumed.
 
 **What that confirmed** (and the stub could not): the trigger fires on the turn the real trimmer first
 drops a block — `history_out` 3 → 6 → 6 with `dropped_turns` climbing — so `_compact_dropped` reads the
@@ -222,3 +242,18 @@ consecutive failures. A success resets the streak. A/B on the same input, one va
 served 27B; B62's comparable call ran 29.6 s mean against a 90 s timeout, ~3× headroom. What the run
 establishes is not that this will happen but that **if it happens the cost is unbounded and every
 oracle stays green** — and that the latency kill rule was blind to it either way.
+
+### `game=????` in the wrapper log is print ORDER, not a broken label (measured 2026-09-05)
+
+Every line the drive emitted read `game=????`, which would make the smoke's per-game oracle
+(*at least 2 fires per game*) unreadable. Measured on a real `ToolAgent` instead of inferred:
+
+    before _ensure_session: '????'   runtime_dir = None
+    after  _ensure_session: 'ls20'   runtime_dir = .../artifacts/ls20-9607627b
+
+`analyze` calls `_ensure_session(state_path)` as its first act, and that is what sets
+`_session_runtime_dir`. `_compact_analyze` prints its "new buffer" line **before** delegating, so that
+one line per game is `????` by construction; every fire and P2 line runs from `_compact_persist` inside
+analyze's `finally`, i.e. after the session exists, and carries the real four-character id. The drive
+script saw `????` throughout only because it calls `_persistent_history_messages` directly and never
+enters `analyze`. No change made.
