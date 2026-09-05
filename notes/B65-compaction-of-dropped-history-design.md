@@ -257,3 +257,44 @@ one line per game is `????` by construction; every fire and P2 line runs from `_
 analyze's `finally`, i.e. after the session exists, and carries the real four-character id. The drive
 script saw `????` throughout only because it calls `_persistent_history_messages` directly and never
 enters `analyze`. No change made.
+
+### Local gate results — every smoke oracle this box can reach, measured (2026-09-05)
+
+Same drive (`drive_real_trimmer.py`: real `ToolAgent`, real `_persistent_history_messages`, real
+`_chat_completion`), fed the way `analyze` feeds it — `[system, *self._history_messages, new turn]`
+(tool_agent.py:2141), i.e. the **folded** history from the previous call plus one turn. Model
+`qwen2.5:7b` at 10k ctx on the RTX 4060 Ti (see the ollama note below for why not the 8B).
+
+| oracle | shipped 8 / 4, 20 turns | forced 2 / 2, 8 turns |
+|---|---|---|
+| fires | **12 / 16 / 20** (stub drive said 12/16/20/24) | 4 / 6 / 8 |
+| `dropped_turns` | 12 (4 per fire) | 6 (2 per fire) |
+| memento non-empty | 3/3 | 3/3 |
+| labels | **5/5 on every fire** | 5/5 on every fire |
+| P2 landed after every fire | 3/3 | 3/3 |
+| `wrapper_errors` | 0 | 0 |
+| memento chars across fires | 316 → 410 → 447 | 303 → 399 → **399** |
+| mean memento latency | 4.4 s | 4.2 s |
+| strip → re-fold on the odd turns | no re-fire, 0.0 s | no re-fire, 0.0 s |
+
+**Still GPU-only**: three games finishing, completion mean ≥ 1000, the 27B's adherence at cap 600, and
+latency under 25-game concurrency. None of these has a local instrument.
+
+**Two things the drive got wrong first, kept because each is a reading of the artifact:**
+
+- *Feeding the full accumulated transcript every turn* re-detected old drops each call: 5 fires in 5
+  turns at K = 2 and `dropped_turns` 21 against a true 6. The wrapper's diff is between persist's
+  **input** and **output**, and the harness's input is already trimmed — the drive has to be too. A
+  reader of the smoke log who sees a fire on every turn should suspect the FEED before the trigger.
+- *The 8B through `_chat_completion`* timed out on every memento call (90 s). Measured cleanly with the
+  GPU idle: ollama's OpenAI-compatible endpoint **ignores `chat_template_kwargs`** — `/v1/chat/completions`
+  returned `reasoning=True, content=''` with the whole cap spent, while native `/api/chat` with
+  `think:false` answered in 17 tokens. So on this box the memento call cannot turn thinking off through
+  the path the harness uses. **localrig limitation, not B65**: Kaggle serves through vLLM, which honours
+  it (thui-reflect-v1-1: 105/105 thinking-off calls filled all seven fields). It is also what made the
+  breaker bug visible.
+
+**Watch item for the 27B smoke**: `memento_chars` flat across consecutive fires (the forced run's
+399 → 399 while turns 5-6 were being dropped) means the model re-emitted the previous memento and
+absorbed nothing — carry-forward working, add not. `labels=5/5` and `cites>0` both stay green through
+that. Read the chars column across fires, not only the labels.
