@@ -39,7 +39,7 @@ VETO_MIN_OBS = int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("-
 VETO_MIN_OBS_DESIGN = 20
 VETO_PER_STEP = 2      # third proposal in a step always executes
 
-CELL0_MD_SMOKE = """# thui-rank-v0 — B61 smoke: frame-change prior as a VETO over the LLM's proposals
+CELL0_MD_SMOKE = """# thui-rank-v0 (Thuitanium / Knowless Crew) — B61 smoke: frame-change prior as a VETO over the LLM's proposals
 
 **Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 12 and 14.
 Cell 12 wraps the analyzer so every action the LLM proposes is scored by a small CNN trained
@@ -53,7 +53,7 @@ Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset
 Knowless Crew / Thuitanium fork; none of their scores are ours.
 """
 
-CELL0_MD_FULL = """# thui-rank-v1 — B61: frame-change prior as a VETO over the LLM's proposals, full 25 games
+CELL0_MD_FULL = """# thui-rank-v1 (Thuitanium / Knowless Crew) — B61: frame-change prior as a VETO over the LLM's proposals, full 25 games
 
 `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cell 12: every action the LLM proposes is scored by a small CNN
 trained online on the game's own executed actions, and a proposal predicted inert (p < 0.15, after
