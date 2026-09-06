@@ -51,7 +51,7 @@ COMPACT_TURN_CHARS = 600              # per dropped turn, rendered
 COMPACT_BLOCK_CHARS = 6000            # whole buffered block, rendered
 MEMENTO_MAX_CHARS = 1600              # ~530 estimator-tokens of every request, 1.7% of the 31,744 budget
 
-CELL0_MD_SMOKE = """# thui-compact-v0 — B65 smoke: compaction of the history block duck drops (3 games, window 8, K 4)
+CELL0_MD_SMOKE = """# thui-compact-v0 (Thuitanium / Knowless Crew) — B65 smoke: compaction of the history block duck drops (3 games, window 8, K 4)
 
 **Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 chassis: thui-v1-1 + yield 180, the standing-best build) byte-for-byte except cells 12 and 14.
 Cell 12 wraps `ToolAgent._persistent_history_messages`: the assistant turns the 30-turn window (**8 in this smoke**)
@@ -66,7 +66,7 @@ Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset
 Knowless Crew / Thuitanium fork; none of their scores are ours.
 """
 
-CELL0_MD_FULL = """# thui-compact-v1 — B65: compaction of the history block duck drops, full 25 games
+CELL0_MD_FULL = """# thui-compact-v1 (Thuitanium / Knowless Crew) — B65: compaction of the history block duck drops, full 25 games
 
 `thui-v3-0` (the B48 chassis: thui-v1-1 + yield 180, the standing-best build) byte-for-byte except cell 12: the assistant
 turns the 30-turn window discards are buffered, and every 10 dropped turns ONE extra tool-free chat call — thinking off

@@ -48,7 +48,7 @@ REFLECT_MAX_TOKENS = 1200  # cap on the reflection reply (v0 at 700: every reply
 REFLECT_TIMEOUT_S = 90    # one reflection call may not eat the turn budget
 REFLECT_HISTORY = 12      # most recent history messages rendered into the reflection prompt
 
-CELL0_MD_SMOKE = """# thui-reflect-v0 — B62 smoke: reflection memory every 10 steps, into duck's own world-model slot
+CELL0_MD_SMOKE = """# thui-reflect-v0 (Thuitanium / Knowless Crew) — B62 smoke: reflection memory every 10 steps, into duck's own world-model slot
 
 **Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 12 and 14.
 Cell 12 wraps the analyzer: after every turn, once ≥ 10 actions have executed since the last
@@ -67,7 +67,7 @@ Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset
 Knowless Crew / Thuitanium fork; none of their scores are ours.
 """
 
-CELL0_MD_FULL = """# thui-reflect-v1 — B62: reflection memory every 10 steps, full 25 games
+CELL0_MD_FULL = """# thui-reflect-v1 (Thuitanium / Knowless Crew) — B62: reflection memory every 10 steps, full 25 games
 
 `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cell 12: after every turn, once ≥ 10 actions have executed since
 the last reflection (or a level just completed), one extra chat call rewrites the seven world-model
