@@ -73,3 +73,18 @@ old header as the game's title and spending a whole turn on it, and a local repl
 8B reproduced the misread 6/9 with the old header, 0/9 with the new. All 25 games of this draw carried it.
 In-band with levels at the pool says the confound was not catastrophic at full width; it says nothing about
 the `576f9e8` build, which has never run. See [`thui-compact-v0.md`](thui-compact-v0.md) for the smoke.
+
+## Version 2 — the corrected build (2026-09-06)
+
+v1 was **never submitted**: `scripts/kaggle_submit_gate.py` G2 blocked it because cell 0 credited Tufa Labs
+before naming us — a builder drift shared by `thui-rank` and `thui-reflect`, fixed in #134 (`8b23635`).
+The notebook was rebuilt from that tree and re-pushed as **version 2**, which also carries #127 and #128, so
+the two confounds above are gone: this run's log prints real game ids (`game=su15`) and the reworded header.
+
+Public **5.23** / levels **30** / 18 scoring / 1,465 actions, 10:47–13:08Z. `rank_runs.py` vs the thuiv3 pool:
++0.85 mean, **+5.75 levels**, 12 up / 10 down / 4 flipped, **p = 0.2847 NOT-DISTINGUISHABLE** (v1 pairing
+reproduces 0.6794 as the control). Mechanism 55 fires (31 K / 24 level), 445 turns, 55/55 labels, P2 55/55,
+0.48 % of clock. Submitted **`56055874`** at 13:14Z with the four brackets pre-registered in the record's
+description against the chassis's six hidden draws [1.22, 2.03]; result ⏳. Fixture
+`eval/fixtures/thui-compact-v1-v2.json`. Still **NOT MEASURABLE at n = 1** — the +5.75 levels is the number a
+second draw of this version is sized against, not a result.
