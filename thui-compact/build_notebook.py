@@ -128,7 +128,8 @@ _MEMENTO_MARK = ("[Your own notes from earlier turns of this conversation, kept 
 # game"), spent the whole turn on that and yielded with 0 actions. The header now says whose text it is and what it is not.
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
                   "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
-                  "labels": 0, "cites": 0, "disabled_games": 0}
+                  "labels": 0, "cites": 0, "disabled_games": 0,
+                  "block_truncated": 0, "block_lost_chars": 0, "block_max_chars": 0}
 _MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
     "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
@@ -235,11 +236,33 @@ def _compact_dropped(before, after):
     return n_assistant, lines
 
 
+def _compact_block(buffer):
+    """Render the buffered dropped turns into the block the summariser sees.
+
+    Returns (block, lost_chars). The tail is kept, so anything past the cap is the
+    OLDEST dropped turns -- the ones no surviving window still carries and nothing
+    downstream can recover. That loss is COUNTED here; it used to be silent.
+    K x _COMPACT_TURN_CHARS is a LOWER bound on the buffer, never its ceiling:
+    _compact_dropped appends a line for EVERY dropped message, user and tool included
+    (capped 400), into this same list -- its own teeth show one dropped assistant turn
+    yielding three lines. So overflow is reachable at K values the assistant-only
+    arithmetic calls impossible.
+    """
+    joined = "\n".join(buffer)
+    return joined[-_COMPACT_BLOCK_CHARS:], max(0, len(joined) - _COMPACT_BLOCK_CHARS)
+
+
 def _compact_memento(agent, reason):
     game = _compact_game(agent)
     st = agent.__dict__["_compact_state"]
     _COMPACT_STATS["fires"] += 1
-    block = "\n".join(st["buffer"])[-_COMPACT_BLOCK_CHARS:]
+    block, _blk_lost = _compact_block(st["buffer"])
+    _blk_full = len(block) + _blk_lost
+    if _blk_full > _COMPACT_STATS["block_max_chars"]:
+        _COMPACT_STATS["block_max_chars"] = _blk_full
+    if _blk_lost:
+        _COMPACT_STATS["block_truncated"] += 1
+        _COMPACT_STATS["block_lost_chars"] += _blk_lost
     user = f"PREVIOUS MEMENTO:\n{st['memento'] or '(none yet)'}\n\nTURNS ABOUT TO BE DELETED (oldest first):\n{block}"
     saved_max = agent._max_output_tokens
     agent._max_output_tokens = _COMPACT_MAX_TOKENS
@@ -259,7 +282,11 @@ def _compact_memento(agent, reason):
         if st["errors"] >= _MEMENTO_MAX_ERRORS:
             st["disabled"] = True
             _COMPACT_STATS["disabled_games"] += 1
+        # the block fields belong here too: the counters were incremented before the call, and
+        # _COMPACT_STATS is never dumped, so summing block_lost= over the log is the ONLY readback
+        # route -- a truncation on a failed fire would otherwise be counted and never printed.
         print(f"thui-compact: game={game} reason={reason} call FAILED ({type(exc).__name__}: {str(exc)[:160]}) "
+              f"block_chars={len(block)} block_lost={_blk_lost} "
               f"consecutive={st['errors']} disabled={bool(st.get('disabled'))}", flush=True)
         return
     finally:
@@ -294,6 +321,7 @@ def _compact_memento(agent, reason):
     print(f"thui-compact: game={game} reason={reason} dropped_turns={n_buf} latency={latency:.1f}s "
           f"tokens={usage.get('total_tokens', '?')} completion={usage.get('completion_tokens', '?')} "
           f"memento_chars={len(st['memento'])} labels={len(labels)}/{len(_MEMENTO_LABELS)} cites={cites} "
+          f"block_chars={len(block)} block_lost={_blk_lost} "
           f"missing={[l.rstrip(':') for l in _MEMENTO_LABELS if l not in labels]}", flush=True)
 
 
@@ -418,8 +446,30 @@ _fa = _CompactFakeAgent()
 assert _compact_game(_fa) == "????", "thui-compact: label fell back to the runtime dir"
 _fa.__dict__["_compact_state"] = {"game": "tr87"}
 assert _compact_game(_fa) == "tr87", "thui-compact: label not read from the buffer"
+# teeth 4: the block cap is COUNTED, not silent. Both polarities on the real cap, and the
+# lost figure must be exact -- a boolean "it truncated" cannot tell 5 chars from 3000.
+_blk_under = ["x" * 10, "y" * 10]
+_bu, _lu = _compact_block(_blk_under)
+assert _lu == 0 and _bu == "\n".join(_blk_under), "thui-compact: under-cap block was altered or counted"
+_blk_over = ["a" * _COMPACT_BLOCK_CHARS, "b" * 100]
+_bo, _lo = _compact_block(_blk_over)
+assert _lo == 101, f"thui-compact: lost chars {_lo} != 101 (the newline counts)"
+_BLK_TEETH_PROBE = _lo   # the banner prints this, so deleting the teeth breaks the import
+assert len(_bo) == _COMPACT_BLOCK_CHARS, "thui-compact: block is not capped"
+assert _bo.endswith("b" * 100), "thui-compact: the cap dropped the wrong end"
+assert "block_truncated" in _COMPACT_STATS and "block_lost_chars" in _COMPACT_STATS, \
+    "thui-compact: the block counters are printed but not initialised"
+# A zero block_lost has two readings -- "nothing was lost" and "overflow was never approached" --
+# and NO static formula separates them. The first draft printed a REACHABLE/UNREACHABLE verdict
+# from K x _COMPACT_TURN_CHARS; that models the buffer as assistant lines only, ignores the
+# user/tool lines sharing it, and so could print UNREACHABLE over a config that overflows. What
+# separates the two readings is the OBSERVED maximum, carried in block_max_chars and printed on
+# every fire as block_chars= -- read the largest one against the cap below.
+print(f"thui-compact: block cap {_COMPACT_BLOCK_CHARS} chars; K={_COMPACT_K} x {_COMPACT_TURN_CHARS} "
+      f"= {_COMPACT_K * _COMPACT_TURN_CHARS} is a LOWER bound on the buffer (user/tool lines share it, "
+      "cap 400 each). Read block_lost=0 only beside the largest block_chars= in this log.", flush=True)
 print(f"thui-compact-v0: wraps landed; window={_COMPACT_WINDOW} K={_COMPACT_K} cap={_COMPACT_MAX_TOKENS} timeout={_COMPACT_TIMEOUT_S}s; "
-      f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
+      f"thinking flag thread-local (worker False, main True); diff/fold/strip teeth ok; block-cap teeth ok (probe lost={_BLK_TEETH_PROBE}); {len(_MEMENTO_LABELS)} memento labels asked for and counted", flush=True)
 # ======================================================================================
 '''.replace("@WINDOW@", str(WINDOW_TURNS)).replace("@K@", str(COMPACT_K)).replace("@MAXTOK@", str(COMPACT_MAX_TOKENS)) \
    .replace("@TIMEOUT@", str(COMPACT_TIMEOUT_S)).replace("@TURNCHARS@", str(COMPACT_TURN_CHARS)) \
