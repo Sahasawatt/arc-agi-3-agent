@@ -129,7 +129,7 @@ _MEMENTO_MARK = ("[Your own notes from earlier turns of this conversation, kept 
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
                   "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
                   "labels": 0, "cites": 0, "disabled_games": 0,
-                  "block_truncated": 0, "block_lost_chars": 0, "block_max_chars": 0}
+                  "block_truncated": 0, "block_lost_chars": 0, "block_max_chars": 0, "failed_block_chars": 0}
 _MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
     "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
@@ -252,6 +252,41 @@ def _compact_block(buffer):
     return joined[-_COMPACT_BLOCK_CHARS:], max(0, len(joined) - _COMPACT_BLOCK_CHARS)
 
 
+def _compact_failed(st, block):
+    """Bounded no-retry policy: preserve last good memory, count discarded input.
+
+    block excludes block_lost already counted by the caller. Two consecutive
+    empty/exception outcomes disable extra calls for this game.
+    """
+    _COMPACT_STATS["failed_block_chars"] += len(block)
+    st["errors"] = st.get("errors", 0) + 1
+    st["buffer"] = []
+    st["pending_check"] = False
+    if st["errors"] >= _MEMENTO_MAX_ERRORS and not st.get("disabled"):
+        st["disabled"] = True
+        _COMPACT_STATS["disabled_games"] += 1
+
+
+def _compact_failure_teeth():
+    before = dict(_COMPACT_STATS)
+    try:
+        st = {"buffer": ["input"], "memento": "last good", "pending_check": True}
+        _compact_failed(st, "abc")
+        assert st["errors"] == 1 and not st.get("disabled"), "failure teeth: first failure"
+        assert st["memento"] == "last good" and not st["buffer"] and not st["pending_check"]
+        _compact_failed(st, "de")
+        assert st["errors"] == 2 and st["disabled"], "failure teeth: breaker"
+        assert _COMPACT_STATS["failed_block_chars"] - before["failed_block_chars"] == 5
+        assert _COMPACT_STATS["disabled_games"] - before["disabled_games"] == 1
+    finally:
+        _COMPACT_STATS.clear()
+        _COMPACT_STATS.update(before)
+
+
+_compact_failure_teeth()
+print("thui-compact: failure-policy teeth ok", flush=True)
+
+
 def _compact_memento(agent, reason):
     game = _compact_game(agent)
     st = agent.__dict__["_compact_state"]
@@ -277,16 +312,12 @@ def _compact_memento(agent, reason):
     except Exception as exc:
         _COMPACT_STATS["errors"] += 1
         _COMPACT_STATS["latency_s"] += _time.monotonic() - t0   # a stalled endpoint must reach the latency oracle
-        st["errors"] = st.get("errors", 0) + 1
-        st["buffer"] = []          # the block is lost either way; retrying it costs the game clock, not the memory
-        if st["errors"] >= _MEMENTO_MAX_ERRORS:
-            st["disabled"] = True
-            _COMPACT_STATS["disabled_games"] += 1
+        _compact_failed(st, block)
         # the block fields belong here too: the counters were incremented before the call, and
         # _COMPACT_STATS is never dumped, so summing block_lost= over the log is the ONLY readback
         # route -- a truncation on a failed fire would otherwise be counted and never printed.
         print(f"thui-compact: game={game} reason={reason} call FAILED ({type(exc).__name__}: {str(exc)[:160]}) "
-              f"block_chars={len(block)} block_lost={_blk_lost} "
+              f"block_chars={len(block)} block_lost={_blk_lost} outcome=exception failed_block_chars={len(block)} "
               f"consecutive={st['errors']} disabled={bool(st.get('disabled'))}", flush=True)
         return
     finally:
@@ -304,21 +335,25 @@ def _compact_memento(agent, reason):
             content = _ta._extract_reasoning_text(result.message).strip()
         except Exception:
             content = ""
+    if not content:
+        _COMPACT_STATS["empty"] += 1
+        _compact_failed(st, block)
+        print(f"thui-compact: game={game} reason={reason} outcome=empty latency={latency:.1f}s "
+              f"block_chars={len(block)} block_lost={_blk_lost} failed_block_chars={len(block)} "
+              f"consecutive={st['errors']} disabled={bool(st.get('disabled'))}", flush=True)
+        return
     n_buf = sum(1 for l in st["buffer"] if l.startswith("[assistant]"))
     st["buffer"] = []
     st["errors"] = 0
-    if content:
-        st["memento"] = content[:_MEMENTO_MAX_CHARS]
-        _COMPACT_STATS["ok"] += 1
-    else:
-        _COMPACT_STATS["empty"] += 1
+    st["memento"] = content[:_MEMENTO_MAX_CHARS]
+    _COMPACT_STATS["ok"] += 1
     st["pending_check"] = True
     usage = result.usage if isinstance(result.usage, dict) else {}
     labels = [lab for lab in _MEMENTO_LABELS if lab in st["memento"]]
     cites = len(_re.findall(r"\bstep\s*\d+", st["memento"], _re.I))
     _COMPACT_STATS["labels"] += len(labels)
     _COMPACT_STATS["cites"] += cites
-    print(f"thui-compact: game={game} reason={reason} dropped_turns={n_buf} latency={latency:.1f}s "
+    print(f"thui-compact: game={game} reason={reason} outcome=accepted dropped_turns={n_buf} latency={latency:.1f}s "
           f"tokens={usage.get('total_tokens', '?')} completion={usage.get('completion_tokens', '?')} "
           f"memento_chars={len(st['memento'])} labels={len(labels)}/{len(_MEMENTO_LABELS)} cites={cites} "
           f"block_chars={len(block)} block_lost={_blk_lost} "
