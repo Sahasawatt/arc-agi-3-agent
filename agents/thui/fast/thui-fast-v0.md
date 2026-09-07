@@ -28,7 +28,7 @@ hard markers), cell 3 (full diagnostics on a public run). Design + pre-registere
 | draw | public | levels | scoring | actions | gen tok | wall |
 |---|---|---|---|---|---|---|
 | 1 (v1) | **8.07** | **36** | 20 / 25 | **3,925** (157 / game) | 1.90 M | 8,517 s |
-| 2 (v2) | **9.32** | **41** | 21 / 25 | **3,553** (142 / game) | 1.91 M | 8,699 s |
+| 2 (v2) | **9.32** | **41** | 21 / 25 | **3,553** (142 / game) | 1.91 M | 8,699 s  — submitted 2026-09-07 17:10Z as `56081325`, hidden pending |
 | pooled | **8.69** | **38.5** | — | 3,739 | — | — |
 | his own latest log | 6.76 | 36 | 19 / 25 | 3,695 | 1.88 M | 8,587 s |
 
