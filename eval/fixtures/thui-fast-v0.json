@@ -1,0 +1,131 @@
+{
+ "label": "thui-fast-v0",
+ "games": {
+  "tn36": {
+   "score": 0.29682191844354006,
+   "levels": 1,
+   "actions": 178
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1,
+   "actions": 82
+  },
+  "cn04": {
+   "score": 1.1904761904761905,
+   "levels": 1,
+   "actions": 67
+  },
+  "bp35": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 25
+  },
+  "wa30": {
+   "score": 0.9258034894398532,
+   "levels": 1,
+   "actions": 429
+  },
+  "lp85": {
+   "score": 16.666666666666664,
+   "levels": 3,
+   "actions": 59
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 91
+  },
+  "tu93": {
+   "score": 4.399092970521542,
+   "levels": 2,
+   "actions": 115
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 434
+  },
+  "m0r0": {
+   "score": 4.185267857142857,
+   "levels": 1,
+   "actions": 73
+  },
+  "vc33": {
+   "score": 21.18855280207321,
+   "levels": 3,
+   "actions": 174
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 287
+  },
+  "ka59": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 133
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 93
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 92
+  },
+  "dc22": {
+   "score": 0.9095303416291072,
+   "levels": 1,
+   "actions": 151
+  },
+  "cd82": {
+   "score": 14.285714285714285,
+   "levels": 2,
+   "actions": 148
+  },
+  "ft09": {
+   "score": 47.61904761904761,
+   "levels": 4,
+   "actions": 80
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 121
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 183
+  },
+  "re86": {
+   "score": 9.453448380813246,
+   "levels": 3,
+   "actions": 416
+  },
+  "s5i5": {
+   "score": 1.4172335600907031,
+   "levels": 1,
+   "actions": 137
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 70
+  },
+  "su15": {
+   "score": 6.666666666666667,
+   "levels": 2,
+   "actions": 103
+  },
+  "tr87": {
+   "score": 47.61904761904761,
+   "levels": 4,
+   "actions": 184
+  }
+ },
+ "source": "sahasawatt/thui-fast-v0 version 1 (2026-09-07 06:27-08:49Z) benchmark.json via rank_runs.load(); public 8.07 / 36 levels / 3,925 actions"
+}
