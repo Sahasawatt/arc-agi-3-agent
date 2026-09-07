@@ -49,12 +49,16 @@ WHEELS_SOURCE = "ko0kip/vllm-0230-offline"
 WHEELS_SUBDIR = "vllm_0230_offline/wheels"
 IMAGE_LIMIT = 32                             # duck keeps up to 30 assistant turns of history, each user turn carries a board image
 
-CELL0_MD_SMOKE = """# thui-gemma-v0 — B64 smoke: Gemma-4-31B-it as the duck agent (serving + 3 games)
+CELL0_MD_SMOKE = """# thui-gemma-v0 (Thuitanium / Knowless Crew) — B64 smoke: Gemma-4-31B-it as the duck agent (serving + 3 games)
 
-**Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 6, 8 and 14.
-The base model becomes `google/gemma-4-31b-it` (Kaggle Models, 62.6 GB BF16, served with online FP8
+**Infrastructure smoke, not a scoring run.** `thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 4, 6, 8 and 14
+(4 + the env-files line of 14: the competition mount is resolved, not assumed — version 1 died at 6.5 s on Kaggle's
+flat `/kaggle/input/<comp>` layout before any model loaded). The base model becomes `google/gemma-4-31b-it` (Kaggle Models, 62.6 GB BF16, served with online FP8
 weights) on the `ko0kip/vllm-0230-offline` wheelhouse (vLLM 0.23.0 / transformers 5.12.1), with the
-`gemma4` tool-call and reasoning parsers and an explicit 32-image prompt limit. Harness, prompts,
+`gemma4` tool-call and reasoning parsers and an explicit 32-image prompt limit. **Version 2**: the vLLM
+server env carries `VLLM_USE_FLASHINFER_SAMPLER=0` + `TORCH_CUDA_ARCH_LIST=12.0` — version 1 died at S0 in
+flashinfer's JIT sampler (`check_cuda_arch` → "requires sm75 or higher" on the sm_120 RTX PRO 6000; the
+wheelhouse author's own kernel sets the first flag). Harness, prompts,
 seed, temperature, clock: inherited unchanged. Cell 14 filters to tr87 / sk48 / sc25 at 900 s each.
 Numbers are meaningless and must never be quoted. Design: `notes/B64-gemma-4-31b-duck-agent-design.md`.
 
@@ -63,11 +67,12 @@ Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset
 ko0kip. This is a Knowless Crew / Thuitanium fork; none of their scores are ours.
 """
 
-CELL0_MD_FULL = """# thui-gemma-v1 — B64: Gemma-4-31B-it as the duck agent, full 25 games
+CELL0_MD_FULL = """# thui-gemma-v1 (Thuitanium / Knowless Crew) — B64: Gemma-4-31B-it as the duck agent, full 25 games
 
-`thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 6 and 8: base model `google/gemma-4-31b-it` (online FP8
+`thui-v3-0` (the B48 build: thui-v1-1 + yield 180, the standing-best chassis) byte-for-byte except cells 4, 6, 8 and the env-files line of 14 (competition mount resolved, not assumed): base model `google/gemma-4-31b-it` (online FP8
 weights) on the `ko0kip/vllm-0230-offline` wheelhouse (vLLM 0.23.0), `gemma4` parsers, 32-image
-prompt limit. Harness, prompts, seed, temperature, clock and games inherited unchanged. Oracle:
+prompt limit, server env `VLLM_USE_FLASHINFER_SAMPLER=0` + `TORCH_CUDA_ARCH_LIST=12.0` (the S0 fix from the
+v0 smoke). Harness, prompts, seed, temperature, clock and games inherited unchanged. Oracle:
 paired **levels** vs the B48 build's public pool (`thui-v3-0` ×2, `thui-v3-1`, `thui-v3-2`: 4.01 / 4.52 / 5.17 / 3.85), ≥ 2 runs per arm.
 Design + record: `notes/B64-gemma-4-31b-duck-agent-design.md`.
 
@@ -76,6 +81,29 @@ Michal Tesnar, Stefano Viel) — executed unmodified from their attached dataset
 ko0kip. This is a Knowless Crew / Thuitanium fork; none of their scores are ours.
 """
 
+# ---- cells 4 + 14: the competition mount -- Kaggle serves TWO /kaggle/input layouts and which one a run gets
+# varies between runs (sahasawatt/thui-gemma-v0 v1 died at 6.5 s on the flat layout: "No matching distribution
+# found for arc-agi" with the wheels one path segment away). Ported verbatim from solo/build_notebook.py.
+COMP = "arc-prize-2026-arc-agi-3"
+WHEELS_NESTED = "/kaggle/input/competitions/" + COMP + "/arc_agi_3_wheels"
+CELL4_ANCHOR = '        "' + WHEELS_NESTED + '",'
+CELL4_REPLACEMENT = "        _WHEELS,"
+CELL4_RESOLVER = '''# thui-gemma: resolve the competition mount instead of assuming its layout -- Kaggle serves either
+# /kaggle/input/competitions/<comp> or /kaggle/input/<comp>, and which one varies between runs.
+_COMP_CANDIDATES = ["/kaggle/input/competitions/__COMP__", "/kaggle/input/__COMP__"]
+_COMP_DIR = next((_p for _p in _COMP_CANDIDATES if os.path.isdir(_p)), None)
+assert _COMP_DIR is not None, (
+    "thui-gemma: no competition mount found. Tried " + repr(_COMP_CANDIDATES)
+    + "; /kaggle/input holds "
+    + repr(sorted(os.listdir("/kaggle/input")) if os.path.isdir("/kaggle/input") else "MISSING")
+)
+_WHEELS = os.path.join(_COMP_DIR, "arc_agi_3_wheels")
+assert os.path.isdir(_WHEELS), "thui-gemma: resolved wheels dir is not a directory: " + _WHEELS
+print("thui-gemma: competition mount = " + _COMP_DIR, flush=True)
+'''.replace("__COMP__", COMP)
+CELL14_MOUNT_ANCHOR = 'competition_env_files = str(Path("' + WHEELS_NESTED + '").parent / "environment_files")'
+CELL14_MOUNT_REPLACEMENT = 'competition_env_files = str(Path(_COMP_DIR) / "environment_files")'
+
 # ---- cell 6: inputs -------------------------------------------------------------------------
 CELL6_OLD_SOURCES = 'DATASET_SOURCES = ["jakobbrggen/taaf-kaggle-source-anim-20260807-anim", "driessmit1/arc3-vllm-h100-wheelhouse-v3", "jakobbrggen/qwen3-8-27b-fp8-hf-snapshot"]'
 CELL6_NEW_SOURCES = 'DATASET_SOURCES = ["jakobbrggen/taaf-kaggle-source-anim-20260807-anim", "' + WHEELS_SOURCE + '"]'
@@ -83,8 +111,9 @@ CELL6_ANCHOR = "# Published to setup commands and the solver via the environment
 CELL6_MODEL_MAP = (
     "# thui-gemma-v0 (B64): the base model is a Kaggle MODEL, not a dataset -- the bundle's resolver only\n"
     "# probes dataset mounts, so hand it the model mount through the same input-path map.\n"
-    "_GEMMA_MOUNT = Path(" + repr(MODEL_MOUNT) + ")\n"
-    "assert _GEMMA_MOUNT.exists(), f\"thui-gemma-v0: model mount missing: {_GEMMA_MOUNT} (attach " + MODEL_SOURCE + ")\"\n"
+    "_GEMMA_CANDIDATES = [Path(" + repr(MODEL_MOUNT) + "), Path(" + repr(MODEL_MOUNT.replace("/kaggle/input/models/", "/kaggle/input/")) + ")]\n"
+    "_GEMMA_MOUNT = next((_p for _p in _GEMMA_CANDIDATES if _p.is_dir()), None)\n"
+    "assert _GEMMA_MOUNT is not None, f\"thui-gemma-v0: model mount missing, tried {_GEMMA_CANDIDATES} (attach " + MODEL_SOURCE + "); /kaggle/input holds {sorted(os.listdir('/kaggle/input'))}\"\n"
     "assert (_GEMMA_MOUNT / 'config.json').exists(), 'thui-gemma-v0: model mount has no config.json'\n"
     "kaggle_input_paths[" + repr(MODEL_REF) + "] = str(_GEMMA_MOUNT)\n"
     "print(f\"thui-gemma-v0: model mount = {_GEMMA_MOUNT}\", flush=True)\n\n"
@@ -105,6 +134,14 @@ CELL8_REWRITES = [
      "    requirements = None  # thui-gemma-v0: ko0kip wheels carry no lock file\n"),
     ("        '--find-links',\n        str(WHEELHOUSE),\n        '--requirement',\n        str(requirements),\n",
      "        '--find-links',\n        str(WHEELHOUSE / " + repr(WHEELS_SUBDIR.split('/')[0]) + " / 'wheels'),\n        'vllm==0.23.0',\n        'transformers==5.12.1',\n"),
+    # S0 remedy (yocybercode/thui-gemma-v0 v1 ERROR 2026-09-05): vLLM 0.23's EngineCore died in flashinfer's JIT
+    # sampler, flashinfer/jit/core.py check_cuda_arch() -> "FlashInfer requires GPUs with sm75 or higher" on the
+    # RTX PRO 6000 (sm_120), reached from sampling.py get_sampling_module(). ko0kip's own kernel (the wheelhouse
+    # author) sets VLLM_USE_FLASHINFER_SAMPLER=0 before launching, so vLLM samples in torch and never JITs that
+    # module; TORCH_CUDA_ARCH_LIST=12.0 makes the JIT arch list explicit for anything else that consults it.
+    # Both go into vllm_env() (the server subprocess) -- the only 12-space env block in the setup command.
+    ("            'VLLM_NO_USAGE_STATS': '1',\n        }\n    )\n    return env\n",
+     "            'VLLM_NO_USAGE_STATS': '1',\n            'VLLM_USE_FLASHINFER_SAMPLER': '0',\n            'TORCH_CUDA_ARCH_LIST': '12.0',\n        }\n    )\n    return env\n"),
     # vLLM flags: Qwen parsers -> gemma4; preserve_thinking -> image limit + fp8 weights
     ("        '--tool-call-parser',\n        'qwen3_coder',\n", "        '--tool-call-parser',\n        'gemma4',\n"),
     ("        '--reasoning-parser',\n        'qwen3',\n", "        '--reasoning-parser',\n        'gemma4',\n"),
@@ -121,6 +158,7 @@ def _cell8_block() -> str:
              "        command = command.replace(_old, _new)\n",
              "    assert 'qwen3_coder' not in command and \"'qwen3'\" not in command, 'thui-gemma-v0: a Qwen parser survived'\n",
              "    assert 'requirements.lock' not in command, 'thui-gemma-v0: lock-file path survived'\n",
+             "    assert command.count(\"'VLLM_USE_FLASHINFER_SAMPLER': '0'\") == 1 and command.count(\"'TORCH_CUDA_ARCH_LIST': '12.0'\") == 1, 'thui-gemma-v0: flashinfer-sampler env not injected once'\n",
              "    print('thui-gemma-v0: model=google/gemma-4-31b-it wheels=ko0kip/vllm-0230-offline parsers=gemma4 fp8 weights image-limit=" + str(IMAGE_LIMIT) + "', flush=True)\n"]
     return "".join(lines)
 
@@ -151,6 +189,13 @@ def main(full: bool = False, slug_suffix: str = "", owner: str = OWNER) -> None:
 
     cells[0]["source"] = (CELL0_MD_FULL if full else CELL0_MD_SMOKE).splitlines(keepends=True)
 
+    c4 = "".join(cells[4]["source"])
+    assert c4.count(CELL4_ANCHOR) == 1, f"cell 4 does not name the nested wheels path exactly once ({c4.count(CELL4_ANCHOR)})"
+    cells[4]["source"] = (CELL4_RESOLVER + c4.replace(CELL4_ANCHOR, CELL4_REPLACEMENT)).splitlines(keepends=True)
+    c14m = "".join(cells[14]["source"])
+    assert c14m.count(CELL14_MOUNT_ANCHOR) == 1, f"cell 14 does not name the nested env-files path exactly once ({c14m.count(CELL14_MOUNT_ANCHOR)})"
+    cells[14]["source"] = c14m.replace(CELL14_MOUNT_ANCHOR, CELL14_MOUNT_REPLACEMENT).splitlines(keepends=True)
+
     c6 = "".join(cells[6]["source"])
     assert c6.count(CELL6_OLD_SOURCES) == 1, "cell 6 DATASET_SOURCES line not found once"
     assert c6.count(CELL6_ANCHOR) == 1, "cell 6 publish anchor not found once"
@@ -169,10 +214,14 @@ def main(full: bool = False, slug_suffix: str = "", owner: str = OWNER) -> None:
 
     after = ["".join(c["source"]) for c in cells]
     changed = [i for i, (a, b) in enumerate(zip(before, after)) if a != b]
-    expected = [0, 6, 8] if full else [0, 6, 8, 14]
+    expected = [0, 4, 6, 8, 14]
     assert changed == expected, f"cells changed {changed}, expected {expected}"
     for i in expected[1:]:
         ast.parse("".join(cells[i]["source"]), filename=f"cell{i}")
+    o4 = "".join(cells[4]["source"]); o14 = "".join(cells[14]["source"])
+    assert "_COMP_DIR = next(" in o4 and WHEELS_NESTED not in o4 and o4.count(CELL4_REPLACEMENT) == 1 and o4.count("assert _COMP_DIR is not None") == 1, "cell 4 mount resolver incomplete"
+    assert WHEELS_NESTED not in o14 and "Path(_COMP_DIR)" in o14, "cell 14 still assumes the nested layout for environment_files"
+    assert "_GEMMA_CANDIDATES" in "".join(cells[6]["source"]) and "_GEMMA_MOUNT = next(" in "".join(cells[6]["source"]), "cell 6 model mount not layout-agnostic"
 
     # teeth against the REAL setup command: every rewrite anchor must be present exactly once there
     # after thui-v1-1's own chain has run (simulate that chain here, byte for byte).
