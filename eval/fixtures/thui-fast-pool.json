@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 212,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 108.5,
+   "levels": 0.5,
+   "score": 0.15625
+  },
+  "cd82": {
+   "actions": 115,
+   "levels": 1.5,
+   "score": 9.523809523809524
+  },
+  "cn04": {
+   "actions": 142,
+   "levels": 1,
+   "score": 1.7864224809495481
+  },
+  "dc22": {
+   "actions": 155,
+   "levels": 1.5,
+   "score": 7.051574256806982
+  },
+  "ft09": {
+   "actions": 114.5,
+   "levels": 3.5,
+   "score": 33.073412698412696
+  },
+  "g50t": {
+   "actions": 102.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 163.5,
+   "levels": 1.5,
+   "score": 7.142857142857142
+  },
+  "lf52": {
+   "actions": 87,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 81,
+   "levels": 4,
+   "score": 29.166666666666668
+  },
+  "ls20": {
+   "actions": 124,
+   "levels": 1,
+   "score": 2.1608382936507935
+  },
+  "m0r0": {
+   "actions": 85.5,
+   "levels": 1,
+   "score": 4.473586309523809
+  },
+  "r11l": {
+   "actions": 61,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 256.5,
+   "levels": 2.5,
+   "score": 8.893390857073289
+  },
+  "s5i5": {
+   "actions": 159.5,
+   "levels": 1.5,
+   "score": 4.875283446712018
+  },
+  "sb26": {
+   "actions": 124,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 132,
+   "levels": 1.5,
+   "score": 10.097883597883598
+  },
+  "sk48": {
+   "actions": 124,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 333.5,
+   "levels": 0,
+   "score": 0.0
+  },
+  "su15": {
+   "actions": 96,
+   "levels": 1.5,
+   "score": 4.444444444444445
+  },
+  "tn36": {
+   "actions": 214.5,
+   "levels": 0.5,
+   "score": 0.14841095922177003
+  },
+  "tr87": {
+   "actions": 187.5,
+   "levels": 4,
+   "score": 47.61904761904761
+  },
+  "tu93": {
+   "actions": 124.5,
+   "levels": 2.5,
+   "score": 6.2754557698708195
+  },
+  "vc33": {
+   "actions": 166.5,
+   "levels": 3,
+   "score": 21.13219527228881
+  },
+  "wa30": {
+   "actions": 269,
+   "levels": 1,
+   "score": 1.5740128558310378
+  }
+ },
+ "label": "pool(thui-fast-v0+thui-fast-v0-d2)",
+ "source": "pool_runs.py over thui-fast-v0.json + thui-fast-v0-d2.json (B69, 2026-09-07); arm `fast` in arms.json"
+}

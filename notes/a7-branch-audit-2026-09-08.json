@@ -1,0 +1,530 @@
+[
+  {
+    "ref": "refs/remotes/origin/HEAD",
+    "sha": "ea62ff548ee95a0edc2324680864f4afcdd7da82",
+    "read": true,
+    "ceiling": 68,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/arc-agi/b34-evidence",
+    "sha": "495632a7157117271f3d9f997f31454a95e05879",
+    "read": true,
+    "ceiling": 39,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/avo-v1-breakers",
+    "sha": "5f38d09e81b42362a23c24e3d46cb3ee551516e3",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b34/close-the-row",
+    "sha": "f6352e2b37c2776c2503fc418af99ef93e85dae8",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b37/map-thui-v1-1",
+    "sha": "916c8624b96b5c8eac3655080fbe3b0d03002577",
+    "read": true,
+    "ceiling": 39,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b37/r2-result",
+    "sha": "2787a0f25931bba670ac0c9c3374e29b4614a4e3",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b37/thui-v1-1-result",
+    "sha": "77cb0a3a6b06b9ca0774daab0b8bc3ef59b48cf4",
+    "read": true,
+    "ceiling": 39,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b37/thui-v1-1-seed",
+    "sha": "65c4038bb6222f5280235ba30c677c68296b77f9",
+    "read": true,
+    "ceiling": 39,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b38-map-row",
+    "sha": "d7a6599227982bbff8e112c40458e473b5554ef0",
+    "read": true,
+    "ceiling": 46,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b38-widened-sweep-r43",
+    "sha": "bfbe0fc1b23ce00ff3b4291349d8d6c85891e3b9",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b39/duckv27",
+    "sha": "ff96c38034f83457ec3da2afc52dd823c7621210",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b39/thuiv2-result",
+    "sha": "e96954b42832b10b8182f7b12d7ed44144c5bcb7",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b47-crossed",
+    "sha": "434bcfc6685a2dd8cc491cbd3ed23a140162bbc7",
+    "read": true,
+    "ceiling": 53,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b47-yield-gate",
+    "sha": "af7d1bea3d8353841f36142d09d722db9f618548",
+    "read": true,
+    "ceiling": 47,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b52-per-level-census",
+    "sha": "8260c3a2029c2c25e3340734e36023c76d399ccd",
+    "read": true,
+    "ceiling": 52,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b54-window-arithmetic",
+    "sha": "9908fbe45d107d4f9edde84730c692a468870071",
+    "read": true,
+    "ceiling": 54,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b55-step1-transfer-probe",
+    "sha": "8a3f5238401ca986d07970a30b3e919bd1a8c746",
+    "read": true,
+    "ceiling": 55,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b55-step2-matched-control",
+    "sha": "d31ed77de9148dbcd31221e6b6235a0f3b8dae2b",
+    "read": true,
+    "ceiling": 55,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b62-v1-1-read-and-b65-design",
+    "sha": "efb2d82f89fddcce62fce863d5c9448a66841a17",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b62-v1-1-thread-local-thinking",
+    "sha": "451cc40298b81782f910abed916091dd3ab28231",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b65-b61-full-reads",
+    "sha": "fbde964a51da44acca203e4143b5818a93c06dfb",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b65-confound-caveat",
+    "sha": "b18141e4856bcb463b612b1fe36f186acfe18921",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/b65-confound-caveat-2",
+    "sha": "ca987b28a69fff5c12b883203e254f682597f0c8",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/build/solo-game-probe",
+    "sha": "087b77f3a24a4664dd6128ac7082a7015fe8cdd3",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/build/thui-v6-0",
+    "sha": "98f525358de78a70f55b8dec82fea5b6422c0925",
+    "read": true,
+    "ceiling": 54,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/claude/b69-hidden-3-21",
+    "sha": "adaded7ccc86e0c0c6e27856f8aea50bcca2df31",
+    "read": true,
+    "ceiling": 69,
+    "B76": false,
+    "B69": true
+  },
+  {
+    "ref": "refs/remotes/origin/claude/bank-0905-avo",
+    "sha": "f659dac7c9881006ae775e1ad4d8c27061142756",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/claude/cell0-h1-team-name",
+    "sha": "b6c66a717534de770d6531a2c7335137abbc7ccc",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/clock2x-b34",
+    "sha": "fb5b5be75acaf88e23d48cb6654bd44f45827e7b",
+    "read": true,
+    "ceiling": 34,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/codex/compact-empty-recovery",
+    "sha": "dec173e6842dae9044c7096f8981e66113a6d5ab",
+    "read": true,
+    "ceiling": 68,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/docs/agent-pages-b60-b62",
+    "sha": "24426d10f47176de6cda4792c2e55f7aa5e30852",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/docs/ledger-and-agents-catchup-20260902",
+    "sha": "4739a664cab5d335cebd52df69aa535a868539cc",
+    "read": true,
+    "ceiling": 59,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/docs/ledger-per-run-columns-20260903",
+    "sha": "f1c3504ac75265c94f3e43530525a1d05a13c3af",
+    "read": true,
+    "ceiling": 59,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/docs/wave1-wave2-results-20260903",
+    "sha": "fa92be850a3faccb7c5722483b6286653c71cdfa",
+    "read": true,
+    "ceiling": 59,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/b41-push-claim",
+    "sha": "1ca4b766ae66dc97eccfae8f3436020bb7a969b7",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/ledger-mtok-is-summary-total-20260903",
+    "sha": "2fadf031c26e920d944fe550281a289a821e3ad5",
+    "read": true,
+    "ceiling": 59,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/mount-mechanism-and-g50t",
+    "sha": "842315d65d4ecd0491fb864bd1339d6b854477bc",
+    "read": true,
+    "ceiling": 55,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/nan-verdict-and-negative-seed",
+    "sha": "3663ff386b7cccfdbff874502556408948d5c8db",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/private-kernel-mount",
+    "sha": "c0bb98a6efb01fe900de093a8c75a72013bcde6d",
+    "read": true,
+    "ceiling": 54,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/solo-env-name-and-machine-shape",
+    "sha": "ce59d4218821f76d7b59c69da9347f6e5c7a1e30",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/fix/thuiv2-fixture-and-ungraded-control",
+    "sha": "9460622071939c0c1eaa6fe09ec92d59a45457c9",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/gemma-flashinfer-sampler-off",
+    "sha": "08e10b6c903c4bb013c5249804baaddddba94b15",
+    "read": true,
+    "ceiling": 69,
+    "B76": false,
+    "B69": true
+  },
+  {
+    "ref": "refs/remotes/origin/gemma-smoke",
+    "sha": "21b8539f88b55ec2a0b3acff6d6693ed2a983853",
+    "read": true,
+    "ceiling": 65,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/ledger/v3-rows",
+    "sha": "58b69493d79c2e60e708049dab65db43a3f3e650",
+    "read": true,
+    "ceiling": 68,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/map/b58-grid-closed-b59-toolsteps",
+    "sha": "c6b648a698b062ffe8fd62f14d1e2eb628963cfd",
+    "read": true,
+    "ceiling": 59,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/master",
+    "sha": "ea62ff548ee95a0edc2324680864f4afcdd7da82",
+    "read": true,
+    "ceiling": 68,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/b41-solo-game-probe",
+    "sha": "b415d5f465fb37d5ac0d1ef89606d59ae6006b04",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/b41-throughput-measured",
+    "sha": "9b0a83107bcab4db129ccdc0d2a27b58047867f5",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/b42-retarget",
+    "sha": "3c6d8eb6d73b5684f2087e3e4b20ddb7b79a1d62",
+    "read": true,
+    "ceiling": 44,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/b45-returned-not-inflight",
+    "sha": "b3c4eba6852c18e24d4a263818fcddd721cb5ab2",
+    "read": true,
+    "ceiling": 46,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/ledger-thui-v2-0",
+    "sha": "4dbb3ebdde4ca678bbe4a0938b8b395b9c884f1a",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/map-b33-censoring",
+    "sha": "d7a4c48c59900f3ffd817a257d6596fbd4d06c7b",
+    "read": true,
+    "ceiling": 33,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/notes/r30-draws",
+    "sha": "796b1a6e7040e6adf73cf1251d75a8b0b1df7249",
+    "read": true,
+    "ceiling": 31,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/r12/ledger-shrink",
+    "sha": "39ce0b7c29c9532155bd58fb7cbf44d1fefe5ab6",
+    "read": true,
+    "ceiling": 40,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/r2-hidden-202",
+    "sha": "570bcb6fe35f7578201729f16fa7135ba2ade7c4",
+    "read": true,
+    "ceiling": 53,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/r49/b26a-evidence-update",
+    "sha": "5d52d73571b2cf085420368a6d202250ce7d4219",
+    "read": true,
+    "ceiling": 51,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/r51-window-half",
+    "sha": "834b3a4538777c2c7cd24bc30a8afe25a9c9e054",
+    "read": true,
+    "ceiling": 54,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/thui-act-breaker",
+    "sha": "972a7f5dca83026840d236a4e45e197552a72f9c",
+    "read": true,
+    "ceiling": 70,
+    "B76": false,
+    "B69": true
+  },
+  {
+    "ref": "refs/remotes/origin/thui-fast-v0",
+    "sha": "a92b72344dfe8d3eae7736b60c103d592a81f6fe",
+    "read": true,
+    "ceiling": 69,
+    "B76": false,
+    "B69": true
+  },
+  {
+    "ref": "refs/remotes/origin/thuiv3-yield",
+    "sha": "61bb2832d767990f6f7e0da6489458c0d4a9777f",
+    "read": true,
+    "ceiling": 47,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/watchara/record-draw6-and-reflect-v1-1",
+    "sha": "420bfe844d53636c53215359eee826d4c7a9ee61",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/wayfinder/b66-b67-b68",
+    "sha": "c458240e8d2510f61ace235735aabc69fd44e54f",
+    "read": true,
+    "ceiling": 68,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/wayfinder/map-b60-b64",
+    "sha": "91d549ccf8a104721f51178fb9e03b7a25ce6552",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/wayfinder/reflect-v1-read",
+    "sha": "2eda64ce3118c9240a5ad7cfed10e8a354895794",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/wayfinder/v0-1-reads",
+    "sha": "a0ad2a4fe6d3a50df8afc7a867599b8bebdb393f",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  },
+  {
+    "ref": "refs/remotes/origin/wayfinder/wave-b60-b62",
+    "sha": "26177a2f838b7dda149c6fc293b7a3054358252b",
+    "read": true,
+    "ceiling": 64,
+    "B76": false,
+    "B69": false
+  }
+]

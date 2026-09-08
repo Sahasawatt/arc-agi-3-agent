@@ -1,0 +1,155 @@
+== negative control (same build, must NOT distinguish) ==
+v10cal  ->  v19   (25 paired games)
+  mean 4.71 -> 2.82  (delta -1.89)   levels 28 -> 20 (-8)
+  per-game: 6 up / 10 down / 8 flipped scoring<->zero
+  sign-flip permutation p = 0.2127  (alpha 0.05)
+  VERDICT: NOT-DISTINGUISHABLE
+  caveat: public-only; the hidden set is OOD (R22) and its own n=2 spread is 0.38
+
+== positive control (26x apart, MUST distinguish) ==
+v10cal  ->  v20   (25 paired games)
+  mean 4.71 -> 0.18  (delta -4.53)   levels 28 -> 3 (-25)
+  per-game: 1 up / 18 down / 17 flipped scoring<->zero
+  sign-flip permutation p = 0.0001  (alpha 0.05)
+  VERDICT: WORSE
+  caveat: public-only; the hidden set is OOD (R22) and its own n=2 spread is 0.38
+
+SELFTEST OK: both poles behave, and the B57 arm guard has teeth (positive, negative, ghost, reason x2) — 6 controls
+[
+  {
+    "a": "v10cal",
+    "b": "v10cal",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 4.71,
+    "mean_delta": 0.0,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 0,
+    "games_down": 0,
+    "scoring_flips": 0,
+    "p_score": 1.0,
+    "alpha": 0.05,
+    "verdict": "NOT-DISTINGUISHABLE",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "planted-25-games-plus-0.01",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 4.72,
+    "mean_delta": 0.01,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 25,
+    "games_down": 0,
+    "scoring_flips": 7,
+    "p_score": 0.0,
+    "alpha": 0.05,
+    "verdict": "BETTER",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "planted-5-games-plus-100",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 24.71,
+    "mean_delta": 20.0,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 5,
+    "games_down": 0,
+    "scoring_flips": 2,
+    "p_score": 0.0585,
+    "alpha": 0.05,
+    "verdict": "NOT-DISTINGUISHABLE",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "planted-5-games-plus-0.01",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 4.71,
+    "mean_delta": 0.0,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 5,
+    "games_down": 0,
+    "scoring_flips": 2,
+    "p_score": 0.0585,
+    "alpha": 0.05,
+    "verdict": "NOT-DISTINGUISHABLE",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "planted-6-games-plus-0.01",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 4.71,
+    "mean_delta": 0.0,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 6,
+    "games_down": 0,
+    "scoring_flips": 2,
+    "p_score": 0.0295,
+    "alpha": 0.05,
+    "verdict": "BETTER",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "planted-6-games-plus-100",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 28.71,
+    "mean_delta": 24.0,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 6,
+    "games_down": 0,
+    "scoring_flips": 2,
+    "p_score": 0.0295,
+    "alpha": 0.05,
+    "verdict": "BETTER",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "mixed-sign-one-negative-magnitude-1",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 5.63,
+    "mean_delta": 0.92,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 24,
+    "games_down": 1,
+    "scoring_flips": 7,
+    "p_score": 0.0,
+    "alpha": 0.05,
+    "verdict": "BETTER",
+    "level_delta_sum": 0
+  },
+  {
+    "a": "v10cal",
+    "b": "mixed-sign-one-negative-magnitude-100",
+    "games": 25,
+    "mean_a": 4.71,
+    "mean_b": 1.67,
+    "mean_delta": -3.04,
+    "levels_a": 28,
+    "levels_b": 28,
+    "games_up": 24,
+    "games_down": 1,
+    "scoring_flips": 8,
+    "p_score": 1.0,
+    "alpha": 0.05,
+    "verdict": "NOT-DISTINGUISHABLE",
+    "level_delta_sum": 0
+  }
+]
