@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 168,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "bp35": {
+   "actions": 86,
+   "levels": 1,
+   "score": 0.4081632653061224
+  },
+  "cd82": {
+   "actions": 132,
+   "levels": 2,
+   "score": 10.528836711662198
+  },
+  "cn04": {
+   "actions": 47,
+   "levels": 1,
+   "score": 2.773380820472233
+  },
+  "dc22": {
+   "actions": 226,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ft09": {
+   "actions": 34,
+   "levels": 2,
+   "score": 14.285714285714285
+  },
+  "g50t": {
+   "actions": 137,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 205,
+   "levels": 3,
+   "score": 15.613944774507157
+  },
+  "lf52": {
+   "actions": 167,
+   "levels": 0,
+   "score": 0.0
+  },
+  "lp85": {
+   "actions": 47,
+   "levels": 3,
+   "score": 16.666666666666664
+  },
+  "ls20": {
+   "actions": 108,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 84,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "r11l": {
+   "actions": 86,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 236,
+   "levels": 4,
+   "score": 26.93799384820992
+  },
+  "s5i5": {
+   "actions": 111,
+   "levels": 2,
+   "score": 8.333333333333332
+  },
+  "sb26": {
+   "actions": 235,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 332,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sk48": {
+   "actions": 85,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 319,
+   "levels": 0,
+   "score": 0.0
+  },
+  "su15": {
+   "actions": 81,
+   "levels": 2,
+   "score": 6.666666666666667
+  },
+  "tn36": {
+   "actions": 259,
+   "levels": 2,
+   "score": 8.500693644205274
+  },
+  "tr87": {
+   "actions": 170,
+   "levels": 4,
+   "score": 47.61904761904761
+  },
+  "tu93": {
+   "actions": 108,
+   "levels": 2,
+   "score": 3.828881288034853
+  },
+  "vc33": {
+   "actions": 176,
+   "levels": 3,
+   "score": 17.635521393778706
+  },
+  "wa30": {
+   "actions": 204,
+   "levels": 1,
+   "score": 2.2222222222222223
+  }
+ },
+ "label": "thui-a7-full25-r1",
+ "source": "kaggle yocybercode/thui-a7-full25-r1, run 2026-09-08 09:44-11:56Z, score.json + benchmark.json"
+}
