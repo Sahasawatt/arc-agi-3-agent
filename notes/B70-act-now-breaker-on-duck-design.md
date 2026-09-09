@@ -135,5 +135,5 @@ What the fix bought, from the log and the 25 usage sidecars (732 turns):
 Verdict: **B70 closed.** Two full draws, both prompt-level stages inside or below the band, and the executed-action
 stage reached once and executed nothing through this seam. The one thing left unmeasured — a forced action that
 actually steps the environment — needs the harness's real `step_env` return shape read from the bundle, not a third
-draw of this wrapper. Against the same day's B66 result (the serving lane clearing the rule at p = 0.002), no v3 is
+draw of this wrapper. Against the same day's B69 result (the serving lane clearing the rule at p = 0.002), no v3 is
 priced. Cost: 40 min smoke + 2 × 2 h 20 m full on sahasawatt.
