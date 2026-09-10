@@ -275,7 +275,7 @@ def main():
               'f"missing='),
              {"3 fire line carries block_lost=, parsed exact"}),
             ("block_lost dropped from the FAILURE print",
-             ('f"block_chars={len(block)} block_lost={_blk_lost} "\n              f"consecutive=',
+             ('f"block_chars={len(block)} block_lost={_blk_lost} outcome=exception failed_block_chars={len(block)} "\n              f"consecutive=',
               'f"consecutive='),
              {"6 failed fire still prints block_lost"}),
             ("import note reverted to a verdict",

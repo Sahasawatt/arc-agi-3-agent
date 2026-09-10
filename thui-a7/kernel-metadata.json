@@ -1,10 +1,11 @@
 {
-  "id": "yocybercode/thui-compact-v1-failure-r1",
-  "title": "thui-compact-v1-failure-r1",
-  "code_file": "taaf-thui-compact-v1-failure-r1.ipynb",
+  "id": "yocybercode/thui-a7-full25-r1",
+  "id_no": 133512000,
+  "title": "thui-a7-full25-r1",
+  "code_file": "thui-a7-full25-r1.ipynb",
   "language": "python",
   "kernel_type": "notebook",
-  "is_private": false,
+  "is_private": true,
   "enable_gpu": true,
   "enable_tpu": false,
   "enable_internet": false,
@@ -12,15 +13,16 @@
     "gpu"
   ],
   "dataset_sources": [
-    "driessmit1/arc3-vllm-h100-wheelhouse-v3",
-    "jakobbrggen/taaf-kaggle-source-anim-20260807-anim",
-    "jakobbrggen/qwen3-8-27b-fp8-hf-snapshot"
+    "keithtyser/duck-qwen38-nvfp4-mtp-vllm-smoke-v1",
+    "keithtyser/qwen38-flash-next-vllm-nvfp4-runtime-v1"
   ],
   "kernel_sources": [],
   "competition_sources": [
     "arc-prize-2026-arc-agi-3"
   ],
-  "model_sources": [],
+  "model_sources": [
+    "keithtyser/qwen3-8-flash-next-nvfp4/PyTorch/radixark-modelopt-fp4/1"
+  ],
   "docker_image": "gcr.io/kaggle-private-byod/python@sha256:57e612b484cf3df5026ee4dcc3cb176974b22b2bc0937fb1e16132a8be4cb13c",
   "machine_shape": "NvidiaRtxPro6000"
 }

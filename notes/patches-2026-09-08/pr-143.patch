@@ -1,0 +1,19 @@
+--- a/agents/thui/act/thui-act-v2.md
++++ b/agents/thui/act/thui-act-v2.md
+@@ -18,6 +18,6 @@
+ one game (ls20, 37 dead turns of 42), fired three times, and every fire logged `executed=False` — the `step_env`
+ payload carries no `executed` key, so the wrapper's execution seam is unproven in the direction that matters. A
+ third draw would measure the same wrapper; reading the harness's real `step_env` return shape is the prerequisite,
+-and with B66 clearing the rule the same day it is not priced.
++and with B69 clearing the rule the same day it is not priced.
+ 
+ Read: `notes/B70-act-now-breaker-on-duck-design.md` (design, smoke, v1 and v2 full-run records).
+--- a/notes/B70-act-now-breaker-on-duck-design.md
++++ b/notes/B70-act-now-breaker-on-duck-design.md
+@@ -135,5 +135,5 @@
+ Verdict: **B70 closed.** Two full draws, both prompt-level stages inside or below the band, and the executed-action
+ stage reached once and executed nothing through this seam. The one thing left unmeasured — a forced action that
+ actually steps the environment — needs the harness's real `step_env` return shape read from the bundle, not a third
+-draw of this wrapper. Against the same day's B66 result (the serving lane clearing the rule at p = 0.002), no v3 is
++draw of this wrapper. Against the same day's B69 result (the serving lane clearing the rule at p = 0.002), no v3 is
+ priced. Cost: 40 min smoke + 2 × 2 h 20 m full on sahasawatt.
