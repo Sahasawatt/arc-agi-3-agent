@@ -18,6 +18,6 @@ v1 → v2 p = 0.0924. B35 floor 1 / 25.
 one game (ls20, 37 dead turns of 42), fired three times, and every fire logged `executed=False` — the `step_env`
 payload carries no `executed` key, so the wrapper's execution seam is unproven in the direction that matters. A
 third draw would measure the same wrapper; reading the harness's real `step_env` return shape is the prerequisite,
-and with B66 clearing the rule the same day it is not priced.
+and with B69 clearing the rule the same day it is not priced.
 
 Read: `notes/B70-act-now-breaker-on-duck-design.md` (design, smoke, v1 and v2 full-run records).
