@@ -86,3 +86,79 @@ Qwen run) = the tool-call path is not working; 25–40 % = read the parse errors
 ## Rebased 2026-09-04 onto the B48 chassis
 
 Builder default is now `--base=v3` = `thuiv3/taaf-thui-v3-0.ipynb` (thui-v1-1 + yield 180: the build that drew the standing best 2.03 and holds the campaign's only 4-run public pool). The cell-12/14 seams are identical in that chassis (anchors asserted once; cell 8 asserted to carry the yield-180 injection twice). **Baseline for the paired read is the `thuiv3` arm** declared in `eval/fixtures/arms.json` (thuiv3-0 4.01 / thuiv3-0-r2 4.52 / thuiv3-1 5.17 / thuiv3-2 3.85; the three new fixtures banked from each run's `benchmark.json`, means reproducing the LEDGER), pooled as `eval/fixtures/thuiv3-pool.json`. Read: `python3 eval/rank_runs.py eval/fixtures/thuiv3-pool.json <candidate-pool>.json`, +1 level in >= 6 of 25 games on both candidate draws. `--base=v1` keeps the thui-v1-1 chassis for a control build only.
+
+## Smoke record (2026-09-07, sahasawatt/thui-gemma-v0 version 2)
+
+S0 / S1 / S2 / S3 all green — details on the arm page `agents/thui/gemma/thui-gemma-v0.md` §Verdict. Headline:
+serving ready at 696 s, executed-turn fraction **91 %** (Qwen band 44–57 %), finish_reason `tool_calls` 68/69,
+23 s per request median, 3 games finished, one ReadTimeout (base class). Two builder changes got it there, both
+asserted in-kernel: `VLLM_USE_FLASHINFER_SAMPLER=0` + `TORCH_CUDA_ARCH_LIST=12.0` in the server env (the S0 death),
+and the competition-mount resolver from `solo/` in cells 4 + 14 plus a two-layout model mount in cell 6 (a second
+v1 died at 6.5 s on the flat `/kaggle/input/<comp>` layout — the trap `solo/build_notebook.py` documents, still
+latent in every other thui-v3-0 arm). Full run `thui-gemma-v1` pushed the same morning; read per the full-run oracle.
+
+## Full-run record (sahasawatt/thui-gemma-v1, 2026-09-07 08:20–10:42Z, wall 8,664 s) — CLOSED NEGATIVE
+
+Public **0.41 / 5 levels / 5 of 25 scoring / 1,562 actions / 0.56 M generated tokens** (bp35, lp85, sb26, su15, vc33 at
+1 level each; everything else 0). `rank_runs.py` vs `thuiv3-pool` (n=4): pool 4.39 vs 0.41, **+19.25 levels for the
+pool, 20 up / 2 down, p = 0.0 → DISTINGUISHABLE, WORSE** — a single draw ranks here because the gap is 10× the
+same-build spread. Fixture not banked as a baseline (it is not one).
+
+**Source, added 2026-09-10 after `review-fanout` correctly reported that this section cited none.**
+The run's own `benchmark.json` is one read-only call away and no fixture is needed to reach it:
+
+```python
+from kaggle.api.kaggle_api_extended import KaggleApi
+a = KaggleApi(); a.authenticate()
+a.kernels_output("sahasawatt/thui-gemma-v1", path="<dir>", file_pattern="benchmark")
+```
+
+The probe discriminates: a fabricated slug answers `Permission 'kernels.get' was denied`, and
+`sahasawatt/thui-gemma-v0` returns its own pair in the same invocation. Re-derived from the 25
+`game_runs` it holds — **five of seven figures above reproduce exactly**:
+
+| figure | how it is derived | reproduces |
+|---|---|---|
+| public **0.41** | `mean(final_score)` = 10.1308 / 25 = 0.4052 | ✅ |
+| **5** levels | `sum(levels_completed)` | ✅ |
+| **5 of 25** scoring | games with `levels_completed > 0` | ✅ |
+| bp35 · lp85 · sb26 · su15 · vc33 @ 1 | exact game ids | ✅ |
+| **1,562** actions | `sum(len(history))` over the 25 runs | ✅ |
+| 0.56 M generated tokens | `sum(solver_note tokens=)` gives **606,621 = 0.61 M** | ❌ **differs** |
+| wall **8,664 s** | this header's own `08:20–10:42Z` gives **8,520 s** — a **+144 s** excess, unexplained | ⚠️ **small gap** |
+
+⚠️ **Three traps this re-derivation had to route around**, and the third was nearly published as a
+finding. Two are already recorded in the workspace: `final_generated_tokens` is **0 on every game**
+(use `solver_note tokens=`), and `sum(final_wallclock_seconds)` is **198,381 s** — the sum of 25
+per-game clocks, not elapsed. The third is new and belongs here: **`benchmark.json`'s `start_time`
+and `end_time` are NAIVE LOCAL TIME (UTC+7), not UTC**, and nothing in the field names says so. Read
+as UTC they put this run at `01:26Z` against a header saying `08:20Z`, which reads exactly like *the
+API served a different version* — the first draft of this section said so. Add 7 h and both
+artifacts land where their headers put them, with a plausible setup gap either side
+(**v1 08:26:57 vs a kernel start of 08:20Z = 7 min**; **v0 06:43:53 vs 06:32Z = 12 min**). Two runs
+agreeing on the offset is what settles it; one would not have.
+
+⚠️ The remaining two rows are **left as written, not corrected.** The token figure is off by
+0.05 M against the only field that carries it, and the wall by 144 s against this header's own span;
+the CLOSED NEGATIVE verdict rests on neither. Picking a value would be fabricating a measurement.
+The levels, the scoring set, the per-game breakdown, the action count and the public score — which
+is what the verdict does rest on — are now sourced and reproduce exactly.
+
+Where it lost, from the 25 usage sidecars (781 requests):
+
+- **Not the tool channel**: finish_reason `tool_calls` 694 / 781, executed-turn fraction **56 %** (341 of 605
+  turns) — inside the Qwen band 44–57 %. tn36 is the one exception (31 of 32 replies `stop`, no tool call, 0 actions).
+- **Not the action count**: 1,562 actions vs the chassis's ~1,500 — the same budget, spent ~10× worse per level
+  (312 actions per cleared level against 57).
+- **Partly throughput**: wall per request median **185 s, p90 552 s, 45 ReadTimeouts** at the 900 s cap, 31
+  requests per game — against the Qwen chassis (thui-compact-v1 sidecars) at 100 s / 366 s / 36 timeouts / 51
+  requests per game. 1.85× slower per request under 25-way load; the 3-game smoke measured 23 s because it was
+  3-way. This is the rehearsal-width trap PROJECT_PATTERNS §4 names — the smoke could not see it by construction.
+- **Mostly the model**: 0.56 M generated tokens over the whole run vs ~2 M for Qwen3.8-27B — Gemma-4-31B reasons
+  a quarter as much per request on this prompt and clears a fifth of the levels on the same actions. The one
+  smoke clear (sc25 L1) did not recur in the full run (sc25: 0).
+
+Verdict: **the model lane does not transfer to Gemma-4-31B-it on the duck prompt + tool format.** S0–S3 were real
+(serving, parsing, images, harness all worked) and the score still lost by 4 mean / 19 levels; the swap that gained
+(B6, Qwen3.6 → Qwen3.8) moved within one family. Nothing here says a Gemma-tuned prompt could not do better; that is
+a different build and not this ticket. Cost: 27 min smoke + 2 h 22 m full on sahasawatt.

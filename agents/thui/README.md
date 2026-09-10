@@ -61,7 +61,7 @@ or the `B48` build (`thui-v3-0`) plus one change.
 | `reflect` | `thui-reflect/` | `B62` | a tool-free call every 10 steps rewrites the seven world-model fields | 1.39 ⚠️ / **4.38** | closed as a build candidate | [v0](reflect/thui-reflect-v0.md) · [v0.1](reflect/thui-reflect-v0-1.md) · [v1](reflect/thui-reflect-v1.md) · [v1.1](reflect/thui-reflect-v1-1.md) |
 | `avo` | `thui-avo/` | — | Tufa's own AVO bundle, as they ship it | 4.40 | ran, in-band; hidden **1.15** (first draw, `56039729`) | [v0](avo/thui-avo-v0.md) |
 | `lora` | `thui-lora/` | — | LoRA SFT on our own winning turns | held-out 2.45 / 3.69 | closed null | [v0](lora/thui-lora-v0.md) |
-| `gemma` | `thui-gemma/` | `B64` | Gemma-4-31B-it as the duck agent | — | built, never run (GPU quota) | [v0](gemma/thui-gemma-v0.md) |
+| `gemma` | `thui-gemma/` | `B64` | Gemma-4-31B-it as the duck agent | **0.41** | closed — negative: smoke S0–S3 passed, full run 5 levels vs the pool's 24 at `p = 0.0` on the same actions | [v0](gemma/thui-gemma-v0.md) · [v1](gemma/thui-gemma-v1.md) |
 | `stack` | `thui-stack/` | — | chains read-positive arms on one chassis | — | built, never run | [reflect+rank v0](stack/thui-stack-reflect-rank-v0.md) |
 
 ⚠️ **`notes/LEDGER-all-runs.md` carries a row for exactly one of these runs — `thui-reflect-v1`.** Every

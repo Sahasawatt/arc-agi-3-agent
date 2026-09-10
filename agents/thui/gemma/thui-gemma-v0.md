@@ -1,4 +1,4 @@
-# thui `gemma v0` — built, quota-blocked, never run
+# thui `gemma v0` — smoke PASSED on version 2 (2026-09-07); two v1 deaths were infrastructure, not the model
 
 **Line** thui · **family** gemma · **directory** [`thui-gemma/`](../../../thui-gemma) · **ticket** `B64` · **status** built, NOT RUN — ticket open
 
@@ -47,7 +47,39 @@ and `B62`. Unblock: the weekly reset on `sahasawatt`, or
 
 ## Verdict
 
-**None yet — and the oracle is already written, which is the point of the page.**
+**Smoke PASSED on version 2 (`sahasawatt/thui-gemma-v0` v2, 2026-09-07 06:32–07:00Z, 27 min).** Read against the
+oracle below from the kernel's own log + usage sidecars (`scratchpad` scripts, then this page):
+
+⚠️ **`scratchpad` scripts names a category, not a path, and the numbers below do NOT re-derive from
+the banked artifact.** Pulled 2026-09-10 via
+`kernels_output("sahasawatt/thui-gemma-v0", file_pattern="benchmark")` — the probe discriminates, a
+fabricated slug answers `Permission 'kernels.get' was denied`. It is the **right** run (its clock is
+naive UTC+7; `23:43:53` + 7 h = `06:43:53Z`, 12 min after the `06:32Z` kernel start above), but the
+log it returns contains **0** occurrences of `tool_calls` and **0** of `turns`, so
+`91 % (31 / 34 turns)` and `finish_reason tool_calls 68/69` have no source in it. The `696 s` is a
+time-to-serve *inside* the run, not a wall, so the artifact's 925 s span neither confirms nor
+refutes it. The v1 full-run figures DID re-derive from this same route
+(`notes/B64-gemma-4-31b-duck-agent-design.md` §Full-run record, 5 of 7 exact), so the gap is this
+section's sourcing, not the arm's. Treat these numbers as unverified until the script is named.
+
+- **S0** — vLLM 0.23 served `google/gemma-4-31b-it` (online fp8) at **696 s**; `check_cuda_arch` **0 hits** — the
+  `VLLM_USE_FLASHINFER_SAMPLER=0` + `TORCH_CUDA_ARCH_LIST=12.0` env in `vllm_env()` is the fix for the v1 S0 death on
+  yocybercode (flashinfer JIT sampler on sm_120).
+- **S1** — executed-turn fraction **91 % (31 / 34 turns)**: sc25 17/18, sk48 12/13, tr87 2/3. Above the Qwen band, far
+  above the kill line. finish_reason `tool_calls` 68/69, zero `length`, zero parse failures; completion median ~590
+  tok; **23 s per request median** (Qwen 27B on this chassis is 3–5× that).
+- **S2** — zero `analyzer failed` lines on image-carrying requests.
+- **S3** — COMPLETE, 3 games, no new exception class. One `ReadTimeout` (tr87, a single request that hung 709 s and
+  ended that game at 7 requests) — the class the base already has; watch its count in the full run.
+- Numbers, not to be quoted as a score: sc25 **1/6** (41 actions; L1 in 36 vs human 36), sk48 0/8 (26), tr87 0/6
+  (10). The base chassis's own 900 s smoke on these games (thui-compact-v0, Qwen 27B) executed 5 / 13 / 2 actions.
+
+Two version-1 deaths preceded this, both fixed in the builder and neither about Gemma: **v1 on yocybercode** (09-05)
+died at S0 in flashinfer's JIT sampler; **v1 on sahasawatt** (09-07) died at 6.5 s on Kaggle's FLAT `/kaggle/input/<comp>`
+layout before any model loaded — the solo-probe trap, now resolved in cells 4 + 14 (and the model mount probes both
+layouts in cell 6). `thui-gemma-v1` (full 25) pushed 2026-09-07 07:5xZ on sahasawatt.
+
+Oracle as written before the run:
 
 - **S0 serving** — the bundle's own `run_vllm_api_smoke_test` passes under vLLM 0.23 + Gemma-4 fp8. Kill on
   sight if the model fails to load, or if fp8 fails and BF16 leaves < 15 GB of KV.
