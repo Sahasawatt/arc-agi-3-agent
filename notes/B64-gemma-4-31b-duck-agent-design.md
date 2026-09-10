@@ -99,7 +99,7 @@ latent in every other thui-v3-0 arm). Full run `thui-gemma-v1` pushed the same m
 
 ## Full-run record (sahasawatt/thui-gemma-v1, 2026-09-07 08:20–10:42Z, wall 8,664 s) — CLOSED NEGATIVE
 
-Public **0.41 / 5 levels / 4 of 25 scoring / 1,562 actions / 0.56 M generated tokens** (lp85, sb26, su15, vc33 at
+Public **0.41 / 5 levels / 5 of 25 scoring / 1,562 actions / 0.56 M generated tokens** (bp35, lp85, sb26, su15, vc33 at
 1 level each; everything else 0). `rank_runs.py` vs `thuiv3-pool` (n=4): pool 4.39 vs 0.41, **+19.25 levels for the
 pool, 20 up / 2 down, p = 0.0 → DISTINGUISHABLE, WORSE** — a single draw ranks here because the gap is 10× the
 same-build spread. Fixture not banked as a baseline (it is not one).
