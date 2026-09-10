@@ -1,0 +1,563 @@
+{
+  "cli_contract": {
+    "reason": "the exact pinned server command is exercised directly",
+    "skipped": true
+  },
+  "completed_epoch": 1789034115.9214485,
+  "environment": {
+    "allocator_alias_removed": true,
+    "allocator_effective": "expandable_segments:False",
+    "allocator_input": {
+      "PYTORCH_ALLOC_CONF": null,
+      "PYTORCH_CUDA_ALLOC_CONF": null
+    },
+    "cuda_compatibility": "0",
+    "cuda_home": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0",
+    "cuda_library_dir": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0/targets/x86_64-linux/lib",
+    "cutlass_nested_path": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages",
+    "cutlass_pth": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl_packages.pth",
+    "cutlass_pth_sha256": "cc710b99ddb3d76361a70461461d274212a979d00c381d821fce5bb3ad9cf246",
+    "deep_preload_validation": false,
+    "glibc": "glibc 2.35",
+    "ple_patch_sha256": "a8a064744efc3c99eefff649f50395d77e1c36085266034d17b51722f68176ed",
+    "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "real_cuda_driver": "/usr/local/nvidia/lib64/libcuda.so.580.159.04",
+    "required_tools": {
+      "g++": "/usr/bin/g++",
+      "gcc": "/usr/bin/gcc",
+      "ld": "/usr/bin/ld",
+      "ninja": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/bin/ninja",
+      "nvcc": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0/bin/nvcc"
+    },
+    "site_packages": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages",
+    "skipped_duplicate_probes": [
+      "CUDA compile/link/device probe",
+      "torch/flashinfer/vllm import subprocess",
+      "NCCL metadata and runtime probe"
+    ],
+    "torch_cuda_arch_list": "12.0",
+    "validation_mode": "fast"
+  },
+  "fast_start": true,
+  "fast_start_environment": "TAAF_KAGGLE_FAST_START",
+  "inventory": {
+    "disk": "Filesystem         1B-blocks          Used     Available Use% Mounted on\n/dev/loop1       20957446144        221184   20940447744   1% /kaggle/working\noverlay        8656922775552 7554396258304 1102509740032  88% /\nshm              92878667776             0   92878667776   0% /dev/shm\n",
+    "gpu_rows": [
+      "0, NVIDIA RTX PRO 6000 Blackwell Server Edition, GPU-6c59e3db-723c-5429-9e5c-5f7b2248b6b7, 97887, 97250, 580.159.04, 12.0"
+    ],
+    "host_mem_available_bytes": 187148316672,
+    "meminfo_bytes": {
+      "Active": 1643679744,
+      "Active(anon)": 794624,
+      "Active(file)": 1642885120,
+      "AnonHugePages": 0,
+      "AnonPages": 493494272,
+      "Bounce": 0,
+      "Buffers": 1070329856,
+      "Cached": 2156478464,
+      "CmaFree": 0,
+      "CmaTotal": 0,
+      "CommitLimit": 94962319360,
+      "Committed_AS": 6972489728,
+      "DirectMap1G": 185757335552,
+      "DirectMap2M": 9359589376,
+      "DirectMap4k": 300707840,
+      "Dirty": 24252416,
+      "FileHugePages": 0,
+      "FilePmdMapped": 0,
+      "HardwareCorrupted": 0,
+      "HugePages_Free": 0,
+      "HugePages_Rsvd": 0,
+      "HugePages_Surp": 0,
+      "HugePages_Total": 0,
+      "Hugepagesize": 2097152,
+      "Hugetlb": 0,
+      "Inactive": 2075197440,
+      "Inactive(anon)": 493236224,
+      "Inactive(file)": 1581961216,
+      "KReclaimable": 250146816,
+      "KernelStack": 18219008,
+      "Mapped": 335818752,
+      "MemAvailable": 187148316672,
+      "MemFree": 185256108032,
+      "MemTotal": 189924638720,
+      "Mlocked": 0,
+      "NFS_Unstable": 0,
+      "PageTables": 7507968,
+      "Percpu": 25165824,
+      "SReclaimable": 250146816,
+      "SUnreclaim": 154886144,
+      "SecPageTables": 0,
+      "Shmem": 1339392,
+      "ShmemHugePages": 0,
+      "ShmemPmdMapped": 0,
+      "Slab": 405032960,
+      "SwapCached": 0,
+      "SwapFree": 0,
+      "SwapTotal": 0,
+      "Unaccepted": 0,
+      "Unevictable": 0,
+      "VmallocChunk": 0,
+      "VmallocTotal": 35184372087808,
+      "VmallocUsed": 76238848,
+      "Writeback": 24576,
+      "WritebackTmp": 0,
+      "Zswap": 0,
+      "Zswapped": 0
+    },
+    "shm_free_bytes": 92878667776
+  },
+  "ipc_permission": {
+    "reason": "diagnostic-only duplicate of live PLE startup",
+    "skipped": true
+  },
+  "model": {
+    "architecture": "Qwen4ExpForConditionalGeneration",
+    "config_sha256": "e765305daba0951974308f4d32c075b52a6a45974730d273f2216718a994d624",
+    "file_count": 419,
+    "hashed_bytes": 0,
+    "hashed_file_count": 0,
+    "manifest_sha256": "a09bdad3fe3240c73332c0f99f4388a547205cb488c127f9b9059c9267dd9a5b",
+    "mtp_num_hidden_layers": 1,
+    "payload_check_deferred_to_vllm_load": true,
+    "payload_files_checked": 0,
+    "payload_sha256_verified": false,
+    "ple_embedding_dtype": "float8_e4m3fn",
+    "quant_algo": "NVFP4",
+    "quant_config_sha256": "7e69ef4b94302ae5b6f453b913621f698d5631a1d023d8b3e9e3b829721b98e8",
+    "stat_only_weight_bytes": 0,
+    "stat_only_weight_file_count": 0,
+    "total_bytes": 135253622894,
+    "verification_mode": "identity-only",
+    "verify_seconds": 0.007304984000029435
+  },
+  "model_hf_repo": "RadixArk/Qwen3.8-Flash-Next-NVFP4",
+  "model_hf_revision": "7b719225242aacd3dbd3f9407468c2ee9a9d2594",
+  "persisted_analyzer_environment": {
+    "CUDACXX": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0/bin/nvcc",
+    "CUDA_HOME": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0",
+    "HF_DATASETS_OFFLINE": "1",
+    "HF_HUB_OFFLINE": "1",
+    "INFERENCE_ANALYZER_MODEL": "Qwen/Qwen3.8-Flash-Next-NVFP4",
+    "LD_LIBRARY_PATH": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0/targets/x86_64-linux/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/torch/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia/cu13/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia/cudnn/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia/cusparselt/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia/nvshmem/lib:/usr/local/nvidia/lib64:/usr/local/nvidia/lib64:/usr/lib/x86_64-linux-gnu:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64",
+    "LOCAL_ANALYZER_APP_NAME": "ARC3 Agent Harness",
+    "LOCAL_ANALYZER_BASE_URL": "http://127.0.0.1:1234/v1",
+    "LOCAL_ANALYZER_CONTEXT_WINDOW": "32768",
+    "LOCAL_ANALYZER_ENABLE_THINKING": "true",
+    "LOCAL_ANALYZER_MAX_OUTPUT": "0",
+    "LOCAL_ANALYZER_MODEL_ID": "Qwen/Qwen3.8-Flash-Next-NVFP4",
+    "LOCAL_ANALYZER_PROVIDER": "vllm",
+    "LOCAL_ANALYZER_TEMPERATURE": "0.6",
+    "LOCAL_ANALYZER_TOOL_OUTPUT_TOKENS": "1024",
+    "LOCAL_ANALYZER_TOOL_STEPS": "0",
+    "LOCAL_ANALYZER_TOOL_TIMEOUT": "30",
+    "LOCAL_ANALYZER_TOP_K": "20",
+    "LOCAL_ANALYZER_TOP_P": "0.95",
+    "LOCAL_ANALYZER_YIELD_SECONDS": "60",
+    "MULTIMODAL_CONTEXT": "current_grid",
+    "MULTIMODAL_UPSCALE": "4",
+    "OPENAI_API_KEY": "offline-kaggle-local-server",
+    "OPENAI_BASE_URL": "http://127.0.0.1:1234/v1",
+    "OPENAI_PROVIDER": "vllm",
+    "PATH": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/cuda-13.0/bin:/tmp/qwen38-flash-next-vllm-runtime/usr/local/bin:/opt/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tools/node/bin:/tools/google-cloud-sdk/bin",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages:/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages:/kaggle/lib/kagglegym:/kaggle/lib:/kaggle/input/competitions/arc-prize-2026-arc-agi-3",
+    "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:False",
+    "TORCH_CUDA_ARCH_LIST": "12.0",
+    "TRANSFORMERS_OFFLINE": "1",
+    "VLLM_ENABLE_CUDA_COMPATIBILITY": "0",
+    "VLLM_NO_USAGE_STATS": "1",
+    "VLLM_RADIXARK_QWEN38_NVFP4_CONFIG_SHA256": "e765305daba0951974308f4d32c075b52a6a45974730d273f2216718a994d624",
+    "VLLM_RADIXARK_QWEN38_NVFP4_PLE_FP8": "1"
+  },
+  "ple_patch": {
+    "applicator_result": "patched",
+    "artifact_directory": "/kaggle/input/datasets/keithtyser/duck-qwen38-nvfp4-mtp-vllm-smoke-v1/vllm-patches",
+    "artifacts": {
+      "PATCH_IDENTITY.json": {
+        "bytes": 1349,
+        "sha256": "f0bc8a948567e551d1bdf63f1163503ded897c3eba070d149d44c0c08fccbd35"
+      },
+      "README.md": {
+        "bytes": 1581,
+        "sha256": "18e73020660bfe46b66c0ec1dfc3e702e848b51bc3d4773f58f6ae06ef126f9d"
+      },
+      "apply_radixark_nvfp4_ple_fp8_patch.py": {
+        "bytes": 8230,
+        "sha256": "a9f88c019d04d7c8804ca6532e1c689d2ea97cf085cfec37dd4a779cb2c2c3fd"
+      },
+      "radixark_nvfp4_ple_fp8.patch": {
+        "bytes": 3940,
+        "sha256": "e3b83f9a65e436d21d3e757ddc8dd2699f3c59de9f73967107b3b20c101d0a9f"
+      }
+    },
+    "gate_checkpoint_excluded_prefix": "model.language_model.model.layers.1.ple.ple_embedding.ngram_embedding",
+    "gate_environment": "VLLM_RADIXARK_QWEN38_NVFP4_PLE_FP8=1",
+    "gate_model_config_sha256": "e765305daba0951974308f4d32c075b52a6a45974730d273f2216718a994d624",
+    "gate_runtime_prefix": "language_model.model.layers.1.ple.ple_embedding.ngram_embedding",
+    "patch_identity": {
+      "artifact": "radixark_nvfp4_ple_fp8.patch",
+      "artifact_bytes": 3940,
+      "artifact_sha256": "e3b83f9a65e436d21d3e757ddc8dd2699f3c59de9f73967107b3b20c101d0a9f",
+      "exact_model_config": "model/RadixArk-Qwen3.8-Flash-Next-NVFP4/config.json",
+      "exact_model_config_bytes": 4983,
+      "exact_model_config_producer": {
+        "name": "modelopt",
+        "version": "0.46.0"
+      },
+      "exact_model_config_sha256": "e765305daba0951974308f4d32c075b52a6a45974730d273f2216718a994d624",
+      "modelopt_internal_gate": {
+        "checkpoint_excluded_prefix": "model.language_model.model.layers.1.ple.ple_embedding.ngram_embedding",
+        "group_size": 16,
+        "is_checkpoint_nvfp4_serialized": true,
+        "is_layer_excluded_checkpoint_prefix": true,
+        "quant_method": "NVFP4",
+        "runtime_prefix": "language_model.model.layers.1.ple.ple_embedding.ngram_embedding"
+      },
+      "patched_target_sha256": "a8a064744efc3c99eefff649f50395d77e1c36085266034d17b51722f68176ed",
+      "stock_target_sha256": "a71144c1d36e06f22a2da1b1ada900076597fe5e824a911e7ada86249a0993e7",
+      "target": "vllm/models/qwen3_8_flash_next/nvidia/ple_layer.py",
+      "vllm_image_amd64_manifest": "sha256:0aea30240f3e3d9ffae8526643950e170eb5fa07fc427016a9dd90892afa2aa3",
+      "vllm_image_index_digest": "sha256:fc120ece0a388cc0aa1caad4a9f1cd92113484ab7ec2fd0efadd62585be05bf8",
+      "vllm_version": "0.1.dev20073+g8e685d198"
+    },
+    "patched_sha256": "a8a064744efc3c99eefff649f50395d77e1c36085266034d17b51722f68176ed",
+    "path": "/tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/vllm/models/qwen3_8_flash_next/nvidia/ple_layer.py",
+    "stock_sha256": "a71144c1d36e06f22a2da1b1ada900076597fe5e824a911e7ada86249a0993e7"
+  },
+  "preflight_sha256": "84141d7d3a1194607f5e3cf420d735ba5d7ae77e5212b2b79a80ba8c10cbac0c",
+  "process_gpu": {
+    "deferred": true,
+    "reason": "teardown records final process ownership and GPU state"
+  },
+  "readiness": {
+    "models": {
+      "data": [
+        {
+          "created": 1789034115,
+          "id": "Qwen/Qwen3.8-Flash-Next-NVFP4",
+          "max_model_len": 32768,
+          "object": "model",
+          "owned_by": "vllm",
+          "parent": null,
+          "permission": [
+            {
+              "allow_create_engine": false,
+              "allow_fine_tuning": false,
+              "allow_logprobs": true,
+              "allow_sampling": true,
+              "allow_search_indices": false,
+              "allow_view": true,
+              "created": 1789034115,
+              "group": null,
+              "id": "modelperm-ae291e6184ad99c3",
+              "is_blocking": false,
+              "object": "model_permission",
+              "organization": "*"
+            }
+          ],
+          "root": "/kaggle/input/models/keithtyser/qwen3-8-flash-next-nvfp4/pytorch/radixark-modelopt-fp4/1"
+        }
+      ],
+      "object": "list"
+    },
+    "ready_seconds": 400.05078876499994
+  },
+  "runtime": {
+    "amd64_manifest_digest": "sha256:0aea30240f3e3d9ffae8526643950e170eb5fa07fc427016a9dd90892afa2aa3",
+    "cache_scan_performed": false,
+    "extract_seconds": 94.767005025,
+    "image": "vllm/vllm-openai:qwen38-flash-next",
+    "index_digest": "sha256:fc120ece0a388cc0aa1caad4a9f1cd92113484ab7ec2fd0efadd62585be05bf8",
+    "layers": [
+      {
+        "actual_sha256": null,
+        "file": "layer-8-f4f325a97c3e4739640b0e472a818bb299e7ce8e585bdbfe5586e9d3b5a2c475.tar.gz",
+        "index": 8,
+        "manifest_sha256": "f4f325a97c3e4739640b0e472a818bb299e7ce8e585bdbfe5586e9d3b5a2c475",
+        "payload_sha256_verified": false,
+        "sha256": "f4f325a97c3e4739640b0e472a818bb299e7ce8e585bdbfe5586e9d3b5a2c475",
+        "size": 1374796713,
+        "stored_file": "layer-8-f4f325a97c3e4739640b0e472a818bb299e7ce8e585bdbfe5586e9d3b5a2c475.tar.gz.blob"
+      },
+      {
+        "actual_sha256": null,
+        "file": "layer-17-a5881cf32fc46f24318a6fc7015ccae863706075d4434d186b8b1b4e5bafb36e.tar.gz",
+        "index": 17,
+        "manifest_sha256": "a5881cf32fc46f24318a6fc7015ccae863706075d4434d186b8b1b4e5bafb36e",
+        "payload_sha256_verified": false,
+        "sha256": "a5881cf32fc46f24318a6fc7015ccae863706075d4434d186b8b1b4e5bafb36e",
+        "size": 4634843373,
+        "stored_file": "layer-17-a5881cf32fc46f24318a6fc7015ccae863706075d4434d186b8b1b4e5bafb36e.tar.gz.blob"
+      },
+      {
+        "actual_sha256": null,
+        "file": "layer-18-692ea0d28a87e9cea6db254c830f650f29804522045c9201f8ea63f30471b33b.tar.gz",
+        "index": 18,
+        "manifest_sha256": "692ea0d28a87e9cea6db254c830f650f29804522045c9201f8ea63f30471b33b",
+        "payload_sha256_verified": false,
+        "sha256": "692ea0d28a87e9cea6db254c830f650f29804522045c9201f8ea63f30471b33b",
+        "size": 1511319261,
+        "stored_file": "layer-18-692ea0d28a87e9cea6db254c830f650f29804522045c9201f8ea63f30471b33b.tar.gz.blob"
+      },
+      {
+        "actual_sha256": null,
+        "file": "layer-21-651e9c6638c77d15bf671d9264badcba80ea551f84109de486427b87d2ddbf75.tar.gz",
+        "index": 21,
+        "manifest_sha256": "651e9c6638c77d15bf671d9264badcba80ea551f84109de486427b87d2ddbf75",
+        "payload_sha256_verified": false,
+        "sha256": "651e9c6638c77d15bf671d9264badcba80ea551f84109de486427b87d2ddbf75",
+        "size": 61571140,
+        "stored_file": "layer-21-651e9c6638c77d15bf671d9264badcba80ea551f84109de486427b87d2ddbf75.tar.gz.blob"
+      },
+      {
+        "actual_sha256": null,
+        "file": "layer-24-10dce885652a53a2e644a75d256b90830663330988b8599c3c0e56cd6c8a4675.tar.gz",
+        "index": 24,
+        "manifest_sha256": "10dce885652a53a2e644a75d256b90830663330988b8599c3c0e56cd6c8a4675",
+        "payload_sha256_verified": false,
+        "sha256": "10dce885652a53a2e644a75d256b90830663330988b8599c3c0e56cd6c8a4675",
+        "size": 309686893,
+        "stored_file": "layer-24-10dce885652a53a2e644a75d256b90830663330988b8599c3c0e56cd6c8a4675.tar.gz.blob"
+      },
+      {
+        "actual_sha256": null,
+        "file": "layer-27-49a63ac9d116f92e5a8b006ae5665b940fcbc3d22d53aa7c01a3753ef341c53e.tar.gz",
+        "index": 27,
+        "manifest_sha256": "49a63ac9d116f92e5a8b006ae5665b940fcbc3d22d53aa7c01a3753ef341c53e",
+        "payload_sha256_verified": false,
+        "sha256": "49a63ac9d116f92e5a8b006ae5665b940fcbc3d22d53aa7c01a3753ef341c53e",
+        "size": 14479724,
+        "stored_file": "layer-27-49a63ac9d116f92e5a8b006ae5665b940fcbc3d22d53aa7c01a3753ef341c53e.tar.gz.blob"
+      }
+    ],
+    "manifest_sha256": "e9453f8d0e9c5eb2e14712e0f8563aaa96752ddc1705f245cac327537502baad",
+    "payload_sha256_verified": false,
+    "verification_mode": "fast",
+    "whiteouts_applied": [
+      "usr/local/cuda-13.0/targets/x86_64-linux/lib/.wh.libcudart.so.13.0.88",
+      "tmp/.wh.requirements-cuda.txt",
+      "tmp/.wh.common.txt"
+    ]
+  },
+  "runtime_dataset": "keithtyser/qwen38-flash-next-vllm-nvfp4-runtime-v1",
+  "runtime_storage": {
+    "audit_sha256": "5791fbfae9b53d4b8f4000bab769f13e1b1d78c763e889663199e3ee76f5252c",
+    "conservative_extracted_bound_bytes": 18359349248,
+    "jit_cache_reserve_bytes": 17179869184,
+    "minimum_free_bytes": 36507222016,
+    "roots": [
+      {
+        "device": 54,
+        "free_bytes": 1102509740032,
+        "root": "/tmp/qwen38-flash-next-vllm-runtime",
+        "statvfs_path": "/tmp",
+        "threshold_bytes": 36507222016
+      },
+      {
+        "device": 54,
+        "free_bytes": 1102509740032,
+        "root": "/tmp/qwen38-flash-next-vllm-cache",
+        "statvfs_path": "/tmp",
+        "threshold_bytes": 36507222016
+      },
+      {
+        "device": 54,
+        "free_bytes": 1102509740032,
+        "root": "/tmp/qwen38-flash-next-vllm-compile-cache",
+        "statvfs_path": "/tmp",
+        "threshold_bytes": 36507222016
+      },
+      {
+        "device": 54,
+        "free_bytes": 1102509740032,
+        "root": "/tmp/qwen38-flash-next-vllm-tmp",
+        "statvfs_path": "/tmp",
+        "threshold_bytes": 36507222016
+      }
+    ],
+    "shared_device": 54
+  },
+  "server_identity": {
+    "argv": [
+      "/usr/bin/python3",
+      "-m",
+      "vllm.entrypoints.cli.main",
+      "serve",
+      "/kaggle/input/models/keithtyser/qwen3-8-flash-next-nvfp4/pytorch/radixark-modelopt-fp4/1",
+      "--served-model-name",
+      "Qwen/Qwen3.8-Flash-Next-NVFP4",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "1234",
+      "--load-format",
+      "safetensors",
+      "--dtype",
+      "bfloat16",
+      "--quantization",
+      "modelopt_fp4",
+      "--tensor-parallel-size",
+      "1",
+      "--distributed-executor-backend",
+      "mp",
+      "--kv-cache-memory-bytes",
+      "5368709120",
+      "--max-model-len",
+      "32768",
+      "--max-num-seqs",
+      "8",
+      "--max-num-batched-tokens",
+      "8192",
+      "--async-scheduling",
+      "--enable-chunked-prefill",
+      "--max-cudagraph-capture-size",
+      "32",
+      "--no-enable-prefix-caching",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--reasoning-parser",
+      "qwen3",
+      "--chat-template",
+      "/kaggle/input/models/keithtyser/qwen3-8-flash-next-nvfp4/pytorch/radixark-modelopt-fp4/1/chat_template.jinja",
+      "--no-enable-log-requests",
+      "--disable-uvicorn-access-log",
+      "--uvicorn-log-level",
+      "info"
+    ],
+    "argv_sha256": "dd0022a3f7282d0a8dd6bb04a9bd6403aef7a66dff6d77a4eeb7b83f8c5e9a3e",
+    "backend": "vllm",
+    "boot_id": "7f06bf49-1f62-4f9c-be3e-ce562d75bc8d",
+    "host": "127.0.0.1",
+    "pgid": 151,
+    "phase": "ready",
+    "pid": 151,
+    "port": 1234,
+    "ready_epoch": 1789034115.916499,
+    "schema_version": 1,
+    "sid": 151,
+    "snapshot_epoch": 1789034115.916499,
+    "start_ticks": 32512,
+    "started_epoch": 1789033715.864695,
+    "vllm_tuning": {
+      "enable_chunked_prefill": true,
+      "enable_prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "kv_cache_memory_bytes": 5368709120,
+      "max_cudagraph_capture_size": 32,
+      "max_num_batched_tokens": 8192,
+      "max_num_batched_tokens_requested": 8192,
+      "max_num_seqs": 8,
+      "moe_backend": null,
+      "mtp_dynamic_batch_schedule": null,
+      "mtp_index_share_for_iteration": false,
+      "mtp_speculative_tokens": 0,
+      "omp_num_threads": 1,
+      "overridden": {
+        "TAAF_VLLM_ENABLE_PREFIX_CACHING": true,
+        "TAAF_VLLM_KV_CACHE_DTYPE": true,
+        "TAAF_VLLM_KV_CACHE_MEMORY_BYTES": true,
+        "TAAF_VLLM_MAX_CUDAGRAPH_CAPTURE_SIZE": true,
+        "TAAF_VLLM_MAX_NUM_BATCHED_TOKENS": true,
+        "TAAF_VLLM_MAX_NUM_SEQS": true,
+        "TAAF_VLLM_MOE_BACKEND": false,
+        "TAAF_VLLM_MTP_DYNAMIC_BATCH_SCHEDULE": false,
+        "TAAF_VLLM_MTP_INDEX_SHARE_FOR_ITERATION": false,
+        "TAAF_VLLM_MTP_TOKENS": true,
+        "TAAF_VLLM_OMP_THREADS": true
+      },
+      "schema_version": 1
+    },
+    "workers": [
+      {
+        "cmdline_sha256": "341472cee0c920ee24e2a1eb492930191a8150ee1f01755fc438fc52304ef931",
+        "pgid": 151,
+        "pid": 151,
+        "ppid": 133,
+        "sid": 151,
+        "start_ticks": 32512
+      },
+      {
+        "cmdline_sha256": "d3ef685c2178996cb061bfa1fb916eae0eb0bbda6cf6876534432cf377ea5dbf",
+        "pgid": 151,
+        "pid": 201,
+        "ppid": 151,
+        "sid": 151,
+        "start_ticks": 36704
+      },
+      {
+        "cmdline_sha256": "547bc91065f21902a85ec95b595653a00d2b86754986e7c4c45f8c87ac1abd23",
+        "pgid": 151,
+        "pid": 202,
+        "ppid": 151,
+        "sid": 151,
+        "start_ticks": 36704
+      },
+      {
+        "cmdline_sha256": "51275c22f2fa8c27bded051af8327e746489b495b138eca85073faccb3ede1da",
+        "pgid": 151,
+        "pid": 220,
+        "ppid": 202,
+        "sid": 151,
+        "start_ticks": 38001
+      },
+      {
+        "cmdline_sha256": "a2ee749b9cebf881550b23009bae8413012419fe9ab0c317ab6c9af4fc9b98cc",
+        "pgid": 151,
+        "pid": 283,
+        "ppid": 220,
+        "sid": 151,
+        "start_ticks": 39491
+      },
+      {
+        "cmdline_sha256": "fd3a41c6faf7553a76d60949dea5632c423de414c9c0e9494171ea942543f428",
+        "pgid": 366,
+        "pid": 366,
+        "ppid": 220,
+        "sid": 366,
+        "start_ticks": 53254
+      }
+    ]
+  },
+  "server_log_sha256_at_preflight": "f4aa3c941d214116350a88ae0157232f750b37d09552b44b549f41c351be5388",
+  "server_log_tail": "Loading safetensors checkpoint shards:  83% Completed | 171/206 [01:06<00:13,  2.56it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  83% Completed | 172/206 [01:06<00:11,  2.87it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  84% Completed | 173/206 [01:07<00:10,  3.16it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  84% Completed | 174/206 [01:07<00:09,  3.38it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  85% Completed | 175/206 [01:07<00:08,  3.55it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  85% Completed | 176/206 [01:07<00:08,  3.64it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  86% Completed | 177/206 [00:56<00:13,  2.19it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  86% Completed | 177/206 [01:08<00:15,  1.89it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  88% Completed | 181/206 [00:57<00:07,  3.24it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  89% Completed | 183/206 [00:57<00:05,  3.88it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  86% Completed | 178/206 [01:09<00:12,  2.24it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  87% Completed | 179/206 [01:09<00:10,  2.57it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  87% Completed | 180/206 [01:09<00:08,  2.89it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  88% Completed | 181/206 [01:09<00:07,  3.16it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  88% Completed | 182/206 [01:10<00:07,  3.37it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  89% Completed | 183/206 [01:10<00:06,  3.53it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  89% Completed | 184/206 [01:10<00:06,  3.66it/s]\n(Worker pid=220) INFO 09-10 09:51:02 [weight_utils.py:798] Prefetching checkpoint files: 90% (186/206)\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  90% Completed | 185/206 [00:59<00:10,  2.02it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  90% Completed | 185/206 [01:11<00:10,  1.92it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  93% Completed | 191/206 [00:59<00:03,  3.82it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  90% Completed | 186/206 [01:11<00:08,  2.28it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  91% Completed | 187/206 [01:12<00:07,  2.63it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  91% Completed | 188/206 [01:12<00:06,  2.94it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  92% Completed | 189/206 [01:12<00:05,  3.21it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  92% Completed | 190/206 [01:12<00:04,  3.43it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  93% Completed | 191/206 [01:13<00:04,  3.56it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  93% Completed | 192/206 [01:13<00:03,  3.69it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  94% Completed | 194/206 [01:02<00:04,  2.54it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  95% Completed | 196/206 [01:06<00:07,  1.40it/s]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  94% Completed | 193/206 [01:22<00:37,  2.90s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  95% Completed | 196/206 [01:20<00:07,  1.40it/s]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  96% Completed | 197/206 [01:40<00:44,  4.90s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  96% Completed | 198/206 [01:41<00:34,  4.33s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  97% Completed | 199/206 [01:43<00:26,  3.78s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  97% Completed | 200/206 [01:44<00:19,  3.24s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  98% Completed | 201/206 [01:45<00:13,  2.78s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  98% Completed | 202/206 [01:48<00:11,  2.96s/it]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  95% Completed | 195/206 [02:10<02:19, 12.68s/it]\n(Worker pid=220) \nLoading safetensors checkpoint shards:  95% Completed | 196/206 [02:10<01:36,  9.62s/it]\n(Worker pid=220) \nLoading safetensors checkpoint shards: 100% Completed | 206/206 [02:11<00:00,  2.13s/it]\n(Worker pid=220) \nLoading safetensors checkpoint shards: 100% Completed | 206/206 [02:11<00:00,  1.57it/s]\n(Worker pid=220) \n(Worker pid=220) INFO 09-10 09:52:02 [default_loader.py:430] Loading weights took 131.12 seconds\n(Worker pid=220) INFO 09-10 09:52:02 [nvfp4.py:564] Using MoEPrepareAndFinalizeNoDPEPModular\n(Worker pid=220) INFO 09-10 09:52:03 [model_runner.py:407] Model loading took 74.34 GiB memory and 137.583518 seconds\n(Worker pid=220) INFO 09-10 09:52:03 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.\n(Worker pid=220) INFO 09-10 09:52:03 [connector.py:231] PleOffload: registered 1 PleOffloadLayer(s) (dp_rank=0, tp_rank=0, ipc_addr=ipc:///tmp/qwen38-flash-next-vllm-tmp/f93b22fd-5f11-43cb-8026-1bd1c5fcc0e9): ['language_model.model.layers.1.ple.ple_embedding']\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  99% Completed | 203/206 [02:04<00:18,  6.14s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload):  99% Completed | 204/206 [02:11<00:12,  6.35s/it]\n(Worker pid=220) INFO 09-10 09:52:27 [weight_utils.py:798] Prefetching checkpoint files: 100% (206/206)\n(Worker pid=220) INFO 09-10 09:52:27 [weight_utils.py:821] Prefetching checkpoint files into page cache finished in 156.33s\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload): 100% Completed | 205/206 [02:45<00:14, 14.21s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload): 100% Completed | 206/206 [03:14<00:00, 18.26s/it]\n(PleOffloadWorker pid=283) \nLoading safetensors checkpoint shards(PLE-offload): 100% Completed | 206/206 [03:14<00:00,  1.06it/s]\n(PleOffloadWorker pid=283) \n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:448] PLE offload matched 132 checkpoint tensor(s), loaded 5 offload entries, and verified 2/2 materialized parameter(s) for layers: ['language_model.model.layers.1.ple.ple_embedding']\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:471] PLE weight loading complete.\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:289] Bound IPC address ipc:///tmp/qwen38-flash-next-vllm-tmp/f93b22fd-5f11-43cb-8026-1bd1c5fcc0e9; waiting for 1 GPU worker registration(s).\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:479] Waiting for 1 GPU worker registration(s) ...\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:489] GPU worker 0 registered (dp_rank=0, tp_rank=0, layers=['language_model.model.layers.1.ple.ple_embedding']).\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:576] Registrations complete (dp_size=1, tp_size=1, layers=['language_model.model.layers.1.ple.ple_embedding']).\n(Worker pid=220) INFO 09-10 09:53:17 [worker.py:232] Worker ready - 1 PleOffloadLayer(s): ['language_model.model.layers.1.ple.ple_embedding']\n(PleOffloadWorker pid=283) INFO 09-10 09:53:17 [worker.py:590] Busy-loop started.\n(Worker pid=220) INFO 09-10 09:53:17 [interface.py:915] Setting attention block size to 800 tokens to ensure that attention page size is >= mamba page size.\n(Worker pid=220) INFO 09-10 09:53:17 [interface.py:939] Padding mamba page size by 0.25% to ensure that mamba page size and attention page size are exactly equal.\n(Worker pid=220) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(Worker pid=220) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(Worker pid=220) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend=\"torchvision\"` instead of `use_fast=True`, or `backend=\"pil\"` instead of `use_fast=False`.\n(Worker pid=220) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(Worker pid=220) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(Worker pid=220) INFO 09-10 09:53:21 [encoder_runner.py:120] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.\n(Worker pid=220) INFO 09-10 09:53:37 [backends.py:1094] Using cache directory: /tmp/qwen38-flash-next-vllm-cache/vllm/torch_compile_cache/e93cbb4dbb/rank_0_0/backbone for vLLM's torch.compile\n(Worker pid=220) INFO 09-10 09:53:37 [backends.py:1155] Dynamo bytecode transform time: 6.09 s\n(Worker pid=220) INFO 09-10 09:53:46 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 8.24 s\n(Worker pid=220) INFO 09-10 09:53:48 [backends.py:920] collected artifacts: 50 entries, 18 artifacts, 7462864 bytes total\n(Worker pid=220) INFO 09-10 09:53:48 [decorators.py:708] saved AOT compiled function to /tmp/qwen38-flash-next-vllm-cache/vllm/torch_compile_cache/torch_aot_compile/019c9dbce53150bec422439e66fc4f37f8648085fe5027fcd4c9ea831a57a8ff/rank_0_0/model\n(Worker pid=220) INFO 09-10 09:53:48 [monitor.py:53] torch.compile took 17.02 s in total\n(Worker pid=220) /tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.\n(Worker pid=220)   warn(\"tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.\")\n(EngineCore pid=202) INFO 09-10 09:54:18 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).\n(Worker pid=220) INFO 09-10 09:54:28 [monitor.py:81] Initial profiling/warmup run took 39.75 s\n(Worker pid=220) INFO 09-10 09:54:29 [gpu_worker.py:621] Initial free memory 94.43 GiB, reserved 5.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.\n(EngineCore pid=202) INFO 09-10 09:54:29 [kv_cache_utils.py:2258] GPU KV cache size: 188,059 tokens, Maximum concurrency for 32,768 tokens per request: 5.74x\n(Worker pid=220) INFO 09-10 09:54:29 [kernel_warmup.py:260] Using FlashInfer autotune cache file: /tmp/qwen38-flash-next-vllm-cache/vllm/flashinfer_autotune_cache/0.6.17/120f/f41924502a66e39db5e4f5dbc70029c3abde998b99d8fe344b33c58a7f32cc60/autotune_configs.json\n(Worker pid=220) 2026-09-10 09:54:29,642 - INFO - autotuner.py:829 - flashinfer.jit: [Autotuner]: Autotuning process starts ...\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:   0%|          | 0/21 [00:00<?, ?profile/s]2026-09-10 09:54:30,275 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:   5%|\u258d         | 1/21 [00:00<00:02,  8.51profile/s]2026-09-10 09:54:30,383 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  10%|\u2589         | 2/21 [00:00<00:02,  8.95profile/s]2026-09-10 09:54:30,494 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  14%|\u2588\u258d        | 3/21 [00:00<00:02,  8.95profile/s]2026-09-10 09:54:30,616 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  19%|\u2588\u2589        | 4/21 [00:00<00:01,  8.63profile/s]2026-09-10 09:54:30,758 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  24%|\u2588\u2588\u258d       | 5/21 [00:00<00:02,  7.99profile/s]2026-09-10 09:54:30,930 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  29%|\u2588\u2588\u258a       | 6/21 [00:00<00:02,  7.08profile/s]2026-09-10 09:54:31,140 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  33%|\u2588\u2588\u2588\u258e      | 7/21 [00:00<00:02,  6.11profile/s]2026-09-10 09:54:31,382 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  38%|\u2588\u2588\u2588\u258a      | 8/21 [00:01<00:02,  5.31profile/s]2026-09-10 09:54:31,637 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  43%|\u2588\u2588\u2588\u2588\u258e     | 9/21 [00:01<00:02,  4.78profile/s]2026-09-10 09:54:31,896 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  48%|\u2588\u2588\u2588\u2588\u258a     | 10/21 [00:01<00:02,  4.45profile/s]2026-09-10 09:54:32,160 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  52%|\u2588\u2588\u2588\u2588\u2588\u258f    | 11/21 [00:02<00:02,  4.23profile/s]2026-09-10 09:54:32,426 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  57%|\u2588\u2588\u2588\u2588\u2588\u258b    | 12/21 [00:02<00:02,  4.07profile/s]2026-09-10 09:54:32,695 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [00:02<00:02,  3.96profile/s]2026-09-10 09:54:32,967 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [00:02<00:01,  3.87profile/s]2026-09-10 09:54:33,242 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [00:03<00:01,  3.80profile/s]2026-09-10 09:54:33,519 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [00:03<00:01,  3.74profile/s]2026-09-10 09:54:33,802 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [00:03<00:01,  3.67profile/s]2026-09-10 09:54:34,091 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [00:03<00:00,  3.61profile/s]2026-09-10 09:54:34,386 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [00:04<00:00,  3.54profile/s]2026-09-10 09:54:34,686 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1:  95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [00:04<00:00,  3.47profile/s]2026-09-10 09:54:35,068 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 4 unsupported tactic(s) for trtllm::fused_moe::gemm1 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm1: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:04<00:00,  3.16profile/s]\n[AutoTuner]: Tuning trtllm::fused_moe::gemm1: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:04<00:00,  4.28profile/s]\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:   0%|          | 0/21 [00:00<?, ?profile/s]2026-09-10 09:54:35,275 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:   5%|\u258d         | 1/21 [00:00<00:04,  4.89profile/s]2026-09-10 09:54:35,478 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  10%|\u2589         | 2/21 [00:00<00:03,  4.91profile/s]2026-09-10 09:54:35,688 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  14%|\u2588\u258d        | 3/21 [00:00<00:03,  4.84profile/s]2026-09-10 09:54:35,915 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  19%|\u2588\u2589        | 4/21 [00:00<00:03,  4.66profile/s]2026-09-10 09:54:36,164 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  24%|\u2588\u2588\u258d       | 5/21 [00:01<00:03,  4.40profile/s]2026-09-10 09:54:36,449 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  29%|\u2588\u2588\u258a       | 6/21 [00:01<00:03,  4.05profile/s]2026-09-10 09:54:36,775 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  33%|\u2588\u2588\u2588\u258e      | 7/21 [00:01<00:03,  3.67profile/s]2026-09-10 09:54:37,126 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  38%|\u2588\u2588\u2588\u258a      | 8/21 [00:02<00:03,  3.36profile/s]2026-09-10 09:54:37,486 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  43%|\u2588\u2588\u2588\u2588\u258e     | 9/21 [00:02<00:03,  3.15profile/s]2026-09-10 09:54:37,847 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  48%|\u2588\u2588\u2588\u2588\u258a     | 10/21 [00:02<00:03,  3.02profile/s]2026-09-10 09:54:38,211 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  52%|\u2588\u2588\u2588\u2588\u2588\u258f    | 11/21 [00:03<00:03,  2.93profile/s]2026-09-10 09:54:38,577 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  57%|\u2588\u2588\u2588\u2588\u2588\u258b    | 12/21 [00:03<00:03,  2.87profile/s]2026-09-10 09:54:38,947 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f   | 13/21 [00:03<00:02,  2.82profile/s]2026-09-10 09:54:39,319 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 14/21 [00:04<00:02,  2.78profile/s]2026-09-10 09:54:39,694 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 15/21 [00:04<00:02,  2.74profile/s]2026-09-10 09:54:40,074 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 16/21 [00:05<00:01,  2.71profile/s]2026-09-10 09:54:40,462 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  81%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  | 17/21 [00:05<00:01,  2.67profile/s]2026-09-10 09:54:40,859 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 18/21 [00:05<00:01,  2.62profile/s]2026-09-10 09:54:41,268 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 | 19/21 [00:06<00:00,  2.57profile/s]2026-09-10 09:54:41,688 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2:  95%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c| 20/21 [00:06<00:00,  2.51profile/s]2026-09-10 09:54:42,260 - INFO - autotuner.py:1699 - flashinfer.jit: [Autotuner]: Skipped 10 unsupported tactic(s) for trtllm::fused_moe::gemm2 (enable debug logs to see details)\n(Worker pid=220) \n[AutoTuner]: Tuning trtllm::fused_moe::gemm2: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:07<00:00,  2.22profile/s]\n[AutoTuner]: Tuning trtllm::fused_moe::gemm2: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 21/21 [00:07<00:00,  2.92profile/s]\n(Worker pid=220) 2026-09-10 09:54:44,197 - INFO - autotuner.py:852 - flashinfer.jit: [Autotuner]: Autotuning process ends\n(Worker pid=220) 2026-09-10 09:54:44,232 - INFO - autotuner.py:2269 - flashinfer.jit: [Autotuner]: Saved 42 configs to /tmp/qwen38-flash-next-vllm-cache/vllm/flashinfer_autotune_cache/0.6.17/120f/f41924502a66e39db5e4f5dbc70029c3abde998b99d8fe344b33c58a7f32cc60/autotune_configs.json (42 new, 0 from previous config)\n(Worker pid=220) \nCapturing CUDA graphs (PIECEWISE):   0%|          | 0/7 [00:00<?, ?it/s]\nCapturing CUDA graphs (PIECEWISE):  14%|\u2588\u258d        | 1/7 [00:01<00:09,  1.53s/it]\nCapturing CUDA graphs (PIECEWISE):  29%|\u2588\u2588\u258a       | 2/7 [00:02<00:06,  1.33s/it]\nCapturing CUDA graphs (PIECEWISE):  43%|\u2588\u2588\u2588\u2588\u258e     | 3/7 [00:02<00:03,  1.24it/s]\nCapturing CUDA graphs (PIECEWISE):  57%|\u2588\u2588\u2588\u2588\u2588\u258b    | 4/7 [00:03<00:02,  1.09it/s]\nCapturing CUDA graphs (PIECEWISE):  71%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 5/7 [00:04<00:01,  1.52it/s]\nCapturing CUDA graphs (PIECEWISE):  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 6/7 [00:04<00:00,  1.48it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 7/7 [00:06<00:00,  1.07it/s]\nCapturing CUDA graphs (PIECEWISE): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 7/7 [00:06<00:00,  1.10it/s]\n(Worker pid=220) \nCapturing CUDA graphs (FULL):   0%|          | 0/4 [00:00<?, ?it/s]\nCapturing CUDA graphs (FULL):  25%|\u2588\u2588\u258c       | 1/4 [00:00<00:00,  9.14it/s]\nCapturing CUDA graphs (FULL):  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00,  9.18it/s]\nCapturing CUDA graphs (FULL):  75%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c  | 3/4 [00:00<00:00,  9.19it/s]\nCapturing CUDA graphs (FULL): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00,  9.35it/s]\nCapturing CUDA graphs (FULL): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00,  9.28it/s]\n(Worker pid=220) INFO 09-10 09:54:51 [model_runner.py:953] Graph capturing finished in 7 secs, took 0.29 GiB\n(Worker pid=220) INFO 09-10 09:54:54 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.\n(EngineCore pid=202) INFO 09-10 09:54:55 [core.py:347] init engine (profile, create kv cache, warmup model) took 98.09 s (compilation: 17.02 s)\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend=\"torchvision\"` instead of `use_fast=True`, or `backend=\"pil\"` instead of `use_fast=False`.\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(EngineCore pid=202) [ERROR] `min_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.\n(EngineCore pid=202) [ERROR] `max_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /tmp/qwen38-flash-next-vllm-runtime/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.\n(EngineCore pid=202) INFO 09-10 09:55:01 [kernel.py:308] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])\n(EngineCore pid=202) INFO 09-10 09:55:01 [compilation.py:329] Enabled custom fusions: act_quant\n(APIServer pid=151) INFO 09-10 09:55:01 [api_server.py:653] Supported tasks: ['generate']\n(APIServer pid=151) INFO 09-10 09:55:01 [parser_manager.py:58] \"auto\" tool choice has been enabled.\n(APIServer pid=151) INFO 09-10 09:55:01 [hf.py:551] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.\n(APIServer pid=151) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(APIServer pid=151) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}\n(APIServer pid=151) INFO 09-10 09:55:13 [base.py:235] Multi-modal warmup completed in 11.654s\n(APIServer pid=151) INFO 09-10 09:55:13 [base.py:235] Readonly multi-modal warmup completed in 0.744s\n(APIServer pid=151) WARNING 09-10 09:55:13 [model.py:1713] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.\n(APIServer pid=151) INFO 09-10 09:55:13 [api_server.py:657] Starting vLLM server on http://127.0.0.1:1234\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:51] Available routes are:\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /openapi.json, Methods: GET, HEAD\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /docs, Methods: GET, HEAD\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /docs/oauth2-redirect, Methods: GET, HEAD\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /redoc, Methods: GET, HEAD\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /load, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /version, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /health, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /metrics, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /tokenize, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /detokenize, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/models, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /ping, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /ping, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /invocations, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/chat/completions, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/chat/completions/batch, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/responses, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/responses/{response_id}, Methods: GET\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/responses/{response_id}/cancel, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/completions, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/messages, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/messages/count_tokens, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /generative_scoring, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /scale_elastic_ep, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /is_scaling_elastic_ep, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/chat/completions/render, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/completions/render, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/chat/completions/derender, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /v1/completions/derender, Methods: POST\n(APIServer pid=151) INFO 09-10 09:55:13 [launcher.py:60] Route: /inference/v1/generate, Methods: POST\n(APIServer pid=151) INFO:     Started server process [151]\n(APIServer pid=151) INFO:     Waiting for application startup.\n(APIServer pid=151) INFO:     Application startup complete.",
+  "server_ready_timeout_seconds": 1500,
+  "setup_elapsed_seconds": 494.94399780799995,
+  "setup_started_epoch": 1789033620.9774501,
+  "setup_total_timeout_seconds": 1800,
+  "source_dataset": "keithtyser/duck-qwen38-nvfp4-mtp-vllm-smoke-v1",
+  "source_identity_sha256": "473e695998342160478e9066d8a0d45536942ef37c75ddb803f36d3e0abb397c",
+  "vllm_image": "vllm/vllm-openai:qwen38-flash-next",
+  "vllm_index_digest": "sha256:fc120ece0a388cc0aa1caad4a9f1cd92113484ab7ec2fd0efadd62585be05bf8",
+  "vllm_tuning": {
+    "enable_chunked_prefill": true,
+    "enable_prefix_caching": false,
+    "kv_cache_dtype": "auto",
+    "kv_cache_memory_bytes": 5368709120,
+    "max_cudagraph_capture_size": 32,
+    "max_num_batched_tokens": 8192,
+    "max_num_batched_tokens_requested": 8192,
+    "max_num_seqs": 8,
+    "moe_backend": null,
+    "mtp_dynamic_batch_schedule": null,
+    "mtp_index_share_for_iteration": false,
+    "mtp_speculative_tokens": 0,
+    "omp_num_threads": 1,
+    "overridden": {
+      "TAAF_VLLM_ENABLE_PREFIX_CACHING": true,
+      "TAAF_VLLM_KV_CACHE_DTYPE": true,
+      "TAAF_VLLM_KV_CACHE_MEMORY_BYTES": true,
+      "TAAF_VLLM_MAX_CUDAGRAPH_CAPTURE_SIZE": true,
+      "TAAF_VLLM_MAX_NUM_BATCHED_TOKENS": true,
+      "TAAF_VLLM_MAX_NUM_SEQS": true,
+      "TAAF_VLLM_MOE_BACKEND": false,
+      "TAAF_VLLM_MTP_DYNAMIC_BATCH_SCHEDULE": false,
+      "TAAF_VLLM_MTP_INDEX_SHARE_FOR_ITERATION": false,
+      "TAAF_VLLM_MTP_TOKENS": true,
+      "TAAF_VLLM_OMP_THREADS": true
+    },
+    "schema_version": 1
+  },
+  "vllm_version": "0.1.dev20073+g8e685d198"
+}

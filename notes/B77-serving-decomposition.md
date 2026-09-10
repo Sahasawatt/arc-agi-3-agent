@@ -1,5 +1,13 @@
 # B77–B79 — which part of the serving stack is worth the step, and can it be separated at all
 
+Correction after reproduction on 2026-09-10: the aggregate action/level numbers below
+reproduce, but the historical claim that an individual Flash action is worse is not
+identified by them. Different trajectories/depth confound the ratio. Model identity also
+affects throughput, and an MTP-off run measures its marginal effect, not a model/volume
+percentage. See [B78 preregistration](B78-mtp-off.md). The earlier reasoning remains below
+as a dated record, not the current verdict. The old "12 controls" label miscounts its own
+listed checks; the probe now reports the assertion families instead of that total.
+
 Written 2026-09-10. `B69` says the Flash-Next stack moved the score. The sentence these rows
 answer — *"this run isolates neither model nor quant nor MTP nor scheduler; it says the stack is
 worth 3.21, not which part of it is"* — is **not B69's**: it is this workspace's own reading of
