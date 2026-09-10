@@ -99,10 +99,50 @@ latent in every other thui-v3-0 arm). Full run `thui-gemma-v1` pushed the same m
 
 ## Full-run record (sahasawatt/thui-gemma-v1, 2026-09-07 08:20–10:42Z, wall 8,664 s) — CLOSED NEGATIVE
 
-Public **0.41 / 5 levels / 4 of 25 scoring / 1,562 actions / 0.56 M generated tokens** (lp85, sb26, su15, vc33 at
+Public **0.41 / 5 levels / 5 of 25 scoring / 1,562 actions / 0.56 M generated tokens** (bp35, lp85, sb26, su15, vc33 at
 1 level each; everything else 0). `rank_runs.py` vs `thuiv3-pool` (n=4): pool 4.39 vs 0.41, **+19.25 levels for the
 pool, 20 up / 2 down, p = 0.0 → DISTINGUISHABLE, WORSE** — a single draw ranks here because the gap is 10× the
 same-build spread. Fixture not banked as a baseline (it is not one).
+
+**Source, added 2026-09-10 after `review-fanout` correctly reported that this section cited none.**
+The run's own `benchmark.json` is one read-only call away and no fixture is needed to reach it:
+
+```python
+from kaggle.api.kaggle_api_extended import KaggleApi
+a = KaggleApi(); a.authenticate()
+a.kernels_output("sahasawatt/thui-gemma-v1", path="<dir>", file_pattern="benchmark")
+```
+
+The probe discriminates: a fabricated slug answers `Permission 'kernels.get' was denied`, and
+`sahasawatt/thui-gemma-v0` returns its own pair in the same invocation. Re-derived from the 25
+`game_runs` it holds — **five of seven figures above reproduce exactly**:
+
+| figure | how it is derived | reproduces |
+|---|---|---|
+| public **0.41** | `mean(final_score)` = 10.1308 / 25 = 0.4052 | ✅ |
+| **5** levels | `sum(levels_completed)` | ✅ |
+| **5 of 25** scoring | games with `levels_completed > 0` | ✅ |
+| bp35 · lp85 · sb26 · su15 · vc33 @ 1 | exact game ids | ✅ |
+| **1,562** actions | `sum(len(history))` over the 25 runs | ✅ |
+| 0.56 M generated tokens | `sum(solver_note tokens=)` gives **606,621 = 0.61 M** | ❌ **differs** |
+| wall **8,664 s** | this header's own `08:20–10:42Z` gives **8,520 s** — a **+144 s** excess, unexplained | ⚠️ **small gap** |
+
+⚠️ **Three traps this re-derivation had to route around**, and the third was nearly published as a
+finding. Two are already recorded in the workspace: `final_generated_tokens` is **0 on every game**
+(use `solver_note tokens=`), and `sum(final_wallclock_seconds)` is **198,381 s** — the sum of 25
+per-game clocks, not elapsed. The third is new and belongs here: **`benchmark.json`'s `start_time`
+and `end_time` are NAIVE LOCAL TIME (UTC+7), not UTC**, and nothing in the field names says so. Read
+as UTC they put this run at `01:26Z` against a header saying `08:20Z`, which reads exactly like *the
+API served a different version* — the first draft of this section said so. Add 7 h and both
+artifacts land where their headers put them, with a plausible setup gap either side
+(**v1 08:26:57 vs a kernel start of 08:20Z = 7 min**; **v0 06:43:53 vs 06:32Z = 12 min**). Two runs
+agreeing on the offset is what settles it; one would not have.
+
+⚠️ The remaining two rows are **left as written, not corrected.** The token figure is off by
+0.05 M against the only field that carries it, and the wall by 144 s against this header's own span;
+the CLOSED NEGATIVE verdict rests on neither. Picking a value would be fabricating a measurement.
+The levels, the scoring set, the per-game breakdown, the action count and the public score — which
+is what the verdict does rest on — are now sourced and reproduce exactly.
 
 Where it lost, from the 25 usage sidecars (781 requests):
 

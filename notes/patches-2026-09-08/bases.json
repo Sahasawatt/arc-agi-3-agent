@@ -1,0 +1,25 @@
+{
+  "143": {
+    "base": "972a7f5dca83026840d236a4e45e197552a72f9c",
+    "paths": [
+      "agents/thui/act/thui-act-v2.md",
+      "notes/B70-act-now-breaker-on-duck-design.md"
+    ]
+  },
+  "145": {
+    "base": "adaded7ccc86e0c0c6e27856f8aea50bcca2df31",
+    "paths": [
+      "notes/wayfinder/MAP.md"
+    ]
+  },
+  "142": {
+    "base": "08e10b6c903c4bb013c5249804baaddddba94b15",
+    "paths": [
+      "agents/thui/README.md",
+      "agents/thui/gemma/thui-gemma-v1.md",
+      "notes/B64-gemma-4-31b-duck-agent-design.md",
+      "notes/LEDGER-all-runs.md",
+      "notes/wayfinder/MAP.md"
+    ]
+  }
+}

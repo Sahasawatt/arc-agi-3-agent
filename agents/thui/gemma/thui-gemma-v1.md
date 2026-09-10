@@ -8,7 +8,7 @@ parsers, 32-image limit, the S0 env fix, the competition-mount resolver). Kernel
 
 | public | levels | scoring | actions | gen tok | act/lvl |
 |---|---|---|---|---|---|
-| **0.41** | **5** | 4 / 25 | 1,562 | 0.56 M | 312 |
+| **0.41** | **5** | 5 / 25 | 1,562 | 0.56 M | 312 |
 
 `rank_runs.py` vs `thuiv3-pool`: pool 4.39 / 24.25 levels vs this 0.41 / 5 — **20 up / 2 down for the pool,
 p = 0.0, DISTINGUISHABLE (WORSE)**.

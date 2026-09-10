@@ -50,6 +50,18 @@ and `B62`. Unblock: the weekly reset on `sahasawatt`, or
 **Smoke PASSED on version 2 (`sahasawatt/thui-gemma-v0` v2, 2026-09-07 06:32–07:00Z, 27 min).** Read against the
 oracle below from the kernel's own log + usage sidecars (`scratchpad` scripts, then this page):
 
+⚠️ **`scratchpad` scripts names a category, not a path, and the numbers below do NOT re-derive from
+the banked artifact.** Pulled 2026-09-10 via
+`kernels_output("sahasawatt/thui-gemma-v0", file_pattern="benchmark")` — the probe discriminates, a
+fabricated slug answers `Permission 'kernels.get' was denied`. It is the **right** run (its clock is
+naive UTC+7; `23:43:53` + 7 h = `06:43:53Z`, 12 min after the `06:32Z` kernel start above), but the
+log it returns contains **0** occurrences of `tool_calls` and **0** of `turns`, so
+`91 % (31 / 34 turns)` and `finish_reason tool_calls 68/69` have no source in it. The `696 s` is a
+time-to-serve *inside* the run, not a wall, so the artifact's 925 s span neither confirms nor
+refutes it. The v1 full-run figures DID re-derive from this same route
+(`notes/B64-gemma-4-31b-duck-agent-design.md` §Full-run record, 5 of 7 exact), so the gap is this
+section's sourcing, not the arm's. Treat these numbers as unverified until the script is named.
+
 - **S0** — vLLM 0.23 served `google/gemma-4-31b-it` (online fp8) at **696 s**; `check_cuda_arch` **0 hits** — the
   `VLLM_USE_FLASHINFER_SAMPLER=0` + `TORCH_CUDA_ARCH_LIST=12.0` env in `vllm_env()` is the fix for the v1 S0 death on
   yocybercode (flashinfer JIT sampler on sm_120).
