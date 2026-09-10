@@ -92,16 +92,15 @@ def main():
     assert not any(t in ACCOUNTS for r in d for t in r["run"].split()), "account token survived the parse"
     # act/lvl must order correctly on values we already know
     assert m(pick(V20), "act") / m(pick(V20), "lev") > 1000, "v20 is the known-catastrophic arm"
-    print(f"controls: 12/12 pass (4 membership, 4 cardinality, 1 negative, 1 no-stray-draw, "
-          f"2 parse, 1 known-value) @ {REF}\n")
+    print(f"controls: all membership, cardinality, negative, stray-draw, parse and known-value assertions pass @ {REF}\n")
 
     b, c, f, v = pick(BASE), pick(CLOCK), pick(FLASH), pick(V20)
-    print("== act/lvl -- HIGHER means each action buys LESS ==")
+    print("== aggregate act/lvl -- descriptive, not causal per-action quality ==")
     for label, g in (("27B chassis", b), ("27B + 2x clock (B34)", c),
                      ("Flash-Next (B69/B76)", f), ("v20 MoE-A3B (B25)", v)):
         print(f"  {label:<22} n={len(g)}  lev {m(g,'lev'):>5.1f}  act {m(g,'act'):>6.0f}  "
               f"act/lvl {m(g,'act')/m(g,'lev'):>7.1f}")
-    print("\n  -> a Flash action is individually WORSE than a 27B action. It wins on VOLUME.")
+    print("\n  -> Flash spent more actions per cleared level; this aggregate does not isolate action quality.")
 
     # --- how much of the gain does volume explain? --------------------------
     a2, l2 = m(f, "act"), m(f, "lev")
@@ -121,7 +120,7 @@ def main():
     # --- the control that bounds the volume story ---------------------------
     a0, l0 = m(b, "act"), m(b, "lev")
     bb = math.log(l1 / l0) / math.log(a1 / a0)
-    print(f"\n== control: volume is NECESSARY, not SUFFICIENT ==")
+    print(f"\n== control: more actions alone do not guarantee more levels ==")
     print(f"  v20 fired {m(v,'act'):.0f} actions -- MORE than Flash's {a2:.0f} -- and cleared "
           f"{m(v,'lev'):.0f} levels.")
     print(f"  the volume model predicts {l0*(m(v,'act')/a0)**bb:.1f} for that action count.")
@@ -130,8 +129,8 @@ def main():
 
     print("\n== the experiment that WOULD decide it, at no submission slot ==")
     print("  Serve Flash-Next with MTP-3 speculative decoding OFF. Same weights, same NVFP4")
-    print("  quant, same scheduler; speculative decoding is distribution-preserving, so the")
-    print("  POLICY is held fixed while VOLUME moves. A kernel push spends GPU quota, not the")
+    print("  quant, same scheduler; measure the marginal MTP effect, not a model/volume split.")
+    print("  Identical realized policies are unverified. A kernel push spends GPU quota, not the")
     print("  daily submission slot.")
 
 
