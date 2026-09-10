@@ -1,7 +1,9 @@
 # thui `act v2` — the breaker with the name mapping fixed, full 25: public 2.47, B70 CLOSED
 
 `thui-act-v1` + the v2 fix (engine action names mapped through `to_model_action` before filtering; withheld case
-logged). Kernel `sahasawatt/thui-act-v2` v1, 2026-09-07 09:31–11:45Z, wall 8,480 s.
+logged). Kernel `sahasawatt/thui-act-v2` v1, 2026-09-07 09:31–11:45Z, wall 8,480 s. ⚠️ That span is
+8,040 s, not 8,480 — the two disagree and neither is sourced; see the ⚠️ under
+`notes/B70-act-now-breaker-on-duck-design.md` §Full-run record, v2.
 
 ## What it scored
 

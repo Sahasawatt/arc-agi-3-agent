@@ -1,6 +1,6 @@
 """thui-act -- the ACT-NOW breaker ported from the AVO arm (#135) onto the duck chassis (thui-v3-0).
 
-Why here and not on AVO: the AVO arm shrinks 3.8x public->hidden (4.40 -> 1.15) against the duck line's
+Why here and not on AVO: the AVO arm shrinks 3.76x public->hidden (4.32 -> 1.15) against the duck line's
 2.7x, so a breaker that works costs more there than it earns. The failure it targets exists on duck too:
 B40 measured ~30% of analyze() turns ending with no executed action, and the 25-game replay of the AVO
 transcripts (2026-09-07, local qwen3-8b, `scratchpad/avo_directive_all.py`) moved first-call action from

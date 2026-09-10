@@ -5,9 +5,9 @@ full `thui-act-v1`). Port of the AVO arm's breaker A (#135, `thui-avo/build_note
 
 ## Why move it off AVO
 
-The AVO arm shrinks **3.8×** public→hidden (4.40 → 1.15) against the duck line's 2.7× (LEDGER), so a
+The AVO arm shrinks **3.76×** public→hidden (**4.32 → 1.15**) against the duck line's 2.7× (LEDGER), so a
 breaker that works there earns less than the same breaker on the chassis that owns the standing best
-(2.03 hidden, thui-v1-1-r2). The failure class exists on duck: **B40** measured ~30 % of `analyze()`
+(2.03 hidden, `thui-v3-1`). The failure class exists on duck: **B40** measured ~30 % of `analyze()`
 turns ending with no executed action, and the per-level census (B52) puts 67 % of stalls in the
 starved shape. Breaker B (exploit-off) has no counterpart on duck and is not ported.
 
@@ -47,7 +47,7 @@ solver passes `valid_actions` / `step_env` as keywords) and `ToolAgent._build_us
 prefix; keyword-only `valid_actions` / `current_frame`, from which the cleared-level count is read).
 State per agent keyed by the game read from the state-path stem (#127), reset on a game change.
 `_last_step_summary` persists across turns, so every per-turn read is gated on `step_executed`.
-Teeth: 20 assertions on a fake agent (thresholds, order, round-robin, per-level cap and ledger,
+Teeth: 36 assertions on a fake agent (thresholds, order, round-robin, per-level cap and ledger,
 scoring-game thresholds, game reset, prompt wrap on/off), quiet so no fake `game=m0r0` line reaches
 the run log. Base: `thui-v3-0`; cells changed [0, 12] (full) / [0, 12, 14] (smoke).
 
@@ -109,6 +109,17 @@ defect, not by a result. A v2 with the name mapping fixed would measure stage 2 
 does not move levels on this chassis (v12/v16/B32 already said so), and only the executed-action stage is new.
 
 ## Full-run record, v2 (sahasawatt/thui-act-v2, 2026-09-07 09:31–11:45Z, wall 8,480 s) — CLOSED
+
+⚠️ **The wall figure and the timestamp span disagree by 440 s and NEITHER is sourced — left as
+found rather than picked.** `09:31–11:45Z` spans **8,040 s** against the stated **8,480 s**. The v1
+header two sections up reproduces to within 2 s (`08:51–11:12Z` = 8,460 s vs 8,458 s), which is why
+this reads like an error rather than rounding. But it is not decisive: `notes/B69-flash-next-serving-design.md:101`
+carries the same shape in the same direction (`09:23–11:35Z` = 7,920 s against a claimed 8,699 s),
+so the displayed minute-precision times may not be what the wall figure was read from. **No
+artifact on disk carries either number** — `notes/LEDGER-all-runs.md` repeats the timestamps and
+gives no wall at all, and `eval/fixtures/thui-act-v2.json` holds no duration field. What settles it
+is one read: `kaggle kernels output sahasawatt/thui-act-v2` and the run's own clock. Until then,
+quote the arm's public/levels — never its wall. (review-fanout, 2026-09-10.)
 
 Public **2.47 / 19 levels / 16 of 25 scoring / 1,249 actions / 2.31 M generated tokens**. `rank_runs.py` `thuiv3-pool`
 → v2: −1.92 mean, −5.25 levels, 8 up / 15 down, 8 flipped, **p = 0.0309 → DISTINGUISHABLE, WORSE**. v1 → v2:
