@@ -4,7 +4,8 @@
 Reads notes/LEDGER-all-runs.md through a git ref (never off disk) and asks whether a
 Flash-Next action is worth more than a 27B action, or merely more numerous.
 
-Asserts controls before printing any figure. Exit 0 always; this is a report, not a gate.
+Asserts controls before printing any figure, and DIES on any of them; this is a report,
+not a gate, but a report over a mis-parsed population is worse than no report.
 
 usage: python3 eval/b77_volume_vs_quality.py [ref]     (default: HEAD)
 """
@@ -13,9 +14,21 @@ import math, re, statistics as st, subprocess, sys
 REF = sys.argv[1] if len(sys.argv) > 1 else "HEAD"
 
 # Membership is DECLARED, never inferred -- same rule as eval/fixtures/arms.json.
-BASE = ["v10cal", "v10out", "thui-v1-1", "thui-v1-1-r2", "thui-v3-0", "thui-v3-1"]  # 27B anim chassis
+#
+# A ledger run-id cell is "<run> [draw] [account]", e.g. "thui-v3-0 v3",
+# "thui-fast-v0 v2 sahasawatt". The first version of this file took cl(c[0]).split()[0],
+# which stripped the account AND silently merged every later draw onto the first token --
+# so BASE declared 6 names and averaged 7 rows, FLASH declared 2 and averaged 3, while the
+# set-equality control below passed, because a duplicate mapping onto a declared name leaves
+# the SET unchanged. The published figures were the 7-row and 3-row ones and are unaffected;
+# what was wrong was that nobody had declared them. Draws are now declared one per row and
+# the control counts them. (Found by review-fanout on PR #151, 2026-09-10.)
+ACCOUNTS = {"yocybercode", "sahasawatt"}   # trailing owner token, not part of the run id
+
+BASE = ["v10cal", "v10out", "thui-v1-1", "thui-v1-1-r2",
+        "thui-v3-0", "thui-v3-0 v3", "thui-v3-1"]      # 27B anim chassis, 7 draws
 CLOCK = ["clock2x"]              # B34: the same chassis, 2x wall
-FLASH = ["thui-fast-v0", "thui-a7-full25-r1"]   # B69 + B76
+FLASH = ["thui-fast-v0", "thui-fast-v0 v2", "thui-a7-full25-r1"]   # B69 x2 + B76
 V20 = ["v20"]                    # B25: a MoE swap that fired 7,656 actions for 3 levels
 
 
@@ -34,7 +47,10 @@ def rows(ref):
         c = [x.strip() for x in l.strip().strip("|").split("|")]
         if len(c) < 10 or c[0].lower().startswith("run") or set(c[0]) <= set("-: "):
             continue
-        out.append(dict(run=cl(c[0]).split()[0], lev=num(c[4]), act=num(c[5])))
+        toks = cl(c[0]).split()
+        while toks and toks[-1] in ACCOUNTS:
+            toks.pop()
+        out.append(dict(run=" ".join(toks), lev=num(c[4]), act=num(c[5])))
     return [r for r in out if r["lev"] and r["act"]]
 
 
@@ -45,12 +61,39 @@ def main():
 
     # --- controls -----------------------------------------------------------
     for label, names in (("BASE", BASE), ("CLOCK", CLOCK), ("FLASH", FLASH), ("V20", V20)):
+        assert len(names) == len(set(names)), f"{label}: a name is declared twice"
         got = {r["run"] for r in pick(names)}
         assert got == set(names), f"{label}: declared {set(names)}, ledger has {got}"
+        # CARDINALITY, not just membership: set equality cannot see a second row landing on a
+        # declared name, which is exactly the defect this control was blind to before.
+        assert len(pick(names)) == len(names), (
+            f"{label}: declared {len(names)} rows, ledger matched {len(pick(names))} -- "
+            f"{sorted(r['run'] for r in pick(names))}")
     assert not pick(["this-run-does-not-exist"]), "negative control matched"
+    # The bug was silent INCLUSION; the mirror is silent EXCLUSION. A later draw of a declared
+    # build lands in the ledger under "<run> vN" and, once the parse stops merging it, simply
+    # falls outside every arm with nothing said. Every row sharing a first token with a declared
+    # name must be declared too, or named here as a deliberate drop.
+    DROPPED = {}                       # run-id -> why. Empty today; a drop must be argued, not silent.
+    declared = set(BASE) | set(CLOCK) | set(FLASH) | set(V20)
+    fam = {n.split()[0] for n in declared}
+    stray = {r["run"] for r in d if r["run"].split()[0] in fam} - declared - set(DROPPED)
+    assert not stray, (
+        f"ledger rows share a build with a declared arm but are declared nowhere: {sorted(stray)} "
+        f"-- add them to their arm or to DROPPED with a reason")
+    # POSITIVE control on the parse itself: the two draw-suffixed rows must survive as
+    # DISTINCT ids. Under the old .split()[0] both sides of each pair collapsed to one.
+    ids = [r["run"] for r in d]
+    for a, b_ in (("thui-v3-0", "thui-v3-0 v3"), ("thui-fast-v0", "thui-fast-v0 v2")):
+        assert ids.count(a) == 1 and ids.count(b_) == 1, (
+            f"draw-suffix parse: expected one {a!r} and one {b_!r}, got "
+            f"{ids.count(a)} and {ids.count(b_)}")
+    # ...and the account token must be gone, not merely tolerated.
+    assert not any(t in ACCOUNTS for r in d for t in r["run"].split()), "account token survived the parse"
     # act/lvl must order correctly on values we already know
     assert m(pick(V20), "act") / m(pick(V20), "lev") > 1000, "v20 is the known-catastrophic arm"
-    print(f"controls: 6/6 pass (4 declared-membership, 1 negative, 1 known-value) @ {REF}\n")
+    print(f"controls: 12/12 pass (4 membership, 4 cardinality, 1 negative, 1 no-stray-draw, "
+          f"2 parse, 1 known-value) @ {REF}\n")
 
     b, c, f, v = pick(BASE), pick(CLOCK), pick(FLASH), pick(V20)
     print("== act/lvl -- HIGHER means each action buys LESS ==")
@@ -66,7 +109,7 @@ def main():
     print("\n== the split, and why the data does not determine it ==")
     print("  levels ~ actions^b, with b estimated ON THE 27B CHASSIS ONLY (base -> clock2x),")
     print("  then extrapolated to Flash's action count. Two defensible bases:")
-    for label, g0 in (("mean of the 6 anim runs", b), ("v10cal alone (clock2x's OWN base)", pick(["v10cal"]))):
+    for label, g0 in ((f"mean of the {len(b)} anim draws", b), ("v10cal alone (clock2x's OWN base)", pick(["v10cal"]))):
         a0, l0 = m(g0, "act"), m(g0, "lev")
         bb = math.log(l1 / l0) / math.log(a1 / a0)
         pred = l0 * (a2 / a0) ** bb

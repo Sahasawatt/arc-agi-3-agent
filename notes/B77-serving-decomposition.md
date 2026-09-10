@@ -1,8 +1,14 @@
 # B77–B79 — which part of the serving stack is worth the step, and can it be separated at all
 
-Written 2026-09-10. `B69` says the Flash-Next stack moved the score and states plainly that it
-"isolates neither model nor quant nor MTP nor scheduler". These three rows are what that sentence
-turns into once the campaign's own banked runs are asked about it.
+Written 2026-09-10. `B69` says the Flash-Next stack moved the score. The sentence these rows
+answer — *"this run isolates neither model nor quant nor MTP nor scheduler; it says the stack is
+worth 3.21, not which part of it is"* — is **not B69's**: it is this workspace's own reading of
+B69, at `CLAUDE.md:415` in `Knowless-Crew/kc-arc-agi-pub`, not in this repo. The first draft of
+this file attributed it to `B69` and quoted it as if from `notes/B69-flash-next-serving-design.md`,
+which contains no such sentence (grep for `isolate` there: 0 hits). Recorded rather than silently
+corrected, because attributing your own sentence to a colleague's document is the error that
+travels furthest. These three rows are what that reading turns into once the campaign's own banked
+runs are asked about it.
 
 Reproduce every figure below:
 
@@ -10,8 +16,16 @@ Reproduce every figure below:
 python3 eval/b77_volume_vs_quality.py
 ```
 
-Six controls — four declared-membership (an arm whose ledger rows do not match its declared members
-aborts), one negative, one known-value — before any figure is printed.
+Twelve controls before any figure is printed — four declared-membership, four **cardinality**,
+one negative, one no-stray-draw, two parse, one known-value. An arm whose ledger rows do not match
+its declared members aborts, and so does one that matches the right *names* in the wrong *number*.
+⚠️ The first version claimed six and claimed the abort, and the abort did not work: the run-id
+parser truncated `"thui-v3-0 v3"` to `thui-v3-0`, so BASE declared 6 names and averaged **7** rows
+while set-equality passed, because a duplicate mapping onto a declared name leaves the SET
+unchanged. FLASH declared 2 and averaged 3 the same way. **The figures below are unchanged** — they
+always were the 7-row and 3-row means; what was missing is that nobody had declared them. Found by
+`review-fanout` on PR #151, 2026-09-10; the parse and cardinality controls are proved red by
+mutation (restore the old `.split()[0]`, or un-declare either draw).
 
 ## The reframe (B77)
 
@@ -58,7 +72,7 @@ Flash's action count and read the residual as the model's contribution:
 
 | base used for the fit | b | predicted levels | volume | model |
 |---|---:|---:|---:|---:|
-| mean of the 6 anim runs | 0.342 | 33.9 | **69%** | 31% |
+| mean of the 7 anim draws | 0.342 | 33.9 | **69%** | 31% |
 | `v10cal` alone — clock2x's own base | 0.138 | 31.5 | **34%** | 66% |
 
 **Two defensible base choices, opposite verdicts.** `b` rests on two points and `clock2x` is n=1, so
@@ -82,7 +96,8 @@ fixed while volume moves** — the one clean cut through this confound. Compare 
 banked Flash draws.
 
 Cost: one public kernel run. A kernel push spends **GPU quota, not the daily submission slot** —
-the two are different resources (`scripts/kaggle_push_kernel.py`: *"Compute, never a submission."*).
+the two are different resources (`scripts/kaggle_push_kernel.py:2` — *"Push ONE kernel directory
+to Kaggle. Compute, never a submission."* — **in `Knowless-Crew/kc-arc-agi-pub`, not this repo**).
 
 Pre-register before building: if levels fall roughly in proportion to the action drop, volume is the
 mechanism and the model residual is small. If levels hold while actions fall, the model is doing the
@@ -104,6 +119,12 @@ available weights* — which is a real answer and stops the question being re-as
 competition kernel since 2026-09-01, beside `keithtyser/duck-qwen3-8-27b-fp8`,
 `jakobbrggen/taaf-anim-arc-agi-3-solver` and `jeroencottaar/tufa-labs-duck-harness-june-30-m`.
 
-⚠️ **`wuliao0/duck-qwen3-8-anim-base` was published 2026-09-10 01:33Z** — anim on the Qwen3.8 base,
+⚠️ **`wuliao0/duck-qwen3-8-anim-base` last ran `2026-09-10 01:33:34Z`** — anim on the Qwen3.8 base,
 which is exactly the build `B69`'s *Not in this build* section named as ours to do next. Read it
-before building it.
+before building it. Source: `kaggle kernels list --user wuliao0 --csv`, which returns that one
+kernel with `lastRunTime 2026-09-10 01:33:34.063000`; the probe discriminates — a fabricated user
+answers `Not found` and `--user keithtyser` returns his three real kernels in the same invocation.
+⚠️ The first draft of this line said **"was published"**. `lastRunTime` is when a kernel last RAN;
+those are different claims and only the second is what the API returned. ⚠️ `kernels list -s <slug>`
+is **not** usable here — a fabricated slug returns unrelated kernels rather than nothing, so it
+cannot tell a hit from a miss.
