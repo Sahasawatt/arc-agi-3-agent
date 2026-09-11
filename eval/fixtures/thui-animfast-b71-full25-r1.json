@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 134,
+   "levels": 3.0,
+   "score": 16.666666666666664
+  },
+  "bp35": {
+   "actions": 21,
+   "levels": 0.0,
+   "score": 0
+  },
+  "cd82": {
+   "actions": 65,
+   "levels": 1.0,
+   "score": 4.761904761904762
+  },
+  "cn04": {
+   "actions": 57,
+   "levels": 0.0,
+   "score": 0
+  },
+  "dc22": {
+   "actions": 131,
+   "levels": 2.0,
+   "score": 14.285714285714285
+  },
+  "ft09": {
+   "actions": 69,
+   "levels": 5.0,
+   "score": 71.42857142857143
+  },
+  "g50t": {
+   "actions": 15,
+   "levels": 0.0,
+   "score": 0
+  },
+  "ka59": {
+   "actions": 60,
+   "levels": 1.0,
+   "score": 3.571428571428571
+  },
+  "lf52": {
+   "actions": 82,
+   "levels": 1.0,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 70,
+   "levels": 4.0,
+   "score": 27.77777777777778
+  },
+  "ls20": {
+   "actions": 179,
+   "levels": 1.0,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 40,
+   "levels": 0.0,
+   "score": 0
+  },
+  "r11l": {
+   "actions": 21,
+   "levels": 1.0,
+   "score": 4.761904761904762
+  },
+  "re86": {
+   "actions": 173,
+   "levels": 3.0,
+   "score": 16.666666666666664
+  },
+  "s5i5": {
+   "actions": 33,
+   "levels": 1.0,
+   "score": 2.7777777777777777
+  },
+  "sb26": {
+   "actions": 73,
+   "levels": 1.0,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 107,
+   "levels": 3.0,
+   "score": 23.999087165663692
+  },
+  "sk48": {
+   "actions": 76,
+   "levels": 0.0,
+   "score": 0
+  },
+  "sp80": {
+   "actions": 42,
+   "levels": 1.0,
+   "score": 4.761904761904762
+  },
+  "su15": {
+   "actions": 46,
+   "levels": 2.0,
+   "score": 6.666666666666667
+  },
+  "tn36": {
+   "actions": 81,
+   "levels": 1.0,
+   "score": 2.404433173663943
+  },
+  "tr87": {
+   "actions": 136,
+   "levels": 1.0,
+   "score": 3.286559594251902
+  },
+  "tu93": {
+   "actions": 97,
+   "levels": 3.0,
+   "score": 7.1393140589569155
+  },
+  "vc33": {
+   "actions": 107,
+   "levels": 3.0,
+   "score": 17.6140873015873
+  },
+  "wa30": {
+   "actions": 93,
+   "levels": 1.0,
+   "score": 2.2222222222222223
+  }
+ },
+ "label": "thui-animfast-b71-full25-r1",
+ "source": "Kaggle yocybercode/thui-animfast-b71-full25-r1 v1 COMPLETE 2026-09-11T05:22:21Z; scores from the run's own score.json (exact, mean reproduces 9.558403032428732 to 1e-9); levels+actions from the LAST of 14 repeated log summary blocks, whose action sum equals PUBLIC25_AUDIT actions=2008 (first block sums 175, the negative control). Read from the PUBLIC kernel page, not kernels output -- the 1Password vault was locked."
+}
