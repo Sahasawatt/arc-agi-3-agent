@@ -21,7 +21,6 @@ from collections import Counter, deque
 from pathlib import Path
 
 import numpy as np
-from arcengine import GameState
 
 from discover import (Model, body_box, choose_next, classify_colours, infer_body, infer_dirs,
                       infer_player, infer_step, locate, see, terrain_samples, walkable, _shifts)
@@ -1710,6 +1709,11 @@ def windowed_step(before, after, moved, rows=HUD_ROW):
 
 def play(env, budget=BUDGET, rows=HUD_ROW):
     """One environment, forward only. Returns (actions per completed level, trace)."""
+    # Lazy for the same reason as in discover.py: only this function needs the engine,
+    # it takes a live `env`, and a module-scope import here reddens the gate/plan tests
+    # on a machine without the SDK. Same idiom as `import arc_agi` further down.
+    from arcengine import GameState
+
     obs = env.reset()
     actions = [a for a in env.action_space if not a.is_complex()]
     if not actions or obs is None:
