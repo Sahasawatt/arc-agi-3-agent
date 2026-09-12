@@ -25,7 +25,6 @@ from math import gcd
 from pathlib import Path
 
 import numpy as np
-from arcengine import GameState
 
 from identity import Track, _box, update
 from perception import HUD_ROW, objects
@@ -355,6 +354,14 @@ def walkable(grid, m: Model, x, y):
 
 def discover(env, budget=48, rows=HUD_ROW):
     """Press actions, watch, and infer. Returns (Model | None, actions_spent)."""
+    # Imported here, not at module scope: this module is otherwise pure grid logic, and
+    # only this one function needs the engine -- it takes a live `env`, so every caller
+    # of it already has the SDK. Hoisting it back to the top couples `locate`, `walkable`
+    # and `Model` to arcengine for eight importers that do not need it, and reddens
+    # tests/test_trace.py on a machine without the SDK. Same idiom as `import arc_agi`
+    # further down.
+    from arcengine import GameState
+
     obs = env.reset()
     actions = [a for a in env.action_space if not a.is_complex()]
     if not actions:
