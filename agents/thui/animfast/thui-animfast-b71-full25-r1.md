@@ -1,4 +1,4 @@
-# thui `animfast b71` — public 9.5584, the campaign's highest, and NOT-DISTINGUISHABLE on score from every sibling; the ACTION axis ranks at p = 0.0000
+# thui `animfast b71` — public 9.5584 and hidden 3.74, both the campaign's highest and both NOT-DISTINGUISHABLE from their own siblings; the ACTION axis is the only thing that ranks
 
 ## The one change
 
@@ -36,6 +36,28 @@ Redirect it and this page moves.
 |---|---|---|---|---|---|---|---|
 | v1 | **9.5584** | **39** | 20 / 25 | **2,008** (80 / game) | **51.487** | 1.825 M | 8,616 s (benchmark 8,005 + setup 611) |
 
+**Hidden: 3.74** — `56160405`, submitted 2026-09-11 06:37:53Z (version 1, over a firing `G6`, on the
+owner's explicit instruction, the override printed into the run), resolved and read from
+`competitions submissions -v` on **2026-09-12 02:07Z** with `56144280` = 3.49, `56122994` = 2.68 and
+`56099301` = 3.32 in the same call as controls, all three reproducing what the LEDGER already records.
+The pre-registered `> 3.49` bracket fired.
+
+| | draws on this chassis | mean | sd | range |
+|---|---|---|---|---|
+| before | 2.68 / 3.21 / 3.32 / 3.49 | 3.175 | 0.350 | 0.81 |
+| with this one | 2.68 / 3.21 / 3.32 / 3.49 / **3.74** | 3.288 | — | **1.06** |
+
+⚠️ **It ranks nothing.** Against the four prior draws at the pooled within-build hidden sd
+**0.317 (df 7)**, 3.74 is **z = +1.78, two-sided p = 0.075 — NOT DISTINGUISHABLE**. Establishing the
++0.57 gap over that mean at 80% power needs **n = 5 submissions per arm**; the +0.25 step over the
+previous best needs **n = 26**, i.e. 26 days at one slot a day. (Both re-derived by
+`notes/probes/analyze_hidden_regimes.py` §7 in the workspace repo, which ceils rather than rounds
+because a submission is indivisible — a `.0f` print reported 25 for the 25.24 this needs.) And **Kaggle keeps the MAXIMUM**, so
+the board column reads 3.74 while saying nothing about which of five draws it is.
+
+ⓘ Shrink pair **9.5584 / 3.74 = 2.556×** — below the 2.68–2.91 population band, the second sample to
+land there after B78's 1.99×. It widens that spread downward; one sample moves no band.
+
 Per game: ft09 5 · lp85 4 · ar25 re86 sc25 tu93 vc33 3 · dc22 su15 2 · cd82 ka59 lf52 ls20 r11l s5i5 sb26 sp80
 tn36 tr87 wa30 1 · bp35 cn04 g50t m0r0 sk48 0.
 
@@ -72,9 +94,11 @@ while holding *this* chassis's level count, against the family's 86.7 / 97.1 / 1
 
 ## Verdict
 
-**NOT MEASURABLE on score at n=1** — exactly as pre-registered. 9.5584 being the campaign's highest public mean
-is a fact about a maximum over one draw, not about the agent, and the campaign's own record for how little that
-means is this build's family: the `a7` arm spans 5.76 / 8.23 / 8.25 on one declared build.
+**NOT MEASURABLE on score at n=1, on EITHER scale** — exactly as pre-registered. 9.5584 being the campaign's
+highest public mean, and 3.74 its highest hidden draw, are both facts about a maximum over one draw rather
+than about the agent. The campaign's own record for how little that means is this build's own family: the
+`a7` arm spans 5.76 / 8.23 / 8.25 public on one declared build, and drew 3.32 then **2.68** hidden on one
+unchanged notebook version — a 0.64 swing, wider than the 0.25 that separates this draw from the last best.
 
 **But "no difference" is refuted.** The action axis separates the anim solver from the June solver on identical
 serving at p ≤ 0.0002 with both poles of its own control — so this is a different agent that scores the same.
@@ -111,5 +135,8 @@ answered `authorization timeout` throughout, and the read was only possible beca
 - Benchmark identity in the same read: `label = anim-20260807-anim`, `solver_label = duck-harness`,
   `n_passes = 1`.
 
-**Hidden: not drawn. No submission was spent on this build.** The shrink band is 2.68–2.91× with per-build
-ratios spanning 2.41×–4.06×, so 9.5584 predicts nothing usable about a hidden draw.
+**Hidden: 3.74, drawn 2026-09-11 (`56160405`), read 2026-09-12.** The sentence that stood here — *"Hidden:
+not drawn. No submission was spent on this build."* — was true when written and is kept as the record of
+what changed. What it predicted still holds: the shrink band is 2.68–2.91× with per-build ratios spanning
+2.41×–4.06×, so 9.5584 predicted nothing usable, and the pair it actually produced (**2.556×**) landed
+*outside* the band in the direction B78 had already opened.
