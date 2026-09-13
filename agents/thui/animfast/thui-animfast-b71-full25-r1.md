@@ -140,3 +140,23 @@ not drawn. No submission was spent on this build."* — was true when written an
 what changed. What it predicted still holds: the shrink band is 2.68–2.91× with per-build ratios spanning
 2.41×–4.06×, so 9.5584 predicted nothing usable, and the pair it actually produced (**2.556×**) landed
 *outside* the band in the direction B78 had already opened.
+
+## Hidden draw 2 — 3.41 (drawn 2026-09-12, read 2026-09-13)
+
+`56183930` is the same notebook version 1 resubmitted on 2026-09-12 10:43:28Z with no rebuild. It
+resolved **3.41**, read from `competitions submissions -v` at 2026-09-13 02:16Z with `56160405` =
+3.74 in the same call as the control.
+
+| | draws | mean | sd | range |
+|---|---|---|---|---|
+| this build | 3.74 / **3.41** | 3.575 | — | 0.33 |
+| Flash-Next family | 2.68 / 3.21 / 3.32 / 3.49 / 3.74 / **3.41** | 3.308 | 0.356 | 1.06 |
+
+- Against the five prior family draws (mean 3.288) at pooled within-build sd 0.317 (df 7), 3.41 is
+  **z = +0.39, p = 0.70** — NOT DISTINGUISHABLE.
+- With this pair folded in, pooled within-build sd is **0.307 (df 8)**. Control: the same
+  computation without it reproduces 0.317 / df 7.
+- **3.74 was the maximum of two draws.** The board column still reads 3.74, because Kaggle keeps
+  the best, and it says nothing about which one it shows.
+- Shrink on means is 9.5584 / 3.575 = **2.67×**, the bottom edge of the 2.68–2.91 band. The 2.556×
+  above was computed off the maximum and read lower than the build.
