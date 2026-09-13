@@ -104,15 +104,24 @@ The pendant question is answered too: `actions_per_level` is a cumulative per-le
 (*"Invariant: `sum(actions_per_level) == len(history)`"*, `game.py:259`), so **a RESET does not
 re-zero a level's actions** and "explore freely, then execute cleanly" is not expressible here.
 
-➕ **And the scorer is now runnable offline.** `game.py:381 _compute_final_score` states it *"Mirrors
-`arc_agi.scorecard.EnvironmentScoreCalculator` (v0.9.8)"*; re-implemented from the census's
-`per_level` + `levels` it **reproduces the recorded per-game score 25/25 on `v10cal`, `thui-v1-1` and
-`v19` independently**. ⚠️ It also corrects an over-read of the `min(score, max_score)` clip: the clip
-does **not** make score identical to the completion fraction everywhere, only where the completed
-levels average ≥100. Measured: **7/18 scoring games on `v10cal`**, 10/15 on `thui-v1-1`, 11/16 on
-`v19`. The 7 independently reproduces **B20's "7 of 25 games are already at it"**. So the efficiency
-channel is **provably worth zero on those games and still live on the rest** — a sharper statement
-than §1's correlation, and the first one that is per-game and computable during a run.
+➕ The scorer re-implemented from the census's `per_level` + `levels` **reproduces the recorded
+per-game score 25/25 on `v10cal`, `thui-v1-1` and `v19` independently** (`game.py:381` says it
+*"Mirrors `arc_agi.scorecard.EnvironmentScoreCalculator` (v0.9.8)"*). It also corrects an over-read of
+the `min(score, max_score)` clip: the clip does **not** make score identical to the completion
+fraction everywhere, only where the completed levels average ≥100 — **7/18** scoring games on
+`v10cal`, 10/15 on `thui-v1-1`, 11/16 on `v19`.
+
+🔴 **Both halves of that paragraph are RE-DERIVATIONS, not findings, and the first draft of it
+claimed novelty it had no right to.** CLAUDE.md already records both:
+- *"The competition scorer is reproducible offline and now is — `eval/oracle_ceiling.py` … reproduces
+  all 19 published public means in `notes/LEDGER-all-runs.md` exactly."* So an exact offline scorer
+  has existed for weeks; 25/25 on three runs is a weaker control than 19/19 on published means.
+- R37 measured the clip share first, and CLAUDE.md carries its correction: *"The SHARE in R37 was 77%
+  (27 of 35) and it is now **55% (38 of 69)**"*. My three runs give **28 of 49 = 57%**, i.e. the same
+  number re-measured on a subset. The 7 on `v10cal` matching **B20's "7 of 25"** is corroboration of
+  B20, not news.
+What this paragraph is worth, then, is exactly one thing: an independent instrument agreeing with two
+existing ones. That is not nothing — but it is not the lever the first draft implied.
 
 1. ~~**Read the `arc_agi`/`taaf` scorer for how `n_passes` aggregates — 0 slots, 0 GPU, a code read.**~~ (done, above)
    R53 leaves this branching: if passes are averaged, the +39% oracle is unreachable; if the best is

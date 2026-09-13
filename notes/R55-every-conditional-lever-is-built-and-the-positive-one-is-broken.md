@@ -105,7 +105,12 @@ Dates, verified with `git log -S` plus a positive control (`B71` → 2026-09-11)
 So the decision is 15 days older than the reading that matters to it, it was taken on a **feature
 comparison** of one upstream revision (`6d8e3dd`), and **no condition inside it can ever fire on
 "upstream got much better."** Meanwhile the only lever family that has ever cleared this campaign's
-own significance bar is exactly a change of what runs underneath: B6 (model swap, 2.41 → 4.55) and
+own significance bar is exactly a change of what runs underneath: B69 (serving swap) — ⚠️ **corrected
+2026-09-13: this line first read "B6 (model swap, 2.41 → 4.55)", which is wrong.** MAP's B6 row is
+`duckv8` at **3.31**; the 4.55 is **B10** (`duckv10` = anim bundle **plus** Qwen3.8, confounded).
+The bad figure comes from `notes/B64-gemma-4-31b-duck-agent-design.md:13`, whose own line 163 says
+B6 *"moved within one family"*, and neither B6 nor B10 has a fixture so neither was ever
+`rank_runs`-tested. Caught by an arena competitor reading the B6 row instead of the restatement.
 B69 (serving swap, → 8.69 public / 3.21 hidden, p = 0.002).
 
 **This note does not reopen B24** — that is the maintainer's, like B71's close. It records that the
