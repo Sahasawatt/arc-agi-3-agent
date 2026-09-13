@@ -1,0 +1,130 @@
+{
+ "label": "thui-l1-ctl-full25-r1",
+ "games": {
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2.0,
+   "actions": 143
+  },
+  "bp35": {
+   "score": 0.8,
+   "levels": 1.0,
+   "actions": 52
+  },
+  "cd82": {
+   "score": 7.703170553935861,
+   "levels": 2.0,
+   "actions": 93
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1.0,
+   "actions": 136
+  },
+  "dc22": {
+   "score": 4.761904761904762,
+   "levels": 1.0,
+   "actions": 98
+  },
+  "ft09": {
+   "score": 47.61904761904761,
+   "levels": 4.0,
+   "actions": 74
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0.0,
+   "actions": 60
+  },
+  "ka59": {
+   "score": 10.413941736028537,
+   "levels": 2.0,
+   "actions": 137
+  },
+  "lf52": {
+   "score": 1.8181818181818181,
+   "levels": 1.0,
+   "actions": 68
+  },
+  "lp85": {
+   "score": 16.666666666666664,
+   "levels": 3.0,
+   "actions": 53
+  },
+  "ls20": {
+   "score": 0.0,
+   "levels": 0.0,
+   "actions": 134
+  },
+  "m0r0": {
+   "score": 14.285714285714285,
+   "levels": 2.0,
+   "actions": 77
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1.0,
+   "actions": 33
+  },
+  "re86": {
+   "score": 16.666666666666664,
+   "levels": 3.0,
+   "actions": 220
+  },
+  "s5i5": {
+   "score": 8.333333333333332,
+   "levels": 2.0,
+   "actions": 153
+  },
+  "sb26": {
+   "score": 3.0717170497390276,
+   "levels": 2.0,
+   "actions": 302
+  },
+  "sc25": {
+   "score": 14.285714285714285,
+   "levels": 2.0,
+   "actions": 108
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0.0,
+   "actions": 37
+  },
+  "sp80": {
+   "score": 0.0,
+   "levels": 0.0,
+   "actions": 255
+  },
+  "su15": {
+   "score": 11.566038567493115,
+   "levels": 3.0,
+   "actions": 110
+  },
+  "tn36": {
+   "score": 0.0,
+   "levels": 0.0,
+   "actions": 682
+  },
+  "tr87": {
+   "score": 4.761904761904762,
+   "levels": 1.0,
+   "actions": 106
+  },
+  "tu93": {
+   "score": 10.708833345002217,
+   "levels": 3.0,
+   "actions": 106
+  },
+  "vc33": {
+   "score": 18.081659945295524,
+   "levels": 3.0,
+   "actions": 115
+  },
+  "wa30": {
+   "score": 6.666666666666667,
+   "levels": 2.0,
+   "actions": 176
+  }
+ }
+}
