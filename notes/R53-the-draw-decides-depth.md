@@ -50,6 +50,32 @@ All three run on every invocation and the script refuses to print arm numbers if
    per run, which is what `n_passes` does"* — equal weight is the **mean** of the draws, i.e. the
    **k=1 column (24.00)**, not the max (39). It is also hardcoded to 1 in cell 14 *after* the
    customization hook, so a build cannot set it at all.
+
+   🔴 **BOTH HALVES OF THAT BULLET WERE CORRECTED 2026-09-13, the same day, and one of them
+   re-opens a lever this row had closed.** It was written from `pool_runs.py`'s docstring without
+   reading either artifact.
+   - **"equal weight ⇒ the mean" is a CITATION, not a measurement, and it cannot be checked from
+     this repo.** The scorer is not vendored: `RHAE` / `relative_human` / `human_baseline_actions`
+     return **zero hits** under `localrig/`, and there is no scoring or aggregation module in
+     `git ls-files 'localrig/*'`. `framework/run.py` only *dispatches* passes —
+     `_pass_schedule` returns offsets, `_split_pass_ranges` spreads them over jobs,
+     `_game_run_count` is `game_count * n_passes` — and contains **no aggregation of scores across
+     passes at all**. So whether k passes are averaged or the best is taken is **unknown here**,
+     and the sentence above rests on one line of a sibling script's docstring.
+   - **"so a build cannot set it at all" is FALSE.** Verified in the notebooks: the literal
+     `bm.n_passes = 1` sits at **cell 15** of the live Flash-Next chassis
+     (`thui-anim-fast/thui-animfast-b71-full25-r1.ipynb`, 18 cells) and at cell 14 of
+     `thuiv3/taaf-thui-v3-0.ipynb` (17 cells) — so the "cell 14" in the docstrings is **off by one
+     against the chassis now running**. The customization hook is cell 12
+     (*"## 6. Customization hook — Optional: tweak `bm`, `bm.games`, or `bm.solver` here"*), so the
+     assignment is indeed **after** the hook and a hook cannot reach it. But this campaign patches
+     notebook cells directly as a matter of routine (CLAUDE.md: "every version patches notebook
+     cells 6/8/12 only"), so **patching cell 15 is available and has never been tried.**
+   - ⇒ **The refutation holds only on the averaging branch.** If `n_passes` takes the per-game
+     best, the +39% in this note is **directly purchasable by a one-line cell-15 patch**, and that
+     would be the cheapest lever the campaign has ever had. Settling which branch is real needs
+     either a read of the `arc_agi`/`taaf` scorer (not in this repo) or one run with the cell
+     patched — it does **not** need a slot to read the code.
 2. **Pinning the sampler does not buy it.** Removing the spread lands on one draw, and the four
    draws here are 20, 23, 25, 28 — three of the four are below the best. `LOCAL_ANALYZER_SEED`
    shifts nothing about which draw you get.
