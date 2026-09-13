@@ -79,6 +79,13 @@ spreads**; and the re-draw lottery is closed — 50 draws buy 11.7–23.7% of th
 **0.8508%/day of excess for 55 days** against a measured **0.112%/day** — 7.6× short — and the fork's
 whole rate is **one event (B69), not a rate**.
 
+⚠️ **Superseded in part on 2026-09-13 by [R58](R58-bar-re-dated-and-tufa-is-flat.md), which re-read the
+board.** The bar's 4.968%/day survived out of sample (5.0644%/day over the next five days) — but
+**Tufa's 6.041%/day did not**: 11.04 → 11.04 flat, with 136 entries and a submission 12 h before the
+read. So *"the fork tracks the field"* still holds and *"Tufa compounds at 6%/day"* does not. The bar
+is **7.63**, not 5.96, so the 1.594× above is now **2.040×** and the excess needed by 11-02 is
+**1.4362%/day over 50 days**, not 0.8508% over 55.
+
 **A2's level-total derivation, with a real control:** the completion-cap identity recovers each game's
 total level count uniquely for **22 of 22** anchorable games and matches `game-totals.json` ground
 truth with **zero mismatches** (sum **183**). In depth space the bar then needs **+0.426 to +0.506
