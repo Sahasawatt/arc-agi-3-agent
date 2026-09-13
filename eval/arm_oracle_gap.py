@@ -13,13 +13,14 @@ is not a simulation.
 
 READ THE RESULT AS A BOUND, NOT A PLAN. The oracle is what per-game best-of-k WOULD give, and
 whether anything buys it is UNSETTLED -- see notes/R53 for the correction that opened it:
-  * `bm.n_passes = k` plays every game k times (`_game_run_count` = game_count * n_passes).
-    Whether the passes are averaged or the best is taken is NOT KNOWABLE FROM THIS REPO: the
-    scorer is not vendored (zero hits for RHAE / human_baseline_actions under localrig/, no
-    aggregation of scores across passes anywhere in framework/run.py), and the "equal weight per
-    run, which is what n_passes does" in pool_runs.py's LIMITS is a docstring, not a measurement.
-    On the AVERAGING branch the oracle is unreachable and the k=1 column is what k passes buy.
-    On the BEST-OF branch this gap is purchasable directly.
+  * `bm.n_passes = k` plays every game k times and the passes are AVERAGED, so k passes buy the
+    k=1 column (24.00) and never the oracle (39). RESOLVED from vendored code, not cited: Tufa's
+    framework IS in this repo at localrig/tufa-arc-agi-framework/ (23 tracked files) -- the scorer
+    is game.py:381 _compute_final_score (min(115, (baseline/actions)**2 * 100) if completed) and
+    diagnostics.py says "per-pass mean" (line 422) and "per-run mean" (line 451); benchmark.py
+    keeps each pass as its own GameRun and combines nothing itself. An earlier pass of this file
+    claimed the scorer was not vendored -- that grep searched RHAE / human_baseline_actions, words
+    the vendored code never uses (it says `baseline`), so the absence was about the query.
   * The literal `bm.n_passes = 1` is at CELL 15 of the live Flash-Next chassis (18 cells) and at
     cell 14 of thuiv3 (17 cells) -- the "cell 14" in the docstrings is off by one against the
     chassis now running. The customization hook is cell 12, so a HOOK cannot set it; patching the
@@ -174,11 +175,10 @@ def main() -> int:
             print(f"    k={k}  mean {c['mean']:.2f}  min {c['min']}  max {c['max']}  "
                   f"({c['subsets']} subset{'s' if c['subsets'] > 1 else ''})")
 
-    print("\nThe gap is a BOUND on what per-game best-of-k would give, not a plan. Whether "
-          "n_passes averages the draws or takes the best is NOT knowable from this repo (the "
-          "scorer is not vendored), so the gap is purchasable on one of those branches and not "
-          "the other; `bm.n_passes = 1` is a literal at cell 15 of the live chassis, after the "
-          "cell-12 hook -- a hook cannot set it, a cell patch can. See notes/R53.")
+    print("\nThe gap is a BOUND on what per-game best-of-k would give, and NOTHING in this harness "
+          "buys it: the vendored framework AVERAGES passes (diagnostics.py 'per-pass mean', line "
+          "422; scorer at game.py:381), so bm.n_passes = k buys the k=1 column above, never the "
+          "oracle. See notes/R53.")
     return 0
 
 

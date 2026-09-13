@@ -113,10 +113,13 @@ premise has moved and that the trigger as written cannot notice.
 
 ## 5. Ranked by evidence
 
-1. **Read how the `arc_agi`/`taaf` scorer aggregates `n_passes`** — a code read, 0 slots. Settles
-   R53's branch (averaged ⇒ the +39% oracle is unreachable; best-of ⇒ purchasable at cell 15) and
-   also answers whether a RESET re-zeroes a level's action count, which decides whether
-   "explore freely, then execute cleanly" is even expressible under this scorer.
+1. ✅ **DONE 2026-09-13 — and both halves answered NO.** The framework is vendored at
+   `localrig/tufa-arc-agi-framework/`: `diagnostics.py` averages passes (*"per-pass mean"*, line
+   422), so the +39% oracle is **not** purchasable at cell 15; and `actions_per_level` is cumulative
+   (`game.py:259`), so a RESET does **not** re-zero a level's actions and "explore freely, then
+   execute cleanly" is not expressible. Details and the corrected "scorer is not vendored" claim are
+   in R53's 🟢 block; the offline scorer and the clip counts are in R54. **The next-cheapest item is
+   now #2.**
 2. **Re-examine the fork against current upstream** (§4). Class of lever: 2 wins from 2 attempts.
 3. **B79 quantization counterparts** — same class, already scoped at pinned revisions.
 4. **A second hidden draw of the B69 build** — hidden is n = 1 and `v10` swung 22% on byte-identical

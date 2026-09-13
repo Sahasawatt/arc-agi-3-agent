@@ -96,7 +96,25 @@ disagree on depth inside one build, and 60% of stalls are on levels a sibling ru
 
 Ranked by evidence, not by appeal:
 
-1. **Read the `arc_agi`/`taaf` scorer for how `n_passes` aggregates — 0 slots, 0 GPU, a code read.**
+✅ **Item 1 below was DONE on 2026-09-13 and answered NO — see R53's 🟢 block.** Tufa's framework is
+vendored at `localrig/tufa-arc-agi-framework/` (23 tracked files; the earlier "not vendored" claim
+searched `RHAE`, a word that code never uses). `diagnostics.py` averages passes (*"per-pass mean"*,
+line 422), so `n_passes = k` buys the k=1 column, never the oracle — **the +39% is not purchasable**.
+The pendant question is answered too: `actions_per_level` is a cumulative per-level counter
+(*"Invariant: `sum(actions_per_level) == len(history)`"*, `game.py:259`), so **a RESET does not
+re-zero a level's actions** and "explore freely, then execute cleanly" is not expressible here.
+
+➕ **And the scorer is now runnable offline.** `game.py:381 _compute_final_score` states it *"Mirrors
+`arc_agi.scorecard.EnvironmentScoreCalculator` (v0.9.8)"*; re-implemented from the census's
+`per_level` + `levels` it **reproduces the recorded per-game score 25/25 on `v10cal`, `thui-v1-1` and
+`v19` independently**. ⚠️ It also corrects an over-read of the `min(score, max_score)` clip: the clip
+does **not** make score identical to the completion fraction everywhere, only where the completed
+levels average ≥100. Measured: **7/18 scoring games on `v10cal`**, 10/15 on `thui-v1-1`, 11/16 on
+`v19`. The 7 independently reproduces **B20's "7 of 25 games are already at it"**. So the efficiency
+channel is **provably worth zero on those games and still live on the rest** — a sharper statement
+than §1's correlation, and the first one that is per-game and computable during a run.
+
+1. ~~**Read the `arc_agi`/`taaf` scorer for how `n_passes` aggregates — 0 slots, 0 GPU, a code read.**~~ (done, above)
    R53 leaves this branching: if passes are averaged, the +39% oracle is unreachable; if the best is
    taken, it is purchasable by a one-line patch at **cell 15** (after the cell-12 hook, so a hook
    cannot do it — a cell patch can, which this campaign does routinely). Highest value per unit

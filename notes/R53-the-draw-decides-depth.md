@@ -62,6 +62,33 @@ All three run on every invocation and the script refuses to print arm numbers if
      `_game_run_count` is `game_count * n_passes` — and contains **no aggregation of scores across
      passes at all**. So whether k passes are averaged or the best is taken is **unknown here**,
      and the sentence above rests on one line of a sibling script's docstring.
+
+     🟢 **RESOLVED the same day, and the bullet above is WRONG about the repo.** Tufa's framework
+     **is** vendored, at `localrig/tufa-arc-agi-framework/` — **23 tracked files** — and it carries
+     the scorer: `src/taaf/game.py:381 _compute_final_score()`, whose own docstring states
+     *"Per level: ``min(115, (baseline / actions)² × 100)`` if completed"* and whose line 403 is that
+     expression, with `diagnostics.py:159 _arc_partial_score` computing the same thing. The
+     aggregation across passes is a **MEAN**, stated twice in `diagnostics.py`: *"**per-pass mean**,
+     head-to-head means, and t-tests below weight each …"* (line 422) and *"pooled curves,
+     **per-run mean**, t-tests, head-to-head means"* (line 451). `benchmark.py` keeps each pass as
+     its own `GameRun` (*"``game_runs[pass_idx * n_games + g]`` is pass ``pass_idx`` of game ``g``"*)
+     and computes no combined score itself.
+     ⇒ **`pool_runs.py`'s docstring was right, and is now confirmed from code rather than cited:
+     `n_passes = k` buys the MEAN of k draws — the k=1 column, 24.00 — never the oracle's 39. The
+     +39% is NOT purchasable by a cell-15 patch.** The branch this row opened is closed on the
+     averaging side.
+     ⚠️ **Why the earlier grep missed it, because the mistake is reusable**: it searched `RHAE` /
+     `relative_human` / `human_baseline_actions` — **this session's own vocabulary**. The vendored
+     code says `RHAE` **zero** times; it says `baseline` and `_compute_final_score`. Searching a
+     corpus for your paraphrase of a name returns an absence about your words, and it reads as an
+     absence about the repo.
+     ⚠️ **Still open, and narrower**: `benchmark.py:149-161` deliberately permits repeated ids on
+     later passes (*"later passes legitimately repeat the same ids"*, and the duplicate-id check is
+     gated on `pass_idx == 0`), while `competition_arcade.py:77` — a **local simulator**, per its own
+     header — records that *"``arc_agi`` competition scorecards can only create one run per game
+     ID"* and exists to clone ids around that limit. So what the REAL submission path does with a
+     second run of one game id is not settled here; it no longer matters for the oracle, since the
+     framework means the passes either way.
    - **"so a build cannot set it at all" is FALSE.** Verified in the notebooks: the literal
      `bm.n_passes = 1` sits at **cell 15** of the live Flash-Next chassis
      (`thui-anim-fast/thui-animfast-b71-full25-r1.ipynb`, 18 cells) and at cell 14 of
