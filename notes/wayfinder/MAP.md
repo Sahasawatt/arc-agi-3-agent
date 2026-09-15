@@ -275,3 +275,15 @@ score. Build order:
   `YIELD_SECONDS`, and by the `TOOL_STEPS = 12` default once yield is 180), so what is left is the narrow
   question of whether the cap binds in the one regime `B58` proved costs no score. The slot half of this
   bullet stays in the Fog.
+- **Frontier-graph explorer as a STUCK-level hand-off: candidate, no id minted (2026-09-15).** The N2
+  revisit probe (workspace `kc-arc-agi-pub`, `notes/N2-revisit-probe-2026-09-15.md`) KILLED a novelty
+  signal read off the agent's OWN trajectory: abstracted revisit rate on STUCK levels 0.3535 vs cleared
+  0.3470, diff +0.0065 against a 0.0768 permutation band, n_stuck 57. That KILL does not cover an explorer
+  that picks its own actions: a training-free, LLM-free frontier graph over masked frames (arXiv
+  2512.24156: median 30 of 52 levels on the 2025 Preview, 5 runs; cost grows linearly with state space).
+  Unasked: whether masked states recur enough on these games for the graph to have edges, and whether
+  anything transfers to Flash-Next + anim (N2 measured the June-duck census chassis). Shape if ever
+  built: runs only on a level the LLM is STUCK on; graph keyed per level and dropped on level-up (a
+  reset restarts only the current level); per-level score is (human/ai)^2, so the value is the later
+  levels it unlocks, not the stuck one. Price it against `B60`: a fallback that spends scored actions on
+  the LLM's behalf closed null-to-negative.
