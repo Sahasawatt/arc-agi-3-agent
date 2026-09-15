@@ -8,14 +8,16 @@ read by a stranger; this file is the operating manual for changing the code.
 This repo holds TWO submission lines and everything below this section documents the
 RETIRED one:
 
-- **Active: the Duck harness line** (`duckv*/`). Base = duckv10 (anim bundle +
-  Qwen3.8-27B-FP8, uncapped); every version patches notebook cells 6/8/12 only. The
+- **Active: the Duck harness line** (`duckv*/`, then `thui*/`). Base was duckv10 (anim bundle +
+  Qwen3.8-27B-FP8, uncapped) through the duck-vNN era, whose versions patch notebook cells 6/8/12 only;
+  the best hidden draw since 2026-09-11 is `thui-anim-fast/` (B71, Flash-Next NVFP4 + MTP-3 serving). The
   full run history with scores and why each landed there is `notes/LEDGER-all-runs.md`;
   decision tickets are `notes/wayfinder/MAP.md`; two runs are compared with
-  `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 4.71]),
+  `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 5.24]),
   and several runs of one build are averaged into one arm by `eval/pool_runs.py` first
   (`k` pooled runs are the arm `bm.n_passes = k` would build, at the same GPU cost).
-  Submissions go from `Desktop/ARC-AGI-3-Kaggle-Starter` with `-k sahasawatt/taaf-duck-vNN`.
+  In the duck-vNN era submissions went from `Desktop/ARC-AGI-3-Kaggle-Starter` with
+  `-k sahasawatt/taaf-duck-vNN`; `thui-*` kernels are submitted by their own slug and version.
 - **Retired: the algorithmic line** (root drivers + `kaggle/bundle.py`, hidden 0.11).
   Kept for reference; its per-game search chains live in `experiments/`. Do not extend it
   without reopening the decision in `notes/wayfinder/MAP.md`.
@@ -1530,7 +1532,7 @@ builders live in git history — `git show 0757309^:duckv<N>/...` and earlier). 
   cell-12 file per minor, one kernel per major (Kaggle versions give the minor history).
 - Precedent: v23 → v23.1 (grid lines → + rendering-aid note) was already this shape,
   as two pushes of one kernel.
-- Directory set kept alive: `duckmod/` (SRC_NB every builder reads), `duckv10/`
+- Directory set kept alive at the 2026-08-24 prune: `duckmod/` (SRC_NB every builder reads), `duckv10/`
   (baseline; the build hidden draws would rerun), `duckv24/` (last measured lever),
   `localrig/` (local verification rig — README there), `duck/` (upstream June bundle,
   untracked reference).
