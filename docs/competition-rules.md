@@ -41,7 +41,7 @@ Source: <https://docs.arcprize.org/methodology.md>
 
 The game score is additionally capped by how many levels were completed — clearing level 1
 of seven does not merely score 1/28 of the weight, it also caps what the game can score at
-all. `scoring.py` implements the formula and the 115 cap but **not** that completion cap.
+all. `scoring.py` implements the formula, the 115 cap **and** that completion cap (`environment_score`, lines 38-40).
 
 ## Limits
 
