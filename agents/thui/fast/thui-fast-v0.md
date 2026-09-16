@@ -48,8 +48,10 @@ Two draws pooled (`pool_runs.py`, 8.69 / 38.5 levels) vs `thuiv3-pool` (n=4, 4.3
 alone p = 0.017, and the two draws are one build (d1 vs d2 p = 0.5364). B35 floor 6/25 then 8/25. Mechanism verified
 in both logs (profile landed, model identity 419 files, MTP-3 on, 2.2–2.4× our action count).
 
-What it is not: not the anim bundle (his base is the June duck — **anim + Flash-Next is the next build**), not a
-hidden number (the shrink for this stack is unmeasured; a submission is the owner's call and shares the daily slot),
+Hidden: v2 submitted as **56081325**, scored **3.21** (team best until Watchara's 56099301 = 3.32; rank 224 of 2,877 at read time);
+shrink 9.32 → 3.21 = 2.9×, steeper than the chassis's 2.2× — the pre-draw 3.5–4.2 expectation was too high.
+
+What it is not: not the anim bundle (his base is the June duck — anim + Flash-Next was built as B71 and read in band),
 and not a lever we authored — every score here rides on Keith Tyser's serving work and Tufa's solver, credited in
 cell 0. Cost note: draw 2's wall was 8,699 s against an 8,700 s gate; the margin his stack ships with is one second.
 

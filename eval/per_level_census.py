@@ -37,24 +37,37 @@ FAMILY = ["v10cal", "v14", "v16", "v18", "v19", "v22", "v23", "v24", "v25", "v26
           "thui-v1-0", "thui-v1-1", "thui-v1-1-r2", "thui-v2-0", "thui-v3-0", "thui-v4-0",
           "clock2x"]
 
+# The shipped chassis (Flash-Next NVFP4 serving, R57's "no per-level data anywhere"), harvested 2026-09-14 by
+# eval/flash_census_harvest.py with the LEDGER-actions control passing 5/5. A different serving stack, so it is a
+# second family and never pooled with the first: `--family flash`.
+FLASH = ["thui-fast-v0-d2", "thui-a7-v1-d2", "thui-a7-full25-r1", "thui-l1-v0-full25-r1", "thui-l1-ctl-full25-r1",
+         # Watchara's two private-then-public runs, harvested 2026-09-14 21:5x (LEDGER-actions control 2/2)
+         "thui-animfast-b71-full25-r1", "thui-fast-b78-mtp0-full25-r1",
+         # wipe-guard A/B draw r1 (2026-09-15): treatment + its same-day control, both on the shipped chassis
+         "thui-wm-v0-full25-r1", "thui-wm-ctl-full25-r1"]
+
 
 def main():
+    import sys
+    fam = FLASH if "--family" in sys.argv and "flash" in sys.argv else FAMILY
+    if fam is FLASH:                       # the default path's output stays byte-identical to B52's
+        print("family = FLASH (the shipped chassis, Flash-Next NVFP4 serving)")
     data = json.loads(FIXTURE.read_text(encoding="utf-8"))["runs"]
     recs = {}
-    for run in FAMILY:
+    for run in fam:
         byg = data[run]
         assert len(byg) == 25, (run, len(byg))
         for g, d in byg.items():
             assert len(d["per_level"]) == d["total"], (run, g)
             assert sum(p[0] for p in d["per_level"]) == d["actions"], (run, g)
         recs[run] = byg
-    games = sorted(recs["v10cal"])
-    n = len(FAMILY) * 25
+    games = sorted(recs[fam[0]])
+    n = len(fam) * 25
 
     cls = collections.Counter()
     cleared, stalled = [], []
     per_game = {g: {"lv": [], "cls": collections.Counter()} for g in games}
-    for run in FAMILY:
+    for run in fam:
         for g, d in recs[run].items():
             lv, tot, act, pairs = d["levels"], d["total"], d["actions"], d["per_level"]
             cleared += [tuple(p) for p in pairs[:lv]]
@@ -69,7 +82,7 @@ def main():
             per_game[g]["cls"][c] += 1
     assert sum(cls.values()) == n
 
-    print(f"family: {len(FAMILY)} runs x 25 games = {n} game-runs, {len(cleared)} levels cleared")
+    print(f"family: {len(fam)} runs x 25 games = {n} game-runs, {len(cleared)} levels cleared")
     for k, v in cls.most_common():
         print(f"  {k:8s} {v:>4}  ({100.0 * v / n:.1f}%)")
 
@@ -81,8 +94,8 @@ def main():
 
     # frontier cut: a stall is either at a level some sibling run cleared (draw variance), or at
     # the game's all-time deepest -- a level NO family run has ever cleared.
-    best = {g: max(recs[r][g]["levels"] for r in FAMILY) for g in games}
-    frontier = sum(1 for r in FAMILY for g in games
+    best = {g: max(recs[r][g]["levels"] for r in fam) for g in games}
+    frontier = sum(1 for r in fam for g in games
                    if recs[r][g]["levels"] < recs[r][g]["total"]
                    and recs[r][g]["levels"] >= best[g])
     behind = sum(cls[k] for k in ("STARVED", "STUCK", "ZERO")) - frontier
@@ -92,7 +105,7 @@ def main():
           f"{frontier} ({100.0 * frontier / (frontier + behind):.0f}%)")
     print(f"best-ever oracle (sum of each game's deepest): {sum(best.values())} levels "
           f"vs best single run "
-          f"{max(sum(recs[r][g]['levels'] for g in games) for r in FAMILY)}")
+          f"{max(sum(recs[r][g]['levels'] for g in games) for r in fam)}")
 
     print(f"\n{'game':6s} {'lv min/med/max':>14} {'classes':>28}")
     for g in sorted(games, key=lambda g: -st.median(per_game[g]["lv"])):

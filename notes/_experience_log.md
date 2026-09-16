@@ -78,3 +78,32 @@
 ### Candidates (not distilled — revisit on recurrence)
 - local-eval-rig as a Tier-2 skill (vendor bundle + ollama + mechanics-verify before paid compute) — n=1; team's arc-agi-pub `.claude/skills/arc-agi-ops` may already own this space, check before creating.
 - rtk merge-state output noise (fake "N files changed" during unresolved merge) — ground-truth re-read pattern sufficed.
+
+## Distillation @ 2026-09-14 22:30 · bench Phase-1 + wm smoke + census 7 rows (delta since 08-25 as held after compaction; 08-26..09-13 lessons went to memory/checkpoint per-session, not walked here)
+
+Guard first: `branch-merge-guard.js --base sahasawat` on claude-ops = CLEAR (0 unmerged), `git branch -vv` sahasawat == origin. Nothing stranded.
+
+### Lessons captured
+
+#### L1: A counter of one failure MODE reads 0 while pressure is absorbed one stage upstream; a knob varied above the binding constraint reads flat = "saturation"
+- **Tier:** universal (verification-layers case) — principle-evidence for §4 "an instrument answers an ADJACENT question"
+- **What:** `num_preemptions_total`=0 in every vLLM arm was read as "KV not binding"; the `Running: 5 / Waiting: 20 / KV 91%` line said KV bound all three (v1 queues at admission, never evicts). `max_num_seqs` 8/16/28 → 359/361/356 tok/s published as "card out of decode throughput"; admitted count never left 5, so three arms = one config.
+- **Why:** two wrong reads published to checkpoint + arena note within 70 min, corrected from a log line on disk since run 1. Mechanism (~19k KV tokens per 8.3k-token seq) came from the arms that FAILED.
+- **Routed to:** claude-ops `skills/verification-layers/references/case-counter-blind-to-upstream-backpressure.md` (new, 2 sections) + 3-bullet index entry in SKILL.md; gates reference-manifest-labels / skill-body-scan / skill-provenance / skill-phrase-nudge green.
+- **Action:** new case file. **PROJECT_PATTERNS §4 headline WITHHELD** — patterns-ratchet requires bullet chars to EQUAL the baseline (growth fails), so a headline needs an equal shrink in §4 in the same commit; that trade is a claude-ops-session decision, not this one's. Candidate headline recorded here for that session: "A counter of ONE failure mode reads zero when the pressure is absorbed one stage UPSTREAM — read where the system PUTS what it cannot serve, not the counter for the mode you feared".
+
+#### L2: Kaggle 403 on a kernel is a state reading that expires; `kernels_pull(metadata=True).is_private` is push-time metadata
+- **Tier:** project — memory `arc_agi3_competition.md` + checkpoint + notes/flash-census-harvest addendum. Confirms §1 "a state reading expires at the next write" (owner flipped visibility; no 403 body survived to report). No global entry.
+
+#### L3: Operator-reported "PUSHED-OK" ×3 from a window without the token
+- **Tier:** confirms existing §4 headline "A result an OPERATOR reports back is a claim about an action you did not observe". Discriminator that worked: kernels_status + kernels_list(mine) after every claimed push; the pasted real output carries "Kernel version N successfully pushed". No new entry (headline exists); rule inlined in the checkpoint keep-list.
+
+#### L4: kernels_logs() drops one [finished] line in 3 of 4 full runs; output-dir <slug>.log is complete
+- **Tier:** project (already in memory + harvest script docstring + relay to Watchara). Confirms "a completeness claim inherits the SCOPE of the INSTRUMENT". No global entry.
+
+#### L5: Wipe-guard graft + full-25 A/B builder mechanics (argv stripped around exec_module; --only refuses overwrite; byte-identical control rebuild)
+- **Tier:** project — builder docstrings + teeth. Nothing cross-project.
+
+### Candidates (not distilled — revisit on recurrence)
+- **Destructive read + truncated display loses the tail forever**: relay_drain.py acked/consumed WS messages while printing `claim[:1500]`; Watchara's 08:45Z message lost its last paragraph, unrecoverable. n=1, fixed (cap 6000). If it recurs on another consumer (queue, inbox, stream), it is a §5 Failure-aware bullet: "a display cap belongs on a non-consuming read".
+- **Pre-registered metric endpoint vs the human log line**: the bench pre-registered `vllm:num_preemptions_total` because a bench reads metrics; the discriminating line was in the server log. Possible general form: "when pre-registering a signal, also pre-register the system's own state print" — hold for a second instance.
