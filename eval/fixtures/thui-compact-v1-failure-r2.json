@@ -1,0 +1,131 @@
+{
+ "games": {
+  "ar25": {
+   "actions": 137,
+   "levels": 4,
+   "score": 27.77777777777778
+  },
+  "bp35": {
+   "actions": 28,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cd82": {
+   "actions": 46,
+   "levels": 0,
+   "score": 0.0
+  },
+  "cn04": {
+   "actions": 30,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "dc22": {
+   "actions": 42,
+   "levels": 1,
+   "score": 4.761904761904762
+  },
+  "ft09": {
+   "actions": 47,
+   "levels": 2,
+   "score": 14.285714285714285
+  },
+  "g50t": {
+   "actions": 13,
+   "levels": 0,
+   "score": 0.0
+  },
+  "ka59": {
+   "actions": 71,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "lf52": {
+   "actions": 69,
+   "levels": 1,
+   "score": 1.8181818181818181
+  },
+  "lp85": {
+   "actions": 126,
+   "levels": 3,
+   "score": 11.315141341556043
+  },
+  "ls20": {
+   "actions": 58,
+   "levels": 1,
+   "score": 3.571428571428571
+  },
+  "m0r0": {
+   "actions": 22,
+   "levels": 0,
+   "score": 0.0
+  },
+  "r11l": {
+   "actions": 11,
+   "levels": 0,
+   "score": 0.0
+  },
+  "re86": {
+   "actions": 154,
+   "levels": 3,
+   "score": 16.16869641496192
+  },
+  "s5i5": {
+   "actions": 59,
+   "levels": 1,
+   "score": 0.5029928072028569
+  },
+  "sb26": {
+   "actions": 26,
+   "levels": 1,
+   "score": 2.7777777777777777
+  },
+  "sc25": {
+   "actions": 39,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sk48": {
+   "actions": 32,
+   "levels": 0,
+   "score": 0.0
+  },
+  "sp80": {
+   "actions": 52,
+   "levels": 1,
+   "score": 3.016600226096269
+  },
+  "su15": {
+   "actions": 48,
+   "levels": 1,
+   "score": 2.2222222222222223
+  },
+  "tn36": {
+   "actions": 40,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tr87": {
+   "actions": 7,
+   "levels": 0,
+   "score": 0.0
+  },
+  "tu93": {
+   "actions": 46,
+   "levels": 2,
+   "score": 4.573002754820936
+  },
+  "vc33": {
+   "actions": 40,
+   "levels": 2,
+   "score": 10.374779541446207
+  },
+  "wa30": {
+   "actions": 101,
+   "levels": 1,
+   "score": 2.2222222222222223
+  }
+ },
+ "label": "thui-compact-v1-failure-r2",
+ "source": "kaggle kernels output yocybercode/thui-compact-v1-failure-r2 v1 benchmark.json via rank_runs.load(); run 2026-09-07 10:54:16-13:08:09Z, banked 2026-09-16 (COMPLETE 2026-09-07, result unread until now)"
+}

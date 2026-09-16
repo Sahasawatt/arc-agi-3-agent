@@ -67,6 +67,13 @@
     "thui-a7-full25-r1": "kernel yocybercode/thui-a7-full25-r1 v1 (2026-09-08; Watchara's build, submitted 56099301 -> hidden 3.32), public 8.25, 38 levels, 3843 actions -- draw 3, banked 2026-09-09 from the public kernel output's benchmark.json the same way; the three field-for-field matches above are the membership evidence"
    },
    "not_banked": {}
+  },
+  "compact-failure": {
+   "rule": "the 2026-09-07 empty-output failure-policy build (bounded failure policy shared with endpoint exceptions, window 30 / K 10): the two members are the SAME NOTEBOOK re-run, not two builds",
+   "members": {
+    "thui-compact-v1-failure-r1": "kernel yocybercode/thui-compact-v1-failure-r1 v1 (2026-09-07 07:45:40-10:00:04Z), public 3.7778, 22 levels, 1596 actions -- the arm's first draw",
+    "thui-compact-v1-failure-r2": "kernel yocybercode/thui-compact-v1-failure-r2 v1 (2026-09-07 10:54:16-13:08:09Z), public 4.5489, 26 levels, 1344 actions. Membership is not inferred from a p-value: all 17 cells of the two notebooks are BYTE-IDENTICAL in source (sha256 of the joined cell sources agrees, 9ef46a0b97edee13), the same evidence shape as thuiv1-1-r2. The lever is therefore neither inert nor absent but IDENTICAL, which is the strongest form of this arm's rule"
+   }
   }
  }
 }
