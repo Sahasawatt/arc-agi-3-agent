@@ -55,7 +55,16 @@
    "rule": "Keith Tyser's public kernel duck-qwen3-8-flash-next-nvfp4-mtp (June duck bundle, Qwen3.8-Flash-Next-NVFP4 on his pinned vLLM image, profile kv5-bf16-mtp3-c8-cg32) pushed cell-for-cell to sahasawatt/thui-fast-v0 with three prose/diagnostic edits asserted by thui-fast/build_notebook.py (cells 0, 1, 3). The two members are versions 1 and 2 of the SAME kernel, same notebook bytes, --over re-push -- no lever differs, so this is one build sampled twice (B69; d1 vs d2 rank_runs p = 0.5364)",
    "members": {
     "thui-fast-v0": "kernel sahasawatt/thui-fast-v0 v1 (2026-09-07 06:27-08:49Z), public 8.07, 36 levels, 3925 actions -- draw 1, banked the same day from the run's benchmark.json via rank_runs.load()",
-    "thui-fast-v0-d2": "kernel sahasawatt/thui-fast-v0 v2 (2026-09-07 09:23-11:35Z), public 9.32, 41 levels, 3553 actions -- draw 2, banked the same way"
+    "thui-fast-v0-d2": "kernel sahasawatt/thui-fast-v0 v2 (2026-09-07 09:23-11:35Z), public 9.32, 41 levels, 3553 actions -- draw 2, banked the same way, hidden 3.21 (56081325)"
+   },
+   "not_banked": {}
+  },
+  "a7": {
+   "rule": "The fast base (Keith Tyser's Flash-Next serving under the June duck) with ACTION7 made executable by two dict entries on the imported inference.agent.action_names module in cell 9, before any inference import, solver tree on disk untouched (B76). Three members on two Kaggle accounts and two notebook builds (sha256 913bebea... ours, f35f95ac... Watchara's) -- membership is a MEASUREMENT in the avo form, field for field from each run's own artifacts (2026-09-09): taaf_setup_env.json analyzer/multimodal subset (19 keys: LOCAL_ANALYZER_* incl. TOOL_STEPS=0 / MAX_OUTPUT=0 / YIELD 60 / TEMP 0.6, MULTIMODAL_* upscale 4, INFERENCE_ANALYZER_MODEL, VLLM_RADIXARK_*) sha256 6f0fd8dca80c676b076ca19e91d39f1c045abb521ff157b5ef9f337fdc3279d0 on all three; vllm-server-identity.json argv_sha256 60b4549aae372dfabba18bccb4b12f317d06221c31b4b3867a9c40e1ea61a399 (the exact serve command) on all three; git_status.txt 'git status:' on all three; the same THUI_A7_PATCH ok engine_map=[ACTION1..ACTION7, RESET] log line and the same two-entry mechanism read from both notebooks' cell 9; no prompt edit in either build (code cells naming prompt/valid_action = 0 in his, our builder asserts cells 0/1/3/5/9/15 only). No lever differs, so this is one build sampled three times (ours d1 vs d2 rank_runs p = 0.087)",
+   "members": {
+    "thui-a7-v1": "kernel sahasawatt/thui-a7-v1 v1 (2026-09-08 14:52-17:17Z), public 5.76, 34 levels, 3970 actions -- draw 1, banked from the run's benchmark.json via rank_runs.load()",
+    "thui-a7-v1-d2": "kernel sahasawatt/thui-a7-v1 v2 (2026-09-08 18:59-21:25Z), public 8.23, 37 levels, 3466 actions -- draw 2, banked the same way",
+    "thui-a7-full25-r1": "kernel yocybercode/thui-a7-full25-r1 v1 (2026-09-08; Watchara's build, submitted 56099301 -> hidden 3.32), public 8.25, 38 levels, 3843 actions -- draw 3, banked 2026-09-09 from the public kernel output's benchmark.json the same way; the three field-for-field matches above are the membership evidence"
    },
    "not_banked": {}
   }

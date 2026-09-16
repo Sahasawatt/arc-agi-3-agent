@@ -43,6 +43,13 @@ LEDGER_PUBLIC = {
     "thui-v3-0": 4.01, "thui-v4-0": 1.92, "clock2x": 6.40, "v26": 3.19, "v24": 3.78,
     "v23": 3.32, "thui-v1-0": 3.20, "v22": 2.84, "v21": 1.25, "v20": 0.18, "v19": 2.82,
     "v18": 3.60, "v16": 3.51, "v14": 2.87,
+    # Flash-Next NVFP4 (the shipped chassis), harvested 2026-09-14 by eval/flash_census_harvest.py; public means from
+    # notes/LEDGER-all-runs.md at origin/master 4a565e2 (fast-v0 d2 and a7-v1 d2 are our own rows, 2 dp there).
+    "thui-fast-v0-d2": 9.32, "thui-a7-v1-d2": 8.23, "thui-a7-full25-r1": 8.2491,
+    "thui-l1-v0-full25-r1": 10.9337, "thui-l1-ctl-full25-r1": 8.6427,
+    "thui-animfast-b71-full25-r1": 9.5584, "thui-fast-b78-mtp0-full25-r1": 6.9609,
+    # wm A/B draw r1 (2026-09-15): no LEDGER row yet, values = each kernel's own final "mean score" line
+    "thui-wm-v0-full25-r1": 7.4384, "thui-wm-ctl-full25-r1": 8.3212,
 }
 
 

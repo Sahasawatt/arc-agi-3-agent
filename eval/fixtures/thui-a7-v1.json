@@ -1,0 +1,131 @@
+{
+ "label": "thui-a7-v1",
+ "games": {
+  "tn36": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 345
+  },
+  "lf52": {
+   "score": 3.1655535581935292,
+   "levels": 2,
+   "actions": 180
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 125
+  },
+  "bp35": {
+   "score": 0.4253472222222222,
+   "levels": 1,
+   "actions": 74
+  },
+  "wa30": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 500
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 53
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 49
+  },
+  "tu93": {
+   "score": 12.252217183169563,
+   "levels": 3,
+   "actions": 184
+  },
+  "sp80": {
+   "score": 1.1316964285714286,
+   "levels": 1,
+   "actions": 174
+  },
+  "m0r0": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 92
+  },
+  "vc33": {
+   "score": 21.428571428571427,
+   "levels": 3,
+   "actions": 124
+  },
+  "ar25": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 110
+  },
+  "ka59": {
+   "score": 9.107142857142858,
+   "levels": 2,
+   "actions": 160
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 118
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 132
+  },
+  "dc22": {
+   "score": 0.9513424286151558,
+   "levels": 1,
+   "actions": 160
+  },
+  "cd82": {
+   "score": 8.40332364318905,
+   "levels": 2,
+   "actions": 130
+  },
+  "ft09": {
+   "score": 28.57142857142857,
+   "levels": 3,
+   "actions": 65
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 96
+  },
+  "ls20": {
+   "score": 0.4801587301587301,
+   "levels": 1,
+   "actions": 103
+  },
+  "re86": {
+   "score": 3.7165820117096158,
+   "levels": 2,
+   "actions": 224
+  },
+  "s5i5": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 248
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 282
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 129
+  },
+  "tr87": {
+   "score": 13.356417359187443,
+   "levels": 2,
+   "actions": 113
+  }
+ },
+ "source": "sahasawatt/thui-a7-v1 v1 (2026-09-08 14:52-17:17Z, wall 8,540 s) benchmark.json via rank_runs.load(); B76 full-25 draw 1, public 5.76"
+}

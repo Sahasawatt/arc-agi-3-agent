@@ -130,3 +130,15 @@ converts the same 7,920 s wall into 2.2–2.4× the actions and that those actio
 reach — on the public set. It does not say anything about hidden (R22: OOD, and this stack's shrink is unmeasured), and
 it is not the anim bundle. Next build per §Not in this build: **anim + Flash-Next** (our solver on his serving), which
 is the first arm that could be submitted as ours rather than as his kernel under our slug.
+
+## Hidden record (submission 56081325, 2026-09-07 17:10:02Z → scored by 2026-09-08 03:05Z)
+
+**Hidden 3.21** (Kaggle submissions record, status COMPLETE; the same field that returned 2.03 for 55943442 and 1.63
+for 55821554, the LEDGER's hidden column). Team best before this: 2.03 (`thui-v3-1`, B48 draw 5) — **+1.18**, the first
+submission of the campaign above 2.1. Leaderboard at read time: Thuitanium **rank 224 of 2,877**; rank 10 = 5.05,
+rank 20 = 4.33, top = Tufa Labs 11.04.
+
+Shrink, now measured: the submitted draw 9.32 → 3.21 = **2.9×**; the pooled arm 8.69 → 3.21 = 2.7×. The pre-draw
+expectation written in `relay 01M1YDKZE59SXEM7CH3QQ4XRBT` (3.5–4.2) assumed the 27B chassis's 2.2× shrink and was
+too high — this stack shrinks harder on the hidden set than the chassis did, which is the one number this submission
+existed to buy. R22 stands (hidden is OOD); n=1, so the 2.9× is a point, not a band.
