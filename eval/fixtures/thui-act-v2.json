@@ -1,0 +1,131 @@
+{
+ "label": "thui-act-v2",
+ "games": {
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 21
+  },
+  "tn36": {
+   "score": 3.3582579037124494,
+   "levels": 1,
+   "actions": 44
+  },
+  "m0r0": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 57
+  },
+  "bp35": {
+   "score": 0.6786703601108035,
+   "levels": 1,
+   "actions": 43
+  },
+  "cn04": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 25
+  },
+  "dc22": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 67
+  },
+  "tu93": {
+   "score": 1.8190980095742002,
+   "levels": 1,
+   "actions": 75
+  },
+  "lp85": {
+   "score": 8.333333333333332,
+   "levels": 2,
+   "actions": 25
+  },
+  "ka59": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 34
+  },
+  "wa30": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 65
+  },
+  "vc33": {
+   "score": 9.660566706021251,
+   "levels": 2,
+   "actions": 49
+  },
+  "lf52": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 37
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 23
+  },
+  "sc25": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 70
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 30
+  },
+  "ar25": {
+   "score": 1.870114690627511,
+   "levels": 1,
+   "actions": 75
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 90
+  },
+  "cd82": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 24
+  },
+  "re86": {
+   "score": 5.706007893353419,
+   "levels": 2,
+   "actions": 84
+  },
+  "s5i5": {
+   "score": 0.9611687812379854,
+   "levels": 1,
+   "actions": 50
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 14
+  },
+  "ft09": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 65
+  },
+  "su15": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 59
+  },
+  "tr87": {
+   "score": 1.6768161195162765,
+   "levels": 1,
+   "actions": 91
+  },
+  "g50t": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 32
+  }
+ },
+ "source": "sahasawatt/thui-act-v2 v1 (2026-09-07) benchmark.json via rank_runs.load(); stage-2 name mapping fixed"
+}

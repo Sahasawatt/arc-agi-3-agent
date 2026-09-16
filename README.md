@@ -4,31 +4,31 @@ Team **Thuitanium**'s entry to
 [ARC Prize 2026 — ARC-AGI-3](https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-3),
 open source from the first commit.
 
-**This repo holds two independent agents, and the one with the 103 KB operating manual is
+**This repo holds two independent agents, and the one with the 127 KB operating manual is
 not the one being submitted.** Read the next two sections before changing anything.
 
 ## The two lines
 
 | | **Line A** — algorithmic | **Line B** — duck-harness fork |
 |---|---|---|
-| Lives in | root `*.py` + `kaggle/` | `duckmod/`, `duckv5`–`duckv14`, `duckv16` (there is no `v15`) |
+| Lives in | root `*.py` + `kaggle/` | `duckmod/`, `duckv10/`, `duckv24/`–`duckv26/`, `clock2x/`, `thuiv1/`–`thuiv6/` and the `thui-*` family dirs (24 builder dirs at `e5d9373`) |
 | What it is | perception → discovery → planner. No model in the loop | Tufa Labs' LLM-in-a-REPL harness, re-patched per version |
 | Ships as | one generated file, `kaggle/my_agent.py` | a Kaggle notebook plus an attached source dataset |
-| Best hidden score | 0.10–0.11 | **1.70** (`duck-v10`, 2026-08-21) |
+| Best hidden score | 0.11 | **3.74** (`thui-animfast-b71-full25-r1`, 2026-09-11) |
 | Status | dormant | **the live campaign** |
 | Its manual | [`CLAUDE.md`](CLAUDE.md) | [`notes/wayfinder/MAP.md`](notes/wayfinder/MAP.md) |
 
-⚠️ `CLAUDE.md` documents Line A and does not mention Line B at all. An agent that loads it
-and starts optimising is optimising the dormant line.
+⚠️ `CLAUDE.md` opens with a short section naming Line B as active, and everything after it documents
+the dormant Line A. An agent that skips that section and starts optimising is optimising the dormant line.
 
 **Why an algorithmic Line A at all.** The competition notebook has no internet, so a frontier
 model cannot be called — the public ARC-AGI-3 leaderboard leader scores 30.2% online while the
-Kaggle leaderboard leader scores 1.86%. The ARC engine, meanwhile, runs locally at ~2,000 FPS
+Kaggle leaderboard leader scored 1.86% when this was written (18.81 on 2026-09-15). The ARC engine, meanwhile, runs locally at ~2,000 FPS
 with no rate limit, so search is nearly free and only *scored* actions are expensive. Scoring
 rewards minimal action sequences, which is what a planner produces and a language model does
-not. Line B bets the other way, on a local model in a REPL — and it is winning by 15×.
+not. Line B bets the other way, on a local model in a REPL — and it is winning by 34× on best hidden score (3.74 against 0.11).
 
-⚠️ `duckv10`, the current line, **patches nothing** — its cell 12 is a comment. The public
+⚠️ `duckv10`, the duck line's baseline, **patches nothing** — its cell 12 is a comment. The public
 gain that got it there came from adopting a newer upstream bundle and a newer model and
 *deleting* the fork's own patches. Line B is not "a patch mechanism".
 

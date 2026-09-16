@@ -1,7 +1,7 @@
 {
-  "id": "sahasawatt/thui-gemma-v1",
-  "title": "thui-gemma-v1",
-  "code_file": "taaf-thui-gemma-v1.ipynb",
+  "id": "sahasawatt/thui-act-v2",
+  "title": "thui-act-v2",
+  "code_file": "taaf-thui-act-v2.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": false,
@@ -12,16 +12,15 @@
     "gpu"
   ],
   "dataset_sources": [
+    "driessmit1/arc3-vllm-h100-wheelhouse-v3",
     "jakobbrggen/taaf-kaggle-source-anim-20260807-anim",
-    "ko0kip/vllm-0230-offline"
+    "jakobbrggen/qwen3-8-27b-fp8-hf-snapshot"
   ],
   "kernel_sources": [],
   "competition_sources": [
     "arc-prize-2026-arc-agi-3"
   ],
-  "model_sources": [
-    "google/gemma-4/transformers/gemma-4-31b-it/1"
-  ],
+  "model_sources": [],
   "docker_image": "gcr.io/kaggle-private-byod/python@sha256:57e612b484cf3df5026ee4dcc3cb176974b22b2bc0937fb1e16132a8be4cb13c",
   "machine_shape": "NvidiaRtxPro6000"
 }

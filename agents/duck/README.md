@@ -23,15 +23,17 @@ came from adopting a newer upstream bundle and a newer model and **deleting** th
 patches. Every fork-authored patch shipped since has scored below its band. The line is not "a
 patch mechanism".
 
-**`v10` is still the baseline, and nothing has beaten it in a way that ranks.** `clock2x` scored
+**`v10` is the duck line's baseline, and no duck-vNN build beat it in a way that ranks.** `clock2x` scored
 higher (6.40) and cannot ship — its per-game clock would need 17.6 h against a 9 h budget. Of the
-builds that *could* ship, none separates from `v10` under `eval/rank_runs.py`.
+duck-vNN builds that *could* ship, none separates from `v10` under `eval/rank_runs.py`. The first lever to rank
+BETTER was `B69` (`thui-fast`, a serving swap under the June duck; LEDGER row `thui-fast-v0 v2`), documented under
+[`agents/thui/`](../thui/README.md).
 
 ## The band that makes most of these unrankable
 
 Three runs of the **same** `v10` build scored **2.82 / 4.55 / 4.71**, so a single run landing
-anywhere in `[2.82, 5.24]` ranks nothing on its own. Only `v20` (0.18) and `v21` (1.25) have ever
-landed outside it. This is why every page below reports a verdict from `eval/rank_runs.py` rather
+anywhere in `[2.82, 5.24]` ranks nothing on its own. Among duck-vNN builds, `v20` (0.18) and `v21` (1.25)
+landed below it and `clock2x` (6.40) above it; the `thui-fast` Flash-Next builds land above it too. This is why every page below reports a verdict from `eval/rank_runs.py` rather
 than from a mean.
 
 ## Where the rest went

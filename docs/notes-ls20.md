@@ -136,4 +136,5 @@ action lists from variables, never by retyping.
   no vision). A vision model reading `frames/*.png` is the obvious next policy.
 - `perception.py` over-splits some objects (an icon's inner notch becomes its own
   component) — fine for movement tracking, noisy in the prompt.
-- Only `ls20` explored, and only to level 2 of 7.
+- Only `ls20` explored, and only to level 2 of 7, in this sandbox. (Line A later cleared `ls20` 7/7 locally:
+  `results/kaggle-ls20-local.txt`.)
