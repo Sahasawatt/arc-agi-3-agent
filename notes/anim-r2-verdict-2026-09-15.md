@@ -2,7 +2,7 @@
 
 `sahasawatt/thui-anim-full25-r2` = Jakob Bruggen's `anim-20260807` solver bundle on Keith Tyser's Flash-Next NVFP4 chassis, shipped serving
 profile, thui-v3 knobs (seed 20260825, yield 180 s) — the composition of Watchara's `thui-animfast-b71-full25-r1`, rebuilt from
-`thui-anim/build_notebook.py` (teeth ALL PASS). Ran 16:30–18:55 local, wall ~8,520 s. Output `kout-sa-thui-anim-full25-r2/`.
+`thui-anim/build_notebook.py` (teeth ALL PASS). Correction 2026-09-16: master already vendors b71 as `thui-anim-fast/` (#154); the two builders produce the same composition, this one re-slugs and stacks. Ran 16:30–18:55 local, wall ~8,520 s. Output `kout-sa-thui-anim-full25-r2/`.
 
 ## 1. Mechanism — as designed
 `THUI_ANIM_GRAFT ok` with the solver resolved under the anim bundle, `bm.label=anim-20260807-anim`, `animation_awareness=True`,

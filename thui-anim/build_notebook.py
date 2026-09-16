@@ -2,9 +2,10 @@
 
 Why (2026-09-15, after the top-5 research). Ranks 2-5 publish nothing; the only public artifacts above our score are the anim
 harness family: `jakobbrggen/taaf-kaggle-source-anim-20260807-anim` (the solver bundle behind the "LB-9" notebook and behind
-Watchara's `yocybercode/thui-animfast-b71-full25-r1`, 9.56 public / 2,008 actions -- the team's best public draw). That kernel's
-own header says it is `sahasawatt/thui-animfast-v1` re-pushed with no build script in the repo; this file IS that build script,
-re-derived from the pushed notebook so the composition is reproducible and can be stacked with the MTP-0 profile.
+Watchara's `yocybercode/thui-animfast-b71-full25-r1`, 9.56 public / 2,008 actions -- the team's best public draw). master carries
+`thui-anim-fast/build_notebook.py` (#154), which VENDORS the pushed notebooks and reproduces b71 byte-for-byte; this file is the
+other shape -- it re-derives the same composition from Keith's upstream + the 7 b71 cells, so it can be re-slugged and stacked
+with the MTP-0 profile (`--m0`). Same composition, two builders; b71's own header saying "no build script" predates #154.
 
 Composition (cells vs Keith's upstream; every changed cell is taken VERBATIM from the b71 notebook except 0 and the --m0 delta):
   cell 0      our header
