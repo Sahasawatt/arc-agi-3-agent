@@ -62,6 +62,39 @@ anything (build-loop §0, R33 precedent).
   rank at any magnitude.
 - **Proceed rule:** 6 or more games → Step 1.
 
+### Step 0 result (2026-09-17): KILL, 3 of 25 games; no build
+
+- **Instrument.** `_extract_scientist_note` and its two helpers were lifted verbatim from the anim bundle's
+  `tool_agent.py` via `ast`. They were applied to exactly the text the harness feeds them: `[ASSISTANT]` transcript
+  sections (`tool_agent.py` 2280/2314). `[THINKING]` was counted separately; the harness never extracts from it.
+  Script and full per-game output: `~/Claude/arc-artifacts/_src/rival-recon-2026-09-17/b83_step0.py` and
+  `b83_step0.out` (workspace artifacts, not in this repo).
+- **Run.** Banked `thui-a5` full-25 output. Its vLLM config line reads `kv_cache_memory_bytes` 7516192768 and
+  `max_num_seqs` 28, with no speculative config, and it ranks 41 levels vs B71. That is B81's KV 7 / MTP 0 / seqs 28
+  run; the slug itself is not in the log.
+
+| run | games with a written note | union with `[THINKING]` | `World model:` written (positive control) | prefix-list echo in `[SYSTEM PROMPT]` (negative control) |
+|---|---|---|---|---|
+| B81 base (`thui-a5` full25) | **3/25** (dc22, ls20, re86) | 3/25 | 216 of 803 turns | 0 |
+| `thui-rank2` anim full25 (corroboration) | 1/25 (dc22) | 2/25 | 164 of 561 turns | 0 |
+
+- **Teeth, both poles.** A synthetic `Cross-level notes: X` extracts `X`; the prompt's own inline prefix sentence
+  extracts nothing.
+- **Parse check.** 803/803 and 561/561 `[ASSISTANT]` sections were parsed.
+- **Second instrument, independent of the extractor.** `- Cross-level notes:` render lines in `[USER PROMPT]` appear
+  only in the games with a write (base run: 7 / 31 / 39). The render at 1366 therefore fires exactly where the counter
+  says a note was stored.
+- **The notes are real when written.** All three were hand-read and hold level-transition mechanics, e.g. dc22:
+  "Level 1 SOLVED … blue button swaps the solid bridge …". The slot works, but the model rarely fills it. R21's
+  *never* is now *rarely* on this chassis, and 3 games is below `rank_runs`' k = 6 floor, so the removal arm cannot
+  rank. **B83 closed.**
+- **Adjacent lead, not measured as a lever.** In the base run only 803 of 1753 responses (45.8%) carry any visible
+  assistant text. The extractor reads nothing from the other 54%, which is one reason every labelled slot is sparse
+  (`World model:` in 216 turns). A competitor thread (734843, read by a codex lane, not re-verified) makes the same
+  observation on the Tufa harness and reports a visible-updates fork. Our requests already carry prior reasoning
+  (memory `duck-harness-already-retains-reasoning`), so whether surfacing it into the slots helps is an open
+  question, not a finding.
+
 ## Step 1 — build (only if Step 0 proceeds)
 
 - **One change** against the base build: delete the six sites above. Everything else stays, including
