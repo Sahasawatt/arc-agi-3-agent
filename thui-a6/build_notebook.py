@@ -39,8 +39,11 @@ if _a6_dir.exists():
     _shutil.rmtree(_a6_dir)
 _a6_dir.mkdir(parents=True)
 for _e in _a6_src.iterdir():
-    if _e.name not in ("serving_setup.py", "SOURCE_IDENTITY.json"):
+    if _e.name == "vllm-patches":   # serving_setup.py:970/981 reject a symlinked patch dir or payload
+        _shutil.copytree(_e, _a6_dir / _e.name, symlinks=False)
+    elif _e.name not in ("serving_setup.py", "SOURCE_IDENTITY.json"):
         (_a6_dir / _e.name).symlink_to(_e)
+assert (_a6_dir / "vllm-patches").is_dir() and not (_a6_dir / "vllm-patches").is_symlink(), "thui-a6: vllm-patches not copied"
 _a6_text = (_a6_src / "serving_setup.py").read_text()
 assert _a6_text.count(_A6_OLD) == 1, "thui-a6: ANALYZER_CONTEXT literal moved -- re-derive"
 _a6_text = _a6_text.replace(_A6_OLD, _A6_NEW)
