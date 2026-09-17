@@ -6,14 +6,23 @@ checks its own sha256 against SOURCE_IDENTITY.json, so cell 9 builds an overlay 
 /kaggle/working: every top-level entry symlinked, serving_setup.py patched, SOURCE_IDENTITY.json
 re-stamped with the patched sha. BUNDLE_DIR then points at the overlay.
 """
+import ast
 import copy
 import json
+import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SRC_NB = HERE.parent / "thui-a5" / "out" / "thui-a5-mtp0k7s28-full25-r1" / "thui-a5-mtp0k7s28-full25-r1.ipynb"
 SRC_META = HERE.parent / "thui-a5" / "out" / "thui-a5-mtp0k7s28-full25-r1" / "kernel-metadata.json"
-SLUG = "thui-a6-ctx64-full25-r1"
+SMOKE = "--smoke" in sys.argv[1:]
+SLUG = "thui-a6-ctx64-smoke" if SMOKE else "thui-a6-ctx64-full25-r1"
+SMOKE_GAMES = ("tn36-ef4dde99", "vc33-5430563c", "bp35-0a0ad940")   # the thui-a3 / thui-rank2 smoke set
+SMOKE_CLOCK_S = 1800
+C15_EXTRA_OLD = "    if missing or extra:\n"
+C15_EXTRA_NEW = "    if missing or (extra and len(PUBLIC_GAME_IDS) == 25):   # thui-a6 smoke: a subset leaves extras by design\n"
+C15_SELECT = "    bm.games = [offline_by_id[game_id] for game_id in PUBLIC_GAME_IDS]\n"
 OUT = HERE / "out" / SLUG
 
 ANCHOR = "# Solver setup commands (wheels, vLLM server startup, ...) run before the benchmark loads.\n"
@@ -58,6 +67,8 @@ print(f"THUI_A6_CTX ok solver_window={_tool_agent._LOCAL_ANALYZER_CONTEXT_WINDOW
 
 CELL0 = f"""# {SLUG} (Thuitanium / Knowless Crew) — the B81 anim build with a 65,536-token analyzer context
 
+{"**Smoke: 3 games at 1800 s. Numbers are not a score.**" if SMOKE else "Full public 25."}
+
 **This is a Knowless Crew / Thuitanium experiment notebook.** Solver, prompts, clock, games and the vLLM profile
 (KV 7 GiB / MTP 0 / max_num_seqs 28) are exactly `thui-a5-mtp0k7s28-full25-r1`. Only the analyzer context
 changes, 32,768 -> 65,536, applied through an overlay copy of the serving bundle in cell 9.
@@ -84,8 +95,20 @@ def main():
     assert "Knowless Crew" in "".join(cells[0]["source"])
     cells[0]["source"] = CELL0.splitlines(keepends=True)
     cells[9]["source"] = patch_cell9("".join(cells[9]["source"])).splitlines(keepends=True)
+    if SMOKE:
+        s = "".join(cells[15]["source"])
+        m = re.search(r"PUBLIC_GAME_IDS = tuple\(\[\n(?:    \"[a-z0-9]{4}-[0-9a-f]{8}\",?\n){25}\]\)\n", s)
+        assert m, "cell 15: the 25-game PUBLIC_GAME_IDS tuple not found"
+        assert all(f'"{g}"' in m.group(0) for g in SMOKE_GAMES)
+        s = s.replace(m.group(0), "PUBLIC_GAME_IDS = tuple(" + repr(list(SMOKE_GAMES)) + ")   # thui-a6 smoke subset\n")
+        assert s.count("!= 25") == 2 and s.count(C15_EXTRA_OLD) == 1 and s.count(C15_SELECT) == 1
+        s = s.replace("!= 25", "!= len(PUBLIC_GAME_IDS)").replace(C15_EXTRA_OLD, C15_EXTRA_NEW).replace(
+            C15_SELECT, C15_SELECT + f"    bm.solver.max_runtime_s_per_game = {SMOKE_CLOCK_S}.0   # thui-a6 smoke clock\n"
+            '    print(f"thui-a6: smoke {len(bm.games)} games @ {bm.solver.max_runtime_s_per_game} s", flush=True)\n')
+        cells[15]["source"] = s.splitlines(keepends=True)
+        compile(s, "cell15", "exec", flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
     changed = [i for i, (a, b) in enumerate(zip(orig["cells"], cells)) if a != b]
-    assert changed == [0, 9], changed
+    assert changed == ([0, 9, 15] if SMOKE else [0, 9]), changed
     assert len(orig["cells"]) == len(cells)
     compile("".join(cells[9]["source"]), "cell9", "exec")
     meta = json.load(open(SRC_META))
