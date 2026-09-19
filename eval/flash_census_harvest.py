@@ -120,6 +120,33 @@ RUNS = {
         "events": "kout-sa-thui-anim-full25-r2/artifacts",
         "ledger_actions": 2557, "public": 10.5600, "hidden": None, "owner": "sahasawatt",
     },
+    # --- B81/B88/B89/B90, the four full-25 runs on the kv7-bf16-mtp0-c28-cg32 profile (added 2026-09-19).
+    # Paths are the LOCAL artifact store layout (ARC_SCRATCH=~/Claude/arc-artifacts), which is <run>/<run>.log and
+    # <run>/artifacts -- not the kout-<xx>-<run>/ layout of the rows above, which those runs were fetched into.
+    # Harvest them with --only; a bare run resolves the kout- paths too and stops on the first that is absent.
+    # ledger_actions is the actions column of notes/LEDGER-all-runs.md, and CONTROL A checks it against the log's
+    # own PUBLIC25_AUDIT, so a wrong value here is caught rather than written.
+    "thui-a5-mtp0k7s28-full25-r1": {
+        "log": "thui-a5-mtp0k7s28-full25-r1/thui-a5-mtp0k7s28-full25-r1.log",
+        "events": "thui-a5-mtp0k7s28-full25-r1/artifacts",
+        "ledger_actions": 2965, "public": 8.7164, "hidden": 4.50, "owner": "yocybercode",
+    },
+    # hidden 3.86 is submission 56316362 (2026-09-18); the LEDGER row still reads "--" for it
+    "thui-a6-ctx64-full25-r1": {
+        "log": "thui-a6-ctx64-full25-r1/thui-a6-ctx64-full25-r1.log",
+        "events": "thui-a6-ctx64-full25-r1/artifacts",
+        "ledger_actions": 2240, "public": 10.3073, "hidden": 3.86, "owner": "yocybercode",
+    },
+    "thui-a8-lvlwipe-full25-r1": {
+        "log": "thui-a8-lvlwipe-full25-r1/thui-a8-lvlwipe-full25-r1.log",
+        "events": "thui-a8-lvlwipe-full25-r1/artifacts",
+        "ledger_actions": 2784, "public": 5.8937, "hidden": None, "owner": "yocybercode",
+    },
+    "thui-l2-dwell90-full25-r1": {
+        "log": "thui-l2-dwell90-full25-r1/thui-l2-dwell90-full25-r1.log",
+        "events": "thui-l2-dwell90-full25-r1/artifacts",
+        "ledger_actions": 3280, "public": 7.5796, "hidden": None, "owner": "yocybercode",
+    },
 }
 
 
