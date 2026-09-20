@@ -129,7 +129,8 @@ _MEMENTO_MARK = ("[Your own notes from earlier turns of this conversation, kept 
 _COMPACT_STATS = {"games": 0, "fires": 0, "ok": 0, "empty": 0, "errors": 0, "wrapper_errors": 0,
                   "skipped_stop": 0, "dropped_turns": 0, "latency_s": 0.0, "landed_checks": 0, "landed_ok": 0,
                   "labels": 0, "cites": 0, "disabled_games": 0,
-                  "block_truncated": 0, "block_lost_chars": 0, "block_max_chars": 0, "failed_block_chars": 0}
+                  "block_truncated": 0, "block_lost_chars": 0, "block_max_chars": 0, "failed_block_chars": 0,
+                  "post_disable_turns": 0, "post_disable_chars": 0}
 _MEMENTO_LABELS = ("Rules:", "Unknown:", "No-op/harmful:", "Hypotheses:", "Plan:")
 _COMPACT_SYSTEM = (
     "You are the memory of an agent playing a grid puzzle game. The turns below are about to be deleted from its "
@@ -267,6 +268,28 @@ def _compact_failed(st, block):
         _COMPACT_STATS["disabled_games"] += 1
 
 
+def _compact_post_disable(st):
+    """B68: account for what the tripped breaker discards, and SAY it.
+
+    After _compact_failed sets st["disabled"], compaction stops for this game and every
+    later turn is dropped with no memento -- previously with no counter either, so
+    disabled_games said a game had tripped and nothing said what it then cost. The
+    quantity was already computed one line above the discard in _compact_persist and
+    thrown away. _COMPACT_STATS is never dumped, so the print is the only readback:
+    the LAST such line for a game answers "how much history followed the trip".
+    """
+    n = sum(1 for l in st["buffer"] if l.startswith("[assistant]"))
+    chars = len("\n".join(st["buffer"]))
+    _COMPACT_STATS["post_disable_turns"] += n
+    _COMPACT_STATS["post_disable_chars"] += chars
+    st["buffer"] = []
+    if n:
+        print(f"thui-compact: game={st.get('game')} outcome=post_disable_discard "
+              f"turns={n} chars={chars} post_disable_turns={_COMPACT_STATS['post_disable_turns']} "
+              f"post_disable_chars={_COMPACT_STATS['post_disable_chars']}", flush=True)
+    return n
+
+
 def _compact_failure_teeth():
     before = dict(_COMPACT_STATS)
     try:
@@ -278,13 +301,22 @@ def _compact_failure_teeth():
         assert st["errors"] == 2 and st["disabled"], "failure teeth: breaker"
         assert _COMPACT_STATS["failed_block_chars"] - before["failed_block_chars"] == 5
         assert _COMPACT_STATS["disabled_games"] - before["disabled_games"] == 1
+        # B68: the sequel -- what the tripped breaker discards from here on. Exercises the
+        # real helper _compact_persist calls, not a copy of its arithmetic.
+        st["buffer"] = ["[label] tr87", "[assistant] a", "[tool] t", "[assistant] b"]
+        _want_chars = len("\n".join(st["buffer"]))
+        assert _compact_post_disable(st) == 2, "post-disable teeth: assistant turns"
+        assert not st["buffer"], "post-disable teeth: buffer not cleared"
+        assert _COMPACT_STATS["post_disable_turns"] - before["post_disable_turns"] == 2
+        assert _COMPACT_STATS["post_disable_chars"] - before["post_disable_chars"] == _want_chars
+        assert _compact_post_disable({"buffer": []}) == 0, "post-disable teeth: empty buffer"
     finally:
         _COMPACT_STATS.clear()
         _COMPACT_STATS.update(before)
 
 
 _compact_failure_teeth()
-print("thui-compact: failure-policy teeth ok", flush=True)
+print("thui-compact: failure-policy + post-disable teeth ok", flush=True)
 
 
 def _compact_memento(agent, reason):
@@ -417,7 +449,7 @@ def _compact_persist(self, messages, *args, **kwargs):
         terminal = bool(summ.get("run_complete") or summ.get("game_over"))
         n_buf_turns = sum(1 for l in st["buffer"] if l.startswith("[assistant]"))
         if st.get("disabled"):
-            st["buffer"] = []
+            _compact_post_disable(st)   # B68: count and print what the trip costs
         elif st["buffer"] and not terminal and (n_buf_turns >= _COMPACT_K or transition):
             should_stop = st.get("should_stop")
             if callable(should_stop) and should_stop():
