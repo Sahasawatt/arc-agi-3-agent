@@ -127,4 +127,4 @@ The owner chose the full G2 ("รันเต็ม") after G1 PASS, knowing the
 - **Reading at k = 3** (`rank_runs.py`, `--selftest` green on both poles in the same session, arms pooled with `pool_runs.py`):
   mean public 8.82 -> 12.22 (+3.4), levels 41.67 -> 46.33 (+4.67), 16 games up / 6 down, **p = 0.1079 NOT-DISTINGUISHABLE**.
   The direction favours the treatment and the size is not separable from noise at this k.
-- **Hidden draw:** `56377659`, thk r3 (public 15.8830, 54 levels), submitted 2026-09-20 02:42:36Z. Per design G3 it decides nothing.
+- **Hidden draw:** `56377659`, thk r3 (public 15.8830, 54 levels), submitted 2026-09-20 02:42:36Z. **Hidden 3.03**, read 2026-09-20T15:50Z from `competitions submissions -v` with 3.26 / 3.86 / 4.50 / 2.90 in the same call as controls. Per design G3 it decides nothing.
