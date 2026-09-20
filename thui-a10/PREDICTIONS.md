@@ -81,3 +81,50 @@ Read: workspace-private `a10_g1_read.py` (extractor teeth: content 145/145 + 84/
 - Reading: the lever is safe and cheap, and it touches few responses. Whether a lever that touches ~4% of
   responses can move levels at a detectable size is G2's question, and the power for that is the owner's call
   before spending k full-25 pairs.
+
+## G2 — pre-registered 2026-09-19T16:09Z, before the first full-25 push
+
+The owner chose the full G2 ("รันเต็ม") after G1 PASS, knowing the reach is small (8/228 responses).
+- **Arms:**
+  - `thui-a10-ctl-full25-rN` (A0, B81 unchanged) and `thui-a10-thk-full25-rN` (A1′(b)), for N = 1..8.
+  - Each N is one same-day pair, pushed together, which fills the batch cap of 2.
+  - Fixed **k = 8**, plus one interim look at **k = 4 for futility only**.
+- **Placebo A2 is not built** unless A1′(b) beats A0 at k = 8 (design §7 G2). A1′(b) adds no instruction text,
+  only capped carried slots, so A2 would be length-matched filler in the carried block.
+- **Per pair, VALID (a failed pair is VOID and re-run once, never counted):**
+  - Both arms are COMPLETE with 25 games in `benchmark.json`.
+  - Markers as in G1 V1.
+  - At least one `THUI_A10_FILLED` in the treatment log.
+- **Drift canary:** if a control repeat comes in with public score or levels outside the B81 family's banked
+  range, the pair is flagged and diagnosed before any comparison is read. The B81 family range: public
+  8.72 / 10.31 (a6), levels 41 / 45.
+- **Futility at k = 4 (STOP, base stays):** using per-game **mean levels** over the 4 repeats, the games where
+  thk < ctl outnumber the games where thk > ctl.
+- **Decision at k = 8:**
+  - Pool each arm with `eval/pool_runs.py`, then run `eval/rank_runs.py ctl-pool thk-pool`. Run
+    `--selftest` first in the same session, and both poles must pass.
+  - **Promote to the placebo stage** only if the result is DISTINGUISHABLE in thk's favour **and** per-game
+    mean levels have more games up than down.
+  - **Kill** on any of:
+    - NOT-DISTINGUISHABLE.
+    - Any game's mean action count in thk < 50% of ctl's.
+    - Measured token work (prompt + generated, per game-second) more than 9% above ctl's.
+- **Reported, not gated:**
+  - Levels up / down / tied, and levels as the median over repeats (sensitivity).
+  - Fills per run.
+  - Hidden draws (G3), which decide nothing.
+
+## CORRECTION and G2 result (2026-09-20)
+- **The drift canary in the G2 pre-registration was mis-specified, and the flag it raised was an instrument artifact.** It read
+  "the B81 family range: public 8.72 / 10.31 (a6), levels 41 / 45" — but 10.31 is **B88's** public, a different build, and 8.72 was
+  B81's single banked run. A band built from one reading of each of two builds cannot bound one build's spread. It flagged the
+  controls of pairs r2 and r3 (8.2024, 8.3785) as drift when they are simply B81 rerun.
+- **Replacement, measured rather than assumed:** the three same-day control runs of this very G2 are B81 unchanged and read
+  **9.8859 / 8.2024 / 8.3785** (range 1.69), levels 43 / 41 / 41. Use this as the canary band for the remaining pairs, and widen it
+  as further control runs land. No pair is void on the old flag.
+- **G2 stopped at k = 3 on the owner's instruction, to save GPU quota.** The pair r4 was pushed and then stopped in the UI. The
+  pre-registration reads futility at k = 4 and decides at k = 8, so what follows is a reading, not the registered decision.
+- **Reading at k = 3** (`rank_runs.py`, `--selftest` green on both poles in the same session, arms pooled with `pool_runs.py`):
+  mean public 8.82 -> 12.22 (+3.4), levels 41.67 -> 46.33 (+4.67), 16 games up / 6 down, **p = 0.1079 NOT-DISTINGUISHABLE**.
+  The direction favours the treatment and the size is not separable from noise at this k.
+- **Hidden draw:** `56377659`, thk r3 (public 15.8830, 54 levels), submitted 2026-09-20 02:42:36Z. Per design G3 it decides nothing.
