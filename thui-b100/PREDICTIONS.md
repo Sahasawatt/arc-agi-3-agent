@@ -34,9 +34,10 @@ line (last one read; printed every 50 requests, so a lower bound), 25 games, 25 
 (B100 validity: wrapper fired). Post-clear requests > 0 in both arms.
 
 ## KILL rule at smoke (`b100_read.py`, all must hold to PASS to the full pair)
-- **(a) post-clear prompt tokens per request (requests made while current level ≥ 2): arm ≥ 5 % below control.**
-  Re-registered per Watchara; predicted ~10 % (8-21 %).
-- Mechanism, within arm, exact: stripped chars / (stripped + sent) history reasoning on post-clear requests ≥ 0.10.
+- **(a) post-clear prompt tokens per request (requests made while current level ≥ 2): arm ≥ 2 % below control.**
+  Re-registered per Watchara at 5 %, REVISED to 2 % before any push (see below); predicted 3-8 %, point ~5 %.
+- Mechanism, within arm, exact: stripped chars / (stripped + sent) history reasoning on post-clear requests ≥ 0.05
+  (revised from 0.10; predicted ~0.10-0.15).
 - actions per minute ≥ 95 % of control (Watchara's gate). Same-family noise: 0.90 vs 0.87 (−3 %) between two smokes.
 - L2+ clears not down (Watchara's gate, literal). Noise caveat: the control smoke has only 4 L2+ clears, so this gate
   alone can kill on one draw.
@@ -45,5 +46,13 @@ line (last one read; printed every 50 requests, so a lower bound), 25 games, 25 
 Full pair (later, not this read): PASS only if ≥ 12/25 games gain a level and ≤ 6 lose one (Watchara's gate).
 
 ## Prediction (confidence L)
-Mechanism fires (share 0.15-0.30); post-clear prompt drop 6-15 %; actions/min +0-5 %; levels flat within noise. The
+Mechanism fires (share 0.10-0.15); post-clear prompt drop 3-8 %; actions/min +0-5 %; levels flat within noise. The
 smoke gate most likely to decide it is the literal L2+ gate (n ≈ 4), not the mechanism.
+
+## REVISION 2026-09-22, before any push — size re-checked on REAL request payloads (`snapshot_share.py`)
+518 last-request snapshots (`kout-*/prompts/*.log`): real history window median 8 assistant turns (p10 5, p90 12), so
+estimate_share.py's W = 20/30 rows do not apply; reasoning is 27 % of real input chars (not the 54 % assumed). At W = 8
+the rule strips 15.4 % of post-clear history reasoning; scaled by B92's measured −35 % prompt tokens for stripping ALL
+reasoning → ≈ 5 %; by chars ≈ 4 %; end-of-game snapshots ≈ 3-4 % (mean strip share 0.106, 77/378 with anything left
+to strip). The 5 % bar would kill a working mechanism about half the time, so: prompt drop ≥ 2 %, mechanism ≥ 0.05.
+Every other gate unchanged. Told to Watchara by relay before push.

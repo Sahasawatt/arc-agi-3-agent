@@ -9,8 +9,8 @@ STATS = re.compile(r"THUI_B100_STATS strip=(True|False) (.*)")
 MARK = re.compile(r"Current state: step \d+, level (\d+)")
 CODE = re.compile(r"<parameter=code>\n(.*?)</parameter>", re.S)
 DEF = re.compile(r"^[ \t]*def ([A-Za-z_]\w*)\(", re.M)
-PROMPT_DROP_MIN = 0.05       # (a): post-clear prompt tokens / request must fall >= 5 % vs control
-MECH_MIN = 0.10              # within-arm: stripped share of post-clear history reasoning >= 10 %
+PROMPT_DROP_MIN = 0.02       # (a): post-clear prompt tokens / request must fall >= 2 % vs control (revised 2026-09-22, real payloads)
+MECH_MIN = 0.05              # within-arm: stripped share of post-clear history reasoning >= 5 % (revised 2026-09-22)
 ACTIONS_PER_MIN_MIN = 0.95   # arm actions/min >= 95 % of control
 REDEF_RISE_MAX = 1.50        # our guard: final-level redefs/call <= 1.5 x control (two same-family smokes differ 1.25x on noise)
 
@@ -95,8 +95,8 @@ def selftest():
                final_calls=400, final_redefs=100, stats=dict(st, stripped_msgs=300, post_clear_prompt_tokens=200 * 20000))
     arm = dict(ctl, stats=st)
     cases = [("pass", arm, "PASS"),
-             ("prompt barely moves", dict(arm, stats=dict(st, post_clear_prompt_tokens=200 * 19500)), "KILL"),
-             ("mechanism thin", dict(arm, stats=dict(st, post_clear_stripped_chars=50000)), "KILL"),
+             ("prompt barely moves", dict(arm, stats=dict(st, post_clear_prompt_tokens=200 * 19800)), "KILL"),
+             ("mechanism thin", dict(arm, stats=dict(st, post_clear_stripped_chars=20000)), "KILL"),
              ("slower", dict(arm, actions=600), "KILL"),
              ("L2+ down", dict(arm, l2plus=5), "KILL"),
              ("redefs rose", dict(arm, final_redefs=160), "KILL"),
