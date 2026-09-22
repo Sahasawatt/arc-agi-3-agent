@@ -163,6 +163,38 @@ def patch(src: str) -> str:
         "",
         "RadixArk runtime env",
     )
+    src = _replace_once(
+        src,
+        '    env["LD_LIBRARY_PATH"] = os.pathsep.join(\n'
+        '        [str(path) for path in library_dirs if path.is_dir()]\n'
+        '        + ([env["LD_LIBRARY_PATH"]] if env.get("LD_LIBRARY_PATH") else [])\n'
+        '    )\n',
+        '    env["LD_LIBRARY_PATH"] = os.pathsep.join(\n'
+        '        [str(path) for path in library_dirs if path.is_dir()]\n'
+        '        + ([env["LD_LIBRARY_PATH"]] if env.get("LD_LIBRARY_PATH") else [])\n'
+        '    )\n'
+        '    searched_libcudart_dirs = [path for path in library_dirs if "stubs" not in path.parts]\n'
+        '    libcudart_candidates = []\n'
+        '    for directory in searched_libcudart_dirs:\n'
+        '        for candidate in directory.glob("libcudart.so.*"):\n'
+        '            match = re.fullmatch(r"libcudart\\.so\\.(\\d+)(?:\\..*)?", candidate.name)\n'
+        '            if match is not None and candidate.is_file():\n'
+        '                libcudart_candidates.append((int(match.group(1)), str(candidate), candidate))\n'
+        '    if not libcudart_candidates:\n'
+        '        raise RuntimeError(f"No versioned libcudart found in searched dirs: {searched_libcudart_dirs}")\n'
+        '    libcudart = max(libcudart_candidates)[2].resolve()\n'
+        '    linkfix_dir = TMP_ROOT / "thui-b94-linkfix"\n'
+        '    linkfix_dir.mkdir(parents=True, exist_ok=True)\n'
+        '    libcudart_link = linkfix_dir / "libcudart.so"\n'
+        '    libcudart_link.unlink(missing_ok=True)\n'
+        '    libcudart_link.symlink_to(libcudart)\n'
+        '    env["LIBRARY_PATH"] = os.pathsep.join(\n'
+        '        [str(linkfix_dir)]\n'
+        '        + ([env["LIBRARY_PATH"]] if env.get("LIBRARY_PATH") else [])\n'
+        '    )\n'
+        '    print(f"THUI_B94_LINKFIX libcudart={libcudart}", flush=True)\n',
+        "libcudart linkfix",
+    )
     src = _replace_once(src, '            "ple_patch_sha256": VLLM_PLE_PATCHED_SHA256,\n        }\n', "        }\n", "fast-mode PLE hash field")
     # The full deep-preload branch imports the Flash-Next PLE module; B94 runs fast start only.
     src = _replace_once(
