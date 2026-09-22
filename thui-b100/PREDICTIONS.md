@@ -34,10 +34,14 @@ line (last one read; printed every 50 requests, so a lower bound), 25 games, 25 
 (B100 validity: wrapper fired). Post-clear requests > 0 in both arms.
 
 ## KILL rule at smoke (`b100_read.py`, all must hold to PASS to the full pair)
-- **(a) post-clear prompt tokens per request (requests made while current level ≥ 2): arm ≥ 2 % below control.**
-  Re-registered per Watchara at 5 %, REVISED to 2 % before any push (see below); predicted 3-8 %, point ~5 %.
-- Mechanism, within arm, exact: stripped chars / (stripped + sent) history reasoning on post-clear requests ≥ 0.05
-  (revised from 0.10; predicted ~0.10-0.15).
+- **PRIMARY (mechanism), within arm, exact: stripped chars / (stripped + sent) history reasoning on post-clear
+  requests ≥ 0.05** (revised from 0.10; predicted ~0.10-0.15). Made primary at Watchara's request (05:44Z).
+- DESCRIPTIVE, not a gate: post-clear prompt tokens per request vs control, reference 2 % below (predicted 3-8 %,
+  point ~5 %). Measured noise: whole-run prompt tokens/request across six same-family smokes that strip nothing
+  (b12x-ctl 17,344 · thui-to 17,475 · thui-ap 17,481 · kv10 17,963 · kv12 18,201 · pc 17,664; vllm-metrics-final)
+  sd ≈ 1.9 %, largest pairwise gap 4.9 %; the post-clear subset is noisier still. A pass on tokens alone is not
+  evidence; a small miss is not a kill if the primary gate and actions/min pass. Sanity anchor: thui-p3, which
+  strips ALL reasoning, reads 11,280 (−35 %).
 - actions per minute ≥ 95 % of control (Watchara's gate). Same-family noise: 0.90 vs 0.87 (−3 %) between two smokes.
 - L2+ clears not down (Watchara's gate, literal). Noise caveat: the control smoke has only 4 L2+ clears, so this gate
   alone can kill on one draw.
@@ -48,6 +52,8 @@ Full pair (later, not this read): PASS only if ≥ 12/25 games gain a level and 
 ## Prediction (confidence L)
 Mechanism fires (share 0.10-0.15); post-clear prompt drop 3-8 %; actions/min +0-5 %; levels flat within noise. The
 smoke gate most likely to decide it is the literal L2+ gate (n ≈ 4), not the mechanism.
+With an expected ~5 % token drop, B100's case is CONTEXT QUALITY, not throughput: the full-pair level gate (≥ 12/25
+up, ≤ 6 down) is what decides it. (This smoke runs all 25 public games at 1,800 s, not 3.)
 
 ## REVISION 2026-09-22, before any push — size re-checked on REAL request payloads (`snapshot_share.py`)
 518 last-request snapshots (`kout-*/prompts/*.log`): real history window median 8 assistant turns (p10 5, p90 12), so
