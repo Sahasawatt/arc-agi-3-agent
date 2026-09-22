@@ -41,7 +41,7 @@ def read(d, log, strip):
     out["marker_ok"] = (f"THUI_B100_GRAFT ok strip={strip}" in nb and "THUI_B100_SMOKE arm=" in nb)
     m = STATS.findall(nb)
     if m and m[-1][0] == str(strip):
-        out["stats"] = {k: int(v) for k, v in (kv.split("=") for kv in m[-1][1].split())}
+        out["stats"] = {k: int(v) for k, v in re.findall(r"(\w+)=(\d+)", m[-1][1])}   # log lines are JSON-escaped
     return out
 
 
