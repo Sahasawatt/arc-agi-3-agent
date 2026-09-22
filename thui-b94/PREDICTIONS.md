@@ -17,3 +17,9 @@ Report total actions and elapsed play minutes, then compute actions/minute. Comp
 - **K3 (architecture)** passed at 0 GPU (the pinned image registers `Qwen3_5MoeForConditionalGeneration`); a load error naming the architecture or the ModelOpt NVFP4 path is still a K3 KILL.
 - **Direction predicted:** FEWER actions/min than the reference. The candidate runs ~1.55× the active compute per token on a decode-bound chassis (B87).
 - **Reference for actions/min:** `thui-a6-ctx64-smoke`, same three games at 1,800 s on the B81 profile. It differs by analyzer context (65,536 vs 32,768 here), so read the comparison as a direction, never a rank.
+
+## v2 smoke (linkfix) — 2026-09-22
+
+The v1 smoke is **VOID-infra**: flashinfer's XQA JIT reached the linker, which failed with `ld: cannot find -lcudart`. This was not an OOM. K2 VRAM fit was observed on v1: 73.24 GiB of weights loaded, 94.43 GiB was free before KV allocation, 7 GiB of KV cache was reserved, and the resulting capacity was 434,920 KV tokens.
+
+The v2 smoke is **VALID** only if `THUI_B94_LINKFIX libcudart=<resolved target>` prints and vLLM reaches readiness. The existing kill rules above are unchanged.
