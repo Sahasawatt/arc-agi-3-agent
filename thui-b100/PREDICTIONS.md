@@ -62,3 +62,16 @@ the rule strips 15.4 % of post-clear history reasoning; scaled by B92's measured
 reasoning → ≈ 5 %; by chars ≈ 4 %; end-of-game snapshots ≈ 3-4 % (mean strip share 0.106, 77/378 with anything left
 to strip). The 5 % bar would kill a working mechanism about half the time, so: prompt drop ≥ 2 %, mechanism ≥ 0.05.
 Every other gate unchanged. Told to Watchara by relay before push.
+
+## VERDICT 2026-09-22 (b100_read.py, output-dir logs; arm COMPLETE ~16:22Z, control ~16:53Z) — KILL by the registered gates
+Both VALID (markers, 25 games/25 transcripts, STATS lines; last STATS at 550 / 500 requests, so lower bounds).
+- PRIMARY mechanism: strip share of post-clear history reasoning **0.492** (bar ≥ 0.05; predicted 0.10-0.15) — PASS,
+  far above the estimate.
+- Descriptive: post-clear prompt tokens/request ctl 23,180 → arm 18,768, **−19.0 %** (predicted 3-8 %).
+- actions/min ctl 0.90 → arm 0.84 = 93 % of control, **below the 95 % gate** → KILL. (Noise reference: two unrelated
+  same-family smokes differ −3 %: 0.90 vs 0.87.)
+- L2+ clears ctl 5 → arm 2, **down** → KILL. (Caveat registered before push: n ≈ 4, one draw can decide it.)
+- Levels 19 = 19. Final-level redefs/call 0.345 vs 0.347 (guard 1.5×) — PASS.
+Registered consequence: the smoke kills B100; no full pair on this registration. Read after the verdict (not graded):
+the mechanism fired strongly (prompt −19 %), yet fewer actions per minute and fewer L2+ clears — the direction B92 showed
+for stripping everything, here at a smaller dose.
