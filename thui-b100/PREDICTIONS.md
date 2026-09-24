@@ -33,6 +33,18 @@ Both logs: `THUI_B100_GRAFT ok strip=True|False` (matching the arm), `THUI_B100_
 line (last one read; printed every 50 requests, so a lower bound), 25 games, 25 transcripts. Arm stripped > 0 messages
 (B100 validity: wrapper fired). Post-clear requests > 0 in both arms.
 
+**Added 2026-09-24, before the smoke was pushed: `void=0` on the last `THUI_B100_STATS` line of BOTH arms,
+and no `THUI_B100_VOID` line anywhere in either log.** `void` counts requests where the payload the wrapper
+actually built disagrees with the keep rule: `sent_clear_chars != clear_chars`, i.e. a clearing message the rule
+promises to KEEP came back with fewer reasoning chars than it went in with. This reads the SENT list, not the
+level decision, which is why it can fail while the code runs. Teeth, proven on the existing mutant suite before
+this was registered: the `clearing message not protected` mutant gives `clear_chars=200 sent_clear_chars=0 void=1`,
+while the unmutated graft gives `void=0` and the 12 baseline checks stay green. The six other mutants do NOT trip
+it and are not claimed to; they stay covered by those 12 checks. `sent_left_chars` and `sent_cur_chars` are also
+emitted but are TELEMETRY, not gates: they are derived from the same `levels[i] != current` test as the decision
+they would be checking, so they cannot fail while the decision is self-consistent. They exist because nothing in
+a live run otherwise records what the wrapper sent -- `prompts/*.log` is written before `_chat_completion`.
+
 ## KILL rule at smoke (`b100_read.py`, all must hold to PASS to the full pair)
 - **PRIMARY (mechanism), within arm, exact: stripped chars / (stripped + sent) history reasoning on post-clear
   requests ≥ 0.05** (revised from 0.10; predicted ~0.10-0.15). Made primary at Watchara's request (05:44Z).

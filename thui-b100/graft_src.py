@@ -13,7 +13,9 @@ _THUI_B100_MARK = _thui_b100_re.compile(r"Current state: step \d+, level (\d+)")
 _THUI_B100_LOCK = _thui_b100_threading.Lock()
 _THUI_B100 = {"requests": 0, "post_clear_requests": 0, "post_clear_prompt_tokens": 0, "all_prompt_tokens": 0,
               "stripped_msgs": 0, "stripped_chars": 0, "kept_clear_msgs": 0, "sent_reasoning_chars": 0,
-              "post_clear_stripped_chars": 0, "post_clear_sent_reasoning_chars": 0}
+              "post_clear_stripped_chars": 0, "post_clear_sent_reasoning_chars": 0,
+"sent_cur_chars": 0, "sent_left_chars": 0, "cur_chars": 0, "clear_chars": 0,
+"sent_clear_chars": 0, "void": 0}
 
 
 def _thui_b100_text(content):
@@ -46,11 +48,17 @@ def _thui_b100_plan(messages):
             seg_level = lv
         if isinstance(m, dict) and m.get("role") == "assistant":
             last_assistant = i
-    sent, st = [], {"stripped_msgs": 0, "stripped_chars": 0, "kept_clear_msgs": 0, "sent_reasoning_chars": 0}
+    sent, st = [], {"stripped_msgs": 0, "stripped_chars": 0, "kept_clear_msgs": 0, "sent_reasoning_chars": 0,
+                    "sent_cur_chars": 0, "sent_left_chars": 0, "cur_chars": 0, "clear_chars": 0,
+                    "sent_clear_chars": 0, "void": 0}
     for i, m in enumerate(messages):
         if isinstance(m, dict) and m.get("role") == "assistant" and m.get("reasoning"):
             r = len(str(m.get("reasoning")))
             left = current is not None and levels[i] is not None and levels[i] != current
+            if not left:
+                st["cur_chars"] += r
+            if left and i in clearing:
+                st["clear_chars"] += r
             if left and i in clearing:
                 st["kept_clear_msgs"] += 1
             if left and i not in clearing and _THUI_B100_STRIP:
@@ -64,6 +72,19 @@ def _thui_b100_plan(messages):
             else:
                 st["sent_reasoning_chars"] += r
         sent.append(m)
+    for i, m in enumerate(sent):          # VOID invariants, read off the payload the wrapper built
+        if isinstance(m, dict) and m.get("role") == "assistant" and m.get("reasoning"):
+            r = len(str(m.get("reasoning")))
+            if current is not None and levels[i] is not None and levels[i] != current and i not in clearing:
+                st["sent_left_chars"] += r     # must be 0 while stripping: a left, non-clearing message kept its reasoning
+            elif i in clearing:
+                st["sent_clear_chars"] += r
+            else:
+                st["sent_cur_chars"] += r
+    if st["sent_clear_chars"] != st["clear_chars"]:
+        st["void"] = 1        # a clearing message the rule promises to KEEP lost reasoning in the payload
+    if _THUI_B100_STRIP and st["sent_left_chars"]:
+        st["void"] = 1        # telemetry-grade: derived from the same level test as the decision
     st["post_clear"] = bool(current is not None and current >= 2)
     return sent, st
 
@@ -79,7 +100,9 @@ def _thui_b100_chat_completion(self, messages, **kwargs):
     with _THUI_B100_LOCK:
         _THUI_B100["requests"] += 1
         _THUI_B100["all_prompt_tokens"] += pt
-        for k in ("stripped_msgs", "stripped_chars", "kept_clear_msgs", "sent_reasoning_chars"):
+        for k in ("stripped_msgs", "stripped_chars", "kept_clear_msgs", "sent_reasoning_chars",
+                  "sent_cur_chars", "sent_left_chars", "cur_chars", "clear_chars",
+                  "sent_clear_chars", "void"):
             _THUI_B100[k] += st[k]
         if st["post_clear"]:
             _THUI_B100["post_clear_requests"] += 1
@@ -87,6 +110,9 @@ def _thui_b100_chat_completion(self, messages, **kwargs):
             _THUI_B100["post_clear_stripped_chars"] += st["stripped_chars"]
             _THUI_B100["post_clear_sent_reasoning_chars"] += st["sent_reasoning_chars"]
         snap = dict(_THUI_B100)
+    if st["void"] and snap["void"] == 1:
+        print("THUI_B100_VOID first sent_clear_chars=" + str(st["sent_clear_chars"])
+              + " clear_chars=" + str(st["clear_chars"]) + " sent_left_chars=" + str(st["sent_left_chars"]), flush=True)
     if snap["requests"] == 1 or snap["requests"] % 50 == 0:
         print("THUI_B100_STATS strip=" + str(_THUI_B100_STRIP) + " "
               + " ".join(f"{k}={v}" for k, v in snap.items()), flush=True)
