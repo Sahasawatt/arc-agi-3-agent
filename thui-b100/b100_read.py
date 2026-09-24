@@ -3,7 +3,7 @@
 usage: python b100_read.py <ctl-output-dir> <ctl-log> <arm-output-dir> <arm-log> [--selftest]
 Exit 0 PASS (go to the full pair), 5 KILL, 3 VOID, 1 reader error.
 """
-import glob, json, os, re, sys
+import glob, json, os, re, sys, tempfile
 
 STATS = re.compile(r"THUI_B100_STATS strip=(True|False) (.*)")
 MARK = re.compile(r"Current state: step \d+, level (\d+)")
@@ -13,6 +13,20 @@ PROMPT_DROP_MIN = 0.02       # DESCRIPTIVE ONLY (Watchara 2026-09-22T05:44Z): in
 MECH_MIN = 0.05              # PRIMARY smoke gate: stripped share of post-clear history reasoning >= 5 %
 ACTIONS_PER_MIN_MIN = 0.95   # arm actions/min >= 95 % of control
 REDEF_RISE_MAX = 1.50        # our guard: final-level redefs/call <= 1.5 x control (two same-family smokes differ 1.25x on noise)
+
+
+def log_text(path):
+    """Kaggle's own run .log is a JSON array of {stream_name, time, data} blocks -- a line is
+    split across blocks, so reading it raw makes every regex match run into JSON quoting. A
+    converted .txt is plain. Read either."""
+    t = open(path, encoding="utf-8", errors="replace").read()
+    if t.lstrip()[:1] != "[":
+        return t
+    try:
+        blocks = json.loads(t)
+    except ValueError:
+        return t
+    return "".join(b.get("data", "") for b in blocks if isinstance(b, dict))
 
 
 def read(d, log, strip):
@@ -37,7 +51,7 @@ def read(d, log, strip):
             for name in DEF.findall(code):
                 out["final_redefs"] += name in seen
                 seen.add(name)
-    nb = open(log, encoding="utf-8", errors="replace").read() if log and os.path.exists(log) else ""
+    nb = log_text(log) if log and os.path.exists(log) else ""
     out["marker_ok"] = (f"THUI_B100_GRAFT ok strip={strip}" in nb and "THUI_B100_SMOKE arm=" in nb)
     m = STATS.findall(nb)
     if m and m[-1][0] == str(strip):
@@ -104,6 +118,17 @@ def selftest():
              ("wrong flag / no marker", dict(arm, marker_ok=False), "VOID"),
              ("short of games", dict(arm, games=20), "VOID")]
     ok = True
+    line = ("THUI_B100_GRAFT ok strip=True\nTHUI_B100_SMOKE arm=v0\n"
+            "THUI_B100_STATS strip=True requests=1 stripped_msgs=2\n")
+    for name, body in (("log as Kaggle's JSON array", json.dumps([{"data": ch} for ch in line])),
+                       ("log as plain text", line)):
+        fd, p = tempfile.mkstemp()
+        os.write(fd, body.encode()); os.close(fd)
+        got = read(os.path.join(os.path.dirname(p), "__no_such_dir__"), p, True)
+        os.unlink(p)
+        want = got["marker_ok"] and got["stats"] == dict(requests=1, stripped_msgs=2)
+        print(f"{'ok  ' if want else 'FAIL'} selftest {name}: {got['stats']} marker={got['marker_ok']}")
+        ok &= bool(want)
     for name, a, want in cases:
         got, _ = verdict(ctl, a)
         print(f"{'ok  ' if got == want else 'FAIL'} selftest {name}: {got} (want {want})")
