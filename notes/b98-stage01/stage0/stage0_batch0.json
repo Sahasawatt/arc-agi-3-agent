@@ -1,0 +1,203 @@
+[
+ {
+  "game": "cd82-fb555c5d",
+  "level": 1,
+  "turn": 11,
+  "dead_time": false,
+  "text": "Hmm, the paint pattern: rows 34-38 all purple (10 wide), rows 39-43 decreasing purple from the left.",
+  "id": "h000"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 3,
+  "turn": 21,
+  "dead_time": false,
+  "text": "Let me reconsider: maybe the level DID register and needs one more thing, e.g., the shapes must be \"dropped\"/locked with SPACE while selected, and my SPACE presses rotated them out of place and back.",
+  "id": "h004"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "turn": 4,
+  "dead_time": false,
+  "text": "Let me count moves needed: 14 moves along the path (from (14,26): up?",
+  "id": "h008"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 1,
+  "turn": 6,
+  "dead_time": false,
+  "text": "Clicking **lower** blue: top gray piston edge moves RIGHT 4, bottom gray piston edge moves LEFT 4, and the charcoal arrow + yellow 2×6 bar (mounted on the bottom edge) slide LEFT 4 with it.",
+  "id": "h012"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 3,
+  "turn": 36,
+  "dead_time": true,
+  "text": "The b-button click then moved the blue square from r20-23 c4-7 to...",
+  "id": "h016"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 2,
+  "turn": 39,
+  "dead_time": true,
+  "text": "The key insight is that clicking the bead's midpoint might swap the white and gray endpoints—so clicking the bead at (14,43) when the white is at (18,57) could flip which endpoint is which, potentially allowing me to maneuver the white back onto the ring.",
+  "id": "h020"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 2,
+  "turn": 20,
+  "dead_time": true,
+  "text": "Maybe SPACE = \"the bar moves to (absorbs) the nearest red block and leaves a red trail of its own size\"?",
+  "id": "h024"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "turn": 38,
+  "dead_time": true,
+  "text": "No — the first bump: player pushed the box at (28,36) with RIGHT, and the box appeared at (32-35,16-19)??",
+  "id": "h028"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 2,
+  "turn": 27,
+  "dead_time": true,
+  "text": "- My planned next click: bead should be at (28,56) after swap...",
+  "id": "h032"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "turn": 40,
+  "dead_time": true,
+  "text": "no wait, if TL-B = +1 rotation, then successive clicks move Y one step along the cycle each time: (24,23)→(15,23)→(6,23)→...",
+  "id": "h036"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 5,
+  "turn": 29,
+  "dead_time": true,
+  "text": "So the oranges moved when the player moved: LEFT → they moved; RIGHT → they moved (one vanished); blocked RIGHT presses → nothing.",
+  "id": "h040"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 2,
+  "turn": 39,
+  "dead_time": true,
+  "text": "DOWN pos (44, 12) step 83 changed True lvl_done False done False go False score 1",
+  "id": "h044"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 1,
+  "turn": 13,
+  "dead_time": false,
+  "text": "Hmm, and RIGHT at step 52 didn't move it.",
+  "id": "h048"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 1,
+  "turn": 7,
+  "dead_time": false,
+  "text": "Since clicking the gray swaps them instantly...",
+  "id": "h052"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 3,
+  "turn": 42,
+  "dead_time": true,
+  "text": "So clicking (23,61) made M(23,55) disappear??",
+  "id": "h056"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 4,
+  "turn": 17,
+  "dead_time": false,
+  "text": "Current state: I just made 1 move (RIGHT → player (8,2)), and the O is at (0,6) = t=1.",
+  "id": "h060"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 3,
+  "turn": 35,
+  "dead_time": true,
+  "text": "L2's 3x6 block: RIGHT moved columns by +3 each press ✓ (42→45→48→51→54→57).",
+  "id": "h064"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 2,
+  "turn": 41,
+  "dead_time": true,
+  "text": "World model (rev): Cursor is at slot 6 (UP only changes the bracket).",
+  "id": "h068"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 1,
+  "turn": 2,
+  "dead_time": false,
+  "text": "So we need to move the key right and down so feet land on markers at cols 38-40, rows 35-37 and 41-43.",
+  "id": "h072"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 1,
+  "turn": 5,
+  "dead_time": false,
+  "text": "When SPACE destroys a box, the box becomes a white 4x4 with a blue core that then \"hovers\" above the player.",
+  "id": "h076"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 2,
+  "turn": 28,
+  "dead_time": true,
+  "text": "World model (level 2): Two 4x4 dash lattices (left cols 7-24, right cols 38-55, rows 33-49) = bar/stem toggle groups (like level 1's marks but 4x4).",
+  "id": "h080"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "turn": 29,
+  "dead_time": true,
+  "text": "no wait, the orange moved left along rows 36-39 while carrying the box below it?",
+  "id": "h084"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "turn": -1,
+  "dead_time": false,
+  "text": "Let me look at the current board carefully before deciding.",
+  "neg_control": true,
+  "id": "h088"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 2,
+  "turn": 8,
+  "dead_time": true,
+  "text": "In level 1, the piece moved UP into the box's cell and the level completed.",
+  "id": "h092"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "turn": 1,
+  "dead_time": false,
+  "text": "So the object slid right 5 cells and stopped — maybe because it hit the right wall of the arena.",
+  "id": "h096"
+ }
+]

@@ -1,0 +1,194 @@
+[
+ {
+  "game": "sp80-589a99af",
+  "level": 1,
+  "turn": 2,
+  "dead_time": false,
+  "text": "Up moved it from rows 16-19 to 12-15.",
+  "id": "h003"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 2,
+  "turn": 25,
+  "dead_time": true,
+  "text": "Unless the bar was reset/extended by progress.",
+  "id": "h007"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 2,
+  "turn": 42,
+  "dead_time": true,
+  "text": "- Bottom rect (moves up): all 100 (because it's 7 tall × travels far).",
+  "id": "h011"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 1,
+  "turn": 12,
+  "dead_time": false,
+  "text": "Alternatively — what if the level is about the bar \"catching\" the magenta plug: the plug might be attached to the ceiling and the bar must be positioned under it, then SPACE = \"grab\" (the plug would then move down with the bar).",
+  "id": "h015"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "turn": 11,
+  "dead_time": false,
+  "text": "Hmm, if the bar decreases 1 per 2 actions, we have ~110 actions left.",
+  "id": "h019"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 2,
+  "turn": 8,
+  "dead_time": false,
+  "text": "So: top band (rows 1-19) left edge 52 → and rows 20-23 became 56 too, so now the whole top region rows 1-23 has left edge 56: the top gray piston moved RIGHT by 4 (52→56).",
+  "id": "h023"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 1,
+  "turn": 14,
+  "dead_time": true,
+  "text": "br10 bc5 = '.' blocked; right bc6→bc5 blocked → no move ✓.",
+  "id": "h027"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 5,
+  "turn": 30,
+  "dead_time": true,
+  "text": "So it moves up 2, up 2, down 2 → bouncing between (0,6) and (4,6)?",
+  "id": "h031"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 1,
+  "turn": 2,
+  "dead_time": false,
+  "text": "# Click button to select (white outline), click a gray slot in the red box to fill it with that color.",
+  "id": "h035"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 2,
+  "turn": 37,
+  "dead_time": true,
+  "text": "Decision: go with the full plan in one batch, but order it so that the most likely win happens as early as possible: clicks first (6), then moves (6).",
+  "id": "h039"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 1,
+  "turn": 3,
+  "dead_time": false,
+  "text": "Actually to save turns, do: 2 SPACE, verify orientation via segmentation, then execute moves in a loop with early stop.",
+  "id": "h043"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "turn": 5,
+  "dead_time": false,
+  "text": "Interesting — the piece moved up 5 again but the top part now overlaps the box's bottom border.",
+  "id": "h047"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 3,
+  "turn": 39,
+  "dead_time": true,
+  "text": "at idx 100 the panel is empty, so B2 was off before idx 99 and idx 99's click turned it ON?",
+  "id": "h051"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 2,
+  "turn": 11,
+  "dead_time": false,
+  "text": "Another view: maybe the chips in the upper-left are clickable buttons that select a color, and the blob's color changes accordingly?",
+  "id": "h055"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 2,
+  "turn": 20,
+  "dead_time": true,
+  "text": "So SPACE did a genuine transformation: it swapped the blue bar with the red block that was \"below/aligned\"?",
+  "id": "h059"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 2,
+  "turn": 16,
+  "dead_time": false,
+  "text": "The first UP moved the tip up (rows 31-38 changed, n=32): the tip moved up 2 rows?",
+  "id": "h063"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 1,
+  "turn": 1,
+  "dead_time": false,
+  "text": "Let me test more actions: press DOWN and see whether the yellow crosshair moves too.",
+  "id": "h067"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 4,
+  "turn": 32,
+  "dead_time": true,
+  "text": "But the plus (M) went too far DOWN: it's clipped at the bottom edge (vertical arm rows 40-63, center ~row 53) — I miscounted moves (plus was already at row 39 after the earlier RIGHT turn, then 9 DOWN overshot).",
+  "id": "h071"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 4,
+  "turn": 29,
+  "dead_time": true,
+  "text": "So maybe here: move the black shapes right to cols 33-47 AND position the wall so the mirrors cover the yellow.",
+  "id": "h075"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "turn": 26,
+  "dead_time": true,
+  "text": "When red moves left (pushed by blue), wall moves left too.",
+  "id": "h079"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 3,
+  "turn": 41,
+  "dead_time": true,
+  "text": "Wait, yellow is at columns 20-28, rows 35; push up 5 times → @20-28,20-28 = upper-left hole ✓!!",
+  "id": "h083"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 1,
+  "turn": 9,
+  "dead_time": false,
+  "text": "Let me test horizontal offset: move LEFT 3, then stamp white, and see which cells change.",
+  "id": "h087"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 4,
+  "turn": 27,
+  "dead_time": true,
+  "text": "(d) Maybe the flag can move DOWN and the goal is to lower the flag to align with something.",
+  "id": "h091"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 2,
+  "turn": 46,
+  "dead_time": true,
+  "text": "Level 1 was solved with score 1 by filling \"all 4 slots matching the top sequence (b,N,Y,p)\" then SPACE.",
+  "id": "h095"
+ }
+]

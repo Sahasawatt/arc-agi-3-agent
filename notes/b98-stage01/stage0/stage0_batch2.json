@@ -1,0 +1,204 @@
+[
+ {
+  "game": "s5i5-18d95033",
+  "level": 2,
+  "turn": 14,
+  "dead_time": false,
+  "text": "Plan: 7 sky-grow clicks, verifying the group rises 3 rows each and stops at rows 12-14.",
+  "id": "h002"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 1,
+  "turn": 7,
+  "dead_time": false,
+  "text": "Maybe two separate events: the outline hint vanished (because a click happened) and the red piece toggled.",
+  "id": "h006"
+ },
+ {
+  "game": "sk48-d8078629",
+  "level": 1,
+  "turn": 7,
+  "dead_time": true,
+  "text": "So the whole block column moved down 6.",
+  "id": "h010"
+ },
+ {
+  "game": "bp35-0a0ad940",
+  "level": 2,
+  "turn": 43,
+  "dead_time": true,
+  "text": "and then LEFT/RIGHT can move it along the ceiling!",
+  "id": "h014"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 4,
+  "turn": 18,
+  "dead_time": true,
+  "text": "Actually, we know from the earlier test: after pressing SPACE, the white marker moved to the X center (21,24).",
+  "id": "h018"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "turn": 17,
+  "dead_time": true,
+  "text": "Orange bar rows 21-23 cols 39-55 with gray cap at col 56 → fixed at right, grows left.",
+  "id": "h022"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 1,
+  "turn": 1,
+  "dead_time": false,
+  "text": "Since the net change was only the timer, the click on the ball did nothing meaningful (or the ball bounced back).",
+  "id": "h026"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "turn": 6,
+  "dead_time": false,
+  "text": "or maybe UP/DOWN move the selection and the change I saw was...",
+  "id": "h030"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 1,
+  "turn": 13,
+  "dead_time": true,
+  "text": "But since the squares are identical in color, \"swap\" = the pair occupies the mirrored start positions: left at (9,7)??",
+  "id": "h034"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "turn": -1,
+  "dead_time": false,
+  "text": "The board is 64x64 and mostly black with a few colored regions.",
+  "neg_control": true,
+  "id": "h038"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 3,
+  "turn": 45,
+  "dead_time": true,
+  "text": "What if the b toggle moves the blue square to the lower-left (r40-43 c12-15) — that's near the lower cluster (r40-47 c12-19).",
+  "id": "h042"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 2,
+  "turn": 32,
+  "dead_time": true,
+  "text": "The socket did NOT move; instead the second click placed a white SELECTION RING around slot 4 (W ring: 'WRRRRW').",
+  "id": "h046"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 1,
+  "turn": 2,
+  "dead_time": false,
+  "text": "But maybe green clicks also decrease?",
+  "id": "h050"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 1,
+  "turn": 7,
+  "dead_time": false,
+  "text": "Clicking the bead: the white moves to the bead's position, so the bead becomes the midpoint of the remaining half → f → (1+f)/2 in terms of the remaining...",
+  "id": "h054"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 2,
+  "turn": 33,
+  "dead_time": true,
+  "text": "So the piece moved from (2,4) to (8,5) on a LEFT press.",
+  "id": "h058"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "turn": 34,
+  "dead_time": true,
+  "text": "Maybe each cluster has a ring cycle and clicking an arrow rotates the ring; the arrow position indicates which ring.",
+  "id": "h062"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 4,
+  "turn": 25,
+  "dead_time": true,
+  "text": "Let me continue pushing P2 up and see if it spills into P1 when reaching bar2 top (row 22 → h=42).",
+  "id": "h066"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "turn": -1,
+  "dead_time": false,
+  "text": "I need to think about what the goal of this level might be.",
+  "neg_control": true,
+  "id": "h070"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 1,
+  "turn": 7,
+  "dead_time": false,
+  "text": "What if the box were at the corridor and the player pushes it right — always horizontal.",
+  "id": "h074"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 6,
+  "turn": 40,
+  "dead_time": true,
+  "text": "And the first click changed (6,4)?",
+  "id": "h078"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 2,
+  "turn": 44,
+  "dead_time": true,
+  "text": "Now I'll move RIGHT to the UR diamond, select orange, and press SPACE.",
+  "id": "h082"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 5,
+  "turn": 29,
+  "dead_time": false,
+  "text": "Clicking toggles N↔p in a plus-shape neighborhood restricted to clickable cells; 9 mini/dead cells are unclickable.",
+  "id": "h086"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "turn": 20,
+  "dead_time": false,
+  "text": "Let me verify: at step 14→15 I moved from (8,38) to (8,32) via LEFT.",
+  "id": "h090"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 1,
+  "turn": 0,
+  "dead_time": false,
+  "text": "Let's probe: click the blue button at bottom (row 58, col 35) and see what changes.",
+  "id": "h094"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 2,
+  "turn": 39,
+  "dead_time": true,
+  "text": "So the head can slide along its track: up/down.",
+  "id": "h098"
+ }
+]

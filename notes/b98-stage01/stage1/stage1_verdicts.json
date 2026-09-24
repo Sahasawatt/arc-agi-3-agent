@@ -1,0 +1,102 @@
+[
+ {
+  "id": "h001",
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "verdict": "untested",
+  "support": 0,
+  "contradict": 0,
+  "na": 0,
+  "matched": 0
+ },
+ {
+  "id": "h001~neg",
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "verdict": "untested",
+  "support": 0,
+  "contradict": 0,
+  "na": 0,
+  "matched": 0
+ },
+ {
+  "id": "h018",
+  "game": "re86-8af5384d",
+  "level": 4,
+  "verdict": "mixed",
+  "support": 1,
+  "contradict": 2,
+  "na": 0,
+  "matched": 3
+ },
+ {
+  "id": "h018~neg",
+  "game": "re86-8af5384d",
+  "level": 4,
+  "verdict": "untested",
+  "support": 0,
+  "contradict": 0,
+  "na": 3,
+  "matched": 3
+ },
+ {
+  "id": "h036",
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "verdict": "falsified",
+  "support": 0,
+  "contradict": 17,
+  "na": 0,
+  "matched": 17
+ },
+ {
+  "id": "h036~neg",
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "verdict": "falsified",
+  "support": 0,
+  "contradict": 17,
+  "na": 0,
+  "matched": 17
+ },
+ {
+  "id": "h056",
+  "game": "su15-1944f8ab",
+  "level": 3,
+  "verdict": "validated",
+  "support": 1,
+  "contradict": 0,
+  "na": 0,
+  "matched": 1
+ },
+ {
+  "id": "h056~neg",
+  "game": "su15-1944f8ab",
+  "level": 3,
+  "verdict": "falsified",
+  "support": 0,
+  "contradict": 1,
+  "na": 0,
+  "matched": 1
+ },
+ {
+  "id": "h065",
+  "game": "ft09-0d8bbf25",
+  "level": 4,
+  "verdict": "falsified",
+  "support": 0,
+  "contradict": 87,
+  "na": 0,
+  "matched": 87
+ },
+ {
+  "id": "h065~neg",
+  "game": "ft09-0d8bbf25",
+  "level": 4,
+  "verdict": "falsified",
+  "support": 0,
+  "contradict": 87,
+  "na": 0,
+  "matched": 87
+ }
+]
