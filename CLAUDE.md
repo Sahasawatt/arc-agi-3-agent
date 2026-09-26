@@ -1451,8 +1451,9 @@ out with a requests spy on `Session.send`).
 
 ## Git
 
-Branch `master`, remote `Sahasawatt/arc-agi-3-agent` (public, MIT-0 — the competition requires
-open source for prize eligibility). **Ask before every commit**, and stage files by name.
+Branch `master`, remote `Sahasawatt/arc-agi-3-agent` (public, MIT-0 — the team's own choice; the
+prize-eligibility licence requirement is unconfirmed, see README §License and umbrella
+`docs/competition/rules.md`). **Ask before every commit**, and stage files by name.
 
 ## The Kaggle submission pipeline (`kaggle/`)
 
