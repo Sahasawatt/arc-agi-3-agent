@@ -43,3 +43,19 @@ submitted.
 
 A death can REFUTE the model, so keeping slots across it can mislead (the peer's caveat). The prompt already asks
 the model to revise on contradiction; this bar measures the net effect and does not separate the two.
+
+## Addendum 2026-09-26 (after the reading) — the verdict clauses overlapped
+
+The text above is left as registered. On the reading (keep 21 qualifying deaths, 1 clear-after; ctl 11,
+1 clear-after), KILL fired because it floors only the arm (>= 15). INCONCLUSIVE also fired, because its
+floor covers "either arm". A registered bar must be a partition, so a future bar in this family uses:
+
+| arm n >= 15 AND ctl n >= 15 | rate order | verdict |
+|---|---|---|
+| no | any | INCONCLUSIVE |
+| yes | arm - ctl >= 15 pp | PASS |
+| yes | arm <= ctl | KILL |
+| yes | 0 < arm - ctl < 15 pp | INCONCLUSIVE |
+
+Each sample-size floor sits in one place, and every row names both arms. Under this table, B101's reading
+is INCONCLUSIVE on sample size. The row closes on the peer's power read (MAP B101), not on this bar.
