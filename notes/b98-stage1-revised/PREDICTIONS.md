@@ -95,9 +95,12 @@ models tokenise and reason differently, and the direction of the error is not kn
 measured. A median above **0.5 × the ceiling (5,004)** that still passes is reported as **NEAR-LINE** beside the
 verdict, because a proxy error of 2× would flip it. NEAR-LINE is a flag on the PASS row, not a row of its own.
 
-**Input tokens** (sentence + 64×64 board + prompt, ~1,400–2,000 for the board alone) are MEASURED AND REPORTED,
-not graded: the banked `benchmark.json` carries `uncached_input_tokens = 0` on this chassis, so no
-prompt-token budget exists to derive a ceiling from, and inventing one would be a number with no source.
+**Input tokens** (sentence + 64×64 board + prompt, ~1,400–2,000 for the board alone) are MEASURED on this stage's
+calls and REPORTED, not graded. The live side of that comparison is **UNMEASURED — an instrument gap, not a zero
+budget**: the banked `benchmark.json` reads `uncached_input_tokens = 0` on all 3,017 history entries of the primary,
+which says the field is not populated on this chassis, not that input costs nothing (prefill is real GPU work and
+real money). With no measured live input figure there is nothing to derive a ceiling from, so none is set; a
+ceiling here would be a number with no source.
 
 ## The predictor
 
@@ -174,7 +177,10 @@ noise.
 - Compiler = codex; 60 sentences/game with a hard cap of ≤ 1,500 calls — accepted as drafted.
 - PASS-UNAFFORDABLE gets a numeric ceiling now — the section above.
 - Verdict clauses must partition with no undefined case — the table above.
-- **Needs his agreement — introduced after his review (rev 3):** clause (iii) graded on the effect against a
+- **Agreed 2026-09-27 (relay `01M3H7Q6DNF5J1RMC8B25BPV2J`), on two conditions, both applied in rev 4:** (A) the
+  B98 MAP row is amended in the same PR, so the MAP and this file state one bar; (B) live input cost is written
+  as an UNMEASURED instrument gap, not as a zero budget. He noted that counting only specific hypotheses makes the
+  30 % bar harder to clear; 30 % / 12 % stay as registered. Changes he agreed to, as introduced in rev 3: clause (iii) graded on the effect against a
   shuffled-hypothesis null instead of `board_changed` against the majority class (reason in the clause); generic
   hypotheses barred from emitting; the NOT-REPLICATED row; the cost proxy and NEAR-LINE flag.
 - **Still open, and the only thing between this draft and registration:** the replication run. Rule from the review:
