@@ -76,3 +76,32 @@ mutation restoring the r1 import crashes the suite the way Kaggle crashed; 25 ch
 Measured again on r2's render: an 8-panel sheet is 522×262 px, 1,646 base64 chars, **552 estimator tokens** vs 363
 for a board (~1.5×). This **replaces** the 1,567 / ~4.3× figure above, which was the labelled r1 render (text
 anti-aliasing inflated the PNG); the confound it describes is correspondingly smaller. Slugs are `-r2`.
+
+## Reading 2026-09-27, r2 (after both arms COMPLETE) — PROMOTE to a second pair
+
+Pair `sahasawatt/thui-b104-sheet-full25-r2` / `sahasawatt/thui-b104-ctl-full25-r2`, both v1, pushed together
+10:06Z, both COMPLETE by 12:48Z. Log read with `kaggle kernels logs` after completion. Fixtures banked:
+`eval/fixtures/thui-b104-sheet-full25-r2.json`, `eval/fixtures/thui-b104-ctl-full25-r2.json`.
+
+- **VALID, both arms.** `THUI_B104_GRAFT ok sheet=True` / `=False` once each; the B81 marker `THUI_ANIMFAST_GRAFT ok`
+  once per arm. Last STATS: arm `builds=1092 eligible=451 attached=451 stripped=409 panels=2473
+  sheet_b64=1305694 query_errors=0 render_errors=0`; control `builds=1035 eligible=401 attached=0 query_errors=0`.
+  `eligible >= 50`, arm `attached == eligible`, control `attached == 0` — all hold. The r2 render fix loaded on
+  Kaggle (r1 had died at that import).
+- **Reach passes.** Control `eligible / builds = 401 / 1035 = 0.387` (floor 0.05): almost four in ten analyze calls
+  follow an animated action.
+- **Outcome: PROMOTE.** Arm total levels **46** vs control **40** (`+6 >= +3`). `rank_runs.py` (arm first, control
+  second, `--single-baseline`): mean 10.21 → 7.95, levels 46 → 40, 12 games arm-better / 7 control-better / 2
+  flipped, **p = 0.3532 NOT-DISTINGUISHABLE**. Actions 3,318 vs 2,814. Per game, the arm clears more levels in 9
+  (dc22 +1, ft09 +2, lf52 +1, ls20 +1, m0r0 +2, r11l +1, re86 +1, sc25 +1, wa30 +2) and fewer in 5 (ar25 −1,
+  cd82 −1, s5i5 −1, sb26 −2, tr87 −1). PROMOTE licenses a second pair only; PASS needs the pooled `rank_runs`
+  BETTER at p < 0.05 over both pairs. No hidden submission on this reading.
+
+Read beside the other B81-chassis pairs run the same day, the same-day controls cleared **42** (B103), **40**
+(B104) and **42** (B105, watchara's reading): the control-to-control gap is about 2 levels, and this arm's 46 sits
+above all three — which is a reason for pair 2, not a result. Of the two games the bundle names as hiding
+information in the frames (`ft09`, `sb26`), one moved each way (+2, −2).
+
+**Confound, re-measured on the real run.** Attached sheets averaged `1,305,694 / 451 = 2,895` base64 characters,
+about 965 estimator tokens, not the 552 measured on synthetic frames before r2. The history-eviction confound is
+correspondingly larger than stated in the r2 addendum; the net effect is what the outcome bar measured.
