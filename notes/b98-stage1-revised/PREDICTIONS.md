@@ -69,8 +69,8 @@ finding to report, not to tune).
   use.
 - **Budget**: the filtered rule sentences, deduplicated per game, **capped at 60 per game by even spacing in file
   order** (≤ 1,500 compile calls per run). The replication run is compiled only once the primary has passed
-  (i)–(iv) — row 4 of the partition below — so the total never exceeds 3,000. The cap and the spacing rule are fixed here so no sentence is chosen after
-  seeing its effect.
+  (i)–(iv) — row 4 of the partition below — so the total never exceeds 3,000. The cap and the spacing rule are
+  fixed here so no sentence is chosen after seeing its effect.
 
 ## Cost ceiling (registered number, derivation shown)
 
@@ -93,8 +93,10 @@ exceeds 10,007.** ⚠️ **The measured tokens are a PROXY.** They are codex's t
 reports them), while the ceiling is denominated in the live model's tokens (Qwen3.8-Flash-Next on B81). The two
 models tokenise and reason differently, and the direction of the error is not known. The proxy is graded as
 measured. A median above **0.5 × the ceiling (5,004)** that still passes is reported as **NEAR-LINE** beside the
-verdict, because a proxy error of 2× would flip it. NEAR-LINE is a flag on the PASS row, not a row of its own. Input tokens (sentence + 64×64 board + prompt, ~1,400–2,000 for the board alone) are MEASURED AND
-REPORTED, not graded: the banked `benchmark.json` carries `uncached_input_tokens = 0` on this chassis, so no
+verdict, because a proxy error of 2× would flip it. NEAR-LINE is a flag on the PASS row, not a row of its own.
+
+**Input tokens** (sentence + 64×64 board + prompt, ~1,400–2,000 for the board alone) are MEASURED AND REPORTED,
+not graded: the banked `benchmark.json` carries `uncached_input_tokens = 0` on this chassis, so no
 prompt-token budget exists to derive a ceiling from, and inventing one would be a number with no source.
 
 ## The predictor
@@ -114,8 +116,9 @@ because file order is total. The outcome is read only after the prediction is fi
 
 - **(i)** held out: satisfied by construction above; VOID if any scored decision's key occurs earlier in its game.
 - **(ii) availability** = emitting held-out decisions / held-out decisions, over all games pooled. **PASS ≥ 0.30.**
-  Anything ≤ 0.12 refutes the premise (a compiled rule generalises no better than a lookup, R31's 9.0 %) rather than this
-  compiler.
+  Anything ≤ 0.12 refutes the premise (a compiled rule generalises no better than a lookup, R31's 9.0 %) rather
+  than this compiler. The two figures share a threshold, not a denominator: R31's 9.0 % counts decisions from a
+  board SEEN before, this one counts emissions on decisions whose key is NEW — as the MAP row frames it.
 - **(iii) accuracy — graded on the EFFECT, against a shuffled-hypothesis null on the same rows.** ⚠️ **This departs
   from the MAP row's wording** (*beats the 89.8 % majority-class null*) and needs Watchara's agreement at
   registration. Reason: every specific effect implies `board_changed = true`, which is what the majority class
