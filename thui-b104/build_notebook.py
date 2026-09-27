@@ -6,7 +6,8 @@ before an analyze() call animated, its frames go into the new user message as ON
 the stock board; only the newest sheet is ever sent. --control builds the identical notebook with
 _THUI_B104_SHEET = False (counts eligibility, attaches nothing), so both arms report on the same instrument.
 
-Full pair (all 25 public games, B81 clock): thui-b104-sheet-full25-r1 and thui-b104-ctl-full25-r1, cells [0, 9].
+Full pair (all 25 public games, B81 clock): thui-b104-sheet-full25-r2 and thui-b104-ctl-full25-r2, cells [0, 9].
+r1 (same slugs, -r1) died in cell 9 on Kaggle: `from PIL import ImageDraw` cannot import there. r2 uses PIL.Image only.
 Read: thui-b104/PREDICTIONS.md (written before build). Test: thui-b104/test_b104_graft.py.
 Source: agentfix F19 in the public notebook scottlegrand/taaf-flashnext-sheetu12b-0922 (idea read, code not copied).
 """
@@ -21,7 +22,7 @@ SRC_NB = HERE.parent / "thui-a5" / "out" / "thui-a5-mtp0k7s28-full25-r1" / "thui
 SRC_META = HERE.parent / "thui-a5" / "out" / "thui-a5-mtp0k7s28-full25-r1" / "kernel-metadata.json"
 OWNER = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--owner=")), "yocybercode")
 CONTROL = "--control" in sys.argv[1:]
-SLUG = "thui-b104-ctl-full25-r1" if CONTROL else "thui-b104-sheet-full25-r1"
+SLUG = "thui-b104-ctl-full25-r2" if CONTROL else "thui-b104-sheet-full25-r2"
 OUT = HERE / "out" / SLUG
 GRAFT = (HERE / "graft_src.py").read_text(encoding="utf-8")
 if CONTROL:
@@ -77,6 +78,7 @@ def main():
     assert not any(f"_thui_b{n}_" in body for n in (99, 100, 101, 103)) and "_thui_ap_" not in body, "one change only"
     assert "PUBLIC_GAME_IDS = tuple([" in "".join(cells[15]["source"]), "25-game tuple must stay intact"
     assert s9.index("THUI_ANIMFAST_GRAFT ok") < s9.index("_THUI_B104_SHEET = ")
+    assert "ImageDraw as" not in GRAFT and "import ImageDraw" not in GRAFT, "Kaggle cannot import PIL.ImageDraw (r1)"
 
     meta = json.load(open(SRC_META, encoding="utf-8"))
     meta.update(id=f"{OWNER}/{SLUG}", title=SLUG, code_file=f"{SLUG}.ipynb", is_private=True)

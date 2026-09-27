@@ -60,3 +60,19 @@ replace the model's own `animation()` calls?), tokens per action.
 - A sheet costs ~4.3× a board in the estimator, so the arm evicts somewhat more text history on turns that follow an
   animation. The bar measures the net of seeing frames and losing history.
 - Not stacked with B103: each is one change on B81, so neither result can be read as the other's.
+
+## Addendum 2026-09-27, before r2 — r1 VOID on an import, bar unchanged
+
+r1 (`sahasawatt/thui-b104-sheet-full25-r1` / `-ctl-full25-r1`, pushed 09:16Z) died on BOTH arms in cell 9 at ~09:59Z,
+before any game: `from PIL import ImageDraw` → `ImportError: cannot import name '_Ink' from 'PIL._typing'`. Kaggle's
+Pillow is a mixed install — `PIL.Image` loads (the stock board is rendered with it), `ImageDraw` does not. The local
+test ran on Pillow 12.3.0, where ImageDraw loads, so it could not see this. VOID, nothing read.
+
+r2 changes the RENDER only, not the bar or the eligibility rule: no `ImageDraw`, so no text labels; panels stay in
+time order (left to right, top to bottom) and the final panel is framed in `(0, 255, 0)`, a colour outside the ARC
+palette; the marker text says so. The test now makes `PIL.ImageDraw` unimportable (`sys.modules[...] = None`) and a
+mutation restoring the r1 import crashes the suite the way Kaggle crashed; 25 checks, 9 mutations red.
+
+Measured again on r2's render: an 8-panel sheet is 522×262 px, 1,646 base64 chars, **552 estimator tokens** vs 363
+for a board (~1.5×). This **replaces** the 1,567 / ~4.3× figure above, which was the labelled r1 render (text
+anti-aliasing inflated the PNG); the confound it describes is correspondingly smaller. Slugs are `-r2`.

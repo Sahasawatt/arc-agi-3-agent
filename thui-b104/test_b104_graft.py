@@ -16,6 +16,8 @@ sys.path.insert(0, str(Path(sys.argv[1]) / "src" / "ARC3-Inference"))
 os.environ["MULTIMODAL_CONTEXT"] = "current_grid"
 os.environ["MULTIMODAL_UPSCALE"] = "4"
 GRAFT = (HERE / "graft_src.py").read_text(encoding="utf-8")
+# Kaggle's Pillow cannot import ImageDraw (r1 died on it). Make it unimportable here too, so any use fails this suite.
+sys.modules["PIL.ImageDraw"] = None
 from PIL import Image  # noqa: E402
 
 MARK_START = "Animation of your last action"
@@ -102,9 +104,18 @@ check("prompt text first, pointer text right before the board",
       m["content"][0]["text"] == "state" and m["content"][-2]["text"] == "Current grid image:")
 check("marker printed on first eligible build", "THUI_B104_STATS sheet=True builds=1 eligible=1 attached=1" in out)
 im = decode(imgs(m)[0]["image_url"]["url"])
-check(f"5 frames -> 4x2 grid of 128x139 panels ({im.size})", im.size == (4 * 128 + 5 * 2, 2 * (128 + 11) + 3 * 2))
+check(f"5 frames -> 4x2 grid of 128x128 panels ({im.size})", im.size == (4 * 128 + 5 * 2, 2 * 128 + 3 * 2))
 check("panel pixel is the ARC colour of the frame (row 12, col 6 = 9 blue)",
-      im.getpixel((2 + 6 * 2, 2 + 11 + 12 * 2)) == (30, 147, 255))
+      im.getpixel((2 + 6 * 2, 2 + 12 * 2)) == (30, 147, 255))
+check("final panel (slot 4 = row 1, col 0) is framed green; panel 0's border stays grey",
+      im.getpixel((0, 2 + 128 + 1)) == (0, 255, 0) and im.getpixel((2 + 128 + 1, 2 + 128 + 1)) == (0, 255, 0)
+      and im.getpixel((0, 1)) == (128, 128, 128))
+try:
+    import PIL.ImageDraw  # noqa: F401
+    blocked = False
+except ImportError:
+    blocked = True
+check("ImageDraw is unimportable in this suite (the Kaggle condition)", blocked)
 for label, a, step in [("older record (action 6, step 7)", agent(ta, record(6, 5)), 7),
                        ("no record", agent(ta, None), 7),
                        ("single-frame record", agent(ta, record(7, 1)), 7),
