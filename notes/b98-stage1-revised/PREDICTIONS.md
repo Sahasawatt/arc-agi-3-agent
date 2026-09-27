@@ -1,8 +1,9 @@
-# B98 stage 1 on the REVISED bar — DRAFT, not registered
+# B98 stage 1 on the REVISED bar — REGISTERED 2026-09-27T16:49Z
 
-Status: **draft for the owner's review, 2026-09-27.** Nothing below has been run and no compile call has been made.
-It becomes the registration only when committed unchanged after review; every number that decides a verdict is
-fixed here, before any output exists.
+Status: **registered 2026-09-27T16:49Z**, on the owner's go and with Watchara's agreement (relays `01M3H6W1D0FWHASX73T25DQF3T`,
+`01M3H7Q6DNF5J1RMC8B25BPV2J`). At registration nothing has been run, no compile call has been made, and the primary
+run's events have not been read for anything but their field names. Every number that decides a verdict is fixed
+below. Any later change is a dated addendum under this text, never an edit of it.
 
 ## What this stage has to show
 
@@ -128,8 +129,8 @@ because file order is total. The outcome is read only after the prediction is fi
   than this compiler. The two figures share a threshold, not a denominator: R31's 9.0 % counts decisions from a
   board SEEN before, this one counts emissions on decisions whose key is NEW — as the MAP row frames it.
 - **(iii) accuracy — graded on the EFFECT, against a shuffled-hypothesis null on the same rows.** ⚠️ **This departs
-  from the MAP row's wording** (*beats the 89.8 % majority-class null*) and needs Watchara's agreement at
-  registration. Reason: every specific effect implies `board_changed = true`, which is what the majority class
+  from the MAP row's wording** (*beats the 89.8 % majority-class null*); Watchara agreed on 2026-09-27 (relay
+  `01M3H7Q6DNF5J1RMC8B25BPV2J`) and the B98 MAP row carries the same amended clause. Reason: every specific effect implies `board_changed = true`, which is what the majority class
   predicts already, so a `board_changed` test could only be won by `no_change` hypotheses — which cannot emit — and
   would FAIL whatever the premise. Procedure: for each emitting row, a NULL hypothesis is drawn (seed 20260927) from
   the pool of specific hypotheses compiled in OTHER games that would also emit on this row (same action kind,
@@ -189,4 +190,4 @@ noise.
   shuffled-hypothesis null instead of `board_changed` against the majority class (reason in the clause); generic
   hypotheses barred from emitting; the NOT-REPLICATED row; the cost proxy and NEAR-LINE flag.
 - **Replication run named 2026-09-27** (see Data): `sahasawatt/thui-b104-ctl-full25-r2`, by the review rule, fields
-  checked, before the primary is read. Nothing remains open between this draft and registration.
+  checked, before the primary is read.
