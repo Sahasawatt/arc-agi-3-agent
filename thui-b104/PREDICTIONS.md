@@ -105,3 +105,28 @@ information in the frames (`ft09`, `sb26`), one moved each way (+2, −2).
 **Confound, re-measured on the real run.** Attached sheets averaged `1,305,694 / 451 = 2,895` base64 characters,
 about 965 estimator tokens, not the 552 measured on synthetic frames before r2. The history-eviction confound is
 correspondingly larger than stated in the r2 addendum; the net effect is what the outcome bar measured.
+
+## Reading 2026-09-27, r3 (second pair) and the pooled PASS test — NOT PASS; B104 closes
+
+Pair `sahasawatt/thui-b104-sheet-full25-r3` / `sahasawatt/thui-b104-ctl-full25-r3`, both v1, pushed 13:56–13:57Z,
+both COMPLETE by 16:40Z. The r3 notebooks are **byte-identical to r2's** (`filecmp`); only `id`, `title` and
+`code_file` in `kernel-metadata.json` differ. Pushed with the Kaggle CLI directly, the push gate's checks done by
+hand (token resolves to `sahasawatt`, id owner matches, slug new before push, the CLI's own URL names
+`sahasawatt/<slug>`, post-push status RUNNING): the gate script could not be used — the main checkout is not to be
+run from, and the gate at `origin/main` hard-codes `OWNER = "yocybercode"`. Fixtures banked:
+`eval/fixtures/thui-b104-{sheet,ctl}-full25-r3.json`.
+
+- **r3 VALID, both arms.** Graft once per arm, B81 marker present. Last STATS: arm `builds=1030 eligible=401
+  attached=401 stripped=357 panels=2159 sheet_b64=1154602 query_errors=0 render_errors=0`; control `builds=1114
+  eligible=451 attached=0`. Reach (control) 451 / 1114 = 0.40.
+- **r3 alone FLIPPED:** arm **44** vs control **47** levels, mean 8.54 vs 11.39, `rank_runs` p = 0.3858.
+- **Pooled r2 + r3 (the registered PASS test)** — `eval/pool_runs.py` per arm, then `rank_runs.py` pooled arm vs
+  pooled control: levels **45.0 vs 43.5**, mean **9.37 vs 9.67**, 11 games up / 11 down, **p = 0.8325
+  NOT-DISTINGUISHABLE → NOT PASS.** B104 closes. r2's +6 did not replicate. Instrument check before r3 was read:
+  r2 pooled with itself reproduced r2 exactly (46 vs 40, p = 0.3532).
+- **Same-day B81 controls, five:** B103 42, B104 r2 40, B104 r3 47, B105 r1 42, B105 r2 44 — a single pair moves
+  ±3–4 levels on its own, which is the scale any successor lever has to clear with ≥ 2 pairs.
+- **Free finding:** `RuntimeError: vLLM teardown did not reach the bounded terminal gate` appears in all four B104
+  logs (r2 and r3, arm and control; 6 lines each, likely 3 events printed to both streams), after every game has
+  been written. It is a post-run behaviour of this chassis, not of either treatment, and `benchmark.json` is
+  complete in every run.

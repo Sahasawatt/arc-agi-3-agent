@@ -1,0 +1,131 @@
+{
+ "label": "thui-b104-ctl-full25-r3",
+ "source": "kaggle kernels output sahasawatt/thui-b104-ctl-full25-r3 v1",
+ "games": {
+  "ar25": {
+   "score": 27.62112499173772,
+   "levels": 4,
+   "actions": 212
+  },
+  "bp35": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 34
+  },
+  "cd82": {
+   "score": 5.973760932944606,
+   "levels": 2,
+   "actions": 93
+  },
+  "cn04": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 116
+  },
+  "dc22": {
+   "score": 14.285714285714285,
+   "levels": 2,
+   "actions": 135
+  },
+  "ft09": {
+   "score": 71.42857142857143,
+   "levels": 5,
+   "actions": 228
+  },
+  "g50t": {
+   "score": 1.3471741229196745,
+   "levels": 1,
+   "actions": 186
+  },
+  "ka59": {
+   "score": 1.939058171745152,
+   "levels": 1,
+   "actions": 237
+  },
+  "lf52": {
+   "score": 5.454545454545454,
+   "levels": 2,
+   "actions": 104
+  },
+  "lp85": {
+   "score": 41.66666666666667,
+   "levels": 5,
+   "actions": 88
+  },
+  "ls20": {
+   "score": 3.571428571428571,
+   "levels": 1,
+   "actions": 182
+  },
+  "m0r0": {
+   "score": 14.285714285714285,
+   "levels": 2,
+   "actions": 86
+  },
+  "r11l": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 87
+  },
+  "re86": {
+   "score": 16.666666666666664,
+   "levels": 3,
+   "actions": 141
+  },
+  "s5i5": {
+   "score": 2.1003990758244067,
+   "levels": 1,
+   "actions": 157
+  },
+  "sb26": {
+   "score": 2.7777777777777777,
+   "levels": 1,
+   "actions": 123
+  },
+  "sc25": {
+   "score": 23.824483991060518,
+   "levels": 3,
+   "actions": 96
+  },
+  "sk48": {
+   "score": 0.0,
+   "levels": 0,
+   "actions": 211
+  },
+  "sp80": {
+   "score": 4.761904761904762,
+   "levels": 1,
+   "actions": 54
+  },
+  "su15": {
+   "score": 3.388800321205465,
+   "levels": 2,
+   "actions": 133
+  },
+  "tn36": {
+   "score": 1.0506012229654862,
+   "levels": 1,
+   "actions": 88
+  },
+  "tr87": {
+   "score": 4.590318772136954,
+   "levels": 1,
+   "actions": 68
+  },
+  "tu93": {
+   "score": 13.333333333333334,
+   "levels": 3,
+   "actions": 71
+  },
+  "vc33": {
+   "score": 10.714285714285714,
+   "levels": 2,
+   "actions": 66
+  },
+  "wa30": {
+   "score": 2.2222222222222223,
+   "levels": 1,
+   "actions": 198
+  }
+ }
+}
