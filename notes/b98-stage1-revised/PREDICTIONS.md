@@ -114,7 +114,7 @@ because file order is total. The outcome is read only after the prediction is fi
 
 - **(i)** held out: satisfied by construction above; VOID if any scored decision's key occurs earlier in its game.
 - **(ii) availability** = emitting held-out decisions / held-out decisions, over all games pooled. **PASS ≥ 0.30.**
-  Anything ≤ 0.12 refutes the premise (a compiled rule generalises no better than B19's lookup) rather than this
+  Anything ≤ 0.12 refutes the premise (a compiled rule generalises no better than a lookup, R31's 9.0 %) rather than this
   compiler.
 - **(iii) accuracy — graded on the EFFECT, against a shuffled-hypothesis null on the same rows.** ⚠️ **This departs
   from the MAP row's wording** (*beats the 89.8 % majority-class null*) and needs Watchara's agreement at
