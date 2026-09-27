@@ -26,8 +26,13 @@ objects (*the piece*, *the block*) rather than colours and cells. The row says a
 - **Runs**: B81 controls only (the arm under test is the harness; a treated run would move the text). Primary:
   `sahasawatt/thui-b103-ctl-full25-r1` v1 (B81 + an inert counting wrapper, COMPLETE 2026-09-27, 25 games). Its
   `artifacts/<game>_p0_events.jsonl` carry `board_ascii` and `board_changed` on every `action` event (probed on ls20:
-  158 action / 37 analysis / 1 initial events). Replication run, read only after the primary verdict: a second
-  banked B81 control, named before the primary is read.
+  158 action / 37 analysis / 1 initial events). Replication run, read only after the primary verdict:
+  **`sahasawatt/thui-b104-ctl-full25-r2` v1** (B81 + the B104 wrapper with the sheet flag OFF, COMPLETE 2026-09-27,
+  first poll seeing it 12:48Z). Chosen by the review rule — the first COMPLETE of it and
+  `yocybercode/thui-b105-ctl-full25-r1`, which ended 13:04:16 by its own `benchmark.json` (watchara, relay
+  `01M3HJGDYS11YQ9NRV73RZJN9C`); the order holds under both bounds. Checked before naming: 25 events files, 2,814
+  `action` events (= the run's action total), 0 missing `board_ascii` or `board_changed`, and the same action-event
+  key set as the primary's.
 - **Transitions**: exactly `stage1/SPEC.md`'s definition on the peer branch (before = preceding `initial`/`action`
   board, skip after `level_completed` / `game_over`). No state cloning: only stored boards are read.
 - **Hypothesis text**: assistant-visible text and THINKING text in `analysis` events, extracted by the peer's
@@ -183,7 +188,5 @@ noise.
   30 % bar harder to clear; 30 % / 12 % stay as registered. Changes he agreed to, as introduced in rev 3: clause (iii) graded on the effect against a
   shuffled-hypothesis null instead of `board_changed` against the majority class (reason in the clause); generic
   hypotheses barred from emitting; the NOT-REPLICATED row; the cost proxy and NEAR-LINE flag.
-- **Still open, and the only thing between this draft and registration:** the replication run. Rule from the review:
-  whichever of `sahasawatt/thui-b104-ctl-full25-r2` and `yocybercode/thui-b105-ctl-full25-r1` is COMPLETE first,
-  after checking its events carry `board_ascii` and `board_changed` exactly as the primary's do; named here before
-  the primary is read.
+- **Replication run named 2026-09-27** (see Data): `sahasawatt/thui-b104-ctl-full25-r2`, by the review rule, fields
+  checked, before the primary is read. Nothing remains open between this draft and registration.
