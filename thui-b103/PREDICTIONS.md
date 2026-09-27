@@ -56,3 +56,26 @@ should exceed control's if the freed budget is used), actions, tokens per action
   showed selective removal was killed — so the sign of "more old text" is not known in advance.
 - Tufa's own write-up (kaggle discussion 717133) reports that more frames in context did not help small models; that
   is consistent with this lever and says nothing about its size.
+
+## Reading 2026-09-27 (after both arms COMPLETE) — KILL
+
+Pair `sahasawatt/thui-b103-oneboard-full25-r1` / `sahasawatt/thui-b103-ctl-full25-r1`, both v1, pushed together
+06:43Z, both COMPLETE by 09:16Z. Log read with `kaggle kernels logs` after completion (the `.log` file inside
+`kernels output` came back 0 bytes on both, and the B81 marker `THUI_ANIMFAST_GRAFT ok` was absent from it too, so that
+file was a broken instrument, not a finding); in the `kernels logs` stream the B81 marker appears once per arm.
+Fixtures banked: `eval/fixtures/thui-b103-oneboard-full25-r1.json`, `eval/fixtures/thui-b103-ctl-full25-r1.json`.
+
+- **VALID, both arms.** `THUI_B103_GRAFT ok oneboard=True` / `=False` once each. Last STATS:
+  arm `trims=3401 images_seen=4342 images_dropped=941 max_images=2`;
+  control `trims=3801 images_seen=21841 images_dropped=0 max_images=13`.
+- **Premise holds.** Control `obsolete = (21841 − 3801) / 3801 = 4.75` old boards per trim (max 13), well above the
+  1.0 floor — the history does carry old boards on this chassis.
+- **The registered mechanism metric did not fire, and it was mis-designed.** Arm `est_tokens_after / before =
+  93,180,408 / 93,692,661 = 0.9945` (bar `<= 0.85`). In the arm the persistent history is already stripped by the
+  previous trim, so this ratio only sees the boards added since — it cannot show the saving it was meant to show.
+  Recorded as written; not re-defined after the fact.
+- **Outcome: KILL.** Arm total levels **39** vs control **42** (`<=` fires). `rank_runs.py` (arm first, control
+  second, `--single-baseline`): mean 8.65 → 8.96, levels 39 → 42, 10 up / 8 down / 3 flipped, **p = 0.9099
+  NOT-DISTINGUISHABLE**. Actions 2,975 vs 3,017. No second pair, no hidden submission.
+- Consistent with the pre-run review (p(public levels up, detectable) ≈ 0.18) and with every earlier context /
+  history lever on this map closing ND or worse.
