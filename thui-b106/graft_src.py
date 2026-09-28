@@ -3,6 +3,9 @@
 # Logic kept line-for-line; Spanish module identifiers/strings are translated to English.
 # 1:1 mapping: MapRecorder->_thui_b106_MapRecorder, construir_grafo->
 # _thui_b106_construir_grafo, render_map_note->_thui_b106_render_map_note.
+# r2 (2026-09-28): frontier fix taken from the same cell's 05:36Z revision. valid_actions arrives
+# with ENGINE names (ACTION1..) while the graph records MODEL names (UP..), so in r1 the frontier
+# never matched and every note said "NOT tried: ACTION1, ..." for actions already tried.
 
 import threading as _thui_b106_threading
 import inference.agent.tool_agent as _thui_b106_tool_agent
@@ -10,6 +13,22 @@ import inference.agent.noop_guard as _thui_b106_noop_guard
 
 _thui_b106_MAX_LIST = 6
 _thui_b106_MAX_CLICK_CELLS = 8
+
+# Copy of inference/agent/action_names.py ENGINE_TO_MODEL_ACTION in the anim bundle.
+_thui_b106_ENGINE_TO_MODEL = {
+    "ACTION1": "UP",
+    "ACTION2": "DOWN",
+    "ACTION3": "LEFT",
+    "ACTION4": "RIGHT",
+    "ACTION5": "SPACE",
+    "ACTION6": "MOUSE",
+    "RESET": "RESET",
+}
+
+
+def _thui_b106_to_model(name) -> str:
+    raw = str(name or "").strip().upper()
+    return _thui_b106_ENGINE_TO_MODEL.get(raw, raw)
 
 
 class _thui_b106_MapRecorder:
@@ -141,10 +160,15 @@ def _thui_b106_render_map_note(records: list[dict], level: int, current_signatur
         if valid_actions:
             tried_names = {_thui_b106_action_name(action) for (origin, action, _destination, _effect)
                            in graph["edges"] if origin == current_signature}
-            frontier = [action for action in valid_actions
-                        if action.upper() not in tried_names
-                        and action.upper() not in graph["never_useful"]
-                        and action.upper() != "MOUSE"]
+            valid: list[str] = []
+            for action in valid_actions:
+                name = _thui_b106_to_model(action)
+                if name and name not in valid:
+                    valid.append(name)
+            frontier = [action for action in valid
+                        if action not in tried_names
+                        and action not in graph["never_useful"]
+                        and action not in ("MOUSE", "RESET")]
             if frontier:
                 lines.append(f"- from this state you have NOT tried: "
                              f"{', '.join(frontier[:_thui_b106_MAX_LIST])}")

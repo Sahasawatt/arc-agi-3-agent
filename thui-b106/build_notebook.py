@@ -23,7 +23,7 @@ else:
 
 SRC_NB = BASE_DIR / f"{BASE_SLUG}.ipynb"
 SRC_META = BASE_DIR / "kernel-metadata.json"
-SLUG = f"thui-b106-{'ctl' if CONTROL else 'map'}-{BASE}-full25-r1"
+SLUG = f"thui-b106-{'ctl' if CONTROL else 'map'}-{BASE}-full25-r2"  # r2: frontier name fix
 OUT = HERE / "out" / SLUG
 GRAFT = (HERE / "graft_src.py").read_text(encoding="utf-8")
 if CONTROL:
@@ -85,6 +85,7 @@ def main():
     assert body.count("_thui_b106_tool_agent.ToolAgent._build_user_prompt = _thui_b106_build_user_prompt") == 1
     assert body.count("_THUI_B106_MAP = False" if CONTROL else "_THUI_B106_MAP = True") == 1
     assert body.count("THUI_B106_GRAFT ok") == 1
+    assert body.count("_thui_b106_ENGINE_TO_MODEL = {") == 1, "r2 frontier fix missing"
     assert body.count("THUI_B106_STATS map=") == 1
     assert body.count(str(7 * 1024 ** 3)) == 1, "serving profile must stay KV 7 GiB"
     assert '"TAAF_VLLM_ENABLE_PREFIX_CACHING": "0"' in "".join(cells[3]["source"])
