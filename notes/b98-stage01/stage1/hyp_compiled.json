@@ -1,0 +1,104 @@
+[
+ {
+  "id": "h001",
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "action": {
+   "name": "CLICK",
+   "at": [
+    0,
+    23
+   ]
+  },
+  "target": {
+   "color": "c",
+   "region": [
+    0,
+    0,
+    23,
+    23
+   ]
+  },
+  "effect": {
+   "type": "recolor",
+   "from": "c",
+   "to": "W"
+  }
+ },
+ {
+  "id": "h018",
+  "game": "re86-8af5384d",
+  "level": 4,
+  "action": {
+   "name": "SPACE"
+  },
+  "target": {
+   "color": "W",
+   "region": [
+    21,
+    21,
+    24,
+    24
+   ]
+  },
+  "effect": {
+   "type": "appear"
+  }
+ },
+ {
+  "id": "h036",
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "action": {
+   "name": "CLICK"
+  },
+  "target": {
+   "color": "Y"
+  },
+  "effect": {
+   "type": "move",
+   "dr": -9,
+   "dc": 0
+  }
+ },
+ {
+  "id": "h056",
+  "game": "su15-1944f8ab",
+  "level": 3,
+  "action": {
+   "name": "CLICK",
+   "at": [
+    23,
+    61
+   ]
+  },
+  "target": {
+   "color": "M",
+   "region": [
+    23,
+    23,
+    55,
+    55
+   ]
+  },
+  "effect": {
+   "type": "disappear"
+  }
+ },
+ {
+  "id": "h065",
+  "game": "ft09-0d8bbf25",
+  "level": 4,
+  "action": {
+   "name": "CLICK"
+  },
+  "target": {
+   "color": "b"
+  },
+  "effect": {
+   "type": "recolor",
+   "from": "b",
+   "to": "R"
+  }
+ }
+]

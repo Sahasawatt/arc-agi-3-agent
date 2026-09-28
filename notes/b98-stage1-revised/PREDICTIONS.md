@@ -191,3 +191,29 @@ noise.
   hypotheses barred from emitting; the NOT-REPLICATED row; the cost proxy and NEAR-LINE flag.
 - **Replication run named 2026-09-27** (see Data): `sahasawatt/thui-b104-ctl-full25-r2`, by the review rule, fields
   checked, before the primary is read.
+
+## ADDENDUM 2026-09-28T07:12:54Z: the rule filter FAILS its registered control -> VOID-as-instrument (row 1). Nothing compiled or scored.
+
+Run by the sahasawat session (worktree branch `b98/stage1-run` @ 52d43d4, tooling from `b98-stage01-artifacts` @ 6400779).
+Order kept as registered: the filter controls ran BEFORE the filter touched the primary.
+
+- Observation control "clicking (23,61) made M(23,55) disappear": REJECTED, as required.
+- Synthetic rule "pressing LEFT always moves the yellow block 3 cells left": PASSED, as required.
+- **Rule share on the peer's 96 judged B99 sentences = 2 / 96 = 0.021**, against the band [0.052, 0.208] (x2 around
+  the judges' 10 / 96). The case-insensitive substring reading and a word-boundary reading both give 2 / 96.
+  The filter catches **1 of the 10** sentences the judges called rules. The other 9 state rules with no listed cue,
+  for example "RIGHT moved columns by +3 each press", "When SPACE destroys a box, …", "each click toggles only
+  itself", and "The bubble moves LEFT/RIGHT in 6-col steps". The other match (h074) is a hypothetical
+  ("What if … — always horizontal"). The 10 are the kind-rule labels of judge 0 among the 33 sentences both
+  judges found checkable, the figure `stage0_agg.py` prints.
+- **Consequence under this file's own rule:** the filter is revised and RE-REGISTERED before use. The primary's
+  sentences were never filtered, no compile call was made, and no decision was scored. What WAS read from the
+  primary: identity checks (ls20 158 action / 37 analysis / 1 initial; 3,017 actions; generated total
+  2,428,876, median 100,066 per game; uncached_input 0 on all 3,017 entries; all match this file), field types,
+  and ONE ls20 analysis transcript used only to prove the string extractor equals `stage0_extract.turns()`.
+- ⚠️ **Any revision tuned on these 96 sentences makes the x2 control circular**, since this addendum's author
+  has now read the 10 judged rules. A revised filter needs a control sample it was not built on.
+- **Instrument finding, independent of the VOID:** SPEC.md documents event values as strings, and
+  `checker.parse_events` tests `== "True"`. On the B81 chassis `level_completed` and `game_over` are JSON
+  bools, so the peer parser NEVER skips a post-transition pair. `b98s1.py` implements the same definition with the
+  value normalised. `test_b98s1.py` shows both behaviours (20 checks, 7 mutants red, ALL OK).

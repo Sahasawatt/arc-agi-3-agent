@@ -1,0 +1,662 @@
+[
+ {
+  "id": "h001",
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "dead_time": true,
+  "text": "Actually the mouse click changed (0,23) c→W.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "click at (0,23)",
+    "target": "cell (0,23)",
+    "effect": "color c→W"
+   },
+   {
+    "action": "click at (0,23)",
+    "target": "cell (0,23)",
+    "effect": "color changes c→W"
+   }
+  ]
+ },
+ {
+  "id": "h003",
+  "game": "sp80-589a99af",
+  "level": 1,
+  "dead_time": false,
+  "text": "Up moved it from rows 16-19 to 12-15.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "UP",
+    "target": "object at rows 16-19",
+    "effect": "moves to rows 12-15 (up 4)"
+   },
+   {
+    "action": "UP",
+    "target": "object at rows 16-19",
+    "effect": "moves to rows 12-15 (up 4 rows)"
+   }
+  ]
+ },
+ {
+  "id": "h005",
+  "game": "lf52-271a04aa",
+  "level": 1,
+  "dead_time": false,
+  "text": "Move A: (1,3) jumps right over (1,4) → lands (1,5), removes (1,4).",
+  "kind": "prediction",
+  "judge_predicates": [
+   {
+    "action": "jump move from (1,3) over (1,4)",
+    "target": "piece at (1,3), jumped peg at (1,4)",
+    "effect": "mover lands at (1,5); (1,4) removed"
+   },
+   {
+    "action": "jump right (move A)",
+    "target": "piece at (1,3), piece at (1,4)",
+    "effect": "mover lands (1,5); piece at (1,4) removed"
+   }
+  ]
+ },
+ {
+  "id": "h009",
+  "game": "bp35-0a0ad940",
+  "level": 2,
+  "dead_time": true,
+  "text": "Recall LEFT from 38-39 → 39-40 (a +1 move).",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "LEFT",
+    "target": "object at columns 38-39",
+    "effect": "moves to 39-40 (+1)"
+   },
+   {
+    "action": "LEFT (recalled, turns 38-39)",
+    "target": "position 38-39",
+    "effect": "shifts to 39-40 (+1)"
+   }
+  ]
+ },
+ {
+  "id": "h012",
+  "game": "vc33-5430563c",
+  "level": 1,
+  "dead_time": false,
+  "text": "Clicking **lower** blue: top gray piston edge moves RIGHT 4, bottom gray piston edge moves LEFT 4, and the charcoal arrow + yellow 2×6 bar (mounted on the bottom edge) slide LEFT 4 with it.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "click lower blue",
+    "target": "gray piston edges / charcoal arrow / yellow bar",
+    "effect": "top edge moves RIGHT 4, bottom edge moves LEFT 4, arrow+bar slide LEFT 4"
+   },
+   {
+    "action": "click lower blue",
+    "target": "gray piston edges / charcoal arrow / yellow bar",
+    "effect": "top edge +4 right, bottom edge +4 left, bar+arrow +4 left"
+   }
+  ]
+ },
+ {
+  "id": "h013",
+  "game": "sk48-d8078629",
+  "level": 1,
+  "dead_time": true,
+  "text": "Hmm, moving up with the arm at length 24 and a 1-col gap → the block doesn't follow (not attached) ✓.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "UP",
+    "target": "the block (near arm)",
+    "effect": "no movement (does not follow)"
+   },
+   {
+    "action": "UP (arm length 24, 1-col gap)",
+    "target": "the block",
+    "effect": "no movement (block does not follow)"
+   }
+  ]
+ },
+ {
+  "id": "h018",
+  "game": "re86-8af5384d",
+  "level": 4,
+  "dead_time": true,
+  "text": "Actually, we know from the earlier test: after pressing SPACE, the white marker moved to the X center (21,24).",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "SPACE",
+    "target": "white marker",
+    "effect": "moved to (21,24)"
+   },
+   {
+    "action": "SPACE",
+    "target": "white marker",
+    "effect": "moved to (21,24)"
+   }
+  ]
+ },
+ {
+  "id": "h027",
+  "game": "m0r0-492f87ba",
+  "level": 1,
+  "dead_time": true,
+  "text": "br10 bc5 = '.' blocked; right bc6→bc5 blocked → no move ✓.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "RIGHT",
+    "target": "cell bc6/bc5 at br10",
+    "effect": "no move (blocked)"
+   },
+   {
+    "action": "RIGHT",
+    "target": "piece at bc6",
+    "effect": "blocked, no move"
+   }
+  ]
+ },
+ {
+  "id": "h028",
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "dead_time": true,
+  "text": "No — the first bump: player pushed the box at (28,36) with RIGHT, and the box appeared at (32-35,16-19)??",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "RIGHT (push)",
+    "target": "box at (28,36)",
+    "effect": "box appears at (32-35,16-19)"
+   },
+   {
+    "action": "RIGHT",
+    "target": "box at (28,36)",
+    "effect": "box appears at (32-35,16-19)"
+   }
+  ]
+ },
+ {
+  "id": "h035",
+  "game": "sb26-7fbdac44",
+  "level": 1,
+  "dead_time": false,
+  "text": "# Click button to select (white outline), click a gray slot in the red box to fill it with that color.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "click",
+    "target": "gray slot in red box",
+    "effect": "slot fills with selected color"
+   },
+   {
+    "action": "click",
+    "target": "button / gray slot in red box",
+    "effect": "slot fills with selected colour"
+   }
+  ]
+ },
+ {
+  "id": "h036",
+  "game": "lp85-305b61c3",
+  "level": 6,
+  "dead_time": true,
+  "text": "no wait, if TL-B = +1 rotation, then successive clicks move Y one step along the cycle each time: (24,23)→(15,23)→(6,23)→...",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "click (TL-B)",
+    "target": "Y",
+    "effect": "moves one step along sequence (24,23)->(15,23)->(6,23)->..."
+   },
+   {
+    "action": "click TL-B",
+    "target": "object Y",
+    "effect": "moves one step along cycle, e.g. (24,23)->(15,23)->(6,23)"
+   }
+  ]
+ },
+ {
+  "id": "h037",
+  "game": "ft09-0d8bbf25",
+  "level": 6,
+  "dead_time": true,
+  "text": "Solve the linear system (each click toggles only itself → trivial: press = state XOR target).",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "click",
+    "target": "a cell/element (itself)",
+    "effect": "toggles its own state (XOR)"
+   },
+   {
+    "action": "click/press",
+    "target": "the clicked cell/tile itself",
+    "effect": "toggles its own state (XOR with target)"
+   }
+  ]
+ },
+ {
+  "id": "h041",
+  "game": "lf52-271a04aa",
+  "level": 1,
+  "dead_time": false,
+  "text": "Clicking the landing marker executes: mover relocates, jumped peg removed.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "click landing marker",
+    "target": "mover piece and jumped peg",
+    "effect": "mover relocates; jumped peg removed"
+   },
+   {
+    "action": "click landing marker",
+    "target": "mover piece, jumped peg",
+    "effect": "mover relocates; jumped peg removed"
+   }
+  ]
+ },
+ {
+  "id": "h046",
+  "game": "sb26-7fbdac44",
+  "level": 2,
+  "dead_time": true,
+  "text": "The socket did NOT move; instead the second click placed a white SELECTION RING around slot 4 (W ring: 'WRRRRW').",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "second click",
+    "target": "slot 4",
+    "effect": "white selection ring appears around it (pattern 'WRRRRW'); socket does not move"
+   },
+   {
+    "action": "second click",
+    "target": "slot 4 / socket",
+    "effect": "socket unmoved; white selection ring placed around slot 4"
+   }
+  ]
+ },
+ {
+  "id": "h047",
+  "game": "ls20-9607627b",
+  "level": 1,
+  "dead_time": false,
+  "text": "Interesting — the piece moved up 5 again but the top part now overlaps the box's bottom border.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "UP (implied, 'moved up')",
+    "target": "the piece",
+    "effect": "moved up 5 rows, now overlaps box's bottom border"
+   },
+   {
+    "action": "UP (moved up 5)",
+    "target": "the piece",
+    "effect": "moves up 5 rows, top overlaps box's bottom border"
+   }
+  ]
+ },
+ {
+  "id": "h054",
+  "game": "r11l-495a7899",
+  "level": 1,
+  "dead_time": false,
+  "text": "Clicking the bead: the white moves to the bead's position, so the bead becomes the midpoint of the remaining half → f → (1+f)/2 in terms of the remaining...",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "click the bead",
+    "target": "white marker",
+    "effect": "moves to the bead's position"
+   },
+   {
+    "action": "click the bead",
+    "target": "white marker",
+    "effect": "moves to the bead's position"
+   }
+  ]
+ },
+ {
+  "id": "h056",
+  "game": "su15-1944f8ab",
+  "level": 3,
+  "dead_time": true,
+  "text": "So clicking (23,61) made M(23,55) disappear??",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "click (23,61)",
+    "target": "M at (23,55)",
+    "effect": "disappears"
+   },
+   {
+    "action": "click at (23,61)",
+    "target": "M at (23,55)",
+    "effect": "disappears"
+   }
+  ]
+ },
+ {
+  "id": "h058",
+  "game": "ls20-9607627b",
+  "level": 2,
+  "dead_time": true,
+  "text": "So the piece moved from (2,4) to (8,5) on a LEFT press.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "LEFT press",
+    "target": "the piece",
+    "effect": "moved from (2,4) to (8,5)"
+   },
+   {
+    "action": "LEFT press",
+    "target": "the piece",
+    "effect": "moved from (2,4) to (8,5)"
+   }
+  ]
+ },
+ {
+  "id": "h059",
+  "game": "sp80-589a99af",
+  "level": 2,
+  "dead_time": true,
+  "text": "So SPACE did a genuine transformation: it swapped the blue bar with the red block that was \"below/aligned\"?",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "SPACE",
+    "target": "blue bar and red block",
+    "effect": "swapped positions"
+   },
+   {
+    "action": "SPACE",
+    "target": "blue bar and red block",
+    "effect": "swap positions"
+   }
+  ]
+ },
+ {
+  "id": "h060",
+  "game": "tu93-0768757b",
+  "level": 4,
+  "dead_time": false,
+  "text": "Current state: I just made 1 move (RIGHT → player (8,2)), and the O is at (0,6) = t=1.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "RIGHT",
+    "target": "player",
+    "effect": "player now at (8,2)"
+   },
+   {
+    "action": "RIGHT",
+    "target": "player",
+    "effect": "position becomes (8,2)"
+   }
+  ]
+ },
+ {
+  "id": "h063",
+  "game": "sc25-635fd71a",
+  "level": 2,
+  "dead_time": false,
+  "text": "The first UP moved the tip up (rows 31-38 changed, n=32): the tip moved up 2 rows?",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "UP",
+    "target": "the tip (rows 31-38)",
+    "effect": "moved up 2 rows"
+   },
+   {
+    "action": "UP",
+    "target": "the tip (rows 31-38)",
+    "effect": "moves up 2 rows"
+   }
+  ]
+ },
+ {
+  "id": "h064",
+  "game": "ka59-38d34dbb",
+  "level": 3,
+  "dead_time": true,
+  "text": "L2's 3x6 block: RIGHT moved columns by +3 each press ✓ (42→45→48→51→54→57).",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "RIGHT press",
+    "target": "3x6 block",
+    "effect": "column shifts +3 per press (42->45->...->57)"
+   },
+   {
+    "action": "RIGHT (repeated presses)",
+    "target": "3x6 block",
+    "effect": "column +3 per press, sequence 42->45->48->51->54->57"
+   }
+  ]
+ },
+ {
+  "id": "h065",
+  "game": "ft09-0d8bbf25",
+  "level": 4,
+  "dead_time": false,
+  "text": "When I clicked the blue tiles, they turned red (b→R).",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "click",
+    "target": "blue tiles",
+    "effect": "color b→R"
+   },
+   {
+    "action": "click",
+    "target": "blue tiles",
+    "effect": "color changes b→R"
+   }
+  ]
+ },
+ {
+  "id": "h071",
+  "game": "re86-8af5384d",
+  "level": 4,
+  "dead_time": true,
+  "text": "But the plus (M) went too far DOWN: it's clipped at the bottom edge (vertical arm rows 40-63, center ~row 53) — I miscounted moves (plus was already at row 39 after the earlier RIGHT turn, then 9 DOWN overshot).",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "DOWN (9 presses)",
+    "target": "the plus/M shape",
+    "effect": "moved to clipped position at bottom, rows 40-63"
+   },
+   {
+    "action": "DOWN x9",
+    "target": "the plus/M (vertical arm)",
+    "effect": "overshoots, clipped at bottom edge"
+   }
+  ]
+ },
+ {
+  "id": "h076",
+  "game": "wa30-ee6fef47",
+  "level": 1,
+  "dead_time": false,
+  "text": "When SPACE destroys a box, the box becomes a white 4x4 with a blue core that then \"hovers\" above the player.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "SPACE",
+    "target": "box",
+    "effect": "box becomes white 4x4 with blue core, hovers above player"
+   },
+   {
+    "action": "SPACE",
+    "target": "box",
+    "effect": "box becomes white 4x4 with blue core, hovers above player"
+   }
+  ]
+ },
+ {
+  "id": "h077",
+  "game": "tu93-0768757b",
+  "level": 2,
+  "dead_time": false,
+  "text": "With 2-tile moves: from (2,0) I can move right by 2 each press: (2,2),(2,4),(2,6), then (2,8) is R → blocked/death.",
+  "kind": "prediction",
+  "judge_predicates": [
+   {
+    "action": "RIGHT (repeated presses)",
+    "target": "piece starting at (2,0)",
+    "effect": "moves +2 cols per press until blocked at (2,8)"
+   },
+   {
+    "action": "press RIGHT (repeated)",
+    "target": "piece at (2,0) and successive cells",
+    "effect": "moves +2 cells per press; blocked/death at red tile (2,8)"
+   }
+  ]
+ },
+ {
+  "id": "h079",
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "dead_time": true,
+  "text": "When red moves left (pushed by blue), wall moves left too.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "red moves left (via blue push)",
+    "target": "wall",
+    "effect": "wall moves left too"
+   },
+   {
+    "action": "red moves left (pushed by blue)",
+    "target": "wall",
+    "effect": "wall also moves left"
+   }
+  ]
+ },
+ {
+  "id": "h083",
+  "game": "ka59-38d34dbb",
+  "level": 3,
+  "dead_time": true,
+  "text": "Wait, yellow is at columns 20-28, rows 35; push up 5 times → @20-28,20-28 = upper-left hole ✓!!",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "push UP x5",
+    "target": "yellow object at cols 20-28, row 35",
+    "effect": "moves into upper-left hole (rows 20-28)"
+   },
+   {
+    "action": "push UP x5",
+    "target": "yellow block at cols 20-28, row 35",
+    "effect": "moves into upper-left hole (rows/cols 20-28)"
+   }
+  ]
+ },
+ {
+  "id": "h086",
+  "game": "ft09-0d8bbf25",
+  "level": 5,
+  "dead_time": false,
+  "text": "Clicking toggles N↔p in a plus-shape neighborhood restricted to clickable cells; 9 mini/dead cells are unclickable.",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "clicking",
+    "target": "cells in a plus-shape neighborhood (excluding 9 unclickable cells)",
+    "effect": "toggles state N to p"
+   },
+   {
+    "action": "clicking",
+    "target": "cell in plus-shape neighborhood (clickable cells)",
+    "effect": "toggles N↔p"
+   }
+  ]
+ },
+ {
+  "id": "h089",
+  "game": "bp35-0a0ad940",
+  "level": 1,
+  "dead_time": false,
+  "text": "The bubble moves LEFT/RIGHT in 6-col steps (block width!).",
+  "kind": "rule",
+  "judge_predicates": [
+   {
+    "action": "LEFT/RIGHT",
+    "target": "the bubble",
+    "effect": "moves 6 columns per press"
+   },
+   {
+    "action": "LEFT/RIGHT",
+    "target": "the bubble",
+    "effect": "moves 6 columns (block width) per press"
+   }
+  ]
+ },
+ {
+  "id": "h090",
+  "game": "g50t-5849a774",
+  "level": 1,
+  "dead_time": false,
+  "text": "Let me verify: at step 14→15 I moved from (8,38) to (8,32) via LEFT.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "LEFT",
+    "target": "player/position",
+    "effect": "moved from (8,38) to (8,32)"
+   },
+   {
+    "action": "LEFT",
+    "target": "the moving piece",
+    "effect": "moved from (8,38) to (8,32)"
+   }
+  ]
+ },
+ {
+  "id": "h093",
+  "game": "re86-8af5384d",
+  "level": 1,
+  "dead_time": false,
+  "text": "Right move: from col 36 to 39.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "RIGHT",
+    "target": "object at col 36",
+    "effect": "col 36→39"
+   },
+   {
+    "action": "RIGHT",
+    "target": "piece/cursor",
+    "effect": "moves from col 36 to col 39"
+   }
+  ]
+ },
+ {
+  "id": "h097",
+  "game": "ar25-0c556536",
+  "level": 4,
+  "dead_time": true,
+  "text": "At 87-90 UP moved the wall 12→0.",
+  "kind": "observation",
+  "judge_predicates": [
+   {
+    "action": "UP",
+    "target": "the wall",
+    "effect": "position 12→0"
+   },
+   {
+    "action": "UP (turns 87-90)",
+    "target": "the wall",
+    "effect": "position changes 12→0"
+   }
+  ]
+ }
+]
