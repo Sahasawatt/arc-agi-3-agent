@@ -1,0 +1,2399 @@
+{
+  "summary": "B98 stage 0: 2 independent sonnet judges x 4 batches label sampled B99 hypothesis sentences as checkable against stored before/after boards",
+  "agentCount": 8,
+  "logs": [],
+  "result": [
+    {
+      "batch": 0,
+      "judge": 0,
+      "labels": [
+        {
+          "id": "h000",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "none stated",
+            "target": "purple region rows 34-43",
+            "effect": "vague - static pattern description, no action/effect"
+          },
+          "why": "Describes current board pattern, no action or before/after change stated."
+        },
+        {
+          "id": "h004",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "missing",
+            "effect": "vague - speculative 'maybe'"
+          },
+          "why": "Speculative hypothesis about game mechanic, not a concrete transition claim."
+        },
+        {
+          "id": "h008",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "path to goal",
+            "effect": "vague - move count planning, unfinished"
+          },
+          "why": "In-progress move-counting/planning, no stated before/after effect."
+        },
+        {
+          "id": "h012",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click lower blue",
+            "target": "gray piston edges / charcoal arrow / yellow bar",
+            "effect": "top edge moves RIGHT 4, bottom edge moves LEFT 4, arrow+bar slide LEFT 4"
+          },
+          "why": "Names an action (click lower blue object), targets, and specific computable displacement effects."
+        },
+        {
+          "id": "h016",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "b-button click",
+            "target": "blue square at r20-23 c4-7",
+            "effect": "vague - destination truncated ('to...')"
+          },
+          "why": "Sentence is cut off before stating the resulting position, so effect is incomplete."
+        },
+        {
+          "id": "h020",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click bead midpoint",
+            "target": "white/gray endpoints",
+            "effect": "vague - 'might swap... could flip'"
+          },
+          "why": "Speculative hypothesis using 'might'/'could', not an asserted effect."
+        },
+        {
+          "id": "h024",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE",
+            "target": "nearest red block",
+            "effect": "vague - speculative guess in question form"
+          },
+          "why": "Phrased as a question ('Maybe SPACE = ...?'), a guess not a stated fact."
+        },
+        {
+          "id": "h028",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT (push)",
+            "target": "box at (28,36)",
+            "effect": "box appears at (32-35,16-19)"
+          },
+          "why": "States a past action and a specific before/after position change, computable from stored boards."
+        },
+        {
+          "id": "h032",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "planned click (unspecified)",
+            "target": "bead",
+            "effect": "vague - 'should be at (28,56) after swap', truncated and conditional"
+          },
+          "why": "A planned/predicted position stated tentatively and cut off, not a concrete checkable claim."
+        },
+        {
+          "id": "h036",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click (TL-B)",
+            "target": "Y",
+            "effect": "moves one step along sequence (24,23)->(15,23)->(6,23)->..."
+          },
+          "why": "Names a repeated action and a specific sequence of positions computable across successive before/after boards."
+        },
+        {
+          "id": "h040",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT / RIGHT / blocked RIGHT",
+            "target": "oranges",
+            "effect": "moved / one vanished / nothing changed"
+          },
+          "why": "Lists specific actions each paired with a computable board effect (movement, disappearance, no change)."
+        },
+        {
+          "id": "h044",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "DOWN",
+            "target": "pos (44,12)",
+            "effect": "vague - includes hidden engine state (lvl_done, done, go, score) not derivable from boards alone"
+          },
+          "why": "Raw internal state dump mixes board-derivable info with hidden flags/score a board-only checker can't verify."
+        },
+        {
+          "id": "h048",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "'it' - unspecified referent",
+            "effect": "no movement"
+          },
+          "why": "Target 'it' has no antecedent in this isolated sentence, so it cannot be located on a grid."
+        },
+        {
+          "id": "h052",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "click gray",
+            "target": "'them' - unspecified referent",
+            "effect": "vague - 'swaps them instantly', sentence truncated"
+          },
+          "why": "Target pronoun 'them' is unresolved and the sentence is cut off before full effect is given."
+        },
+        {
+          "id": "h056",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click (23,61)",
+            "target": "M at (23,55)",
+            "effect": "disappears"
+          },
+          "why": "Names click coordinates, a locatable target, and a disappear effect computable from before/after boards."
+        },
+        {
+          "id": "h060",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "player",
+            "effect": "player now at (8,2)"
+          },
+          "why": "States the action taken and resulting player position, a computable before/after change."
+        },
+        {
+          "id": "h064",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT press",
+            "target": "3x6 block",
+            "effect": "column shifts +3 per press (42->45->...->57)"
+          },
+          "why": "General rule naming a repeated action and a precise, computable positional increment."
+        },
+        {
+          "id": "h068",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "UP",
+            "target": "cursor/bracket",
+            "effect": "vague - 'changes the bracket', no specifics"
+          },
+          "why": "Effect is unspecified ('changes'), not a concrete computable board change."
+        },
+        {
+          "id": "h072",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move key right/down (intent)",
+            "target": "key/feet markers",
+            "effect": "vague - stated as a goal/need, not an executed or predicted concrete effect"
+          },
+          "why": "Describes an intended plan/goal rather than a claim about what an action does or did."
+        },
+        {
+          "id": "h076",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "box",
+            "effect": "box becomes white 4x4 with blue core, hovers above player"
+          },
+          "why": "Names an action and a specific, computable visual/positional change to the target."
+        },
+        {
+          "id": "h080",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "none stated",
+            "target": "dash lattices",
+            "effect": "vague - static structural description, no action/effect"
+          },
+          "why": "Describes board layout/world-model structure, no action or before/after transition."
+        },
+        {
+          "id": "h084",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing - cause of movement unstated",
+            "target": "orange (and box below it)",
+            "effect": "moved left along rows 36-39, carrying box"
+          },
+          "why": "No action is named that caused the movement, only the resulting effect, phrased as a question."
+        },
+        {
+          "id": "h088",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "missing",
+            "effect": "vague - intent to observe before deciding"
+          },
+          "why": "Statement of intent to look at the board, no action or effect claim."
+        },
+        {
+          "id": "h092",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "piece",
+            "effect": "piece moves into box's cell (position change)"
+          },
+          "why": "Names the action and a specific target position change computable from before/after boards (the added 'level completed' claim needs hidden state but the core move claim is checkable)."
+        },
+        {
+          "id": "h096",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing - triggering action not named",
+            "target": "object",
+            "effect": "slid right 5 cells and stopped"
+          },
+          "why": "Effect (movement amount) is given but no action is named as the cause, and the wall-hit reason is explicitly speculative."
+        }
+      ]
+    },
+    {
+      "batch": 0,
+      "judge": 1,
+      "labels": [
+        {
+          "id": "h000",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "none stated",
+            "target": "rows 34-43 paint pattern",
+            "effect": "missing: no action tied to this static pattern"
+          },
+          "why": "describes static board pattern, not a state change from an action"
+        },
+        {
+          "id": "h004",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE (past, disputed)",
+            "target": "shapes",
+            "effect": "vague: 'rotated out of place and back', speculative"
+          },
+          "why": "speculative reconsideration, not a concrete claim"
+        },
+        {
+          "id": "h008",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: sentence cut off ('up?')",
+            "target": "path from (14,26)",
+            "effect": "missing: no effect stated, just move-counting"
+          },
+          "why": "incomplete planning sentence, no effect claimed"
+        },
+        {
+          "id": "h012",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click lower blue",
+            "target": "gray piston edges / charcoal arrow / yellow bar",
+            "effect": "top edge +4 right, bottom edge +4 left, bar+arrow +4 left"
+          },
+          "why": "names action, specific targets, and cell-count movement effects"
+        },
+        {
+          "id": "h016",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "b-button click",
+            "target": "blue square at r20-23 c4-7",
+            "effect": "missing: destination cut off ('to...')"
+          },
+          "why": "sentence truncated before stating the resulting position"
+        },
+        {
+          "id": "h020",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click bead midpoint (hypothetical)",
+            "target": "bead endpoints",
+            "effect": "vague: 'might swap', 'could flip', speculative multi-step"
+          },
+          "why": "hedged speculation about a possible mechanic, not a stated fact"
+        },
+        {
+          "id": "h024",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE (guessed)",
+            "target": "nearest red block",
+            "effect": "vague: 'maybe... absorbs... leaves a trail', phrased as a guess"
+          },
+          "why": "explicitly a guess ('Maybe SPACE =...?'), not asserted as fact"
+        },
+        {
+          "id": "h028",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "box at (28,36)",
+            "effect": "box appears at (32-35,16-19)"
+          },
+          "why": "names action, target region, and resulting position, computable from before/after grids"
+        },
+        {
+          "id": "h032",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: which click triggers the swap is unspecified",
+            "target": "bead",
+            "effect": "bead at (28,56) after swap, but sentence cut off"
+          },
+          "why": "stated as a plan/prediction with unspecified action and truncated text"
+        },
+        {
+          "id": "h036",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click TL-B",
+            "target": "object Y",
+            "effect": "moves one step along cycle, e.g. (24,23)->(15,23)->(6,23)"
+          },
+          "why": "names action, target, and a concrete stepwise position-change effect"
+        },
+        {
+          "id": "h040",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "LEFT / RIGHT",
+            "target": "oranges",
+            "effect": "vague: 'they moved' has no direction/amount; only 'one vanished' is concrete"
+          },
+          "why": "primary claimed effect ('moved') is vague, not computable without direction/magnitude"
+        },
+        {
+          "id": "h044",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "DOWN",
+            "target": "player/object",
+            "effect": "position becomes (44,12)"
+          },
+          "why": "raw log-style line naming action and resulting coordinate"
+        },
+        {
+          "id": "h048",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "missing: 'it' has no identifiable colour/shape/position",
+            "effect": "no movement"
+          },
+          "why": "effect (no change) is stated but the target pronoun is not locatable on a grid"
+        },
+        {
+          "id": "h052",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "click gray",
+            "target": "missing: 'them' not identified by colour/position",
+            "effect": "swap, sentence cut off ('...')"
+          },
+          "why": "target of the swap is an unresolved pronoun and sentence is truncated"
+        },
+        {
+          "id": "h056",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click at (23,61)",
+            "target": "M at (23,55)",
+            "effect": "disappears"
+          },
+          "why": "names click coordinates, a located target, and a disappearance effect"
+        },
+        {
+          "id": "h060",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "player",
+            "effect": "position becomes (8,2)"
+          },
+          "why": "states action and resulting player coordinate"
+        },
+        {
+          "id": "h064",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT (repeated presses)",
+            "target": "3x6 block",
+            "effect": "column +3 per press, sequence 42->45->48->51->54->57"
+          },
+          "why": "gives action, target block, and a precise per-press movement effect"
+        },
+        {
+          "id": "h068",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "UP",
+            "target": "'the bracket' not located on grid",
+            "effect": "vague: 'changes' unspecified"
+          },
+          "why": "target and effect are both too vague to compute from grids"
+        },
+        {
+          "id": "h072",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move key right and down (intended, not yet an action)",
+            "target": "key/feet",
+            "effect": "missing: goal statement, not an observed or predicted effect"
+          },
+          "why": "states an intended goal, not a claim about what an action does"
+        },
+        {
+          "id": "h076",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "box",
+            "effect": "box becomes white 4x4 with blue core, hovers above player"
+          },
+          "why": "names action, target, and a colour/shape/position change effect"
+        },
+        {
+          "id": "h080",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "none stated",
+            "target": "4x4 dash lattices",
+            "effect": "missing: static structural description, no action or before/after change"
+          },
+          "why": "describes board layout, not a transition from any action"
+        },
+        {
+          "id": "h084",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action named that caused the movement",
+            "target": "orange, box below it",
+            "effect": "moved left along rows 36-39"
+          },
+          "why": "effect is concrete but no triggering action is stated"
+        },
+        {
+          "id": "h088",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "none",
+            "target": "none",
+            "effect": "none: statement of intent to look before deciding"
+          },
+          "why": "pure intent/plan sentence with no action or effect claim (CONTROL item, judged the same)"
+        },
+        {
+          "id": "h092",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "UP (implied)",
+            "target": "piece / box's cell",
+            "effect": "moves into box's cell AND 'level completed' (hidden game-state flag)"
+          },
+          "why": "bundles a checkable position change with a level-completion claim not derivable from grid pixels alone"
+        },
+        {
+          "id": "h096",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "implied rightward move",
+            "target": "the object",
+            "effect": "slid right 5 cells then stopped"
+          },
+          "why": "states a concrete cell-count movement effect computable from before/after boards; the wall-hit reason is separate speculation"
+        }
+      ]
+    },
+    {
+      "batch": 1,
+      "judge": 0,
+      "labels": [
+        {
+          "id": "h001",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click at (0,23)",
+            "target": "cell (0,23)",
+            "effect": "color c→W"
+          },
+          "why": "Names a click location, a locatable cell, and a computable color change."
+        },
+        {
+          "id": "h005",
+          "kind": "prediction",
+          "checkable": true,
+          "predicate": {
+            "action": "jump move from (1,3) over (1,4)",
+            "target": "piece at (1,3), jumped peg at (1,4)",
+            "effect": "mover lands at (1,5); (1,4) removed"
+          },
+          "why": "Specific move with concrete before/after positions and a removal."
+        },
+        {
+          "id": "h009",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT",
+            "target": "object at columns 38-39",
+            "effect": "moves to 39-40 (+1)"
+          },
+          "why": "Recalls a past action with concrete position shift."
+        },
+        {
+          "id": "h013",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "the block (near arm)",
+            "effect": "no movement (does not follow)"
+          },
+          "why": "States concrete null-effect on a locatable block for a named action."
+        },
+        {
+          "id": "h017",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click (55,14) then LEFT",
+            "target": "charcoal piece",
+            "effect": "vague — \"see what moves\""
+          },
+          "why": "Stated as a test to run, not a claimed effect."
+        },
+        {
+          "id": "h021",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "click (unspecified location)",
+            "target": "8-segment move bar",
+            "effect": "vague/speculative — \"may consume\""
+          },
+          "why": "Hedged with \"may\" and no specific click instance."
+        },
+        {
+          "id": "h025",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified past push",
+            "target": "6x3 and 6x6 blocks",
+            "effect": "vague — \"suggests\"/\"may have advanced\", exact positions unknown"
+          },
+          "why": "Explicitly states positions are not yet known, speculative language."
+        },
+        {
+          "id": "h029",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "RIGHT then toggle panel",
+            "target": "middle column",
+            "effect": "unspecified — ends in a question"
+          },
+          "why": "A proposed plan phrased as a question, no committed effect."
+        },
+        {
+          "id": "h033",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing — no action/click named",
+            "target": "ball cursor / ghost",
+            "effect": "sweeps slots 1→5 into panel"
+          },
+          "why": "Describes an animation effect but not which action caused it."
+        },
+        {
+          "id": "h037",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click",
+            "target": "a cell/element (itself)",
+            "effect": "toggles its own state (XOR)"
+          },
+          "why": "General but concrete claim: click toggles the clicked target's own state."
+        },
+        {
+          "id": "h041",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click landing marker",
+            "target": "mover piece and jumped peg",
+            "effect": "mover relocates; jumped peg removed"
+          },
+          "why": "General claim naming action, target, and a computable effect."
+        },
+        {
+          "id": "h045",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "multi-step BFS path (15 moves)",
+            "target": "path to (20,26)",
+            "effect": "needs multi-step future outcome, not single before/after"
+          },
+          "why": "A multi-move plan, not a single-step transition a before/after pair can check."
+        },
+        {
+          "id": "h049",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "aggregate of several planned actions",
+            "target": "multiple pieces/routes",
+            "effect": "vague total click count (~20)"
+          },
+          "why": "A tally of a multi-step future plan, not one checkable transition."
+        },
+        {
+          "id": "h053",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "click stamp",
+            "target": "stamp",
+            "effect": "vague — \"toggles something\""
+          },
+          "why": "Effect is unspecified (\"something\")."
+        },
+        {
+          "id": "h057",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "none — a question",
+            "target": "white key vs green key shape",
+            "effect": "n/a — static comparison, no transition"
+          },
+          "why": "A question about static shapes, not a transition claim."
+        },
+        {
+          "id": "h061",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing — no action/click named",
+            "target": "white blob",
+            "effect": "moves from upper-left toward purple (direction only)"
+          },
+          "why": "No named action, and the effect is a vague direction not an exact end state."
+        },
+        {
+          "id": "h065",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click",
+            "target": "blue tiles",
+            "effect": "color b→R"
+          },
+          "why": "Names action, target, and a computable color change."
+        },
+        {
+          "id": "h069",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing — no action named",
+            "target": "the assembly",
+            "effect": "moved up into bar area, deposited"
+          },
+          "why": "Describes an effect without stating which action produced it."
+        },
+        {
+          "id": "h077",
+          "kind": "prediction",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT (repeated presses)",
+            "target": "piece starting at (2,0)",
+            "effect": "moves +2 cols per press until blocked at (2,8)"
+          },
+          "why": "Concrete predicted per-press displacement and a stop condition."
+        },
+        {
+          "id": "h081",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing — no action named",
+            "target": "sky bar / body rows from 40",
+            "effect": "length grows (increases)"
+          },
+          "why": "States a growth effect without naming the triggering action."
+        },
+        {
+          "id": "h085",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing — no action named",
+            "target": "the plug (level 1)",
+            "effect": "moved down/left to reach the cup"
+          },
+          "why": "Recalls a past effect but not the action instance that caused it."
+        },
+        {
+          "id": "h089",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT/RIGHT",
+            "target": "the bubble",
+            "effect": "moves 6 columns per press"
+          },
+          "why": "General claim with a concrete, computable step size."
+        },
+        {
+          "id": "h093",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "object at col 36",
+            "effect": "col 36→39"
+          },
+          "why": "Names action and a concrete before/after column change."
+        },
+        {
+          "id": "h097",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "the wall",
+            "effect": "position 12→0"
+          },
+          "why": "Names action and a concrete before/after position change."
+        }
+      ]
+    },
+    {
+      "batch": 1,
+      "judge": 1,
+      "labels": [
+        {
+          "id": "h001",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click at (0,23)",
+            "target": "cell (0,23)",
+            "effect": "color changes c→W"
+          },
+          "why": "names click location, cell target, and a discrete color change computable from before/after boards."
+        },
+        {
+          "id": "h005",
+          "kind": "prediction",
+          "checkable": true,
+          "predicate": {
+            "action": "jump right (move A)",
+            "target": "piece at (1,3), piece at (1,4)",
+            "effect": "mover lands (1,5); piece at (1,4) removed"
+          },
+          "why": "specific hypothetical move with named source/landing cells and a removal effect, all board-readable."
+        },
+        {
+          "id": "h009",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT (recalled, turns 38-39)",
+            "target": "position 38-39",
+            "effect": "shifts to 39-40 (+1)"
+          },
+          "why": "past action, named position range, and a computable +1 shift."
+        },
+        {
+          "id": "h013",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP (arm length 24, 1-col gap)",
+            "target": "the block",
+            "effect": "no movement (block does not follow)"
+          },
+          "why": "names action and target with a 'nothing changes' effect, confirmed by the author's own checkmark."
+        },
+        {
+          "id": "h017",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click charcoal + LEFT (proposed)",
+            "target": "charcoal piece at (55,14)",
+            "effect": "vague - 'see what moves'"
+          },
+          "why": "stated as an intent to test, not a claim of what board effect occurs."
+        },
+        {
+          "id": "h021",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "click",
+            "target": "unspecified segment of the 8-segment bar",
+            "effect": "vague - hedged with 'may'"
+          },
+          "why": "hedged ('may') general claim with no specific target segment or confirmed effect."
+        },
+        {
+          "id": "h025",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "push (unspecified)",
+            "target": "6x3 block, 6x6 pusher block",
+            "effect": "vague - 'suggests', 'may have advanced'"
+          },
+          "why": "explicitly states a need for exact positions and hedges the outcome as speculative image-based guessing."
+        },
+        {
+          "id": "h029",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "RIGHT then toggle panel (proposed, multi-step)",
+            "target": "tip, middle column",
+            "effect": "undetermined - ends in a question"
+          },
+          "why": "a multi-step plan phrased as a question, not an asserted effect."
+        },
+        {
+          "id": "h033",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified (animation observed)",
+            "target": "ball cursor / 'ghost'",
+            "effect": "vague - interpretive 'ghost moving into panel'"
+          },
+          "why": "describes an animation over multiple frames with no single named action, and an interpretive rather than board-literal effect."
+        },
+        {
+          "id": "h037",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click/press",
+            "target": "the clicked cell/tile itself",
+            "effect": "toggles its own state (XOR with target)"
+          },
+          "why": "general mechanic claim naming action, self-referential target, and a computable toggle effect."
+        },
+        {
+          "id": "h041",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click landing marker",
+            "target": "mover piece, jumped peg",
+            "effect": "mover relocates; jumped peg removed"
+          },
+          "why": "names the action and two targets with discrete, board-checkable effects (move + removal)."
+        },
+        {
+          "id": "h045",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "multi-step BFS path (15 moves)",
+            "target": "path to (20,26)",
+            "effect": "n/a - future multi-step route"
+          },
+          "why": "a planned multi-move path, not a single action's before/after effect."
+        },
+        {
+          "id": "h049",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "multiple approximate click counts",
+            "target": "various (p1, Y, spawn, routes, merge, drag)",
+            "effect": "vague - approximate total ~20 clicks"
+          },
+          "why": "a rough budget estimate across many undefined steps, not a checkable single transition."
+        },
+        {
+          "id": "h053",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "click",
+            "target": "a stamp",
+            "effect": "vague - 'toggles something'"
+          },
+          "why": "effect is explicitly unspecified ('something'), failing the concrete-effect requirement."
+        },
+        {
+          "id": "h057",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "none (question)",
+            "target": "white key shape vs green key shape",
+            "effect": "n/a"
+          },
+          "why": "a question about shape identity, not a transition claim."
+        },
+        {
+          "id": "h061",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified",
+            "target": "white blob",
+            "effect": "vague direction - 'toward the purple', trailing off"
+          },
+          "why": "no action named for the movement and the destination/effect is not a concrete cell or amount."
+        },
+        {
+          "id": "h065",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click",
+            "target": "blue tiles",
+            "effect": "color changes b→R"
+          },
+          "why": "names the action, a color-defined target, and a discrete color-change effect."
+        },
+        {
+          "id": "h069",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified",
+            "target": "the assembly",
+            "effect": "vague - 'moved up', 'got deposited'"
+          },
+          "why": "no action stated that caused the movement, and 'deposited' is not a precise board-computable effect."
+        },
+        {
+          "id": "h073",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "MOUSE click",
+            "target": "green blocks",
+            "effect": "destroyed (disappear)"
+          },
+          "why": "names a click action, a colour-defined target, and a discrete disappear effect (plus a secondary scroll claim not needed for the checkable core)."
+        },
+        {
+          "id": "h077",
+          "kind": "prediction",
+          "checkable": true,
+          "predicate": {
+            "action": "press RIGHT (repeated)",
+            "target": "piece at (2,0) and successive cells",
+            "effect": "moves +2 cells per press; blocked/death at red tile (2,8)"
+          },
+          "why": "names the action, the moving target, and a computable per-press displacement plus a stop condition."
+        },
+        {
+          "id": "h081",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified",
+            "target": "sky bar",
+            "effect": "grows from row 40 upward"
+          },
+          "why": "no action named that causes the growth, so the checker has nothing to correlate with a before/after pair."
+        },
+        {
+          "id": "h085",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "unspecified",
+            "target": "the plug, the cup (level 1, different context)",
+            "effect": "vague multi-step path 'down/left'"
+          },
+          "why": "recalls a different level with no specific action and only a general direction, not a single computable transition."
+        },
+        {
+          "id": "h089",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT/RIGHT",
+            "target": "the bubble",
+            "effect": "moves 6 columns (block width) per press"
+          },
+          "why": "names the action, the target, and a precise per-press displacement."
+        },
+        {
+          "id": "h093",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "piece/cursor",
+            "effect": "moves from col 36 to col 39"
+          },
+          "why": "names the action and gives exact before/after column values."
+        },
+        {
+          "id": "h097",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP (turns 87-90)",
+            "target": "the wall",
+            "effect": "position changes 12→0"
+          },
+          "why": "names the action, target, and exact before/after values."
+        }
+      ]
+    },
+    {
+      "batch": 2,
+      "judge": 0,
+      "labels": [
+        {
+          "id": "h002",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "7 future sky-grow clicks (not yet taken)",
+            "target": "the group",
+            "effect": "missing: cumulative multi-step outcome over 7 future actions, not a single before/after transition"
+          },
+          "why": "a multi-step future plan, not a single-action transition a stored before/after pair could check"
+        },
+        {
+          "id": "h006",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "a click (unspecified)",
+            "target": "outline hint / red piece",
+            "effect": "missing: hedged with 'Maybe', two competing vague explanations offered, not a stated effect"
+          },
+          "why": "speculative alternative explanation, not a committed claim"
+        },
+        {
+          "id": "h010",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action named",
+            "target": "the block column",
+            "effect": "moved down 6 rows"
+          },
+          "why": "states a concrete effect but never names the action that caused it"
+        },
+        {
+          "id": "h014",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "LEFT/RIGHT",
+            "target": "it (unclear referent)",
+            "effect": "move along the ceiling (vague, no distance/coordinate)"
+          },
+          "why": "target pronoun unresolved and effect is not quantified"
+        },
+        {
+          "id": "h018",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "white marker",
+            "effect": "moved to (21,24)"
+          },
+          "why": "names action, target, and a specific coordinate effect computable from before/after boards"
+        },
+        {
+          "id": "h022",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action named",
+            "target": "orange bar (rows 21-23, cols 39-55)",
+            "effect": "grows left from fixed right cap"
+          },
+          "why": "describes object geometry/growth behavior but ties it to no specific action"
+        },
+        {
+          "id": "h026",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "click on the ball",
+            "target": "the ball",
+            "effect": "did nothing meaningful (or bounced back) — vague, two hedged alternatives"
+          },
+          "why": "effect is vague and explicitly hedged between two possibilities"
+        },
+        {
+          "id": "h030",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "UP/DOWN",
+            "target": "the selection",
+            "effect": "missing: sentence trails off ('the change I saw was...'), no stated effect"
+          },
+          "why": "speculative and incomplete, no committed effect"
+        },
+        {
+          "id": "h034",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "swap (unspecified trigger)",
+            "target": "the pair of squares",
+            "effect": "occupies mirrored start position, e.g. left at (9,7) — marked uncertain with '??'"
+          },
+          "why": "explicitly uncertain guess (double question mark), not a committed claim"
+        },
+        {
+          "id": "h038",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action",
+            "target": "the board",
+            "effect": "missing: static description, no transition"
+          },
+          "why": "a static description of the board, not a claim about any action's effect"
+        },
+        {
+          "id": "h042",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "b toggle",
+            "target": "the blue square",
+            "effect": "moves to lower-left (r40-43 c12-15) — posed as 'What if', speculative"
+          },
+          "why": "framed as a hypothetical ('What if'), not an asserted claim"
+        },
+        {
+          "id": "h046",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "second click",
+            "target": "slot 4",
+            "effect": "white selection ring appears around it (pattern 'WRRRRW'); socket does not move"
+          },
+          "why": "names the action, a locatable target, and a concrete appear/pattern-change effect"
+        },
+        {
+          "id": "h050",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "green clicks",
+            "target": "missing: unspecified counter/value",
+            "effect": "decrease (posed as a question 'maybe...?')"
+          },
+          "why": "phrased as a speculative question, not a stated fact"
+        },
+        {
+          "id": "h054",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click the bead",
+            "target": "white marker",
+            "effect": "moves to the bead's position"
+          },
+          "why": "the core claim names an action, target, and a locatable effect; the trailing formula speculation is extra but the transition claim itself is checkable"
+        },
+        {
+          "id": "h058",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT press",
+            "target": "the piece",
+            "effect": "moved from (2,4) to (8,5)"
+          },
+          "why": "names action, target, and exact before/after coordinates"
+        },
+        {
+          "id": "h062",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "clicking an arrow",
+            "target": "a ring/cluster",
+            "effect": "rotates the ring (vague, no amount/direction); hedged with 'Maybe'"
+          },
+          "why": "hedged speculation and effect not quantified"
+        },
+        {
+          "id": "h066",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "continue pushing P2 up (future)",
+            "target": "P1/P2 bars",
+            "effect": "missing: conditional future outcome ('see if it spills'), not yet observed"
+          },
+          "why": "a stated future intent with a conditional, untested outcome"
+        },
+        {
+          "id": "h070",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action",
+            "target": "the level's goal",
+            "effect": "missing: pure intent/reflection, no effect"
+          },
+          "why": "an intent to think, not a transition claim"
+        },
+        {
+          "id": "h074",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "player pushes box right",
+            "target": "the box",
+            "effect": "always horizontal (posed as 'What if', hypothetical)"
+          },
+          "why": "framed as a hypothetical scenario, not an asserted claim"
+        },
+        {
+          "id": "h078",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "the first click",
+            "target": "(6,4)",
+            "effect": "changed (vague, unspecified how) — posed as a question"
+          },
+          "why": "effect unspecified and phrased as an uncertain question"
+        },
+        {
+          "id": "h082",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move RIGHT, select orange, press SPACE (future, multi-step)",
+            "target": "UR diamond / orange selection",
+            "effect": "missing: intended future actions, no effect stated"
+          },
+          "why": "a multi-step future plan, not an effect claim"
+        },
+        {
+          "id": "h086",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "clicking",
+            "target": "cells in a plus-shape neighborhood (excluding 9 unclickable cells)",
+            "effect": "toggles state N to p"
+          },
+          "why": "names the action, a locatable target region, and a concrete state-toggle effect"
+        },
+        {
+          "id": "h090",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT",
+            "target": "player/position",
+            "effect": "moved from (8,38) to (8,32)"
+          },
+          "why": "names action, target, and exact before/after coordinates"
+        },
+        {
+          "id": "h094",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click the blue button at (58,35) (future)",
+            "target": "blue button",
+            "effect": "missing: 'see what changes' is vague, no stated effect"
+          },
+          "why": "a stated intent to probe, with a vague unstated effect"
+        },
+        {
+          "id": "h098",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "UP/DOWN",
+            "target": "the head",
+            "effect": "slides along its track (vague, no distance/coordinate)"
+          },
+          "why": "effect not quantified enough to compute from before/after boards"
+        }
+      ]
+    },
+    {
+      "batch": 2,
+      "judge": 1,
+      "labels": [
+        {
+          "id": "h002",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "7 sky-grow clicks (multi-step plan)",
+            "target": "the group",
+            "effect": "missing: prediction spans 7 cumulative actions, not one before/after pair"
+          },
+          "why": "A multi-action plan with a cumulative prediction can't be checked from a single stored transition."
+        },
+        {
+          "id": "h006",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: unspecified click",
+            "target": "outline hint / red piece",
+            "effect": "vague: 'maybe two separate events'"
+          },
+          "why": "Speculative alternative explanation, not an asserted transition."
+        },
+        {
+          "id": "h010",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action named",
+            "target": "block column",
+            "effect": "moved down 6"
+          },
+          "why": "States an effect as fact but names no action that caused it."
+        },
+        {
+          "id": "h014",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "LEFT/RIGHT",
+            "target": "vague: 'it' (unnamed object)",
+            "effect": "move along the ceiling"
+          },
+          "why": "General claim but the target 'it' isn't locatable on a grid from this sentence alone."
+        },
+        {
+          "id": "h018",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "white marker",
+            "effect": "moved to (21,24)"
+          },
+          "why": "Names action, locatable target, and a concrete coordinate effect."
+        },
+        {
+          "id": "h022",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action named",
+            "target": "orange bar rows 21-23 cols 39-55",
+            "effect": "fixed at right, grows left"
+          },
+          "why": "Describes bar behavior/geometry but never names the action that grows it."
+        },
+        {
+          "id": "h026",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "click on the ball",
+            "target": "ball",
+            "effect": "vague: 'nothing meaningful' or alternatively 'bounced back'"
+          },
+          "why": "Effect is vague and hedged between two alternatives."
+        },
+        {
+          "id": "h030",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "UP/DOWN",
+            "target": "the selection",
+            "effect": "vague: incomplete sentence, 'the change I saw was...'"
+          },
+          "why": "Trailing, incomplete speculative sentence with no stated effect."
+        },
+        {
+          "id": "h034",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: 'swap' is not a defined action",
+            "target": "the pair of squares",
+            "effect": "vague: hypothesis marked with '??'"
+          },
+          "why": "Marked uncertain speculation about what 'swap' means, not an asserted transition."
+        },
+        {
+          "id": "h038",
+          "kind": "other",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action",
+            "target": "the board",
+            "effect": "missing: static description only"
+          },
+          "why": "Pure static description of the board, no action or effect."
+        },
+        {
+          "id": "h042",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "'b toggle' (undefined action)",
+            "target": "blue square",
+            "effect": "moves to (r40-43,c12-15)"
+          },
+          "why": "Phrased as a 'what if' hypothesis, not an asserted claim."
+        },
+        {
+          "id": "h046",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "second click",
+            "target": "slot 4 / socket",
+            "effect": "socket unmoved; white selection ring placed around slot 4"
+          },
+          "why": "Names the action, a locatable target, and a concrete computable effect."
+        },
+        {
+          "id": "h050",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "green clicks",
+            "target": "missing: unspecified target",
+            "effect": "vague: 'maybe also decrease'"
+          },
+          "why": "A speculative question, not an asserted effect."
+        },
+        {
+          "id": "h054",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click the bead",
+            "target": "white marker",
+            "effect": "moves to the bead's position"
+          },
+          "why": "Names action, target, and a position-based effect computable from before/after boards."
+        },
+        {
+          "id": "h058",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT press",
+            "target": "the piece",
+            "effect": "moved from (2,4) to (8,5)"
+          },
+          "why": "Concrete action, target, and coordinate-based effect."
+        },
+        {
+          "id": "h062",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "clicking an arrow",
+            "target": "vague: 'the ring' (which cluster's ring unspecified)",
+            "effect": "vague: 'rotates the ring'"
+          },
+          "why": "Hedged with 'maybe' and target/effect not concretely locatable."
+        },
+        {
+          "id": "h066",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "continue pushing P2 up",
+            "target": "P2 / bar2",
+            "effect": "vague: 'see if it spills into P1' (future, conditional)"
+          },
+          "why": "States intent to test a future conditional outcome, not a committed claim."
+        },
+        {
+          "id": "h070",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing: no action",
+            "target": "missing: 'the goal of this level'",
+            "effect": "missing: no effect"
+          },
+          "why": "Pure intent/reflection with no action or effect."
+        },
+        {
+          "id": "h074",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "push right (hypothetical)",
+            "target": "the box",
+            "effect": "vague: 'What if' hypothetical framing"
+          },
+          "why": "Speculative hypothetical, not an asserted transition."
+        },
+        {
+          "id": "h078",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "first click",
+            "target": "(6,4)",
+            "effect": "vague: 'changed' with no specifics, posed as a question"
+          },
+          "why": "Effect is unspecified ('changed how?') and phrased as an uncertain question."
+        },
+        {
+          "id": "h082",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move RIGHT, select orange, press SPACE (multi-step plan)",
+            "target": "UR diamond / orange",
+            "effect": "missing: no stated effect, future intent only"
+          },
+          "why": "A multi-step future plan with no predicted effect to check."
+        },
+        {
+          "id": "h086",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "clicking",
+            "target": "cell in plus-shape neighborhood (clickable cells)",
+            "effect": "toggles N↔p"
+          },
+          "why": "General rule naming an action, a locatable target class, and a concrete state-toggle effect."
+        },
+        {
+          "id": "h090",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "LEFT",
+            "target": "the moving piece",
+            "effect": "moved from (8,38) to (8,32)"
+          },
+          "why": "Concrete action, target, and coordinate effect."
+        },
+        {
+          "id": "h094",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click the blue button at (58,35)",
+            "target": "blue button",
+            "effect": "vague: 'see what changes'"
+          },
+          "why": "Stated as an intent to probe, with no predicted effect."
+        },
+        {
+          "id": "h098",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "up/down",
+            "target": "the head",
+            "effect": "vague: 'can slide along its track' (capability, no specific instance/amount)"
+          },
+          "why": "General capability claim without a concrete computable effect."
+        }
+      ]
+    },
+    {
+      "batch": 3,
+      "judge": 0,
+      "labels": [
+        {
+          "id": "h003",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "object at rows 16-19",
+            "effect": "moves to rows 12-15 (up 4)"
+          },
+          "why": "Names action, locatable target rows, and a computable row-shift effect."
+        },
+        {
+          "id": "h007",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "the bar (unspecified)",
+            "effect": "vague"
+          },
+          "why": "Hedged conditional with no action or concrete effect, just speculation about reset/extend."
+        },
+        {
+          "id": "h011",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "bottom rect",
+            "effect": "moves up (extent reasoning, no action named)"
+          },
+          "why": "States a movement tendency but never names the causing action, just a cell-count rationale."
+        },
+        {
+          "id": "h015",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE (hypothetical)",
+            "target": "magenta plug / bar",
+            "effect": "vague, speculative 'grab' mechanic"
+          },
+          "why": "Explicit 'what if' speculation about hidden mechanics, not an asserted transition."
+        },
+        {
+          "id": "h019",
+          "kind": "rule",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "the bar counter",
+            "effect": "vague, hedged by 'if' and used for a budget estimate not a board effect"
+          },
+          "why": "Conditional inference about remaining actions, not a stated fact checkable from one before/after pair."
+        },
+        {
+          "id": "h023",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "top gray piston (left edge 52→56)",
+            "effect": "moved right by 4"
+          },
+          "why": "Effect and target are precise but no action is named for what caused the move."
+        },
+        {
+          "id": "h027",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "cell bc6/bc5 at br10",
+            "effect": "no move (blocked)"
+          },
+          "why": "Names action, target cell, and a computable non-movement effect."
+        },
+        {
+          "id": "h031",
+          "kind": "prediction",
+          "checkable": false,
+          "predicate": {
+            "action": "multiple (up, up, down)",
+            "target": "object near (0,6)/(4,6)",
+            "effect": "vague multi-step bouncing pattern"
+          },
+          "why": "Speculative multi-step future pattern, not a single stored action's effect."
+        },
+        {
+          "id": "h035",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click",
+            "target": "gray slot in red box",
+            "effect": "slot fills with selected color"
+          },
+          "why": "General mechanic naming a click action, a locatable target, and a computable color-fill effect."
+        },
+        {
+          "id": "h039",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "planned clicks/moves",
+            "target": "unspecified",
+            "effect": "vague, intent about ordering not an effect"
+          },
+          "why": "States a batching strategy/intent, no concrete board effect claimed."
+        },
+        {
+          "id": "h043",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE x2 then moves",
+            "target": "unspecified",
+            "effect": "vague, plan to verify orientation"
+          },
+          "why": "Describes an intended procedure, not a claim about what happened or will happen to the board."
+        },
+        {
+          "id": "h047",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP (implied, 'moved up')",
+            "target": "the piece",
+            "effect": "moved up 5 rows, now overlaps box's bottom border"
+          },
+          "why": "States a specific past movement and a locatable overlap effect from an implied UP action."
+        },
+        {
+          "id": "h051",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "click (at index 99)",
+            "target": "panel B2",
+            "effect": "turned ON"
+          },
+          "why": "Specific causal claim about one click's toggle effect, despite hedging with a question mark."
+        },
+        {
+          "id": "h055",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click (hypothetical)",
+            "target": "chips in upper-left",
+            "effect": "vague, 'blob's color changes accordingly'"
+          },
+          "why": "Speculative 'maybe' framing with a vague, unquantified effect."
+        },
+        {
+          "id": "h059",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "blue bar and red block",
+            "effect": "swapped positions"
+          },
+          "why": "Names action and target objects with a computable swap effect, despite trailing question mark."
+        },
+        {
+          "id": "h063",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "the tip (rows 31-38)",
+            "effect": "moved up 2 rows"
+          },
+          "why": "Names action, locatable target rows, and a computable row-shift effect."
+        },
+        {
+          "id": "h067",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "DOWN (proposed test)",
+            "target": "yellow crosshair",
+            "effect": "vague, 'see whether it moves too'"
+          },
+          "why": "Describes an intended test, not an asserted transition outcome."
+        },
+        {
+          "id": "h071",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "DOWN (9 presses)",
+            "target": "the plus/M shape",
+            "effect": "moved to clipped position at bottom, rows 40-63"
+          },
+          "why": "Names the repeated action, target shape, and a computable final-position effect."
+        },
+        {
+          "id": "h075",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move right (hypothetical)",
+            "target": "black shapes / wall",
+            "effect": "vague, 'maybe' multi-part speculative plan"
+          },
+          "why": "Speculative compound plan hedged with 'maybe', not a stated transition."
+        },
+        {
+          "id": "h079",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "red moves left (via blue push)",
+            "target": "wall",
+            "effect": "wall moves left too"
+          },
+          "why": "General claim linking one object's move to another's, both locatable and effect computable."
+        },
+        {
+          "id": "h083",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "push UP x5",
+            "target": "yellow object at cols 20-28, row 35",
+            "effect": "moves into upper-left hole (rows 20-28)"
+          },
+          "why": "Names repeated action, target coordinates, and a computable final-position effect, confirmed by checkmark."
+        },
+        {
+          "id": "h087",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "LEFT x3 (proposed test)",
+            "target": "unspecified cells",
+            "effect": "vague, 'see which cells change'"
+          },
+          "why": "Describes an intended test procedure, not a stated outcome."
+        },
+        {
+          "id": "h091",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "DOWN (hypothetical)",
+            "target": "the flag",
+            "effect": "vague, 'align with something'"
+          },
+          "why": "Speculative 'maybe' claim with an unspecified alignment target/effect."
+        },
+        {
+          "id": "h095",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "fill 4 slots + SPACE (multi-step)",
+            "target": "slot sequence (b,N,Y,p)",
+            "effect": "level solved, score 1 (hidden game state)"
+          },
+          "why": "Describes a multi-step past outcome relying on hidden score/solved state, not a single before/after board effect."
+        }
+      ]
+    },
+    {
+      "batch": 3,
+      "judge": 1,
+      "labels": [
+        {
+          "id": "h003",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "object at rows 16-19",
+            "effect": "moves to rows 12-15 (up 4 rows)"
+          },
+          "why": "names action, target rows, and a computable position shift."
+        },
+        {
+          "id": "h007",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "the bar",
+            "effect": "vague (reset/extended, conditional)"
+          },
+          "why": "hedged conditional about hidden game logic, no concrete action or board effect."
+        },
+        {
+          "id": "h011",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing (no action named)",
+            "target": "bottom rect",
+            "effect": "moves up, ~100 cells changed"
+          },
+          "why": "describes an effect/cell-count but never names which action caused it."
+        },
+        {
+          "id": "h015",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "SPACE (speculative)",
+            "target": "magenta plug",
+            "effect": "vague, hypothetical attachment/grab mechanic"
+          },
+          "why": "speculative 'might' claim about hidden mechanic, not a stated transition."
+        },
+        {
+          "id": "h019",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "missing",
+            "target": "the bar (counter)",
+            "effect": "vague, conditional estimate '~110 actions left'"
+          },
+          "why": "conditional hedge ('if') and an estimate, not an assertable transition."
+        },
+        {
+          "id": "h023",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "missing (no action named)",
+            "target": "top gray piston",
+            "effect": "moved right by 4 (left edge 52→56)"
+          },
+          "why": "effect and target are concrete but no action/key is named as the cause."
+        },
+        {
+          "id": "h027",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "RIGHT",
+            "target": "piece at bc6",
+            "effect": "blocked, no move"
+          },
+          "why": "names action, cell target, and a computable no-change effect."
+        },
+        {
+          "id": "h031",
+          "kind": "prediction",
+          "checkable": false,
+          "predicate": {
+            "action": "UP/UP/DOWN sequence",
+            "target": "object",
+            "effect": "vague multi-step bouncing pattern, uncertain"
+          },
+          "why": "multi-step future pattern hypothesis, not a single before/after transition."
+        },
+        {
+          "id": "h035",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "click",
+            "target": "button / gray slot in red box",
+            "effect": "slot fills with selected colour"
+          },
+          "why": "names click action, locatable coloured target, and a colour-change effect."
+        },
+        {
+          "id": "h039",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "clicks then moves (batch order)",
+            "target": "missing",
+            "effect": "vague ('most likely win')"
+          },
+          "why": "strategic ordering decision, no concrete board effect stated."
+        },
+        {
+          "id": "h043",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "2 SPACE then loop of moves",
+            "target": "missing",
+            "effect": "vague ('verify orientation')"
+          },
+          "why": "procedural plan for future turns, no stated transition."
+        },
+        {
+          "id": "h047",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP (moved up 5)",
+            "target": "the piece",
+            "effect": "moves up 5 rows, top overlaps box's bottom border"
+          },
+          "why": "names action, target, and a computable position/overlap effect."
+        },
+        {
+          "id": "h051",
+          "kind": "prediction",
+          "checkable": false,
+          "predicate": {
+            "action": "click (idx 99)",
+            "target": "'B2' panel",
+            "effect": "vague/uncertain, needs hidden state and indexing scheme"
+          },
+          "why": "hedged question about hidden toggle state, not directly gridable."
+        },
+        {
+          "id": "h055",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "click (speculative)",
+            "target": "chips upper-left / blob colour",
+            "effect": "vague, hypothetical mechanic"
+          },
+          "why": "speculative 'maybe' claim about mechanic, not asserted transition."
+        },
+        {
+          "id": "h059",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "SPACE",
+            "target": "blue bar and red block",
+            "effect": "swap positions"
+          },
+          "why": "names action and target pair with a computable swap effect, despite trailing '?'."
+        },
+        {
+          "id": "h063",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "UP",
+            "target": "the tip (rows 31-38)",
+            "effect": "moves up 2 rows"
+          },
+          "why": "names action, target region, and a computable shift amount."
+        },
+        {
+          "id": "h067",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "DOWN (intended test)",
+            "target": "yellow crosshair",
+            "effect": "unknown, to be observed"
+          },
+          "why": "stated as an intent to test, not a claim of what happens."
+        },
+        {
+          "id": "h071",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "DOWN x9",
+            "target": "the plus/M (vertical arm)",
+            "effect": "overshoots, clipped at bottom edge"
+          },
+          "why": "names action count, target, and a computable clipped-position effect."
+        },
+        {
+          "id": "h075",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "move right + reposition wall (proposed)",
+            "target": "black shapes / wall",
+            "effect": "vague ('cover the yellow')"
+          },
+          "why": "hedged ('maybe') multi-step future plan, not a single checkable transition."
+        },
+        {
+          "id": "h079",
+          "kind": "rule",
+          "checkable": true,
+          "predicate": {
+            "action": "red moves left (pushed by blue)",
+            "target": "wall",
+            "effect": "wall also moves left"
+          },
+          "why": "general claim naming a triggering action, a target, and a computable co-movement effect."
+        },
+        {
+          "id": "h083",
+          "kind": "observation",
+          "checkable": true,
+          "predicate": {
+            "action": "push UP x5",
+            "target": "yellow block at cols 20-28, row 35",
+            "effect": "moves into upper-left hole (rows/cols 20-28)"
+          },
+          "why": "names action count, target location, and a computable destination effect."
+        },
+        {
+          "id": "h087",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "LEFT x3 then stamp white (intended test)",
+            "target": "missing",
+            "effect": "vague ('see which cells change')"
+          },
+          "why": "stated as an intent to test, not an asserted effect."
+        },
+        {
+          "id": "h091",
+          "kind": "plan_or_question",
+          "checkable": false,
+          "predicate": {
+            "action": "DOWN (speculative)",
+            "target": "the flag",
+            "effect": "vague ('align with something')"
+          },
+          "why": "hedged ('maybe') speculation with a vague, unlocatable effect."
+        },
+        {
+          "id": "h095",
+          "kind": "observation",
+          "checkable": false,
+          "predicate": {
+            "action": "fill 4 slots then SPACE",
+            "target": "slots (b,N,Y,p) / level 1",
+            "effect": "needs hidden state (score/solved), multi-step"
+          },
+          "why": "describes a past multi-step success requiring hidden score/solve state, not a single before/after transition."
+        }
+      ]
+    }
+  ],
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Judge"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "judge b0 j0",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "a8f871cfd075f0b8f",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136160,
+      "queuedAt": 1790225136124,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch0.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225200757,
+      "tokens": 117276,
+      "toolCalls": 2,
+      "durationMs": 64575,
+      "resultPreview": "{\"labels\":[{\"id\":\"h000\",\"kind\":\"observation\",\"checkable\":false,\"predicate\":{\"action\":\"none stated\",\"target\":\"purple region rows 34-43\",\"effect\":\"vague - static pattern description, no action/effect\"},\"why\":\"Describes current board pattern, no action or before/after change stated.\"},{\"id\":\"h004\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"missing\",\"target\":\"missing\",\"effect\":…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "judge b0 j1",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "a8da1fae17b9f06f3",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136162,
+      "queuedAt": 1790225136124,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch0.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225214044,
+      "tokens": 117676,
+      "toolCalls": 2,
+      "durationMs": 74700,
+      "resultPreview": "{\"labels\":[{\"id\":\"h000\",\"kind\":\"observation\",\"checkable\":false,\"predicate\":{\"action\":\"none stated\",\"target\":\"rows 34-43 paint pattern\",\"effect\":\"missing: no action tied to this static pattern\"},\"why\":\"describes static board pattern, not a state change from an action\"},{\"id\":\"h004\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"SPACE (past, disputed)\",\"target\":\"shapes\",\"effect\":…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "judge b1 j0",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "ac9e95b122cd94096",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136165,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch1.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225215912,
+      "tokens": 122296,
+      "toolCalls": 3,
+      "durationMs": 76568,
+      "resultPreview": "{\"labels\":[{\"id\":\"h001\",\"kind\":\"observation\",\"checkable\":true,\"predicate\":{\"action\":\"click at (0,23)\",\"target\":\"cell (0,23)\",\"effect\":\"color c→W\"},\"why\":\"Names a click location, a locatable cell, and a computable color change.\"},{\"id\":\"h005\",\"kind\":\"prediction\",\"checkable\":true,\"predicate\":{\"action\":\"jump move from (1,3) over (1,4)\",\"target\":\"piece at (1,3), jumped peg at (1,4)\",\"effect\":\"mover la…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "judge b1 j1",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "a61f1f3b29386ccdc",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136168,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch1.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225199810,
+      "tokens": 117079,
+      "toolCalls": 2,
+      "durationMs": 60465,
+      "resultPreview": "{\"labels\":[{\"id\":\"h001\",\"kind\":\"observation\",\"checkable\":true,\"predicate\":{\"action\":\"click at (0,23)\",\"target\":\"cell (0,23)\",\"effect\":\"color changes c→W\"},\"why\":\"names click location, cell target, and a discrete color change computable from before/after boards.\"},{\"id\":\"h005\",\"kind\":\"prediction\",\"checkable\":true,\"predicate\":{\"action\":\"jump right (move A)\",\"target\":\"piece at (1,3), piece at (1,4)\",…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "judge b2 j0",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "aea4c4bc46c11dfe5",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136171,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch2.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225197558,
+      "tokens": 117074,
+      "toolCalls": 2,
+      "durationMs": 58212,
+      "resultPreview": "{\"labels\":[{\"id\":\"h002\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"7 future sky-grow clicks (not yet taken)\",\"target\":\"the group\",\"effect\":\"missing: cumulative multi-step outcome over 7 future actions, not a single before/after transition\"},\"why\":\"a multi-step future plan, not a single-action transition a stored before/after pair could check\"},{\"id\":\"h006\",\"kind\":\"plan_or_q…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "judge b2 j1",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "a11b4ca583e5dc24d",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136174,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch2.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225196566,
+      "tokens": 117479,
+      "toolCalls": 2,
+      "durationMs": 57220,
+      "resultPreview": "{\"labels\":[{\"id\":\"h002\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"7 sky-grow clicks (multi-step plan)\",\"target\":\"the group\",\"effect\":\"missing: prediction spans 7 cumulative actions, not one before/after pair\"},\"why\":\"A multi-action plan with a cumulative prediction can't be checked from a single stored transition.\"},{\"id\":\"h006\",\"kind\":\"plan_or_question\",\"checkable\":false,…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "judge b3 j0",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "afce2a9db92d1e7c2",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136177,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch3.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225221477,
+      "tokens": 117560,
+      "toolCalls": 2,
+      "durationMs": 82130,
+      "resultPreview": "{\"labels\":[{\"id\":\"h003\",\"kind\":\"observation\",\"checkable\":true,\"predicate\":{\"action\":\"UP\",\"target\":\"object at rows 16-19\",\"effect\":\"moves to rows 12-15 (up 4)\"},\"why\":\"Names action, locatable target rows, and a computable row-shift effect.\"},{\"id\":\"h007\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"missing\",\"target\":\"the bar (unspecified)\",\"effect\":\"vague\"},\"why\":\"Hedged condi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "judge b3 j1",
+      "phaseIndex": 1,
+      "phaseTitle": "Judge",
+      "agentId": "a15e61c41774bcb8d",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1790225136180,
+      "queuedAt": 1790225136125,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "HARD RULES: Read ONLY C:\\Users\\Vampi\\AppData\\Local\\Temp\\claude\\C--Users-Vampi-Desktop\\b304758b-f750-4cd1-8208-bcc4e61af992\\scratchpad\\b99next\\stage0_batch3.json (a JSON list; each item has id, game, level, dead_time, text). Never read images. Label EVERY item, in file order, exactly once. Final answer = the StructuredOutput call only.\n\nCONTEXT: An LLM agent plays ARC-AGI-3 games (64x64 grids of co…",
+      "promptFramed": true,
+      "lastProgressAt": 1790225206065,
+      "tokens": 117552,
+      "toolCalls": 2,
+      "durationMs": 66718,
+      "resultPreview": "{\"labels\":[{\"id\":\"h003\",\"kind\":\"observation\",\"checkable\":true,\"predicate\":{\"action\":\"UP\",\"target\":\"object at rows 16-19\",\"effect\":\"moves to rows 12-15 (up 4 rows)\"},\"why\":\"names action, target rows, and a computable position shift.\"},{\"id\":\"h007\",\"kind\":\"plan_or_question\",\"checkable\":false,\"predicate\":{\"action\":\"missing\",\"target\":\"the bar\",\"effect\":\"vague (reset/extended, conditional)\"},\"why\":\"hed…"
+    }
+  ],
+  "totalTokens": 943992,
+  "totalToolCalls": 17
+}

@@ -1,0 +1,726 @@
+[
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "row": 24,
+  "text": "the red trail is not consumed by the player; rather the red blob (head) travels along the trail and the top-right 3x3 was the blob's final destination — the blob moves along the trail from left to right/up, and the \"restored\" appearance means the blob reached the top and the trail regenerated?",
+  "id": "c000"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 1,
+  "row": 70,
+  "text": "If the checker region is a hole in the wall, the green knob could move UP out of its box through the hole when the blue is in slot A (leaving a checker at slot B)!",
+  "id": "c001"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 1,
+  "row": 6,
+  "text": "Actually, maybe the mechanic: clicking a green \"activates\" it (turns it dark = \"used\"), and it shoots a projectile toward the next green?",
+  "id": "c002"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 1,
+  "row": 138,
+  "text": "Let me test: click (20,24) then press LEFT and see if the yellow moves.",
+  "id": "c003"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 1,
+  "row": 52,
+  "text": "So DOWN moved it from rows 30-32 to 31-33??",
+  "id": "c004"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "row": 73,
+  "text": "If at frame17 the orange is on the left/right, the block rotates!",
+  "id": "c005"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "row": 160,
+  "text": "The red bar can only move right (b-) or the red can shrink...",
+  "id": "c006"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 2,
+  "row": 116,
+  "text": "67 UP frames None anim None changed None state None",
+  "id": "c007"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 2,
+  "row": 107,
+  "text": "no wait, the (27,33) click moved the square from (23-24, 32-33) to (26-27, 32-33): the diff showed both.",
+  "id": "c008"
+ },
+ {
+  "game": "sk48-d8078629",
+  "level": 1,
+  "row": 250,
+  "text": "the rod is at row p; moving up, blocks at rows p-1 and p in columns beyond the tip's start position get pushed?",
+  "id": "c009"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 1,
+  "row": 7,
+  "text": "Both squares move simultaneously; horizontal directions are mirrored (LEFT → left sq left, right sq right; RIGHT → left sq right, right sq left).",
+  "id": "c010"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 1,
+  "row": 8,
+  "text": "Alternatively, maybe clicking is not \"toggle\" but \"paint red\" and there's a different target.",
+  "id": "c011"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 2,
+  "row": 29,
+  "text": "LEFT presses moved the divider left by 12.",
+  "id": "c012"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "row": 219,
+  "text": "When I'm at (9,3) moving left, the riding cell is (9,4) = core → auto-commit ✓.",
+  "id": "c013"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 1,
+  "row": 88,
+  "text": "Hmm, actually more likely: the white outline was the *outline of the hat shape* (like a selection/preview), and clicking removed it.",
+  "id": "c014"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "row": 27,
+  "text": "In transition 3 the player moved RIGHT successfully → blob moved RIGHT.",
+  "id": "c015"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 2,
+  "row": 16,
+  "text": "Clicking the chamber-2 button moved the assembly left (chamber 1 white shrank, chamber 2 white grew).",
+  "id": "c016"
+ },
+ {
+  "game": "bp35-0a0ad940",
+  "level": 1,
+  "row": 14,
+  "text": "Wait, but the bushes are in the black (soil) region, and clicking them turns them into sky (water/air).",
+  "id": "c017"
+ },
+ {
+  "game": "bp35-0a0ad940",
+  "level": 1,
+  "row": 62,
+  "text": "The scroll moved the terrain down 13, so what was at rows 24-27 is now at 37-40.",
+  "id": "c018"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 3,
+  "row": 162,
+  "text": "When the square at (22,10) presses UP, maybe the dot moves up?",
+  "id": "c019"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 1,
+  "row": 18,
+  "text": "- Player: white 2-hook body (5x5 blocks of 3x3) + two red 3x3 prongs; now rotated so prongs face RIGHT at rows 14-16 & 20-22, cols 29-31 (vertical spacing 6).",
+  "id": "c020"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "row": 39,
+  "text": "That's the SAME shape as the bottom-left f00 glyph (###/#../#.# is the mirror; hmm, top is ###/..#/#.#).",
+  "id": "c021"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 3,
+  "row": 153,
+  "text": "Wait, actually the observed positions show the right square moving in ways inconsistent with a simple mirror.",
+  "id": "c022"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 1,
+  "row": 13,
+  "text": "unless MOUSE can move it, or unless the paddle can push it.",
+  "id": "c023"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 3,
+  "row": 82,
+  "text": "So the knot moved from (15,27) to (18,27) — down 3 rows.",
+  "id": "c024"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 2,
+  "row": 122,
+  "text": "Unless the token can only move in the direction of the tube's continuation, and at (33,31) the tube continues LEFT only (dead-end to the right?).",
+  "id": "c025"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 2,
+  "row": 76,
+  "text": "Plan: press SPACE twice, verify the marker is at the X center (18,27), then move the X: 10 DOWN + 3 LEFT → center (48,18).",
+  "id": "c026"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 1,
+  "row": 9,
+  "text": "Let's think: first RIGHT moved the white-centered block from 18-20 to 21-23 (moved 3).",
+  "id": "c027"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "row": 219,
+  "text": "And at (8,12) it approached from the west moving right → east ✓.",
+  "id": "c028"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "row": 21,
+  "text": "So moving straight down would collide (if collisions block).",
+  "id": "c029"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 5,
+  "row": 109,
+  "text": "Action model: click toggles the clicked tile + 4 orthogonal neighbors, but only toggleable ones (previews/background are skipped).",
+  "id": "c030"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 2,
+  "row": 28,
+  "text": "And the beam at 52-55 goes up to cup 3 (44-55) → fills it.",
+  "id": "c031"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "row": 181,
+  "text": "Also, to save moves in the dash run, I want the recording's pad hold to be positioned so the ghost is on the pad when my dash run is at (4,0) spamming DOWN.",
+  "id": "c032"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 2,
+  "row": 106,
+  "text": "Actually maybe LEFT/RIGHT move the whole \"world\" (piece+wall) and the reflection...",
+  "id": "c033"
+ },
+ {
+  "game": "sk48-d8078629",
+  "level": 1,
+  "row": 20,
+  "text": "When I pressed DOWN earlier, the block moved down with the rod, so yes it's attached.",
+  "id": "c034"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "row": 4,
+  "text": "RIGHT moved the cursor one slot right (cols 15-19 -> 22-26) and changed nothing else.",
+  "id": "c035"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "row": -1,
+  "text": "The board is 64x64 and mostly black with a few colored regions.",
+  "neg_control": true,
+  "id": "c036"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 1,
+  "row": 15,
+  "text": "But careful: if the gray moves up-left along the track and the purple is at the bottom, the gray would pass through the purple.",
+  "id": "c037"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 2,
+  "row": 85,
+  "text": "But wait — maybe the grid click toggles something.",
+  "id": "c038"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 1,
+  "row": 64,
+  "text": "So UP/DOWN changes the tip's SIZE (rotating a 2x4 bit into a 4x2?",
+  "id": "c039"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 2,
+  "row": 19,
+  "text": "the bottom row of the ring is not part of the rotation, and instead the ring's rotation happens around a different cycle: maybe the upper ring's cycle is only the 9 slots: top 5 + right 2 + left 2, and the bottom row is separate.",
+  "id": "c040"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 3,
+  "row": 128,
+  "text": "Also note: after moving, the marker stays on the shape; pressing SPACE moves the marker to the next shape.",
+  "id": "c041"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 1,
+  "row": 13,
+  "text": "Clicking \"right arrow\" grows it back.",
+  "id": "c042"
+ },
+ {
+  "game": "m0r0-492f87ba",
+  "level": 3,
+  "row": 132,
+  "text": "Hmm, also ambiguous but distinguishable: after RIGHT, right square at 34 (mirrored) or 42 (normal).",
+  "id": "c043"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 4,
+  "row": 166,
+  "text": "Let me try a cheap probe: press SPACE and see what changes (which shape becomes active).",
+  "id": "c044"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 2,
+  "row": 126,
+  "text": "Actually in level 1, I did many moves and the block only changed on SPACE.",
+  "id": "c045"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 2,
+  "row": 114,
+  "text": "If LEFT moves the piece 3 left, the piece was blocked at the boundary (can't go left of column 3) → then the wall moved instead?",
+  "id": "c046"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 1,
+  "row": 42,
+  "text": "That's exactly consistent with the observed result AND with a \"block pushed down and clipped\" model!",
+  "id": "c047"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 1,
+  "row": 11,
+  "text": "So the two blue blocks are toggles: clicking the bottom blue block moves the state one way, and it reverted when clicked again...",
+  "id": "c048"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 5,
+  "row": 130,
+  "text": "Wait, look: at 76 I clicked (58,6) → no change; at 77 I clicked (22,20) → red slot1 became 'p'.",
+  "id": "c049"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 4,
+  "row": 93,
+  "text": "Action model: click two filled slots swaps them; palette empty.",
+  "id": "c050"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "row": -1,
+  "text": "Let me look at the current board carefully before deciding.",
+  "neg_control": true,
+  "id": "c051"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 3,
+  "row": 81,
+  "text": "**Plan:** Diff each of the last 12 transitions cell-by-cell to see which clicks changed anything and how.",
+  "id": "c052"
+ },
+ {
+  "game": "bp35-0a0ad940",
+  "level": 1,
+  "row": 80,
+  "text": "Wait, actually the duck moved left 4 times: 50→44→38→32→26.",
+  "id": "c053"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "row": 4,
+  "text": "So the cursor selects a slot, moving right by one slot (7 columns apart).",
+  "id": "c054"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "row": 74,
+  "text": "Pre-win plug origin (7,7); at the win frame the origin is (8,7) (moved down 1) ✓.",
+  "id": "c055"
+ },
+ {
+  "game": "sk48-d8078629",
+  "level": 1,
+  "row": 5,
+  "text": "The player moved UP by 6 rows: center from rows 38-39 to rows 32-33.",
+  "id": "c056"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "row": 162,
+  "text": "Hmm, unless the pink head grows down and the orange bar moves down as a unit with the gray bar...",
+  "id": "c057"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 2,
+  "row": 42,
+  "text": "So the sprite moved right through (9,10) and onto red (9,12)??",
+  "id": "c058"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 2,
+  "row": 59,
+  "text": "**World model (level 2):** Right board = checkerboard (rows 4-31, cols 33-60, 7×7 blocks) with socket Y at rows 7-11 cols 44-49 (opening downward) and plug Y at rows 24-27 cols 45-48 (opening upward) → plug must move UP 16 rows (4 moves).",
+  "id": "c059"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 2,
+  "row": 68,
+  "text": "Also note: the plug must move UP 16 rows and 0 columns.",
+  "id": "c060"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 2,
+  "row": 32,
+  "text": "Observation: The green box's outline extends up into the red box, occupying the 4th slot position of the red box.",
+  "id": "c061"
+ },
+ {
+  "game": "cn04-2fe56bfb",
+  "level": 2,
+  "row": 37,
+  "text": "So moving down 1 would make prong A overlap yellow's body at rows 41-43 cols 20-22.",
+  "id": "c062"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "row": 13,
+  "text": "Actually, maybe the real goal: the orange part is a \"handle\" and the block must be pushed up so the blue part plugs the corridor — i.e., \"plug the hole\" — and the win condition triggers when the block is in the right position and then something else happens.",
+  "id": "c063"
+ },
+ {
+  "game": "CONTROL",
+  "level": 0,
+  "row": -1,
+  "text": "I need to think about what the goal of this level might be.",
+  "neg_control": true,
+  "id": "c064"
+ },
+ {
+  "game": "re86-8af5384d",
+  "level": 5,
+  "row": 339,
+  "text": "Hmm, what if the X's moves were: 30 DOWN but the X was at (15,30) and moving down 30 → (45,30)...",
+  "id": "c065"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 2,
+  "row": 22,
+  "text": "The row-26 marker shifts the entire row 26 (all 10 blocks, cols 17-44) LEFT by 1 with wraparound: base row26 = w,b,g,w,S,p,w,S,g,g → after = b,g,w,S,p,w,S,g,g,w ✓ (left rotation with wrap).",
+  "id": "c066"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 2,
+  "row": 94,
+  "text": "Timer 32 clicks is plenty (8 dots + moves).",
+  "id": "c067"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 1,
+  "row": 15,
+  "text": "With slide-until-blocked physics: push the box right along rows 27-29: it would slide right until its right column hits the ring's left border at col 44 → the box would stop at cols 41-43.",
+  "id": "c068"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 1,
+  "row": 17,
+  "text": "step4: yellow moved (Y>B 14, c>Y 14 → moved up?",
+  "id": "c069"
+ },
+ {
+  "game": "ls20-9607627b",
+  "level": 1,
+  "row": 26,
+  "text": "The bottom-left box's glyph appears to have *changed shape*, and the last move animated something across rows 9-62.",
+  "id": "c070"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 4,
+  "row": 111,
+  "text": "Actually, maybe the click on A's TOP marker rotates a global cycle that goes: A column up, and A's top-exiting block goes to...",
+  "id": "c071"
+ },
+ {
+  "game": "bp35-0a0ad940",
+  "level": 1,
+  "row": 45,
+  "text": "Similarly at step 4, the RIGHT move...",
+  "id": "c072"
+ },
+ {
+  "game": "r11l-495a7899",
+  "level": 3,
+  "row": 84,
+  "text": "So consecutive moves of the same token need only 1 click each.",
+  "id": "c073"
+ },
+ {
+  "game": "sb26-7fbdac44",
+  "level": 4,
+  "row": 82,
+  "text": "Green box slots at cols 24-27 (pre-filled N), 30-33, 36-39; p landed in slot 2, O still in palette (my earlier click hit the pre-filled slot).",
+  "id": "c074"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 4,
+  "row": 137,
+  "text": "And I moved DOWN from (11,15) to (13,15).",
+  "id": "c075"
+ },
+ {
+  "game": "tn36-ef4dde99",
+  "level": 2,
+  "row": 74,
+  "text": "but the right pegs clearly caused the plug moves.",
+  "id": "c076"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 1,
+  "row": 48,
+  "text": "Hmm no — after LEFT moves the strip is on the left?",
+  "id": "c077"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 1,
+  "row": 15,
+  "text": "UP would move it up but it's already at the top?",
+  "id": "c078"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 2,
+  "row": 125,
+  "text": "In the animation, only a shrinking white ring converges on the center of the clicked cell — no square flies in.",
+  "id": "c079"
+ },
+ {
+  "game": "wa30-ee6fef47",
+  "level": 2,
+  "row": 100,
+  "text": "The log after the first LEFT shows ('c',7,4) appearing.",
+  "id": "c080"
+ },
+ {
+  "game": "su15-1944f8ab",
+  "level": 2,
+  "row": 56,
+  "text": "The dots are at the bottom, and the square can't move down.",
+  "id": "c081"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 2,
+  "row": 49,
+  "text": "Alternative plan: probe a SHORT move that ends adjacent to red's row but not in it: e.g., UP then DOWN (back to start) — no info.",
+  "id": "c082"
+ },
+ {
+  "game": "sc25-635fd71a",
+  "level": 2,
+  "row": 84,
+  "text": "So during LEFT presses, the bit moved left AND shrank from 4 wide to 2 wide?",
+  "id": "c083"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "row": 36,
+  "text": "5 UP cur_from 1 changed_slots [1] cur_to 1",
+  "id": "c084"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 1,
+  "row": 4,
+  "text": "Hmm, actually maybe the animation was a \"click ripple\" but the click was rejected (invalid cell?), and the only persistent change is the timer decrementing.",
+  "id": "c085"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 5,
+  "row": 143,
+  "text": "Let me reconsider the action mechanics—maybe clicking a diamond doesn't toggle its neighbors the way I thought.",
+  "id": "c086"
+ },
+ {
+  "game": "sk48-d8078629",
+  "level": 1,
+  "row": 180,
+  "text": "hmm, push candidate left edge = 18+6(t-1) = 12+6t = slot t-1 ✓) moves to slot t.",
+  "id": "c087"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 2,
+  "row": 54,
+  "text": "So maybe the paddle is just a colored bar, and clicking a block makes THAT block the paddle (blue = controllable) while the old paddle becomes a red obstacle.",
+  "id": "c088"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 4,
+  "row": 109,
+  "text": "Alternatively, maybe the goal is to make ALL water end up in the compartment with the float, i.e., fill everything to the same level?",
+  "id": "c089"
+ },
+ {
+  "game": "cd82-fb555c5d",
+  "level": 1,
+  "row": 30,
+  "text": "Let me look at the actual image: the piston appears as a vertical purple rectangle with gray on the left, at rows ~24-38, cols ~14-19.",
+  "id": "c090"
+ },
+ {
+  "game": "lf52-271a04aa",
+  "level": 2,
+  "row": 107,
+  "text": "So my coordinates were right, and the (1,6)→(1,4) jump WAS the legal move that failed (the preview 'g' marker appeared at rows 15-18, cols 31-34 = cell (1,4)).",
+  "id": "c091"
+ },
+ {
+  "game": "sp80-589a99af",
+  "level": 2,
+  "row": 42,
+  "text": "So the liquid rose as a jet (4 wide), then at the cup level it spread horizontally to fill the whole band between the cups and up to the ceiling.",
+  "id": "c092"
+ },
+ {
+  "game": "vc33-5430563c",
+  "level": 1,
+  "row": 7,
+  "text": "Both clicks only shrank the pink bar (a step/timer bar) — no gameplay change.",
+  "id": "c093"
+ },
+ {
+  "game": "ar25-0c556536",
+  "level": 2,
+  "row": 253,
+  "text": "SPACE toggles the wall/HUD.",
+  "id": "c094"
+ },
+ {
+  "game": "tr87-cd924810",
+  "level": 1,
+  "row": 84,
+  "text": "And slot 2's glyph changed under UP (from fH(LP2) → ...",
+  "id": "c095"
+ },
+ {
+  "game": "s5i5-18d95033",
+  "level": 3,
+  "row": 162,
+  "text": "If the head grows down, its top stays at row 4 and the bottom extends.",
+  "id": "c096"
+ },
+ {
+  "game": "g50t-5849a774",
+  "level": 1,
+  "row": 43,
+  "text": "The gray square is a pushable weight, and it appeared at (0,0) after SPACE (the reset created it / or it was always the \"white\" square that turned gray).",
+  "id": "c097"
+ },
+ {
+  "game": "dc22-fdcac232",
+  "level": 1,
+  "row": 7,
+  "text": "Actually from col10-11, sliding left would go to cols8-9 (2 cells).",
+  "id": "c098"
+ },
+ {
+  "game": "ft09-0d8bbf25",
+  "level": 3,
+  "row": 53,
+  "text": "Let me probe a batch: click (1,1),(2,0),(2,2),(3,0),(4,2),(6,1) and see which changed.",
+  "id": "c099"
+ },
+ {
+  "game": "ka59-38d34dbb",
+  "level": 2,
+  "row": 79,
+  "text": "But maybe the pushed block's slide is longer than 15 in some cases; or maybe the slide stops when it hits the purple from the other side (the top-left panel's bottom boundary is rows 24-29 purple).",
+  "id": "c100"
+ },
+ {
+  "game": "tu93-0768757b",
+  "level": 1,
+  "row": 16,
+  "text": "Unless the sprite's move is blocked by the WALL at the passage in the RIGHT case: passage cols 24-26 = '.' open.",
+  "id": "c101"
+ },
+ {
+  "game": "lp85-305b61c3",
+  "level": 2,
+  "row": 19,
+  "text": "OK let me think about it as: the whole thing is a \"gear train\" and clicking a marker rotates a ring, which meshes with adjacent rings (reversing direction)!",
+  "id": "c102"
+ }
+]

@@ -1,0 +1,17 @@
+{
+ "judge_a": "ok",
+ "judge_b": "ok",
+ "items": 100,
+ "kind_agreement": 88,
+ "reference_rules": 11,
+ "reference_share": 0.11,
+ "v2_hits": 23,
+ "v2_share": 0.23,
+ "band": [
+  0.055,
+  0.22
+ ],
+ "recall": 0.7272727272727273,
+ "sentence_controls_ok": true,
+ "verdict": "V2-VOID -> B98 closes (no third filter)"
+}
