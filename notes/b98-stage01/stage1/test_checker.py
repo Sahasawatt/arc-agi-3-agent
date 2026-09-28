@@ -84,6 +84,18 @@ def checks(module):
         finally:
             os.sys.argv = old
         assert len(out.getvalue().splitlines()) == 2
+        # B81-chassis events carry JSON bools/ints, not strings: the post-transition pair must still be skipped
+        bool_path = os.path.join(directory, "gb_p0_events.jsonl")
+        with open(bool_path, "w", encoding="utf-8") as stream:
+            for event in events:
+                typed = dict(event)
+                for key in ("level_completed", "game_over"):
+                    if key in typed:
+                        typed[key] = typed[key] == "True"
+                if "level" in typed:
+                    typed["level"] = int(typed["level"])
+                stream.write(json.dumps(typed) + "\n")
+        assert len(module.parse_events(bool_path)) == 2
 
 
 def load_mutant(source):
@@ -106,6 +118,7 @@ def run():
         ("MUTANT move shift sign", "shifted = {(r + dr, c + dc) for r, c in before_cells}", "shifted = {(r - dr, c - dc) for r, c in before_cells}"),
         ("MUTANT recolor after color", "after[r][c] == effect[\"to\"]", "after[r][c] == effect[\"from\"]"),
         ("MUTANT level filter", "if transition[3] != h[\"level\"] or not match(h, transition):", "if False or not match(h, transition):"),
+        ("MUTANT terminal skip strings only", "in (True, \"True\") or previous.get(\"game_over\") in (True, \"True\")", "== \"True\" or previous.get(\"game_over\") == \"True\""),
     ]
     for label, old, new in mutations:
         try:

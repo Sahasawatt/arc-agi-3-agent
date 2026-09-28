@@ -217,3 +217,69 @@ Order kept as registered: the filter controls ran BEFORE the filter touched the 
   `checker.parse_events` tests `== "True"`. On the B81 chassis `level_completed` and `game_over` are JSON
   bools, so the peer parser NEVER skips a post-transition pair. `b98s1.py` implements the same definition with the
   value normalised. `test_b98s1.py` shows both behaviours (20 checks, 7 mutants red, ALL OK).
+
+## ADDENDUM 2026-09-28T07:41Z: REV 5, the ONE re-registration (filter v2 + fresh control). Frozen before any judging or compile call.
+
+Agreed by Watchara (relay `01M3KF6PS86CSBATR061BKW5KK`, answering `01M3KF0DDTPQTX39B7X9G8VVKX`), on the owner's go.
+Nothing below has been judged or compiled. Every clause of rev 4 that this addendum does not name STANDS,
+including partition rows 2-6 and the cost clause.
+
+**Filter v2** is `is_rule_v2` in `b98s1.py`. A candidate is a rule iff it contains no `?` and no
+plan/hypothetical marker (`what if`, `maybe`, `might`, `perhaps`, `let me`, `let's`, `i'll`, `i will`, `i need`,
+`i should`, `should i`, `i'm going`, `going to`, `try to`/`trying to`, `need to`, `plan`) AND it matches at least
+one of the following:
+- v1's cue list;
+- a per-action quantifier (`each`/`every`/`per` + `press|click|step|move|action|tap|push|turn`);
+- a `when` clause;
+- the habitual present: an action token (`UP DOWN LEFT RIGHT SPACE ACTION1-7 click* press*`) followed within 40
+  characters by `moves|toggles|shifts|rotates|removes|fills|flips|swaps|changes|turns|pushes|slides|recolo(u)rs|
+  expands|shrinks|grows|extends|increases|decreases|mirrors|cycles|advances`;
+- a step size (`N-cell|col|column|row|unit steps`, `in N… steps`, `by ±N`).
+
+⚠️ v2 was drafted AFTER reading the 10 judged B99 rules, so its figures on those 96 sentences (share 19/96,
+recall 8/10) are NOT evidence. That set is retired as a control.
+
+**Fresh control** is `control_sample_rev5.json`: sha256 `d9c038305982f303…` of the COMMITTED blob (LF; the sampler writes CRLF on Windows and git normalises it, so hash `git show :<path>`, not a Windows working copy), 103 items.
+- Source: the events of `yocybercode/thui-b101-ctl-full25-r1`, a B81 control that is neither the primary nor the
+  replication. It has 8,017 extractor candidates.
+- Sample: 4 per game by a seeded shuffle, with seed 20260929 and the sampling done by `b98s1.py sample-control`,
+  plus the 3 stage-0 negative controls, all in one seeded order.
+- Re-running the sampler reproduces the file byte for byte.
+
+**Judges**, one call each over all 103 items. The prompt is `judge_prompt_rev5.md` (sha256
+`b14afdd75f668c74…`) with the items' `id` and `text` appended as JSON.
+- **Judge A**: Claude `sonnet` (claude-sonnet-5), as a subagent.
+- **Judge B**: codex `gpt-5.6-terra` with `-c model_reasoning_effort="medium"`, `--sandbox read-only`, and the answer
+  read from `-o`.
+- A judge is VOID if its output does not parse, omits or duplicates an id, or labels any negative control
+  `rule`. A VOID judge is re-run ONCE with the identical prompt. A second VOID from the same judge makes the
+  control VOID, and B98 closes.
+
+**Reference** = the non-negative items that BOTH judges label `kind = "rule"`.
+- If the reference holds fewer than 5 items, the sample is extended ONCE by 4 more per game at seed 20260930,
+  under the same prompts and judges, and pooled.
+- If it still holds fewer than 5, the control is VOID and B98 closes.
+
+**v2 passes the control iff all three hold**; otherwise v2 is VOID and **B98 closes, with no third filter**:
+- (a) v2's share on the non-negative items lies within x2 of the reference share;
+- (b) v2's recall on the reference items is >= 0.50;
+- (c) the two rev-4 sentence controls hold, and v2 rejects all 3 negatives.
+
+**Compiler**, fixed from here and chosen by us as Watchara allowed: codex `gpt-5.6-luna`,
+`-c model_reasoning_effort="low"`, `--sandbox read-only`, one sentence per call.
+- The prompt is `compile_prompt_rev5.md` (sha256 `3b10e7a4910795af…`), with `{game}`, `{level}`, `{sentence}` and
+  `{board}` substituted.
+- The final message must be a JSON object in the SPEC DSL or the word `NONE`. Anything else is recorded as
+  `INVALID` and is not a hypothesis.
+- **Generated tokens per call** = the CLI's reported output tokens plus reasoning tokens (codex's own figures, the
+  proxy rev 4 names). Which usage fields carry them is read from ONE non-compile probe call and written in the run
+  log before the first compile call.
+- **The cost clause is UNCHANGED** (Watchara, same relay): pre-cap v2 rule sentences per game on the primary, times
+  the mean generated tokens per call, with UNAFFORDABLE iff the median exceeds 10,007 and NEAR-LINE above 5,004.
+  It is not reshaped to v2's volume. On B101-ctl, v2 gives a median of 47 rules/game, so the call budget is about
+  213 generated tokens. PASS-UNAFFORDABLE is an accepted, informative outcome.
+
+**Checker fix** (Watchara confirmed the bug by code reading, `01M3KF6P…`), in the same commit:
+`notes/b98-stage01/stage1/checker.py` now treats a terminal flag as `True` OR `"True"`. `test_checker.py` gains a
+bool-typed events case that FAILS on the unfixed checker (shown before the fix: `FAIL core checks`) and a mutant
+restoring the string-only comparison, which goes red. `SPEC.md`'s "all values are strings" is corrected.

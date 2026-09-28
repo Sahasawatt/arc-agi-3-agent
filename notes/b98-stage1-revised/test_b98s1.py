@@ -70,7 +70,7 @@ def checks(m):
     _, rows = m.read_game(p)
     dec = [r for r in rows if r["kind"] == "decision"]
     ok("terminal transition skipped on bool values", len(dec) == 1)
-    ok("peer parser does NOT skip it (the documented string mismatch)", len(m.checker.parse_events(p)) == 2)
+    ok("peer parser agrees since its 2026-09-28 bool fix", len(m.checker.parse_events(p)) == 1)
 
     # T3 held-out: the second occurrence of a key is excluded
     p = write([ev("initial", board_ascii=b0, level=1),

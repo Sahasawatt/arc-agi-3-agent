@@ -175,6 +175,27 @@ def filter_controls():
     return ok
 
 
+def sample_control(run_dir, out_path, seed=20260929, per_game=4):
+    """Rev-5 fresh control: `per_game` extractor candidates per game (seeded shuffle, sorted game order) plus the
+    3 stage-0 negative controls, in one seeded order. Frozen as a file before any judging."""
+    rng = random.Random(seed)
+    items = []
+    for f in sorted((Path(run_dir) / "artifacts").glob("*_p0_events.jsonl")):
+        game, rows = read_game(str(f))
+        sents = [r for r in rows if r["kind"] == "sentence"]
+        rng.shuffle(sents)
+        for r in sents[:per_game]:
+            items.append({"game": game, "level": r["level"], "row": r["row"], "text": r["text"]})
+    for s in s0.CONTROLS_NEG:
+        items.append({"game": "CONTROL", "level": 0, "row": -1, "text": s, "neg_control": True})
+    rng.shuffle(items)
+    for i, c in enumerate(items):
+        c["id"] = f"c{i:03d}"
+    json.dump(items, open(out_path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    print(f"control sample: {len(items)} items ({sum(1 for c in items if c.get('neg_control'))} negatives) -> {out_path}")
+    return items
+
+
 # ---------------------------------------------------------------- predictor + scoring
 def as_transition(d):
     return (d["before"].splitlines(), d["after"].splitlines(),
@@ -311,6 +332,8 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     if cmd == "extract":
         extract(sys.argv[2], sys.argv[3])
+    elif cmd == "sample-control":
+        sample_control(sys.argv[2], sys.argv[3])
     elif cmd == "filter-controls":
         sys.exit(0 if filter_controls() else 1)
     elif cmd == "score":

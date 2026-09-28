@@ -15,7 +15,7 @@ def parse_events(path):
             if event.get("type") == "action" and previous is not None:
                 before = previous.get("board_ascii")
                 after = event.get("board_ascii")
-                terminal = previous.get("level_completed") == "True" or previous.get("game_over") == "True"
+                terminal = previous.get("level_completed") in (True, "True") or previous.get("game_over") in (True, "True")
                 if before is not None and after is not None and not terminal:
                     transitions.append((before.splitlines(), after.splitlines(), event, int(previous["level"])))
             previous = event

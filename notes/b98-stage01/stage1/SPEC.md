@@ -11,7 +11,10 @@ A run's `artifacts/<game>_p0_events.jsonl` has one JSON object per line. Relevan
 - `{"type": "action", "action_name": "ACTION1".."ACTION7" | "RESET", "action_display": "UP" | "DOWN" | "LEFT" |
   "RIGHT" | "SPACE" | "MOUSE(row=27, col=13)" | "RESET" | ..., "board_ascii": "<64 lines of 64 chars>",
   "level": "3", "level_completed": "True"/"False", "game_over": "True"/"False", ...}` — the board AFTER the action.
-  All values are strings. Other types (`analysis`, `experiment`) are ignored.
+  Other types (`analysis`, `experiment`) are ignored. ⚠️ **Value types depend on the chassis** (corrected
+  2026-09-28): the B99 run this was written against stored strings, but B81-chassis events store `level` as a JSON
+  int and `level_completed` / `game_over` as JSON bools (the harness copies the payload raw). A terminal flag is
+  therefore true when it is `True` OR `"True"`; comparing to the string alone never skips on B81 events.
 A transition = (before, after, action, level) where `after` is an action event's `board_ascii`, `before` is the
 `board_ascii` of the immediately preceding `initial`/`action` event, `level` = int of the PRECEDING event's `level`.
 Skip a transition if either board is missing, or the preceding event had `level_completed` or `game_over` "True"
