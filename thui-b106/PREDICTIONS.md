@@ -77,3 +77,28 @@ Test: two new checks feed engine names; both FAIL on the r1 graft and pass on r2
 **Bars:** unchanged from above — VALID/VOID, reach (B81 control), and per-pair KILL / PROMOTE at +3 / INCONCLUSIVE,
 pairs never pooled, r1 and r2 never pooled. Added VOID: any r2 map-arm note whose "NOT tried" line contains `ACTION`
 or `RESET` (read from the run's transcripts).
+
+## r2 amendment — 2026-09-28 ~13:5xZ, AFTER the B81 r2 read, BEFORE the B99 r2 read
+
+**Written after the B81 r2 outcome was seen.** It is a post-hoc ruling, stated as one, and the B81 r2 verdict below
+carries that label.
+
+**What triggered it.** The B81 r2 map arm hit the added VOID rule: 274 of 842 "NOT tried" lines contain `ACTION`.
+Every hit is `ACTION7`, and there is no `ACTION1`..`ACTION6` or `RESET` hit, so the r2 frontier fix works. The hits
+fall in the six games that offer `ACTION7` (ar25, sb26, bp35, sk48, su15, lf52). In all 274 of them, the
+`Valid actions right now:` line that precedes the note in the same transcript lists `ACTION7`. The base maps only
+`ACTION1`..`ACTION6` and `RESET` (`action_names.py`, see B73/B76), so `ACTION7` is the name the model is actually shown,
+in both arms. A frontier line that names it names an action the model was offered. That is not the r1 bug, where
+the model was told to try engine names that did not match the names it was using.
+
+**Amended VOID (operator ruling, Watchara, 2026-09-28).** VOID if any r2 map-arm "NOT tried" line contains
+`ACTION1`..`ACTION6` or `RESET`. It is also VOID if the line contains `ACTION7` and the preceding
+`Valid actions right now:` line in the same transcript does not list `ACTION7`. Applies unchanged to the B99 r2 pair,
+which has not been read at the time of writing. Every other bar is unchanged.
+
+**B81 r2 read under the amended rule.** VALID: `THUI_B106_GRAFT ok` once per notebook, 0 FAIL, last STATS map
+`prompts=1101 notes=1000 errors=0`, ctl `prompts=1101 notes=990 errors=0`. Reach 990/1101 = 0.90. Levels
+arm 44 vs ctl 40 (+4), 10 up / 8 down, score mean 10.33 vs 10.49, `rank_runs.py --single-baseline` p = 0.9629
+(NOT-DISTINGUISHABLE). Verdict: **PROMOTE to a second pair** (+4 >= +3), under this post-hoc ruling. Under the rule as
+first written it is VOID. Not pre-registered, and not evidence: the 19 non-`ACTION7` games give +5 (36 vs 31) and
+the six `ACTION7` games give -1 (8 vs 9).
