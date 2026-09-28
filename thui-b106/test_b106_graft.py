@@ -99,6 +99,13 @@ for expected in ("HOST MAP", "from this state you already tried:", "from this st
 never = next((l for l in note.splitlines() if l.startswith("- never did anything")), "")
 check("animation-only action counts as an effect (not listed as inert)",
       "RIGHT (no effect)" not in note and "RIGHT" not in never and "UP" in never)
+engine_note = arm["_thui_b106_render_map_note"](
+    recorder.registros, 1, "A", ["ACTION1", "ACTION2", "ACTION3", "ACTION4", "ACTION6", "RESET"])
+frontier = next((l for l in engine_note.splitlines() if l.startswith("- from this state you have NOT tried:")), "")
+check("engine-named valid_actions: frontier lists only untried DOWN, in model names",
+      frontier == "- from this state you have NOT tried: DOWN")
+check("engine-named valid_actions: no ACTIONn/RESET leaks into the note",
+      "ACTION" not in engine_note and "RESET" not in engine_note)
 check("render returns empty with no records", arm["_thui_b106_render_map_note"]([], 1, "A", ["UP"]) == "")
 
 prompt_result = ta.ToolAgent._build_user_prompt(agent, 0, valid_actions=["UP"], current_frame=Frame())

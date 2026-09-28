@@ -56,3 +56,24 @@ If the B81 pair is KILL and the B99 pair PROMOTE, that is read as an interaction
 - The note adds up to ~8 lines per prompt, raising trim pressure; the bar measures the net.
 - Board signatures come from the harness's `board_signature`; two visually different states with one signature merge.
 - Not stacked with B103, B104 or B105.
+
+## r2 addendum — 2026-09-28 ~10:5xZ, before any r2 GPU run
+
+**Why r2.** The r1 map arm showed a wrong frontier line in every note. `valid_actions` reaches the prompt with
+ENGINE names (`ACTION1`..`ACTION6`, `RESET`) while the recorder stores MODEL names (`UP`, `DOWN`, ..), so the r1
+frontier never matched and the note told the model to try actions it had just tried (all 25 r1 map transcripts: every
+"NOT tried" line names `ACTIONn`). The r1 test fed model names only, so it passed with the bug. Upstream
+(`juliancamilovilla/arc-agi3-animfast-map` cell 14, 05:36Z revision) fixed the same bug the same way. The r1 KILL
+(42 -> 39) therefore reads "a map with a wrong frontier line did not help", not "the map does not help".
+
+**Change r1 -> r2 (graft only):** `valid_actions` translated to model names before the frontier comparison
+(copy of the bundle's `ENGINE_TO_MODEL_ACTION`); `RESET` excluded from the frontier alongside `MOUSE`. Every other
+note line is unchanged. The control is affected only in what it computes and never shows.
+Test: two new checks feed engine names; both FAIL on the r1 graft and pass on r2.
+
+**Runs:** `thui-b106-{map,ctl}-b81-full25-r2` on yocybercode; `thui-b106-{map,ctl}-b99-full25-r2` asked of sahasawat
+(rebuild with `--owner=`). Each pair stays on one account.
+
+**Bars:** unchanged from above — VALID/VOID, reach (B81 control), and per-pair KILL / PROMOTE at +3 / INCONCLUSIVE,
+pairs never pooled, r1 and r2 never pooled. Added VOID: any r2 map-arm note whose "NOT tried" line contains `ACTION`
+or `RESET` (read from the run's transcripts).
