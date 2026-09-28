@@ -133,8 +133,9 @@ def read_game(path):
                         if s in seen_text:
                             continue
                         seen_text.add(s)
+                        # rev 5: the filter in force is v2; v1's reading is kept for the record only
                         rows.append({"kind": "sentence", "row": idx, "level": turn["level"], "text": s,
-                                     "rule": is_rule(s), "board": last_after})
+                                     "rule": is_rule_v2(s), "rule_v1": is_rule(s), "board": last_after})
     return game, rows
 
 
@@ -194,6 +195,57 @@ def sample_control(run_dir, out_path, seed=20260929, per_game=4):
     json.dump(items, open(out_path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     print(f"control sample: {len(items)} items ({sum(1 for c in items if c.get('neg_control'))} negatives) -> {out_path}")
     return items
+
+
+def parse_judge(path, items):
+    """A judge's labels, or (None, reason) when the rev-5 VOID rules fire for that judge."""
+    txt = open(path, encoding="utf-8").read().strip()
+    a, b = txt.find("["), txt.rfind("]")
+    try:
+        labels = json.loads(txt[a:b + 1]) if a >= 0 and b > a else None
+    except json.JSONDecodeError:
+        labels = None
+    if not isinstance(labels, list):
+        return None, "does not parse"
+    ids = [x.get("id") for x in labels if isinstance(x, dict)]
+    want = {c["id"] for c in items}
+    if len(ids) != len(set(ids)) or set(ids) != want:
+        return None, f"ids wrong: {len(set(ids) & want)}/{len(want)} present, {len(ids) - len(set(ids))} duplicated"
+    by = {x["id"]: x for x in labels}
+    neg_rule = [c["id"] for c in items if c.get("neg_control") and by[c["id"]].get("kind") == "rule"]
+    if neg_rule:
+        return None, f"negative control labelled rule: {neg_rule}"
+    return by, "ok"
+
+
+def judge_control(sample_path, judge_a, judge_b):
+    """Rev-5 control verdict for filter v2 from two judges' raw outputs."""
+    items = json.load(open(sample_path, encoding="utf-8"))
+    la, ra = parse_judge(judge_a, items)
+    lb, rb = parse_judge(judge_b, items)
+    out = {"judge_a": ra, "judge_b": rb}
+    if la is None or lb is None:
+        out["verdict"] = "JUDGE-VOID (re-run that judge ONCE with the identical prompt)"
+        return out
+    real = [c for c in items if not c.get("neg_control")]
+    ref = [c["id"] for c in real if la[c["id"]].get("kind") == "rule" and lb[c["id"]].get("kind") == "rule"]
+    hits = [c["id"] for c in real if is_rule_v2(c["text"])]
+    ref_share, v2_share = len(ref) / len(real), len(hits) / len(real)
+    recall = sum(i in hits for i in ref) / len(ref) if ref else None
+    agree = sum(la[c["id"]].get("kind") == lb[c["id"]].get("kind") for c in real)
+    sentence_ok = (not is_rule_v2("clicking (23,61) made M(23,55) disappear")
+                   and is_rule_v2("pressing LEFT always moves the yellow block 3 cells left")
+                   and not any(is_rule_v2(c["text"]) for c in items if c.get("neg_control")))
+    out.update({"items": len(real), "kind_agreement": agree, "reference_rules": len(ref), "reference_share": ref_share,
+                "v2_hits": len(hits), "v2_share": v2_share, "band": [ref_share / 2, ref_share * 2],
+                "recall": recall, "sentence_controls_ok": sentence_ok})
+    if len(ref) < 5:
+        out["verdict"] = "THIN-REFERENCE (extend ONCE: 4 more per game at seed 20260930, same judges, pooled)"
+    elif ref_share / 2 <= v2_share <= ref_share * 2 and recall >= 0.50 and sentence_ok:
+        out["verdict"] = "V2-PASSES-CONTROL"
+    else:
+        out["verdict"] = "V2-VOID -> B98 closes (no third filter)"
+    return out
 
 
 # ---------------------------------------------------------------- predictor + scoring
@@ -332,6 +384,8 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     if cmd == "extract":
         extract(sys.argv[2], sys.argv[3])
+    elif cmd == "judge-control":
+        print(json.dumps(judge_control(sys.argv[2], sys.argv[3], sys.argv[4]), indent=1))
     elif cmd == "sample-control":
         sample_control(sys.argv[2], sys.argv[3])
     elif cmd == "filter-controls":

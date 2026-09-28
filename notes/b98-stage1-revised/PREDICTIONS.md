@@ -283,3 +283,28 @@ recall 8/10) are NOT evidence. That set is retired as a control.
 `notes/b98-stage01/stage1/checker.py` now treats a terminal flag as `True` OR `"True"`. `test_checker.py` gains a
 bool-typed events case that FAILS on the unfixed checker (shown before the fix: `FAIL core checks`) and a mutant
 restoring the string-only comparison, which goes red. `SPEC.md`'s "all values are strings" is corrected.
+
+## ADDENDUM 2026-09-28T07:54:42Z: REV 5 RESULT — filter v2 is VOID on its fresh control. B98 CLOSES at stage 1 (no third filter).
+
+Judged after the freeze (`59cdb3e`, pushed 07:43:57Z). No compile call was made; the primary was never filtered.
+- **Judge A** (Claude sonnet, one call, 184k subagent tokens) and **Judge B** (codex gpt-5.6-terra, medium, one
+  call; 23,004 input / 4,276 output tokens) are both VALID: every id exactly once, and no negative labelled
+  `rule`. Both labelled the 3 negatives observation / plan_or_question / plan_or_question.
+  Their kinds agree on 88 / 100.
+- **Reference** (both judges `rule`) holds **11** of 100 items, so reference share = 0.11 and the band is
+  [0.055, 0.22]. Judge A alone had 14 rules, and so did Judge B.
+- **v2**: **23 / 100 = 0.23, above the band's upper edge (0.22)**, which **fails clause (a)**. Recall is 8 / 11 =
+  0.73 (clause (b) passes). The sentence controls and all 3 negatives hold (clause (c) passes).
+- Verdict under the rev-5 rule: **V2-VOID, and B98 closes at stage 1.** The miss is ONE sentence (23 against 22).
+  That margin was not a reason to reopen the bar: the closure clause was written for exactly this case.
+- Recounted by a second, independent code path over the same files, with the same numbers. Raw outputs are
+  `rev5_judges/judgeA_sonnet.json` and `rev5_judges/judgeB_codex_terra.json`, the verdict
+  `rev5_judges/judge_control_result.json`.
+- What the result says about the premise: a mechanical filter over this model's reasoning selects roughly twice
+  the sentences two independent judges call rules. Those are over-inclusions: 15 of v2's 23 hits are not
+  reference rules. Any B98 successor would need rule selection that is not a cue list, for example a judge in the
+  loop, which is a cost the rev-4 ceiling was never priced for.
+- Instrument notes, recorded in the run log before the first compile call, which never happened:
+  - codex 0.153.4 reports `output_tokens` INCLUSIVE of reasoning (probe: 49 output against 42 reasoning on a
+    2-character answer), so generated tokens = `output_tokens`.
+  - Git Bash's MSYS path conversion breaks `wsl.exe --cd /mnt/c/...`; pass a Windows path.
