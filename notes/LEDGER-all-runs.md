@@ -1,8 +1,8 @@
 # Every run this campaign produced — what it scored and why
 
 Assembled 2026-08-22 from the `summary.txt` and `benchmark.json` of every downloaded run.
-Public = the 25-game commit-run mean. Hidden = the 110-game leaderboard draw, only for the
-four builds ever submitted.
+Public = the 25-game commit-run mean. Hidden = the 110-game leaderboard draw, only for builds
+that were submitted (four when this was assembled on 2026-08-22).
 
 ## The table
 

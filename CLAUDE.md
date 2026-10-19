@@ -1,16 +1,22 @@
 # arc-agi-3-agent — working rules
 
-An agent for ARC Prize 2026 (ARC-AGI-3). `README.md` is the findings log and is written to be
-read by a stranger; this file is the operating manual for changing the code.
+An agent for ARC Prize 2026 (ARC-AGI-3). `README.md` is the overview and is written to be
+read by a stranger; `docs/campaign-log.md` is Line A's findings log (moved out of the README on 2026-08-23);
+this file is the operating manual for changing the code.
 
 ## Which line is ACTIVE (issue #5 — read this before anything below)
 
-This repo holds TWO submission lines and everything below this section documents the
-RETIRED one:
+⚠️ **2026-10-19: neither line in this repo is live.** Its last campaign row is B106 (2026-09-29). Since 2026-10-01
+the team submits a build kept in its private workspace (`Knowless-Crew/kc-arc-agi-pub`), so `notes/LEDGER-all-runs.md`
+and `notes/wayfinder/MAP.md` record the campaign to that date, not its live state.
+
+This repo holds TWO submission lines and most of what follows this section documents the
+RETIRED one (the Line B notes near the end are the exception):
 
 - **Active: the Duck harness line** (`duckv*/`, then `thui*/`). Base was duckv10 (anim bundle +
   Qwen3.8-27B-FP8, uncapped) through the duck-vNN era, whose versions patch notebook cells 6/8/12 only;
-  the best hidden draw since 2026-09-11 is `thui-anim-fast/` (B71, Flash-Next NVFP4 + MTP-3 serving). The
+  the best hidden draw in `notes/LEDGER-all-runs.md` is B99 RungPin's 5.36 (2026-09-22), after B71's
+  `thui-anim-fast/` (Flash-Next NVFP4 + MTP-3 serving) drew 3.74 on 2026-09-11. The
   full run history with scores and why each landed there is `notes/LEDGER-all-runs.md`;
   decision tickets are `notes/wayfinder/MAP.md`; two runs are compared with
   `eval/rank_runs.py` (never by bare means — the same build spans public [2.82, 5.24]),
@@ -55,7 +61,7 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 1. **A full 17-game sweep before and after.** Per-game, not just the mean — the mean hides a
    game losing a level while another gains actions.
 2. **No game loses a level.** Eight rules that were correct on paper have each cost a
-   different game its own and been reverted; they are written up in `README.md` because the
+   different game its own and been reverted; they are written up in `docs/campaign-log.md` (moved out of `README.md` on 2026-08-23) because the
    measurement is worth more than the code was. Add yours to that list rather than deleting
    the entry.
 3. **One change at a time.** Two at once and a revert tells you nothing.
@@ -276,7 +282,7 @@ This repo is a measurement log that happens to contain code. The bar for any cha
   of an animation. On sc25 the first press of any verb animates through `9 → 18 → 27 → 36` changed
   cells and **snaps back to entry**, so `f[-1]` is 0 and the press reads as a no-op — which is how a
   board-keyed BFS "exhausted" that game's keyboard graph at **one node** (`sc25_r1.py`, verdict
-  void, kept as a worked example). Before concluding an action is inert on any game in the list,
+  void; the script itself was never committed — 0 hits in git history, 2026-10-19). Before concluding an action is inert on any game in the list,
   read every plane.
   **The sc25 rule, narrowed 2026-08-16: action-index 1 of every LIFE is absorbed — verb or click,
   it makes no difference — and everything from index 2 onward commits normally.** (An earlier
@@ -1087,8 +1093,9 @@ This repo is a measurement log that happens to contain code. The bar for any cha
 number**, and the game total is additionally capped by which levels were completed. Two
 consequences worth holding on to:
 
-- **Fast enough beats optimal.** Anything at or under 1.15× the human baseline scores the
-  same 115, so shaving actions below that threshold buys nothing.
+- **Fast enough beats optimal.** A level reaches the 115 cap once actions_taken ≤ baseline_actions / √1.15
+  (about 0.93× the human baseline), so shaving actions below that buys nothing. ⚠️ Corrected 2026-10-19: this said
+  *at or under 1.15× the human baseline*, which the formula above contradicts — 1.15× scores 75.6 (`scoring.py:15`).
 - **Depth is everything.** Level 1 of a 7-level game is 1/28 of the weight; level 7 is 7/28.
   Exploration is charged at exactly the same rate as play — there is no free discovery phase.
 
@@ -1452,7 +1459,7 @@ out with a requests spy on `Session.send`).
 ## Git
 
 Branch `master`, remote `Sahasawatt/arc-agi-3-agent` (public, MIT-0 — the team's own choice; the
-prize-eligibility licence requirement is unconfirmed, see README §License and umbrella
+prize-eligibility licence requirement is unconfirmed, see README §License and the ARC workspace's
 `docs/competition/rules.md`). **Ask before every commit**, and stage files by name.
 
 ## The Kaggle submission pipeline (`kaggle/`)
