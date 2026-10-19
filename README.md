@@ -14,11 +14,15 @@ not the one being submitted.** Read the next two sections before changing anythi
 | Lives in | root `*.py` + `kaggle/` | `duckmod/`, `duckv10/`, `duckv24/`–`duckv26/`, `clock2x/`, `thuiv1/`–`thuiv6/` and the `thui-*` family dirs (24 builder dirs at `e5d9373`) |
 | What it is | perception → discovery → planner. No model in the loop | Tufa Labs' LLM-in-a-REPL harness, re-patched per version |
 | Ships as | one generated file, `kaggle/my_agent.py` | a Kaggle notebook plus an attached source dataset |
-| Best hidden score | 0.11 | **3.74** (`thui-animfast-b71-full25-r1`, 2026-09-11) |
-| Status | dormant | **the live campaign** |
+| Best hidden score | 0.11 | **5.36** (`thui-b99-rungpin-full25-r1`, 2026-09-22 — `notes/LEDGER-all-runs.md`) |
+| Status | dormant | **closed 2026-09-29** (last MAP row B106) |
 | Its manual | [`CLAUDE.md`](CLAUDE.md) | [`notes/wayfinder/MAP.md`](notes/wayfinder/MAP.md) |
 
-⚠️ `CLAUDE.md` opens with a short section naming Line B as active, and everything after it documents
+⚠️ **2026-10-19: neither line in this repo is live.** Its last campaign row is B106 (2026-09-29). Since 2026-10-01
+the team submits a build kept in its private workspace (`Knowless-Crew/kc-arc-agi-pub`), so `notes/LEDGER-all-runs.md`
+and `notes/wayfinder/MAP.md` record the campaign to that date, not its live state.
+
+⚠️ `CLAUDE.md` opens with a short section naming Line B as active, and most of what follows documents
 the dormant Line A. An agent that skips that section and starts optimising is optimising the dormant line.
 
 **Why an algorithmic Line A at all.** The competition notebook has no internet, so a frontier
@@ -26,7 +30,7 @@ model cannot be called — the public ARC-AGI-3 leaderboard leader scores 30.2% 
 Kaggle leaderboard leader scored 1.86% when this was written (18.81 on 2026-09-15). The ARC engine, meanwhile, runs locally at ~2,000 FPS
 with no rate limit, so search is nearly free and only *scored* actions are expensive. Scoring
 rewards minimal action sequences, which is what a planner produces and a language model does
-not. Line B bets the other way, on a local model in a REPL — and it is winning by 34× on best hidden score (3.74 against 0.11).
+not. Line B bets the other way, on a local model in a REPL — and by 2026-09-22 it led by about 49× on best hidden score (5.36 against 0.11).
 
 ⚠️ `duckv10`, the duck line's baseline, **patches nothing** — its cell 12 is a comment. The public
 gain that got it there came from adopting a newer upstream bundle and a newer model and
@@ -83,7 +87,7 @@ same way. Moving one is a change to the shipping artifact, not a tidy-up.
 | `probes/` | a one-off investigation is written; nothing here is shipped |
 | `scripts/` | an operator batch changes |
 | `docs/` | the rules snapshot or the Line A campaign log changes |
-| `notes/` | the campaign's live state changes |
+| `notes/` | the campaign's state changes (live until 2026-09-29) |
 | `results/` | a run produces an artifact worth keeping |
 
 ### The engine (Line A)
@@ -170,7 +174,7 @@ once `kaggle_exec_test.py`; pytest collected it by name, hit its `SystemExit(1)`
 
 | | |
 |---|---|
-| [`notes/wayfinder/MAP.md`](notes/wayfinder/MAP.md) | the campaign's current state, decisions and open questions, on one page |
+| [`notes/wayfinder/MAP.md`](notes/wayfinder/MAP.md) | the campaign's state, decisions and open questions to its last row (B106, 2026-09-29), on one page |
 | [`CLAUDE.md`](CLAUDE.md) | Line A's operating manual and its verification bar |
 | [`docs/campaign-log.md`](docs/campaign-log.md) | Line A's measurement diary — every level, every retraction, the eight rules that were right on paper and each cost a game a level |
 | [`docs/competition-rules.md`](docs/competition-rules.md) | the rules, quoted, with sources |

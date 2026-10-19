@@ -6,7 +6,7 @@ below has been rewritten — the numbers, the retractions and the eight rules th
 on paper and each cost a game its own level are as they were written at the time.
 
 **Every figure here is dated by the section it sits in.** Scores move when a hidden sample is
-drawn, not when a file is edited; for the campaign's current state read
+drawn, not when a file is edited; for the campaign's state to its end (2026-09-29) read
 [`notes/wayfinder/MAP.md`](../notes/wayfinder/MAP.md).
 
 Line B — the duck-harness fork in `duckmod/` and `duckv5`–`duckv16`, which is what is actually

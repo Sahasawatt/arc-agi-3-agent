@@ -55,10 +55,10 @@ or the `B48` build (`thui-v3-0`) plus one change.
 | family | dir | ticket | what it adds | public | status | pages |
 |---|---|---|---|---|---|---|
 | `prior` | `thui-prior/` | `B60` | an online CNN proposes ONE action on a silent turn | 3.81 / 3.92 / 3.04 | closed, null-to-negative | [v1](prior/thui-prior-v1.md) · [v1-r2](prior/thui-prior-v1-r2.md) · [v1.1](prior/thui-prior-v1-1.md) |
-| `rank` | `thui-rank/` | `B61` | the same prior VETOES inert proposals; spends no action | **3.57** | open — full read −5.25 levels at `p = 0.39`, veto exercised 22×; close vs a second run is the owner's call | [v0](rank/thui-rank-v0.md) · [v0.1](rank/thui-rank-v0-1.md) · [v1](rank/thui-rank-v1.md) |
+| `rank` | `thui-rank/` | `B61` | the same prior VETOES inert proposals; spends no action | **3.57** | closed 2026-09-17 by the owner on the v2 read (MAP `B61`) — full read −5.25 levels at `p = 0.39`, veto exercised 22× | [v0](rank/thui-rank-v0.md) · [v0.1](rank/thui-rank-v0-1.md) · [v1](rank/thui-rank-v1.md) |
 | `compact` | `thui-compact/` | `B65` | a memento of the turns the harness's own trimmer drops, rewritten every K drops and folded into the first user message | **4.88** | closed (#130) — on the pre-#128 build; the reworded header is unmeasured | [v0](compact/thui-compact-v0.md) · [v1](compact/thui-compact-v1.md) |
-| `fast` | `thui-fast/` | `B69` | Keith Tyser's Flash-Next NVFP4 + MTP-3 serving stack under the unchanged June duck (2.4× the actions in the same wall) | **8.07 / 9.32** | open — pooled n=2 vs `thuiv3-pool` +4.30 / +14.25 levels at **`p = 0.002` BETTER** (first lever to clear the rule); B35 floor 6/25 then 8/25; hidden **3.21**; the anim + Flash-Next build ran as `B71` | [v0](fast/thui-fast-v0.md) |
-| `animfast` | `thui-anim-fast/` | `B71` | the ANIM solver bundle on that same Flash-Next stack (half the actions in the same wall) | **9.5584** | open — highest public on record and **NOT-DISTINGUISHABLE** on score from every sibling (`fast-pool` p = 0.6762, `a7` 0.6980, `b78` 0.4839 with levels 40 → 39); what ranks is the ACTION axis, **−69.2/game at p = 0.0000** with four same-build negative controls and a positive pole; hidden drawn twice, **3.74** (`56160405`) and **3.41** (`56183930`) | [b71-full25-r1](animfast/thui-animfast-b71-full25-r1.md) |
+| `fast` | `thui-fast/` | `B69` | Keith Tyser's Flash-Next NVFP4 + MTP-3 serving stack under the unchanged June duck (2.4× the actions in the same wall) | **8.07 / 9.32** | closed 2026-09-21 — TRANSFERRED (MAP `B69`); pooled n=2 vs `thuiv3-pool` +4.30 / +14.25 levels at **`p = 0.002` BETTER** (first lever to clear the rule); B35 floor 6/25 then 8/25; hidden **3.21**; the anim + Flash-Next build ran as `B71` | [v0](fast/thui-fast-v0.md) |
+| `animfast` | `thui-anim-fast/` | `B71` | the ANIM solver bundle on that same Flash-Next stack (half the actions in the same wall) | **9.5584** | closed 2026-09-21 by the owner — ND on score (MAP `B71`); the highest public on record when written (the LEDGER's highest full-25 mean is now 15.8830, `thui-a10-thk-full25-r3`) and **NOT-DISTINGUISHABLE** on score from every sibling (`fast-pool` p = 0.6762, `a7` 0.6980, `b78` 0.4839 with levels 40 → 39); what ranks is the ACTION axis, **−69.2/game at p = 0.0000** with four same-build negative controls and a positive pole; hidden drawn twice, **3.74** (`56160405`) and **3.41** (`56183930`) | [b71-full25-r1](animfast/thui-animfast-b71-full25-r1.md) |
 | `act` | `thui-act/` | `B70` | ACT-NOW directive after 2 dead turns, then one executed action after 2 more (the AVO breaker on duck) | **5.51 / 2.47** | closed — v1 in the band (`p = 0.32`), v2 with the name mapping fixed `p = 0.03` WORSE; stage 2 armed once, 3 fires, none executed (`step_env` payload shape) | [v1](act/thui-act-v1.md) · [v2](act/thui-act-v2.md) |
 | `reflect` | `thui-reflect/` | `B62` | a tool-free call every 10 steps rewrites the seven world-model fields | 1.39 ⚠️ / **4.38** | closed as a build candidate | [v0](reflect/thui-reflect-v0.md) · [v0.1](reflect/thui-reflect-v0-1.md) · [v1](reflect/thui-reflect-v1.md) · [v1.1](reflect/thui-reflect-v1-1.md) |
 | `avo` | `thui-avo/` | — | Tufa's own AVO bundle, as they ship it | 4.40 | ran, in-band; hidden **1.15** (first draw, `56039729`) | [v0](avo/thui-avo-v0.md) |
@@ -88,7 +88,10 @@ variant built, so the gap is named rather than left to be discovered:
 | `thui-lora-e1` | `notes/B60-…` for the held-out means, `e598cbe` for the per-game direction and the base draws |
 | `thui-stack-base-v1` | commit `2a552c2` — with no arms the builder emits the `B48` chassis byte-identical on cells 1–16 |
 
-## Where the line stands
+## Where the line stood on 2026-09-02
+
+⚠️ Dated. The line's best hidden later rose to **5.36** (B99 RungPin, 2026-09-22), and its last MAP row is
+B106 (2026-09-29).
 
 **Standing best hidden 2.03** (`v3.1`, `55943442`), against a top-5 bar of **4.45** read
 2026-09-02 13:05 UTC. `v3.2` resolved at **1.35** on 2026-09-02, the build's lowest; nothing is in flight. Every row in `notes/wayfinder/MAP.md`

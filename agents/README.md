@@ -1,6 +1,7 @@
 # `agents/` — one page per agent variant that was actually built
 
-Two lines have been built in this repo. Every variant of each one has a directory here:
+Two lines have been built in this repo. Most built variants have a page here (`thui/README.md` names the five that
+deliberately do not):
 
 ```
 agents/<line>/<version>/<variant>.md
@@ -24,7 +25,7 @@ its body, so nothing here is authoritative:
 | question | the authority |
 |---|---|
 | what did a run score | `notes/LEDGER-all-runs.md` |
-| what is the campaign doing, and which tickets are open | `notes/wayfinder/MAP.md` |
+| what the campaign did, and which tickets were open at its end (2026-09-29) | `notes/wayfinder/MAP.md` |
 | what exactly did a build change | `<dir>/build_notebook.py` and its patch file |
 | why it was built and what the run proved | the `R`-note each page names |
 
